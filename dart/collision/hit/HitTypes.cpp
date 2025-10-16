@@ -34,32 +34,6 @@
 
 namespace dart::collision {
 
-//==============================================================================
-Eigen::Vector3d HitTypes::convertVector3(
-    const dart::collision::hit::Vector3<double>& vec)
-{
-  return Eigen::Vector3d(vec[0], vec[1], vec[2]);
-}
-
-//==============================================================================
-dart::collision::hit::Matrix3<double> HitTypes::convertMatrix3x3(
-    const Eigen::Matrix3d& R)
-{
-  dart::collision::hit::Matrix3<double> result;
-  result << R(0, 0), R(0, 1), R(0, 2), R(1, 0), R(1, 1), R(1, 2), R(2, 0),
-      R(2, 1), R(2, 2);
-  return result;
-}
-
-//==============================================================================
-dart::collision::hit::Transform3<double> HitTypes::convertTransform(
-    const Eigen::Isometry3d& T)
-{
-  dart::collision::hit::Transform3<double> result;
-  result.translation() = dart::collision::hit::Vector3<double>(
-      T.translation()[0], T.translation()[1], T.translation()[2]);
-  result.linear() = convertMatrix3x3(T.linear());
-  return result;
-}
+// Type utilities implementation will be added as we modernize the CCD library
 
 } // namespace dart::collision

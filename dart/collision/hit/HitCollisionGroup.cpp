@@ -32,84 +32,53 @@
 
 #include <dart/collision/CollisionObject.hpp>
 #include <dart/collision/hit/HitCollisionGroup.hpp>
-#include <dart/collision/hit/HitCollisionObject.hpp>
 
 namespace dart::collision {
 
 //==============================================================================
 HitCollisionGroup::HitCollisionGroup(
     const CollisionDetectorPtr& collisionDetector)
-  : CollisionGroup(collisionDetector),
-    mBroadPhaseAlg(
-        new dart::collision::hit::DynamicAABBTreeCollisionManager<double>())
+  : CollisionGroup(collisionDetector)
 {
-  // Do nothing
+  // TODO: Initialize broad-phase algorithm once we modernize CCD library
 }
 
 //==============================================================================
 void HitCollisionGroup::initializeEngineData()
 {
-  mBroadPhaseAlg->setup();
+  // TODO: Setup broad-phase algorithm
 }
 
 //==============================================================================
-void HitCollisionGroup::addCollisionObjectToEngine(CollisionObject* object)
+void HitCollisionGroup::addCollisionObjectToEngine(CollisionObject* /*object*/)
 {
-  auto casted = static_cast<HitCollisionObject*>(object);
-  mBroadPhaseAlg->registerObject(casted->getHitCollisionObject());
-
-  initializeEngineData();
+  // TODO: Implement
 }
 
 //==============================================================================
 void HitCollisionGroup::addCollisionObjectsToEngine(
-    const std::vector<CollisionObject*>& collObjects)
+    const std::vector<CollisionObject*>& /*collObjects*/)
 {
-  for (auto collObj : collObjects) {
-    auto casted = static_cast<HitCollisionObject*>(collObj);
-
-    mBroadPhaseAlg->registerObject(casted->getHitCollisionObject());
-  }
-
-  initializeEngineData();
+  // TODO: Implement
 }
 
 //==============================================================================
-void HitCollisionGroup::removeCollisionObjectFromEngine(CollisionObject* object)
+void HitCollisionGroup::removeCollisionObjectFromEngine(
+    CollisionObject* /*object*/)
 {
-  auto casted = static_cast<HitCollisionObject*>(object);
-
-  mBroadPhaseAlg->unregisterObject(casted->getHitCollisionObject());
-
-  initializeEngineData();
+  // TODO: Unregister collision object from broad-phase algorithm
 }
 
 //==============================================================================
 void HitCollisionGroup::removeAllCollisionObjectsFromEngine()
 {
-  mBroadPhaseAlg->clear();
-
-  initializeEngineData();
+  // TODO: Clear all collision objects from broad-phase algorithm
 }
 
 //==============================================================================
 void HitCollisionGroup::updateCollisionGroupEngineData()
 {
-  mBroadPhaseAlg->update();
-}
-
-//==============================================================================
-HitCollisionGroup::HitCollisionManager*
-HitCollisionGroup::getHitCollisionManager()
-{
-  return mBroadPhaseAlg.get();
-}
-
-//==============================================================================
-const HitCollisionGroup::HitCollisionManager*
-HitCollisionGroup::getHitCollisionManager() const
-{
-  return mBroadPhaseAlg.get();
+  // TODO: Update broad-phase algorithm
 }
 
 } // namespace dart::collision

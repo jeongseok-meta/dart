@@ -33,38 +33,24 @@
 #pragma once
 
 #include <dart/collision/CollisionObject.hpp>
-#include <dart/collision/hit/narrowphase/collision_object.h>
 
 namespace dart::collision {
 
-/// Collision object wrapper for HIT library
+/// Collision object wrapper for HIT library (placeholder/stub)
+/// TODO: Implement once we modernize the CCD library
 class HitCollisionObject : public CollisionObject
 {
 public:
   friend class HitCollisionDetector;
 
-  /// Return HIT collision object
-  dart::collision::hit::CollisionObject<double>* getHitCollisionObject();
-
-  /// Return HIT collision object
-  const dart::collision::hit::CollisionObject<double>* getHitCollisionObject()
-      const;
-
 protected:
   /// Constructor
   HitCollisionObject(
       CollisionDetector* collisionDetector,
-      const dynamics::ShapeFrame* shapeFrame,
-      const std::shared_ptr<dart::collision::hit::CollisionGeometry<double>>&
-          hitCollGeom);
+      const dynamics::ShapeFrame* shapeFrame);
 
   // Documentation inherited
   void updateEngineData() override;
-
-protected:
-  /// HIT collision object
-  std::unique_ptr<dart::collision::hit::CollisionObject<double>>
-      mHitCollisionObject;
 };
 
 } // namespace dart::collision

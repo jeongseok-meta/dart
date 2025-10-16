@@ -32,28 +32,17 @@
 
 #pragma once
 
-#include <dart/collision/hit/common/types.h>
-#include <dart/collision/hit/geometry/collision_geometry.h>
-
 #include <Eigen/Dense>
 
 namespace dart::collision {
 
-/// Type conversion utilities for HIT collision detection library
+/// Type definitions and utilities for HIT collision detection library
+/// Currently using CCD (Continuous Collision Detection) library
 class HitTypes
 {
 public:
-  /// Convert HIT Vector3 type to Eigen vector3 type
-  static Eigen::Vector3d convertVector3(
-      const dart::collision::hit::Vector3<double>& vec);
-
-  /// Convert Eigen matrix3x3 type to HIT matrix3x3 type
-  static dart::collision::hit::Matrix3<double> convertMatrix3x3(
-      const Eigen::Matrix3d& R);
-
-  /// Convert Eigen transformation type to HIT transformation type
-  static dart::collision::hit::Transform3<double> convertTransform(
-      const Eigen::Isometry3d& T);
+  // TODO: Add type conversion utilities as we modernize the CCD library
+  // to use Eigen types instead of custom vector/matrix types
 };
 
 } // namespace dart::collision

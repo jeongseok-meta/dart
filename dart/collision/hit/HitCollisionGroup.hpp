@@ -33,21 +33,17 @@
 #pragma once
 
 #include <dart/collision/CollisionGroup.hpp>
-#include <dart/collision/hit/broadphase/broadphase_dynamic_AABB_tree.h>
 
 namespace dart::collision {
 
 class CollisionObject;
-class HitCollisionObjectUserData;
 
-/// Collision group implementation using HIT library
+/// Collision group implementation using HIT library (placeholder/stub)
+/// TODO: Implement once we modernize the CCD library
 class HitCollisionGroup : public CollisionGroup
 {
 public:
   friend class HitCollisionDetector;
-
-  using HitCollisionManager
-      = dart::collision::hit::DynamicAABBTreeCollisionManager<double>;
 
   /// Constructor
   HitCollisionGroup(const CollisionDetectorPtr& collisionDetector);
@@ -76,16 +72,6 @@ protected:
 
   // Documentation inherited
   void updateCollisionGroupEngineData() override;
-
-  /// Return HIT collision manager that is also a broad-phase algorithm
-  HitCollisionManager* getHitCollisionManager();
-
-  /// Return HIT collision manager that is also a broad-phase algorithm
-  const HitCollisionManager* getHitCollisionManager() const;
-
-protected:
-  /// HIT broad-phase algorithm
-  std::unique_ptr<HitCollisionManager> mBroadPhaseAlg;
 };
 
 } // namespace dart::collision

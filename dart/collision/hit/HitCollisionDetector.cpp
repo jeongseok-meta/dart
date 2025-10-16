@@ -69,7 +69,7 @@ HitCollisionDetector::HitCollisionDetector()
 //==============================================================================
 HitCollisionDetector::~HitCollisionDetector()
 {
-  assert(mShapeMap.empty());
+  // TODO: Clean up resources when we implement collision geometry management
 }
 
 //==============================================================================
@@ -187,21 +187,12 @@ HitCollisionDetector::getContactPointComputationMethod() const
 
 //==============================================================================
 std::unique_ptr<CollisionObject> HitCollisionDetector::createCollisionObject(
-    const dynamics::ShapeFrame* shapeFrame)
+    const dynamics::ShapeFrame* /*shapeFrame*/)
 {
-  auto shape = shapeFrame->getShape();
-  auto hitCollGeom = claimHitCollisionGeometry(shape);
-
-  if (!hitCollGeom) {
-    dtwarn << "[HitCollisionDetector::createCollisionObject] Failed to create "
-           << "collision geometry for shape type: " << shape->getType() << "\n";
-    return nullptr;
-  }
-
-  auto collObj = std::unique_ptr<HitCollisionObject>(
-      new HitCollisionObject(this, shapeFrame, hitCollGeom));
-
-  return collObj;
+  // TODO: Implement collision object creation once we modernize CCD library
+  dtwarn
+      << "[HitCollisionDetector::createCollisionObject] Not yet implemented\n";
+  return nullptr;
 }
 
 //==============================================================================
@@ -212,66 +203,13 @@ void HitCollisionDetector::refreshCollisionObject(CollisionObject* object)
 }
 
 //==============================================================================
-std::shared_ptr<dart::collision::hit::CollisionGeometry<double>>
-HitCollisionDetector::claimHitCollisionGeometry(
-    const dynamics::ConstShapePtr& shape)
+void* HitCollisionDetector::claimCcdCollisionGeometry(
+    const dynamics::ConstShapePtr& /*shape*/)
 {
-  auto search = mShapeMap.find(shape);
-
-  if (search != mShapeMap.end()) {
-    auto& shapeInfo = search->second;
-
-    if (shapeInfo.mLastKnownVersion != shape->getVersion()) {
-      auto hitCollGeom = createHitCollisionGeometry(
-          shape, mPrimitiveShapeType, HitCollisionGeometryDeleter(this, shape));
-
-      shapeInfo.mShape = hitCollGeom;
-      shapeInfo.mLastKnownVersion = shape->getVersion();
-    }
-
-    auto& weakPtr = shapeInfo.mShape;
-
-    if (auto spt = weakPtr.lock())
-      return spt;
-    else
-      mShapeMap.erase(search);
-  }
-
-  auto hitCollGeom = createHitCollisionGeometry(
-      shape, mPrimitiveShapeType, HitCollisionGeometryDeleter(this, shape));
-
-  mShapeMap[shape] = ShapeInfo{hitCollGeom, shape->getVersion()};
-
-  return hitCollGeom;
-}
-
-//==============================================================================
-std::shared_ptr<dart::collision::hit::CollisionGeometry<double>>
-HitCollisionDetector::createHitCollisionGeometry(
-    const dynamics::ConstShapePtr& shape,
-    HitCollisionDetector::PrimitiveShape /*type*/,
-    const HitCollisionGeometryDeleter& /*deleter*/)
-{
-  dtwarn << "[HitCollisionDetector::createHitCollisionGeometry] Shape "
-         << "conversion not yet implemented for type: " << shape->getType()
-         << "\n";
+  // TODO: Implement CCD collision geometry management
+  dtwarn << "[HitCollisionDetector::claimCcdCollisionGeometry] Not yet "
+            "implemented\n";
   return nullptr;
-}
-
-//==============================================================================
-HitCollisionDetector::HitCollisionGeometryDeleter::HitCollisionGeometryDeleter(
-    HitCollisionDetector* cd, const dynamics::ConstShapePtr& shape)
-  : mHitCollisionDetector(cd), mShape(shape)
-{
-  // Do nothing
-}
-
-//==============================================================================
-void HitCollisionDetector::HitCollisionGeometryDeleter::operator()(
-    dart::collision::hit::CollisionGeometry<double>* geom) const
-{
-  mHitCollisionDetector->mShapeMap.erase(mShape);
-  delete geom;
 }
 
 } // namespace dart::collision

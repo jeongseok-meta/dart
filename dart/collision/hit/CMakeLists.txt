@@ -1,40 +1,35 @@
-# Collect all header and source files
-file(GLOB_RECURSE hit_headers "*.h" "*.hpp")
-file(GLOB_RECURSE hit_sources "*.cpp")
+# HIT Collision Detection - CCD-based implementation
+# Note: Currently includes only libccd for continuous collision detection
 
-# Filter out build artifacts, configuration templates, and inline implementation files
-list(FILTER hit_headers EXCLUDE REGEX ".*\\.in$")
-list(FILTER hit_headers EXCLUDE REGEX ".*-inl\\.h$")
-list(FILTER hit_sources EXCLUDE REGEX ".*\\.in$")
+# Collect HIT wrapper headers and sources (excluding ccd subdirectory)
+file(GLOB hit_headers "*.hpp")
+file(GLOB hit_sources "*.cpp")
 
-# TEMPORARY: Exclude traversal files and related files that depend on missing ShapeBVHDistanceTraversalNode base class
-list(FILTER hit_sources EXCLUDE REGEX ".*/traversal/.*\\.cpp$")
-list(FILTER hit_headers EXCLUDE REGEX ".*/traversal/.*\\.h$")
-list(FILTER hit_sources EXCLUDE REGEX ".*continuous_collision.*\\.cpp$")
-list(FILTER hit_headers EXCLUDE REGEX ".*continuous_collision.*\\.h$")
-list(FILTER hit_headers EXCLUDE REGEX ".*conservative_advancement_func_matrix.*\\.h$")
-list(FILTER hit_headers EXCLUDE REGEX ".*distance_func_matrix.*\\.h$")
-list(FILTER hit_sources EXCLUDE REGEX ".*distance\\.cpp$")
-list(FILTER hit_headers EXCLUDE REGEX ".*/narrowphase/distance\\.h$")
+# NOTE: Original C implementation files (*.c, *.h) are in ccd/reference/
+# They serve as reference but are NOT built to avoid conflicts with upstream libccd used by FCL
 
-# Add headers and sources to DART
+# Collect CCD library C++ headers (modern template-based implementation)
+# All implementations are template-based in headers, no .cpp files needed
+set(ccd_headers
+  "${CMAKE_CURRENT_LIST_DIR}/ccd/support.hpp"
+  "${CMAKE_CURRENT_LIST_DIR}/ccd/simplex.hpp"
+  "${CMAKE_CURRENT_LIST_DIR}/ccd/ccd.hpp"
+)
+set(ccd_sources
+  # No source files - all template implementations are in headers
+)
+
+# Add wrapper headers and sources to DART
 dart_add_core_headers(${hit_headers})
 dart_add_core_sources(${hit_sources})
 
-# Generate configuration header
-configure_file(
-  config.h.in
-  "${CMAKE_CURRENT_BINARY_DIR}/config.h"
-  @ONLY
-)
+# Add CCD C++ headers and sources to DART
+dart_add_core_headers(${ccd_headers})
+dart_add_core_sources(${ccd_sources})
 
-# Add the generated config.h to headers
-dart_add_core_headers("${CMAKE_CURRENT_BINARY_DIR}/config.h")
-
-# Generate the hit meta header manually since dart_generate_component_headers
-# doesn't preserve directory structure
+# Generate the hit meta header
 file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/all.hpp" "// Automatically generated file by cmake\n\n")
-file(APPEND "${CMAKE_CURRENT_BINARY_DIR}/all.hpp" "// HIT Adapter Classes\n")
+file(APPEND "${CMAKE_CURRENT_BINARY_DIR}/all.hpp" "// HIT Collision Detector\n")
 file(APPEND "${CMAKE_CURRENT_BINARY_DIR}/all.hpp" "#include \"dart/collision/hit/HitCollisionDetector.hpp\"\n")
 file(APPEND "${CMAKE_CURRENT_BINARY_DIR}/all.hpp" "#include \"dart/collision/hit/HitCollisionGroup.hpp\"\n")
 file(APPEND "${CMAKE_CURRENT_BINARY_DIR}/all.hpp" "#include \"dart/collision/hit/HitCollisionObject.hpp\"\n")
@@ -47,14 +42,13 @@ install(
   FILES ${hit_headers}
         hit.hpp
         ${CMAKE_CURRENT_BINARY_DIR}/all.hpp
-        ${CMAKE_CURRENT_BINARY_DIR}/config.h
   DESTINATION include/dart/collision/hit
   COMPONENT headers
 )
 
-# Install license file
+# Install CCD headers
 install(
-  FILES FCL_LICENSE
-  DESTINATION include/dart/collision/hit
+  FILES ${ccd_headers}
+  DESTINATION include/dart/collision/hit/ccd
   COMPONENT headers
 )
