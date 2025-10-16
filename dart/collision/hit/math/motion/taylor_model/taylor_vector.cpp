@@ -32,32 +32,33 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
-// This code is based on code developed by Stephane Redon at UNC and Inria for the CATCH library: http://graphics.ewha.ac.kr/CATCH/
+// This code is based on code developed by Stephane Redon at UNC and Inria for
+// the CATCH library: http://graphics.ewha.ac.kr/CATCH/
 /** @author Jia Pan */
 
-#include "fcl/math/motion/taylor_model/taylor_vector-inl.h"
+#include "dart/collision/hit/math/motion/taylor_model/taylor_vector-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
-
-//==============================================================================
-template
-class TVector3<double>;
+namespace dart::collision::hit {
 
 //==============================================================================
-template
-void generateTVector3ForLinearFunc(TVector3<double>& v, const Vector3<double>& position, const Vector3<double>& velocity);
+template class TVector3<double>;
 
 //==============================================================================
-template
-TVector3<double> operator * (const Vector3<double>& v, const TaylorModel<double>& a);
+template void generateTVector3ForLinearFunc(
+    TVector3<double>& v,
+    const Vector3<double>& position,
+    const Vector3<double>& velocity);
 
 //==============================================================================
-template
-TVector3<double> operator + (const Vector3<double>& v1, const TVector3<double>& v2);
+template TVector3<double> operator*(
+    const Vector3<double>& v, const TaylorModel<double>& a);
 
 //==============================================================================
-template
-TVector3<double> operator - (const Vector3<double>& v1, const TVector3<double>& v2);
+template TVector3<double> operator+(
+    const Vector3<double>& v1, const TVector3<double>& v2);
 
-} // namespace dart { namespace collision { namespace hit
+//==============================================================================
+template TVector3<double> operator-(
+    const Vector3<double>& v1, const TVector3<double>& v2);
+
+} // namespace dart::collision::hit

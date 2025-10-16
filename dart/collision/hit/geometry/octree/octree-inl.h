@@ -35,36 +35,33 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_OCTREE_INL_H
-#define FCL_OCTREE_INL_H
+#pragma once
 
-#include "fcl/geometry/octree/octree.h"
+#include "dart/collision/hit/config.h"
+#include "dart/collision/hit/geometry/octree/octree.h"
+#include "dart/collision/hit/geometry/shape/utility.h"
 
-#include "fcl/config.h"
+#if DART_COLLISION_HIT_HAVE_OCTOMAP
 
-#include "fcl/geometry/shape/utility.h"
-
-#if FCL_HAVE_OCTOMAP
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT OcTree<double>;
+extern template class OcTree<double>;
 
 //==============================================================================
-extern template
-void computeChildBV(const AABB<double>& root_bv, unsigned int i, AABB<double>& child_bv);
+extern template void computeChildBV(
+    const AABB<double>& root_bv, unsigned int i, AABB<double>& child_bv);
 
 //==============================================================================
 template <typename S>
 OcTree<S>::OcTree(S resolution)
-  : tree(std::shared_ptr<const octomap::OcTree>(new octomap::OcTree(resolution)))
+  : tree(
+      std::shared_ptr<const octomap::OcTree>(new octomap::OcTree(resolution)))
 {
   default_occupancy = tree->getOccupancyThres();
 
-  // default occupancy/free threshold is consistent with default setting from octomap
+  // default occupancy/free threshold is consistent with default setting from
+  // octomap
   occupancy_threshold_log_odds = tree->getOccupancyThresLog();
   free_threshold_log_odds = 0.0;
 }
@@ -76,7 +73,8 @@ OcTree<S>::OcTree(const std::shared_ptr<const octomap::OcTree>& tree_)
 {
   default_occupancy = tree->getOccupancyThres();
 
-  // default occupancy/free threshold is consistent with default setting from octomap
+  // default occupancy/free threshold is consistent with default setting from
+  // octomap
   occupancy_threshold_log_odds = tree->getOccupancyThresLog();
   free_threshold_log_odds = 0;
 }
@@ -97,7 +95,8 @@ AABB<S> OcTree<S>::getRootBV() const
   S delta = (1 << tree->getTreeDepth()) * tree->getResolution() / 2;
 
   // std::cout << "octree size " << delta << std::endl;
-  return AABB<S>(Vector3<S>(-delta, -delta, -delta), Vector3<S>(delta, delta, delta));
+  return AABB<S>(
+      Vector3<S>(-delta, -delta, -delta), Vector3<S>(delta, delta, delta));
 }
 
 //==============================================================================
@@ -125,7 +124,8 @@ bool OcTree<S>::isNodeFree(const typename OcTree<S>::OcTreeNode* node) const
 
 //==============================================================================
 template <typename S>
-bool OcTree<S>::isNodeUncertain(const typename OcTree<S>::OcTreeNode* node) const
+bool OcTree<S>::isNodeUncertain(
+    const typename OcTree<S>::OcTreeNode* node) const
 {
   return (!isNodeOccupied(node)) && (!isNodeFree(node));
 }
@@ -177,11 +177,11 @@ template <typename S>
 typename OcTree<S>::OcTreeNode* OcTree<S>::getNodeChild(
     typename OcTree<S>::OcTreeNode* node, unsigned int childIdx)
 {
-#if OCTOMAP_VERSION_AT_LEAST(1,8,0)
+  #if DART_COLLISION_HIT_OCTOMAP_VERSION_AT_LEAST(1, 8, 0)
   return tree->getNodeChild(node, childIdx);
-#else
+  #else
   return node->getChild(childIdx);
-#endif
+  #endif
 }
 
 //==============================================================================
@@ -189,11 +189,11 @@ template <typename S>
 const typename OcTree<S>::OcTreeNode* OcTree<S>::getNodeChild(
     const typename OcTree<S>::OcTreeNode* node, unsigned int childIdx) const
 {
-#if OCTOMAP_VERSION_AT_LEAST(1,8,0)
+  #if DART_COLLISION_HIT_OCTOMAP_VERSION_AT_LEAST(1, 8, 0)
   return tree->getNodeChild(node, childIdx);
-#else
+  #else
   return node->getChild(childIdx);
-#endif
+  #endif
 }
 
 //==============================================================================
@@ -201,22 +201,23 @@ template <typename S>
 bool OcTree<S>::nodeChildExists(
     const typename OcTree<S>::OcTreeNode* node, unsigned int childIdx) const
 {
-#if OCTOMAP_VERSION_AT_LEAST(1,8,0)
+  #if DART_COLLISION_HIT_OCTOMAP_VERSION_AT_LEAST(1, 8, 0)
   return tree->nodeChildExists(node, childIdx);
-#else
+  #else
   return node->childExists(childIdx);
-#endif
+  #endif
 }
 
 //==============================================================================
 template <typename S>
-bool OcTree<S>::nodeHasChildren(const typename OcTree<S>::OcTreeNode* node) const
+bool OcTree<S>::nodeHasChildren(
+    const typename OcTree<S>::OcTreeNode* node) const
 {
-#if OCTOMAP_VERSION_AT_LEAST(1,8,0)
+  #if DART_COLLISION_HIT_OCTOMAP_VERSION_AT_LEAST(1, 8, 0)
   return tree->nodeHasChildren(node);
-#else
+  #else
   return node->hasChildren();
-#endif
+  #endif
 }
 
 //==============================================================================
@@ -239,13 +240,11 @@ std::vector<std::array<S, 6>> OcTree<S>::toBoxes() const
 {
   std::vector<std::array<S, 6>> boxes;
   boxes.reserve(tree->size() / 2);
-  for(auto it = tree->begin(tree->getTreeDepth()), end = tree->end();
-      it != end;
-      ++it)
-  {
+  for (auto it = tree->begin(tree->getTreeDepth()), end = tree->end();
+       it != end;
+       ++it) {
     // if(tree->isNodeOccupied(*it))
-    if(isNodeOccupied(&*it))
-    {
+    if (isNodeOccupied(&*it)) {
       S size = it.getSize();
       S x = it.getX();
       S y = it.getY();
@@ -264,35 +263,26 @@ std::vector<std::array<S, 6>> OcTree<S>::toBoxes() const
 template <typename S>
 void computeChildBV(const AABB<S>& root_bv, unsigned int i, AABB<S>& child_bv)
 {
-  if(i&1)
-  {
+  if (i & 1) {
     child_bv.min_[0] = (root_bv.min_[0] + root_bv.max_[0]) * 0.5;
     child_bv.max_[0] = root_bv.max_[0];
-  }
-  else
-  {
+  } else {
     child_bv.min_[0] = root_bv.min_[0];
     child_bv.max_[0] = (root_bv.min_[0] + root_bv.max_[0]) * 0.5;
   }
 
-  if(i&2)
-  {
+  if (i & 2) {
     child_bv.min_[1] = (root_bv.min_[1] + root_bv.max_[1]) * 0.5;
     child_bv.max_[1] = root_bv.max_[1];
-  }
-  else
-  {
+  } else {
     child_bv.min_[1] = root_bv.min_[1];
     child_bv.max_[1] = (root_bv.min_[1] + root_bv.max_[1]) * 0.5;
   }
 
-  if(i&4)
-  {
+  if (i & 4) {
     child_bv.min_[2] = (root_bv.min_[2] + root_bv.max_[2]) * 0.5;
     child_bv.max_[2] = root_bv.max_[2];
-  }
-  else
-  {
+  } else {
     child_bv.min_[2] = root_bv.min_[2];
     child_bv.max_[2] = (root_bv.min_[2] + root_bv.max_[2]) * 0.5;
   }
@@ -308,12 +298,10 @@ const typename OcTree<S>::OcTreeNode* OcTree<S>::getNodeByQueryCellId(
     unsigned int* depth) const
 {
   octomap::OcTree::leaf_bbx_iterator it;
-  if (!getOctomapIterator(id, point, &it))
-  {
+  if (!getOctomapIterator(id, point, &it)) {
     return nullptr;
   }
-  if (aabb != nullptr)
-  {
+  if (aabb != nullptr) {
     Vector3<S> center(it.getX(), it.getY(), it.getZ());
     double half_size = it.getSize() / 2.0;
     Vector3<S> half_extent(half_size, half_size, half_size);
@@ -340,22 +328,25 @@ bool OcTree<S>::getOctomapIterator(
   // tree. Instead, require the user to supply the contact point or nearest
   // point returned by the query that also returned the id. Use the point to
   // create the bounds to search for the node pointer.
-  const octomap::OcTreeKey point_key = tree->coordToKey(
-      point[0], point[1], point[2]);
+  const octomap::OcTreeKey point_key
+      = tree->coordToKey(point[0], point[1], point[2]);
   // Set the min and max keys used for the bbx to the point key plus or minus
   // one (if not at the limits of the data type) so we are guaranteed to hit
   // the correct cell even when the point is on a boundary and rounds to the
   // wrong cell.
   octomap::OcTreeKey min_key, max_key;
-  for (unsigned int i = 0; i < 3; ++i)
-  {
-    min_key[i] = (point_key[i] > std::numeric_limits<octomap::key_type>::min() ?
-        point_key[i] - 1 : point_key[i]);
-    max_key[i] = (point_key[i] < std::numeric_limits<octomap::key_type>::max() ?
-        point_key[i] + 1 : point_key[i]);
+  for (unsigned int i = 0; i < 3; ++i) {
+    min_key[i]
+        = (point_key[i] > std::numeric_limits<octomap::key_type>::min()
+               ? point_key[i] - 1
+               : point_key[i]);
+    max_key[i]
+        = (point_key[i] < std::numeric_limits<octomap::key_type>::max()
+               ? point_key[i] + 1
+               : point_key[i]);
   }
-  octomap::OcTree::leaf_bbx_iterator it = tree->begin_leafs_bbx(
-      min_key, max_key);
+  octomap::OcTree::leaf_bbx_iterator it
+      = tree->begin_leafs_bbx(min_key, max_key);
   const octomap::OcTree::leaf_bbx_iterator end = tree->end_leafs_bbx();
   const OcTreeNode* const node = getRoot() + id;
   // While it may appear like this loop could take forever, in reality it will
@@ -364,10 +355,8 @@ bool OcTree<S>::getOctomapIterator(
   // incrementing past the bounds of the octomap::OcTree::leaf_bbx_iterator.
   // Incrementing end will keep the iterator at end as well. This functionality
   // of octomap iterators is tested extensively in the octomap package tests.
-  while (it != end)
-  {
-    if (node == &(*it))
-    {
+  while (it != end) {
+    if (node == &(*it)) {
       *out = it;
       return true;
     }
@@ -376,8 +365,6 @@ bool OcTree<S>::getOctomapIterator(
   return false;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit
 
 #endif

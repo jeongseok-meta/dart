@@ -38,37 +38,32 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/motion/taylor_model/taylor_model-inl.h"
+#include "dart/collision/hit/math/motion/taylor_model/taylor_model-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
-
-//==============================================================================
-template
-class TaylorModel<double>;
+namespace dart::collision::hit {
 
 //==============================================================================
-template
-TaylorModel<double> operator * (double d, const TaylorModel<double>& a);
+template class TaylorModel<double>;
 
 //==============================================================================
-template
-TaylorModel<double> operator + (double d, const TaylorModel<double>& a);
+template TaylorModel<double> operator*(double d, const TaylorModel<double>& a);
 
 //==============================================================================
-template
-TaylorModel<double> operator - (double d, const TaylorModel<double>& a);
+template TaylorModel<double> operator+(double d, const TaylorModel<double>& a);
 
 //==============================================================================
-template
-void generateTaylorModelForCosFunc(TaylorModel<double>& tm, double w, double q0);
+template TaylorModel<double> operator-(double d, const TaylorModel<double>& a);
 
 //==============================================================================
-template
-void generateTaylorModelForSinFunc(TaylorModel<double>& tm, double w, double q0);
+template void generateTaylorModelForCosFunc(
+    TaylorModel<double>& tm, double w, double q0);
 
 //==============================================================================
-template
-void generateTaylorModelForLinearFunc(TaylorModel<double>& tm, double p, double v);
+template void generateTaylorModelForSinFunc(
+    TaylorModel<double>& tm, double w, double q0);
 
-} // namespace dart { namespace collision { namespace hit
+//==============================================================================
+template void generateTaylorModelForLinearFunc(
+    TaylorModel<double>& tm, double p, double v);
+
+} // namespace dart::collision::hit

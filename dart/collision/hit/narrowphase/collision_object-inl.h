@@ -35,17 +35,14 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_COLLISION_OBJECT_INL_H
-#define FCL_COLLISION_OBJECT_INL_H
+#pragma once
 
-#include "fcl/narrowphase/collision_object.h"
+#include "dart/collision/hit/narrowphase/collision_object.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT CollisionObject<double>;
+extern template class CollisionObject<double>;
 
 //==============================================================================
 template <typename S>
@@ -53,8 +50,7 @@ CollisionObject<S>::CollisionObject(
     const std::shared_ptr<CollisionGeometry<S>>& cgeom_)
   : cgeom(cgeom_), cgeom_const(cgeom_), t(Transform3<S>::Identity())
 {
-  if (cgeom)
-  {
+  if (cgeom) {
     cgeom->computeLocalAABB();
     computeAABB();
   }
@@ -117,12 +113,9 @@ const AABB<S>& CollisionObject<S>::getAABB() const
 template <typename S>
 void CollisionObject<S>::computeAABB()
 {
-  if(t.linear().isIdentity())
-  {
+  if (t.linear().isIdentity()) {
     aabb = translate(cgeom->aabb_local, t.translation());
-  }
-  else
-  {
+  } else {
     Vector3<S> center = t * cgeom->aabb_center;
     Vector3<S> delta = Vector3<S>::Constant(cgeom->aabb_radius);
     aabb.min_ = center - delta;
@@ -132,7 +125,7 @@ void CollisionObject<S>::computeAABB()
 
 //==============================================================================
 template <typename S>
-void*CollisionObject<S>::getUserData() const
+void* CollisionObject<S>::getUserData() const
 {
   return user_data;
 }
@@ -203,7 +196,8 @@ void CollisionObject<S>::setTransform(const Matrix3<S>& R, const Vector3<S>& T)
 
 //==============================================================================
 template <typename S>
-void CollisionObject<S>::setTransform(const Quaternion<S>& q, const Vector3<S>& T)
+void CollisionObject<S>::setTransform(
+    const Quaternion<S>& q, const Vector3<S>& T)
 {
   setQuatRotation(q);
   setTranslation(T);
@@ -232,7 +226,7 @@ void CollisionObject<S>::setIdentityTransform()
 
 //==============================================================================
 template <typename S>
-const CollisionGeometry<S>*CollisionObject<S>::getCollisionGeometry() const
+const CollisionGeometry<S>* CollisionObject<S>::getCollisionGeometry() const
 {
   return cgeom.get();
 }
@@ -280,6 +274,4 @@ bool CollisionObject<S>::isUncertain() const
   return cgeom->isUncertain();
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

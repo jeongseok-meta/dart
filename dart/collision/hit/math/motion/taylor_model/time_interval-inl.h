@@ -32,20 +32,18 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
-// This code is based on code developed by Stephane Redon at UNC and Inria for the CATCH library: http://graphics.ewha.ac.kr/CATCH/
+// This code is based on code developed by Stephane Redon at UNC and Inria for
+// the CATCH library: http://graphics.ewha.ac.kr/CATCH/
 /** @author Jia Pan */
 
-#ifndef FCL_CCD_TIMEINTERVAL_INL_H
-#define FCL_CCD_TIMEINTERVAL_INL_H
+#pragma once
 
-#include "fcl/math/motion/taylor_model/time_interval.h"
+#include "dart/collision/hit/math/motion/taylor_model/time_interval.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-struct TimeInterval<double>;
+extern template struct TimeInterval<double>;
 
 //==============================================================================
 template <typename S>
@@ -73,6 +71,4 @@ void TimeInterval<S>::setValue(S l, S r)
   t6_.setValue(l * t5_[0], r * t5_[1]);
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

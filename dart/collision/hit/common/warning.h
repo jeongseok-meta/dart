@@ -34,10 +34,9 @@
 
 /// @author Jeongseok Lee <jslee02@gmail.com>
 
-#ifndef FCL_COMMON_WARNING_H
-#define FCL_COMMON_WARNING_H
+#pragma once
 
-#include "fcl/config.h"
+#include "dart/collision/hit/config.h"
 
 // We define two convenient macros that can be used to suppress
 // deprecated-warnings for a specific code block rather than a whole project.
@@ -48,55 +47,51 @@
 //
 // deprecated_function()  // warning
 //
-// FCL_SUPPRESS_DEPRECATED_BEGIN
+// DART_COLLISION_HIT_SUPPRESS_DEPRECATED_BEGIN
 // deprecated_function()  // okay, no warning
-// FCL_SUPPRESS_DEPRECATED_END
+// DART_COLLISION_HIT_SUPPRESS_DEPRECATED_END
 //
-#if defined (FCL_COMPILER_GCC)
+#if defined(DART_COLLISION_HIT_COMPILER_GCC)
 
-  #define FCL_SUPPRESS_DEPRECATED_BEGIN                             \
-    _Pragma("GCC diagnostic push")                                  \
-    _Pragma("GCC diagnostic ignored \"-Wdeprecated-declarations\"")
+  #define DART_COLLISION_HIT_SUPPRESS_DEPRECATED_BEGIN                         \
+    _Pragma("GCC diagnostic push")                                             \
+        _Pragma("GCC diagnostic ignored \"-Wdeprecated-declarations\"")
 
-  #define FCL_SUPPRESS_DEPRECATED_END \
+  #define DART_COLLISION_HIT_SUPPRESS_DEPRECATED_END                           \
     _Pragma("GCC diagnostic pop")
 
-  #define FCL_SUPPRESS_UNINITIALIZED_BEGIN                           \
-    _Pragma("GCC diagnostic push")                                   \
-    _Pragma("GCC diagnostic ignored \"-Wuninitialized\"")
+  #define DART_COLLISION_HIT_SUPPRESS_UNINITIALIZED_BEGIN                      \
+    _Pragma("GCC diagnostic push")                                             \
+        _Pragma("GCC diagnostic ignored \"-Wuninitialized\"")
 
-  #define FCL_SUPPRESS_UNINITIALIZED_END \
+  #define DART_COLLISION_HIT_SUPPRESS_UNINITIALIZED_END                        \
     _Pragma("GCC diagnostic pop")
 
-#elif defined (FCL_COMPILER_CLANG)
+#elif defined(DART_COLLISION_HIT_COMPILER_CLANG)
 
-  #define FCL_SUPPRESS_DEPRECATED_BEGIN                               \
-    _Pragma("clang diagnostic push")                                  \
-    _Pragma("clang diagnostic ignored \"-Wdeprecated-declarations\"")
+  #define DART_COLLISION_HIT_SUPPRESS_DEPRECATED_BEGIN                         \
+    _Pragma("clang diagnostic push")                                           \
+        _Pragma("clang diagnostic ignored \"-Wdeprecated-declarations\"")
 
-  #define FCL_SUPPRESS_DEPRECATED_END \
+  #define DART_COLLISION_HIT_SUPPRESS_DEPRECATED_END                           \
     _Pragma("clang diagnostic pop")
 
-  #define FCL_SUPPRESS_UNINITIALIZED_BEGIN                            \
-    _Pragma("clang diagnostic push")                                  \
-    _Pragma("clang diagnostic ignored \"-Wuninitialized\"")
+  #define DART_COLLISION_HIT_SUPPRESS_UNINITIALIZED_BEGIN                      \
+    _Pragma("clang diagnostic push")                                           \
+        _Pragma("clang diagnostic ignored \"-Wuninitialized\"")
 
-  #define FCL_SUPPRESS_UNINITIALIZED_END \
+  #define DART_COLLISION_HIT_SUPPRESS_UNINITIALIZED_END                        \
     _Pragma("clang diagnostic pop")
 
-#elif defined (FCL_COMPILER_MSVC)
+#elif defined(DART_COLLISION_HIT_COMPILER_MSVC)
 
-  #define FCL_SUPPRESS_DEPRECATED_BEGIN \
-    __pragma(warning(push))             \
-    __pragma(warning(disable:4996))
+  #define DART_COLLISION_HIT_SUPPRESS_DEPRECATED_BEGIN                         \
+    __pragma(warning(push)) __pragma(warning(disable : 4996))
 
-  #define FCL_SUPPRESS_DEPRECATED_END   \
-    __pragma(warning(pop))
+  #define DART_COLLISION_HIT_SUPPRESS_DEPRECATED_END __pragma(warning(pop))
 
-  #define FCL_SUPPRESS_UNINITIALIZED_BEGIN  // TODO
+  #define DART_COLLISION_HIT_SUPPRESS_UNINITIALIZED_BEGIN // TODO
 
-  #define FCL_SUPPRESS_UNINITIALIZED_END  // TODO
+  #define DART_COLLISION_HIT_SUPPRESS_UNINITIALIZED_END // TODO
 
 #endif
-
-#endif // FCL_COMMON_WARNING_H

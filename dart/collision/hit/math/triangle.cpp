@@ -35,10 +35,9 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/triangle.h"
+#include "dart/collision/hit/math/triangle.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
 Triangle::Triangle()
@@ -55,7 +54,9 @@ Triangle::Triangle(std::size_t p1, std::size_t p2, std::size_t p3)
 //==============================================================================
 void Triangle::set(std::size_t p1, std::size_t p2, std::size_t p3)
 {
-  vids[0] = p1; vids[1] = p2; vids[2] = p3;
+  vids[0] = p1;
+  vids[1] = p2;
+  vids[2] = p3;
 }
 
 //==============================================================================
@@ -70,4 +71,4 @@ std::size_t& Triangle::operator[](int i)
   return vids[i];
 }
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

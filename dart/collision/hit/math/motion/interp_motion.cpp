@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/motion/interp_motion-inl.h"
+#include "dart/collision/hit/math/motion/interp_motion-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-class InterpMotion<double>;
+template class InterpMotion<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

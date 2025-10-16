@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/geometry/shape/triangle_p-inl.h"
+#include "dart/collision/hit/geometry/shape/triangle_p-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-class TriangleP<double>;
+template class TriangleP<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

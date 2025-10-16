@@ -35,34 +35,29 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_SHAPE_ELLIPSOID_INL_H
-#define FCL_SHAPE_ELLIPSOID_INL_H
+#pragma once
+
+#include "dart/collision/hit/geometry/shape/ellipsoid.h"
+#include "dart/collision/hit/geometry/shape/representation.h"
 
 #include <iomanip>
 #include <sstream>
 
-#include "fcl/geometry/shape/ellipsoid.h"
-#include "fcl/geometry/shape/representation.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT Ellipsoid<double>;
+extern template class Ellipsoid<double>;
 
 //==============================================================================
 template <typename S>
-Ellipsoid<S>::Ellipsoid(S a, S b, S c)
-  : ShapeBase<S>(), radii(a, b, c)
+Ellipsoid<S>::Ellipsoid(S a, S b, S c) : ShapeBase<S>(), radii(a, b, c)
 {
   // Do nothing
 }
 
 //==============================================================================
 template <typename S>
-Ellipsoid<S>::Ellipsoid(const Vector3<S>& radii)
-  : ShapeBase<S>(), radii(radii)
+Ellipsoid<S>::Ellipsoid(const Vector3<S>& radii) : ShapeBase<S>(), radii(radii)
 {
   // Do nothing
 }
@@ -95,7 +90,8 @@ Matrix3<S> Ellipsoid<S>::computeMomentofInertia() const
   const S b2 = radii[1] * radii[1] * V;
   const S c2 = radii[2] * radii[2] * V;
 
-  return Vector3<S>(0.2 * (b2 + c2), 0.2 * (a2 + c2), 0.2 * (a2 + b2)).asDiagonal();
+  return Vector3<S>(0.2 * (b2 + c2), 0.2 * (a2 + c2), 0.2 * (a2 + b2))
+      .asDiagonal();
 }
 
 //==============================================================================
@@ -115,7 +111,7 @@ std::vector<Vector3<S>> Ellipsoid<S>::getBoundVertices(
 
   std::vector<Vector3<S>> result(12);
 
-  const auto phi = (1.0 + std::sqrt(5.0)) / 2.0;  // golden ratio
+  const auto phi = (1.0 + std::sqrt(5.0)) / 2.0; // golden ratio
 
   const auto a = std::sqrt(3.0) / (phi * phi);
   const auto b = phi * a;
@@ -149,7 +145,8 @@ std::vector<Vector3<S>> Ellipsoid<S>::getBoundVertices(
 
 //==============================================================================
 template <typename S>
-std::string Ellipsoid<S>::representation(int precision) const {
+std::string Ellipsoid<S>::representation(int precision) const
+{
   const char* S_str = detail::ScalarRepr<S>::value();
   std::stringstream ss;
   ss << std::setprecision(precision);
@@ -158,6 +155,4 @@ std::string Ellipsoid<S>::representation(int precision) const {
   return ss.str();
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

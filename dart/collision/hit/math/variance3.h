@@ -35,20 +35,18 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_MATH_VARIANCE3_H
-#define FCL_MATH_VARIANCE3_H
+#pragma once
+
+#include "dart/collision/hit/common/types.h"
+#include "dart/collision/hit/math/geometry.h"
 
 #include <cmath>
 
-#include "fcl/common/types.h"
-#include "fcl/math/geometry.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Class for variance matrix in 3d
 template <typename S>
-class FCL_EXPORT Variance3
+class Variance3
 {
 public:
   /// @brief Variation matrix
@@ -76,8 +74,6 @@ public:
 using Variance3f = Variance3<float>;
 using Variance3d = Variance3<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/variance3-inl.h"
-
-#endif
+#include "dart/collision/hit/math/variance3-inl.h"

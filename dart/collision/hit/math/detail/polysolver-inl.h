@@ -35,30 +35,27 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_NARROWPHASE_DETAIL_POLYSOLVER_INL_H
-#define FCL_NARROWPHASE_DETAIL_POLYSOLVER_INL_H
+#pragma once
 
-#include "fcl/math/detail/polysolver.h"
+#include "dart/collision/hit/common/types.h"
+#include "dart/collision/hit/math/detail/polysolver.h"
 
 #include <cmath>
-#include "fcl/common/types.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 namespace detail {
 
 //==============================================================================
-extern template
-class FCL_EXPORT PolySolver<double>;
+extern template class PolySolver<double>;
 
 //==============================================================================
 template <typename S>
 int PolySolver<S>::solveLinear(S c[2], S s[1])
 {
-  if(isZero(c[1]))
+  if (isZero(c[1]))
     return 0;
-  s[0] = - c[0] / c[1];
+  s[0] = -c[0] / c[1];
   return 1;
 }
 
@@ -70,7 +67,7 @@ int PolySolver<S>::solveQuadric(S c[3], S s[2])
 
   // make sure we have a d2 equation
 
-  if(isZero(c[2]))
+  if (isZero(c[2]))
     return solveLinear(c, s);
 
   // normal for: x^2 + px + q
@@ -78,18 +75,16 @@ int PolySolver<S>::solveQuadric(S c[3], S s[2])
   q = c[0] / c[2];
   D = p * p - q;
 
-  if(isZero(D))
-  {
+  if (isZero(D)) {
     // one S root
     s[0] = s[1] = -p;
     return 1;
   }
 
-  if(D < 0.0)
+  if (D < 0.0)
     // no real root
     return 0;
-  else
-  {
+  else {
     // two real roots
     S sqrt_D = sqrt(D);
     s[0] = sqrt_D - p;
@@ -108,7 +103,7 @@ int PolySolver<S>::solveCubic(S c[4], S s[3])
   const S PI = 3.14159265358979323846;
 
   // make sure we have a d2 equation
-  if(isZero(c[3]))
+  if (isZero(c[3]))
     return solveQuadric(c, s);
 
   // normalize the equation:x ^ 3 + Ax ^ 2 + Bx  + C = 0
@@ -125,27 +120,20 @@ int PolySolver<S>::solveCubic(S c[4], S s[3])
   cb_p = p * p * p;
   D = q * q + cb_p;
 
-  if(isZero(D))
-  {
-    if(isZero(q))
-    {
+  if (isZero(D)) {
+    if (isZero(q)) {
       // one triple solution
       s[0] = 0.0;
       num = 1;
-    }
-    else
-    {
+    } else {
       // one single and one S solution
       S u = cbrt(-q);
       s[0] = 2.0 * u;
       s[1] = -u;
       num = 2;
     }
-  }
-  else
-  {
-    if(D < 0.0)
-    {
+  } else {
+    if (D < 0.0) {
       // three real solutions
       S phi = ONE_OVER_THREE * acos(-q / sqrt(-cb_p));
       S t = 2.0 * sqrt(-p);
@@ -153,14 +141,12 @@ int PolySolver<S>::solveCubic(S c[4], S s[3])
       s[1] = -t * cos(phi + PI / 3.0);
       s[2] = -t * cos(phi - PI / 3.0);
       num = 3;
-    }
-    else
-    {
+    } else {
       // one real solution
       S sqrt_D = sqrt(D);
       S u = cbrt(sqrt_D + fabs(q));
-      if(q > 0.0)
-        s[0] = - u + p / u ;
+      if (q > 0.0)
+        s[0] = -u + p / u;
       else
         s[0] = u - p / u;
       num = 1;
@@ -169,7 +155,7 @@ int PolySolver<S>::solveCubic(S c[4], S s[3])
 
   // re-substitute
   sub = ONE_OVER_THREE * A;
-  for(i = 0; i < num; i++)
+  for (i = 0; i < num; i++)
     s[i] -= sub;
   return num;
 }
@@ -196,6 +182,4 @@ constexpr S PolySolver<S>::getNearZeroThreshold()
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

@@ -35,22 +35,19 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CCD_TRIANGLEMOTIONBOUNDVISITOR_H
-#define FCL_CCD_TRIANGLEMOTIONBOUNDVISITOR_H
+#pragma once
 
-#include "fcl/common/unused.h"
+#include "dart/collision/hit/common/unused.h"
+#include "dart/collision/hit/math/bv/RSS.h"
+#include "dart/collision/hit/math/motion/bv_motion_bound_visitor.h"
+#include "dart/collision/hit/math/motion/interp_motion.h"
+#include "dart/collision/hit/math/motion/screw_motion.h"
+#include "dart/collision/hit/math/motion/spline_motion.h"
+#include "dart/collision/hit/math/motion/taylor_model/taylor_matrix.h"
+#include "dart/collision/hit/math/motion/taylor_model/taylor_vector.h"
+#include "dart/collision/hit/math/motion/translation_motion.h"
 
-#include "fcl/math/motion/taylor_model/taylor_matrix.h"
-#include "fcl/math/motion/taylor_model/taylor_vector.h"
-#include "fcl/math/bv/RSS.h"
-#include "fcl/math/motion/bv_motion_bound_visitor.h"
-#include "fcl/math/motion/spline_motion.h"
-#include "fcl/math/motion/screw_motion.h"
-#include "fcl/math/motion/interp_motion.h"
-#include "fcl/math/motion/translation_motion.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 template <typename S>
 class MotionBase;
@@ -71,14 +68,20 @@ template <typename, typename>
 struct TriangleMotionBoundVisitorVisitImpl;
 
 template <typename S>
-class FCL_EXPORT TriangleMotionBoundVisitor
+class TriangleMotionBoundVisitor
 {
 public:
   TriangleMotionBoundVisitor(
-      const Vector3<S>& a_, const Vector3<S>& b_,
-      const Vector3<S>& c_, const Vector3<S>& n_);
+      const Vector3<S>& a_,
+      const Vector3<S>& b_,
+      const Vector3<S>& c_,
+      const Vector3<S>& n_);
 
-  virtual S visit(const MotionBase<S>& motion) const { FCL_UNUSED(motion); return 0; }
+  virtual S visit(const MotionBase<S>& motion) const
+  {
+    DART_COLLISION_HIT_UNUSED(motion);
+    return 0;
+  }
   virtual S visit(const SplineMotion<S>& motion) const;
   virtual S visit(const ScrewMotion<S>& motion) const;
   virtual S visit(const InterpMotion<S>& motion) const;
@@ -88,16 +91,22 @@ protected:
   template <typename, typename>
   friend struct TriangleMotionBoundVisitorVisitImpl;
 
-  friend struct TriangleMotionBoundVisitorVisitImpl<double, SplineMotion<double>>;
-  friend struct TriangleMotionBoundVisitorVisitImpl<double, ScrewMotion<double>>;
-  friend struct TriangleMotionBoundVisitorVisitImpl<double, InterpMotion<double>>;
-  friend struct TriangleMotionBoundVisitorVisitImpl<double, TranslationMotion<double>>;
+  friend struct TriangleMotionBoundVisitorVisitImpl<
+      double,
+      SplineMotion<double>>;
+  friend struct TriangleMotionBoundVisitorVisitImpl<
+      double,
+      ScrewMotion<double>>;
+  friend struct TriangleMotionBoundVisitorVisitImpl<
+      double,
+      InterpMotion<double>>;
+  friend struct TriangleMotionBoundVisitorVisitImpl<
+      double,
+      TranslationMotion<double>>;
 
   Vector3<S> a, b, c, n;
 };
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/motion/triangle_motion_bound_visitor-inl.h"
-
-#endif
+#include "dart/collision/hit/math/motion/triangle_motion_bound_visitor-inl.h"

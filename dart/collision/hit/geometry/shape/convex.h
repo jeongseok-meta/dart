@@ -36,18 +36,16 @@
 /** @author Jia Pan */
 /** @author Sean Curtis (2018)  Streamline API and document. */
 
-#ifndef FCL_SHAPE_CONVEX_H
-#define FCL_SHAPE_CONVEX_H
+#pragma once
 
-#include <ostream>
+#include "dart/collision/hit/geometry/shape/shape_base.h"
+
 #include <memory>
+#include <ostream>
 #include <string>
 #include <vector>
 
-#include "fcl/geometry/shape/shape_base.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief A convex polytope
 ///
@@ -81,10 +79,9 @@ namespace dart { namespace collision { namespace hit
 ///
 /// @tparam S_  The scalar type; must be a valid Eigen scalar.
 template <typename S_>
-class FCL_EXPORT Convex : public ShapeBase<S_>
+class Convex : public ShapeBase<S_>
 {
 public:
-
   using S = S_;
 
   // TODO(SeanCurtis-TRI): A huge shopping list of issues with this class are
@@ -107,11 +104,13 @@ public:
   ///                           documentation for details on encoding.
   /// @param throw_if_invalid   If `true`, failed attempts to validate the mesh
   ///                           will throw an exception.
-  Convex(const std::shared_ptr<const std::vector<Vector3<S>>>& vertices,
-         int num_faces, const std::shared_ptr<const std::vector<int>>& faces,
-         bool throw_if_invalid = false);
+  Convex(
+      const std::shared_ptr<const std::vector<Vector3<S>>>& vertices,
+      int num_faces,
+      const std::shared_ptr<const std::vector<int>>& faces,
+      bool throw_if_invalid = false);
 
-  /// @brief Copy constructor 
+  /// @brief Copy constructor
   Convex(const Convex& other);
 
   ~Convex() = default;
@@ -123,10 +122,16 @@ public:
   NODE_TYPE getNodeType() const override;
 
   /// @brief Gets the vertex positions in the geometry's frame G.
-  const std::vector<Vector3<S>>& getVertices() const { return *vertices_; }
+  const std::vector<Vector3<S>>& getVertices() const
+  {
+    return *vertices_;
+  }
 
   /// @brief Gets the total number of faces in the convex mesh.
-  int getFaceCount() const { return num_faces_; }
+  int getFaceCount() const
+  {
+    return num_faces_;
+  }
 
   /// @brief Gets the representation of the *faces* of the convex hull.
   ///
@@ -149,11 +154,17 @@ public:
   ///    1. vertices are not coincident and
   ///    3. the indices of the face correspond to a proper counter-clockwise
   ///       ordering.
-  const std::vector<int>& getFaces() const { return *faces_; }
+  const std::vector<int>& getFaces() const
+  {
+    return *faces_;
+  }
 
   /// @brief A point guaranteed to be on the interior of the convex polytope,
   /// used for collision.
-  const Vector3<S>& getInteriorPoint() const { return interior_point_; }
+  const Vector3<S>& getInteriorPoint() const
+  {
+    return interior_point_;
+  }
 
   // Documentation inherited.
   Matrix3<S> computeMomentofInertia() const override;
@@ -164,8 +175,8 @@ public:
   // Documentation inherited.
   S computeVolume() const override;
 
-  /// @brief Gets the vertices of some convex shape which can bound this shape in
-  /// a specific configuration
+  /// @brief Gets the vertices of some convex shape which can bound this shape
+  /// in a specific configuration
   std::vector<Vector3<S>> getBoundVertices(const Transform3<S>& tf) const;
 
   /// @brief Reports a vertex in this convex polytope that lies farthest in the
@@ -183,14 +194,14 @@ public:
   /// @return The string representation of this instance.
   std::string representation(int precision = 20) const;
 
-  friend
-  std::ostream& operator<<(std::ostream& out, const Convex& convex) {
-    out << "Convex(v count: " << convex.vertices_->size() << ", f count: "
-        << convex.getFaceCount() << ")";
+  friend std::ostream& operator<<(std::ostream& out, const Convex& convex)
+  {
+    out << "Convex(v count: " << convex.vertices_->size()
+        << ", f count: " << convex.getFaceCount() << ")";
     return out;
   }
 
- private:
+private:
   // Test utility to examine Convex internal state.
   friend class ConvexTester;
 
@@ -281,8 +292,6 @@ Convex<S>::Convex(const Convex<S>& other) = default;
 using Convexf = Convex<float>;
 using Convexd = Convex<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/geometry/shape/convex-inl.h"
-
-#endif
+#include "dart/collision/hit/geometry/shape/convex-inl.h"

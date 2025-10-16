@@ -35,20 +35,17 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_MESHCONTINUOUSCOLLISIONTRAVERSALNODE_H
-#define FCL_TRAVERSAL_MESHCONTINUOUSCOLLISIONTRAVERSALNODE_H
+#pragma once
 
-#include "fcl/narrowphase/detail/traversal/collision/bvh_collision_traversal_node.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/collision/bvh_collision_traversal_node.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /// @brief Traversal node for continuous collision between BVH models
 template <typename S>
-struct FCL_EXPORT BVHContinuousCollisionPair
+struct BVHContinuousCollisionPair
 {
   BVHContinuousCollisionPair();
 
@@ -60,17 +57,17 @@ struct FCL_EXPORT BVHContinuousCollisionPair
   /// @brief The index of the other in-collision primitive
   int id2;
 
-  /// @brief Collision time normalized in [0, 1]. The collision time out of [0, 1] means collision-free
+  /// @brief Collision time normalized in [0, 1]. The collision time out of [0,
+  /// 1] means collision-free
   S collision_time;
 };
 
 /// @brief Traversal node for continuous collision between meshes
 template <typename BV>
-class FCL_EXPORT MeshContinuousCollisionTraversalNode
-    : public BVHCollisionTraversalNode<BV>
+class MeshContinuousCollisionTraversalNode
+  : public BVHCollisionTraversalNode<BV>
 {
 public:
-
   using S = typename BV::S;
 
   MeshContinuousCollisionTraversalNode();
@@ -101,7 +98,6 @@ public:
 /// @brief Initialize traversal node for continuous collision detection between
 /// two meshes
 template <typename BV>
-FCL_EXPORT
 bool initialize(
     MeshContinuousCollisionTraversalNode<BV>& node,
     const BVHModel<BV>& model1,
@@ -111,8 +107,6 @@ bool initialize(
     const CollisionRequest<typename BV::S>& request);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/traversal/collision/mesh_continuous_collision_traversal_node-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/traversal/collision/mesh_continuous_collision_traversal_node-inl.h"

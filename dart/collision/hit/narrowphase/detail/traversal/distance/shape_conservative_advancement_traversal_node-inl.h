@@ -35,21 +35,18 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_SHAPECONSERVATIVEADVANCEMENTTRAVERSALNODE_INL_H
-#define FCL_TRAVERSAL_SHAPECONSERVATIVEADVANCEMENTTRAVERSALNODE_INL_H
+#pragma once
 
-#include "fcl/narrowphase/detail/traversal/distance/shape_conservative_advancement_traversal_node.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/shape_conservative_advancement_traversal_node.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
 template <typename Shape1, typename Shape2, typename NarrowPhaseSolver>
 ShapeConservativeAdvancementTraversalNode<Shape1, Shape2, NarrowPhaseSolver>::
-ShapeConservativeAdvancementTraversalNode()
+    ShapeConservativeAdvancementTraversalNode()
   : ShapeDistanceTraversalNode<Shape1, Shape2, NarrowPhaseSolver>()
 {
   delta_t = 1;
@@ -62,8 +59,10 @@ ShapeConservativeAdvancementTraversalNode()
 
 //==============================================================================
 template <typename Shape1, typename Shape2, typename NarrowPhaseSolver>
-void ShapeConservativeAdvancementTraversalNode<Shape1, Shape2, NarrowPhaseSolver>::
-leafTesting(int, int) const
+void ShapeConservativeAdvancementTraversalNode<
+    Shape1,
+    Shape2,
+    NarrowPhaseSolver>::leafTesting(int, int) const
 {
   S distance;
   // NOTE(JS): The closest points are set to zeros in order to suppress the
@@ -74,12 +73,19 @@ leafTesting(int, int) const
   // to always set the closest points.
   Vector3<S> closest_p1 = Vector3<S>::Zero();
   Vector3<S> closest_p2 = Vector3<S>::Zero();
-  this->nsolver->shapeDistance(*(this->model1), this->tf1, *(this->model2), this->tf2, &distance, &closest_p1, &closest_p2);
+  this->nsolver->shapeDistance(
+      *(this->model1),
+      this->tf1,
+      *(this->model2),
+      this->tf2,
+      &distance,
+      &closest_p1,
+      &closest_p2);
 
   Vector3<S> n = closest_p2 - closest_p1;
   const S norm_sq = n.squaredNorm();
   if (norm_sq > 0.0)
-    n /= sqrt(norm_sq);  // Normalize.
+    n /= sqrt(norm_sq); // Normalize.
   TBVMotionBoundVisitor<RSS<S>> mb_visitor1(model1_bv, n);
   TBVMotionBoundVisitor<RSS<S>> mb_visitor2(model2_bv, -n);
   S bound1 = motion1->computeMotionBound(mb_visitor1);
@@ -88,17 +94,22 @@ leafTesting(int, int) const
   S bound = bound1 + bound2;
 
   S cur_delta_t;
-  if(bound <= distance) cur_delta_t = 1;
-  else cur_delta_t = distance / bound;
+  if (bound <= distance)
+    cur_delta_t = 1;
+  else
+    cur_delta_t = distance / bound;
 
-  if(cur_delta_t < delta_t)
-    delta_t  = cur_delta_t;
+  if (cur_delta_t < delta_t)
+    delta_t = cur_delta_t;
 }
 
 //==============================================================================
 template <typename Shape1, typename Shape2, typename NarrowPhaseSolver>
 bool initialize(
-    ShapeConservativeAdvancementTraversalNode<Shape1, Shape2, NarrowPhaseSolver>& node,
+    ShapeConservativeAdvancementTraversalNode<
+        Shape1,
+        Shape2,
+        NarrowPhaseSolver>& node,
     const Shape1& shape1,
     const Transform3<typename Shape1::S>& tf1,
     const Shape2& shape2,
@@ -120,6 +131,4 @@ bool initialize(
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

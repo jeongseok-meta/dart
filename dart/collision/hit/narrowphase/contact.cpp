@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/narrowphase/contact-inl.h"
+#include "dart/collision/hit/narrowphase/contact-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-struct Contact<double>;
+template struct Contact<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

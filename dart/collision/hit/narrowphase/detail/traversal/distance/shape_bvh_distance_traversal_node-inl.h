@@ -35,21 +35,17 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_SHAPEBVHDISTANCETRAVERSALNODE_INL_H
-#define FCL_TRAVERSAL_SHAPEBVHDISTANCETRAVERSALNODE_INL_H
+#pragma once
 
-#include "fcl/narrowphase/detail/traversal/distance/shape_bvh_distance_traversal_node.h"
+#include "dart/collision/hit/common/unused.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/shape_bvh_distance_traversal_node.h"
 
-#include "fcl/common/unused.h"
+namespace dart::collision::hit {
 
-namespace dart { namespace collision { namespace hit
-{
-
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
-template<typename Shape, typename BV>
+template <typename Shape, typename BV>
 ShapeBVHDistanceTraversalNode<Shape, BV>::ShapeBVHDistanceTraversalNode()
   : DistanceTraversalNodeBase<typename BV::S>()
 {
@@ -62,37 +58,35 @@ ShapeBVHDistanceTraversalNode<Shape, BV>::ShapeBVHDistanceTraversalNode()
 }
 
 //==============================================================================
-template<typename Shape, typename BV>
+template <typename Shape, typename BV>
 bool ShapeBVHDistanceTraversalNode<Shape, BV>::isSecondNodeLeaf(int b) const
 {
   return model2->getBV(b).isLeaf();
 }
 
 //==============================================================================
-template<typename Shape, typename BV>
+template <typename Shape, typename BV>
 int ShapeBVHDistanceTraversalNode<Shape, BV>::getSecondLeftChild(int b) const
 {
   return model2->getBV(b).leftChild();
 }
 
 //==============================================================================
-template<typename Shape, typename BV>
+template <typename Shape, typename BV>
 int ShapeBVHDistanceTraversalNode<Shape, BV>::getSecondRightChild(int b) const
 {
   return model2->getBV(b).rightChild();
 }
 
 //==============================================================================
-template<typename Shape, typename BV>
-typename BV::S
-ShapeBVHDistanceTraversalNode<Shape, BV>::BVTesting(int b1, int b2) const
+template <typename Shape, typename BV>
+typename BV::S ShapeBVHDistanceTraversalNode<Shape, BV>::BVTesting(
+    int b1, int b2) const
 {
-  FCL_UNUSED(b1);
+  DART_COLLISION_HIT_UNUSED(b1);
 
   return model1_bv.distance(model2->getBV(b2).bv);
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

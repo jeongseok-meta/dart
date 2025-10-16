@@ -35,29 +35,25 @@
 
 /** @author Jia Pan  */
 
-#ifndef FCL_BROADPHASE_DETAIL_NODEBASEARRAY_INL_H
-#define FCL_BROADPHASE_DETAIL_NODEBASEARRAY_INL_H
+#pragma once
 
-#include "fcl/broadphase/detail/node_base_array.h"
+#include "dart/collision/hit/broadphase/detail/node_base_array.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
-namespace implementation_array
-{
+namespace implementation_array {
 
 //==============================================================================
-template<typename BV>
+template <typename BV>
 bool NodeBase<BV>::isLeaf() const
 {
   return (children[1] == (size_t)(-1));
 }
 
 //==============================================================================
-template<typename BV>
+template <typename BV>
 bool NodeBase<BV>::isInternal() const
 {
   return !isLeaf();
@@ -65,6 +61,4 @@ bool NodeBase<BV>::isInternal() const
 
 } // namespace implementation_array
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

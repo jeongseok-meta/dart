@@ -35,17 +35,14 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BV_AABB_INL_H
-#define FCL_BV_AABB_INL_H
+#pragma once
 
-#include "fcl/math/bv/AABB.h"
+#include "dart/collision/hit/math/bv/AABB.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT AABB<double>;
+extern template class AABB<double>;
 
 //==============================================================================
 template <typename S>
@@ -66,8 +63,7 @@ AABB<S>::AABB(const Vector3<S>& v) : min_(v), max_(v)
 //==============================================================================
 template <typename S>
 AABB<S>::AABB(const Vector3<S>& a, const Vector3<S>& b)
-  : min_(a.cwiseMin(b)),
-    max_(a.cwiseMax(b))
+  : min_(a.cwiseMin(b)), max_(a.cwiseMax(b))
 {
   // Do nothing
 }
@@ -75,20 +71,15 @@ AABB<S>::AABB(const Vector3<S>& a, const Vector3<S>& b)
 //==============================================================================
 template <typename S>
 AABB<S>::AABB(const AABB<S>& core, const Vector3<S>& delta)
-  : min_(core.min_ - delta),
-    max_(core.max_ + delta)
+  : min_(core.min_ - delta), max_(core.max_ + delta)
 {
   // Do nothing
 }
 
 //==============================================================================
 template <typename S>
-AABB<S>::AABB(
-    const Vector3<S>& a,
-    const Vector3<S>& b,
-    const Vector3<S>& c)
-  : min_(a.cwiseMin(b).cwiseMin(c)),
-    max_(a.cwiseMax(b).cwiseMax(c))
+AABB<S>::AABB(const Vector3<S>& a, const Vector3<S>& b, const Vector3<S>& c)
+  : min_(a.cwiseMin(b).cwiseMin(c)), max_(a.cwiseMax(b).cwiseMax(c))
 {
   // Do nothing
 }
@@ -123,9 +114,11 @@ bool AABB<S>::contain(const AABB<S>& other) const
 template <typename S>
 bool AABB<S>::axisOverlap(const AABB<S>& other, int axis_id) const
 {
-  if(min_[axis_id] > other.max_[axis_id]) return false;
+  if (min_[axis_id] > other.max_[axis_id])
+    return false;
 
-  if(max_[axis_id] < other.min_[axis_id]) return false;
+  if (max_[axis_id] < other.min_[axis_id])
+    return false;
 
   return true;
 }
@@ -134,8 +127,7 @@ bool AABB<S>::axisOverlap(const AABB<S>& other, int axis_id) const
 template <typename S>
 bool AABB<S>::overlap(const AABB<S>& other, AABB<S>& overlap_part) const
 {
-  if(!overlap(other))
-  {
+  if (!overlap(other)) {
     return false;
   }
 
@@ -159,7 +151,7 @@ bool AABB<S>::contain(const Vector3<S>& p) const
 
 //==============================================================================
 template <typename S>
-AABB<S>& AABB<S>::operator +=(const Vector3<S>& p)
+AABB<S>& AABB<S>::operator+=(const Vector3<S>& p)
 {
   min_ = min_.cwiseMin(p);
   max_ = max_.cwiseMax(p);
@@ -168,7 +160,7 @@ AABB<S>& AABB<S>::operator +=(const Vector3<S>& p)
 
 //==============================================================================
 template <typename S>
-AABB<S>& AABB<S>::operator +=(const AABB<S>& other)
+AABB<S>& AABB<S>::operator+=(const AABB<S>& other)
 {
   min_ = min_.cwiseMin(other.min_);
   max_ = max_.cwiseMax(other.max_);
@@ -177,7 +169,7 @@ AABB<S>& AABB<S>::operator +=(const AABB<S>& other)
 
 //==============================================================================
 template <typename S>
-AABB<S> AABB<S>::operator +(const AABB<S>& other) const
+AABB<S> AABB<S>::operator+(const AABB<S>& other) const
 {
   AABB res(*this);
   return res += other;
@@ -237,45 +229,33 @@ template <typename S>
 S AABB<S>::distance(const AABB<S>& other, Vector3<S>* P, Vector3<S>* Q) const
 {
   S result = 0;
-  for(std::size_t i = 0; i < 3; ++i)
-  {
+  for (std::size_t i = 0; i < 3; ++i) {
     const S& amin = min_[i];
     const S& amax = max_[i];
     const S& bmin = other.min_[i];
     const S& bmax = other.max_[i];
 
-    if(amin > bmax)
-    {
+    if (amin > bmax) {
       S delta = bmax - amin;
       result += delta * delta;
-      if(P && Q)
-      {
+      if (P && Q) {
         (*P)[i] = amin;
         (*Q)[i] = bmax;
       }
-    }
-    else if(bmin > amax)
-    {
+    } else if (bmin > amax) {
       S delta = amax - bmin;
       result += delta * delta;
-      if(P && Q)
-      {
+      if (P && Q) {
         (*P)[i] = amax;
         (*Q)[i] = bmin;
       }
-    }
-    else
-    {
-      if(P && Q)
-      {
-        if(bmin >= amin)
-        {
+    } else {
+      if (P && Q) {
+        if (bmin >= amin) {
           S t = 0.5 * (amax + bmin);
           (*P)[i] = t;
           (*Q)[i] = t;
-        }
-        else
-        {
+        } else {
           S t = 0.5 * (amin + bmax);
           (*P)[i] = t;
           (*Q)[i] = t;
@@ -292,20 +272,16 @@ template <typename S>
 S AABB<S>::distance(const AABB<S>& other) const
 {
   S result = 0;
-  for(std::size_t i = 0; i < 3; ++i)
-  {
+  for (std::size_t i = 0; i < 3; ++i) {
     const S& amin = min_[i];
     const S& amax = max_[i];
     const S& bmin = other.min_[i];
     const S& bmax = other.max_[i];
 
-    if(amin > bmax)
-    {
+    if (amin > bmax) {
       S delta = bmax - amin;
       result += delta * delta;
-    }
-    else if(bmin > amax)
-    {
+    } else if (bmin > amax) {
       S delta = amax - bmin;
       result += delta * delta;
     }
@@ -319,7 +295,7 @@ template <typename S>
 bool AABB<S>::equal(const AABB<S>& other) const
 {
   return min_.isApprox(other.min_, std::numeric_limits<S>::epsilon() * 100)
-      && max_.isApprox(other.max_, std::numeric_limits<S>::epsilon() * 100);
+         && max_.isApprox(other.max_, std::numeric_limits<S>::epsilon() * 100);
 }
 
 //==============================================================================
@@ -342,8 +318,7 @@ AABB<S>& AABB<S>::expand(const AABB<S>& core, S ratio)
 
 //==============================================================================
 template <typename S, typename Derived>
-AABB<S> translate(
-    const AABB<S>& aabb, const Eigen::MatrixBase<Derived>& t)
+AABB<S> translate(const AABB<S>& aabb, const Eigen::MatrixBase<Derived>& t)
 {
   AABB<S> res(aabb);
   res.min_ += t;
@@ -351,6 +326,4 @@ AABB<S> translate(
   return res;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

@@ -35,24 +35,24 @@
 
 /** @author Jia Pan */
 
-#include "fcl/narrowphase/distance-inl.h"
+#include "dart/collision/hit/narrowphase/distance-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-template
-double distance(
+template double distance(
     const CollisionObject<double>* o1,
     const CollisionObject<double>* o2,
     const DistanceRequest<double>& request,
     DistanceResult<double>& result);
 
 //==============================================================================
-template
-double distance(
-    const CollisionGeometry<double>* o1, const Transform3<double>& tf1,
-    const CollisionGeometry<double>* o2, const Transform3<double>& tf2,
-    const DistanceRequest<double>& request, DistanceResult<double>& result);
+template double distance(
+    const CollisionGeometry<double>* o1,
+    const Transform3<double>& tf1,
+    const CollisionGeometry<double>* o2,
+    const Transform3<double>& tf2,
+    const DistanceRequest<double>& request,
+    DistanceResult<double>& result);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

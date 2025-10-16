@@ -31,20 +31,17 @@
  *  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
- */ 
+ */
 
 /** @author Jia Pan */
 
-#include "fcl/broadphase/detail/spatial_hash-inl.h"
+#include "dart/collision/hit/broadphase/detail/spatial_hash-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
-template
-struct SpatialHash<double>;
+template struct SpatialHash<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/bv/AABB-inl.h"
+#include "dart/collision/hit/math/bv/AABB-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-class AABB<double>;
+template class AABB<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

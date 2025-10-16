@@ -35,11 +35,9 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CCD_BVMOTIONBOUNDVISITOR_H
-#define FCL_CCD_BVMOTIONBOUNDVISITOR_H
+#pragma once
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 template <typename S>
 class MotionBase;
@@ -59,7 +57,7 @@ class TranslationMotion;
 /// @brief Compute the motion bound for a bounding volume, given the closest
 /// direction n between two query objects
 template <typename S>
-class FCL_EXPORT BVMotionBoundVisitor
+class BVMotionBoundVisitor
 {
 public:
   virtual S visit(const MotionBase<S>& motion) const = 0;
@@ -69,6 +67,4 @@ public:
   virtual S visit(const TranslationMotion<S>& motion) const = 0;
 };
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

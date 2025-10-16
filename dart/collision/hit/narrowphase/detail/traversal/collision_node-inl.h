@@ -35,48 +35,46 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_COLLISION_NODE_INL_H
-#define FCL_COLLISION_NODE_INL_H
+#pragma once
 
-#include "fcl/narrowphase/detail/traversal/collision_node.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/collision_node.h"
 
-/// @brief collision and distance function on traversal nodes. these functions provide a higher level abstraction for collision functions provided in collision_func_matrix
-namespace dart { namespace collision { namespace hit
-{
+/// @brief collision and distance function on traversal nodes. these functions
+/// provide a higher level abstraction for collision functions provided in
+/// collision_func_matrix
+namespace dart::collision::hit {
 
-namespace detail
-{
-
-//==============================================================================
-extern template
-void collide(CollisionTraversalNodeBase<double>* node, BVHFrontList* front_list);
+namespace detail {
 
 //==============================================================================
-extern template
-void selfCollide(CollisionTraversalNodeBase<double>* node, BVHFrontList* front_list);
+extern template void collide(
+    CollisionTraversalNodeBase<double>* node, BVHFrontList* front_list);
 
 //==============================================================================
-extern template
-void distance(DistanceTraversalNodeBase<double>* node, BVHFrontList* front_list, int qsize);
+extern template void selfCollide(
+    CollisionTraversalNodeBase<double>* node, BVHFrontList* front_list);
 
 //==============================================================================
-extern template
-void collide2(MeshCollisionTraversalNodeOBB<double>* node, BVHFrontList* front_list);
+extern template void distance(
+    DistanceTraversalNodeBase<double>* node,
+    BVHFrontList* front_list,
+    int qsize);
 
 //==============================================================================
-extern template
-void collide2(MeshCollisionTraversalNodeRSS<double>* node, BVHFrontList* front_list);
+extern template void collide2(
+    MeshCollisionTraversalNodeOBB<double>* node, BVHFrontList* front_list);
+
+//==============================================================================
+extern template void collide2(
+    MeshCollisionTraversalNodeRSS<double>* node, BVHFrontList* front_list);
 
 //==============================================================================
 template <typename S>
 void collide(CollisionTraversalNodeBase<S>* node, BVHFrontList* front_list)
 {
-  if(front_list && front_list->size() > 0)
-  {
+  if (front_list && front_list->size() > 0) {
     propagateBVHFrontListCollisionRecurse(node, front_list);
-  }
-  else
-  {
+  } else {
     collisionRecurse(node, 0, 0, front_list);
   }
 }
@@ -85,12 +83,9 @@ void collide(CollisionTraversalNodeBase<S>* node, BVHFrontList* front_list)
 template <typename S>
 void collide2(MeshCollisionTraversalNodeOBB<S>* node, BVHFrontList* front_list)
 {
-  if(front_list && front_list->size() > 0)
-  {
+  if (front_list && front_list->size() > 0) {
     propagateBVHFrontListCollisionRecurse(node, front_list);
-  }
-  else
-  {
+  } else {
     Matrix3<S> Rtemp, R;
     Vector3<S> Ttemp, T;
     Rtemp = node->R * node->model2->getBV(0).getOrientation();
@@ -107,12 +102,9 @@ void collide2(MeshCollisionTraversalNodeOBB<S>* node, BVHFrontList* front_list)
 template <typename S>
 void collide2(MeshCollisionTraversalNodeRSS<S>* node, BVHFrontList* front_list)
 {
-  if(front_list && front_list->size() > 0)
-  {
+  if (front_list && front_list->size() > 0) {
     propagateBVHFrontListCollisionRecurse(node, front_list);
-  }
-  else
-  {
+  } else {
     collisionRecurse(node, 0, 0, node->R, node->T, front_list);
   }
 }
@@ -121,24 +113,21 @@ void collide2(MeshCollisionTraversalNodeRSS<S>* node, BVHFrontList* front_list)
 template <typename S>
 void selfCollide(CollisionTraversalNodeBase<S>* node, BVHFrontList* front_list)
 {
-
-  if(front_list && front_list->size() > 0)
-  {
+  if (front_list && front_list->size() > 0) {
     propagateBVHFrontListCollisionRecurse(node, front_list);
-  }
-  else
-  {
+  } else {
     selfCollisionRecurse(node, 0, front_list);
   }
 }
 
 //==============================================================================
 template <typename S>
-void distance(DistanceTraversalNodeBase<S>* node, BVHFrontList* front_list, int qsize)
+void distance(
+    DistanceTraversalNodeBase<S>* node, BVHFrontList* front_list, int qsize)
 {
   node->preprocess();
 
-  if(qsize <= 2)
+  if (qsize <= 2)
     distanceRecurse(node, 0, 0, front_list);
   else
     distanceQueueRecurse(node, 0, 0, front_list, qsize);
@@ -147,6 +136,4 @@ void distance(DistanceTraversalNodeBase<S>* node, BVHFrontList* front_list, int 
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

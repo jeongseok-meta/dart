@@ -35,26 +35,22 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_SHAPE_CYLINDER_INL_H
-#define FCL_SHAPE_CYLINDER_INL_H
+#pragma once
+
+#include "dart/collision/hit/geometry/shape/cylinder.h"
+#include "dart/collision/hit/geometry/shape/representation.h"
 
 #include <iomanip>
 #include <sstream>
 
-#include "fcl/geometry/shape/cylinder.h"
-#include "fcl/geometry/shape/representation.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT Cylinder<double>;
+extern template class Cylinder<double>;
 
 //==============================================================================
 template <typename S>
-Cylinder<S>::Cylinder(S radius, S lz)
-  : ShapeBase<S>(), radius(radius), lz(lz)
+Cylinder<S>::Cylinder(S radius, S lz) : ShapeBase<S>(), radius(radius), lz(lz)
 {
   // Do nothing
 }
@@ -127,7 +123,8 @@ std::vector<Vector3<S>> Cylinder<S>::getBoundVertices(
 
 //==============================================================================
 template <typename S>
-std::string Cylinder<S>::representation(int precision) const {
+std::string Cylinder<S>::representation(int precision) const
+{
   const char* S_str = detail::ScalarRepr<S>::value();
   std::stringstream ss;
   ss << std::setprecision(precision);
@@ -135,6 +132,4 @@ std::string Cylinder<S>::representation(int precision) const {
   return ss.str();
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

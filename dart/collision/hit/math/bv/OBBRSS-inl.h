@@ -35,21 +35,18 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BV_OBBRSS_INL_H
-#define FCL_BV_OBBRSS_INL_H
+#pragma once
 
-#include "fcl/math/bv/OBBRSS.h"
+#include "dart/collision/hit/math/bv/OBBRSS.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT OBBRSS<double>;
+extern template class OBBRSS<double>;
 
 //==============================================================================
-extern template
-OBBRSS<double> translate(const OBBRSS<double>& bv, const Vector3<double>& t);
+extern template OBBRSS<double> translate(
+    const OBBRSS<double>& bv, const Vector3<double>& t);
 
 //==============================================================================
 template <typename S>
@@ -60,8 +57,8 @@ bool OBBRSS<S>::overlap(const OBBRSS<S>& other) const
 
 //==============================================================================
 template <typename S>
-bool OBBRSS<S>::overlap(const OBBRSS<S>& other,
-                             OBBRSS<S>& /*overlap_part*/) const
+bool OBBRSS<S>::overlap(
+    const OBBRSS<S>& other, OBBRSS<S>& /*overlap_part*/) const
 {
   return overlap(other);
 }
@@ -75,7 +72,7 @@ bool OBBRSS<S>::contain(const Vector3<S>& p) const
 
 //==============================================================================
 template <typename S>
-OBBRSS<S>& OBBRSS<S>::operator +=(const Vector3<S>& p)
+OBBRSS<S>& OBBRSS<S>::operator+=(const Vector3<S>& p)
 {
   obb += p;
   rss += p;
@@ -84,7 +81,7 @@ OBBRSS<S>& OBBRSS<S>::operator +=(const Vector3<S>& p)
 
 //==============================================================================
 template <typename S>
-OBBRSS<S>& OBBRSS<S>::operator +=(const OBBRSS<S>& other)
+OBBRSS<S>& OBBRSS<S>::operator+=(const OBBRSS<S>& other)
 {
   *this = *this + other;
   return *this;
@@ -92,7 +89,7 @@ OBBRSS<S>& OBBRSS<S>::operator +=(const OBBRSS<S>& other)
 
 //==============================================================================
 template <typename S>
-OBBRSS<S> OBBRSS<S>::operator +(const OBBRSS<S>& other) const
+OBBRSS<S> OBBRSS<S>::operator+(const OBBRSS<S>& other) const
 {
   OBBRSS<S> result;
   result.obb = obb + other.obb;
@@ -144,17 +141,19 @@ const Vector3<S> OBBRSS<S>::center() const
 
 //==============================================================================
 template <typename S>
-S OBBRSS<S>::distance(const OBBRSS<S>& other,
-                                Vector3<S>* P, Vector3<S>* Q) const
+S OBBRSS<S>::distance(
+    const OBBRSS<S>& other, Vector3<S>* P, Vector3<S>* Q) const
 {
   return rss.distance(other.rss, P, Q);
 }
 
 //==============================================================================
 template <typename S, typename DerivedA, typename DerivedB>
-bool overlap(const Eigen::MatrixBase<DerivedA>& R0,
-             const Eigen::MatrixBase<DerivedB>& T0,
-             const OBBRSS<S>& b1, const OBBRSS<S>& b2)
+bool overlap(
+    const Eigen::MatrixBase<DerivedA>& R0,
+    const Eigen::MatrixBase<DerivedB>& T0,
+    const OBBRSS<S>& b1,
+    const OBBRSS<S>& b2)
 {
   return overlap(R0, T0, b1.obb, b2.obb);
 }
@@ -164,8 +163,10 @@ template <typename S, typename DerivedA, typename DerivedB>
 S distance(
     const Eigen::MatrixBase<DerivedA>& R0,
     const Eigen::MatrixBase<DerivedB>& T0,
-    const OBBRSS<S>& b1, const OBBRSS<S>& b2,
-    Vector3<S>* P, Vector3<S>* Q)
+    const OBBRSS<S>& b1,
+    const OBBRSS<S>& b2,
+    Vector3<S>* P,
+    Vector3<S>* Q)
 {
   return distance(R0, T0, b1.rss, b2.rss, P, Q);
 }
@@ -180,6 +181,4 @@ OBBRSS<S> translate(const OBBRSS<S>& bv, const Vector3<S>& t)
   return res;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

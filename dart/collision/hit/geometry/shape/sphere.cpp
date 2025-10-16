@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/geometry/shape/sphere-inl.h"
+#include "dart/collision/hit/geometry/shape/sphere-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-class Sphere<double>;
+template class Sphere<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

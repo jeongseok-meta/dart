@@ -35,34 +35,35 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_DISTANCE_H
-#define FCL_DISTANCE_H
+#pragma once
 
-#include "fcl/narrowphase/collision_object.h"
-#include "fcl/narrowphase/detail/distance_func_matrix.h"
-#include "fcl/narrowphase/detail/gjk_solver_indep.h"
-#include "fcl/narrowphase/detail/gjk_solver_libccd.h"
+#include "dart/collision/hit/narrowphase/collision_object.h"
+#include "dart/collision/hit/narrowphase/detail/distance_func_matrix.h"
+#include "dart/collision/hit/narrowphase/detail/gjk_solver_indep.h"
+#include "dart/collision/hit/narrowphase/detail/gjk_solver_libccd.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-/// @brief Main distance interface: given two collision objects, and the requirements for contacts, including whether return the nearest points, this function performs the distance between them. 
-/// Return value is the minimum distance generated between the two objects.
+/// @brief Main distance interface: given two collision objects, and the
+/// requirements for contacts, including whether return the nearest points, this
+/// function performs the distance between them. Return value is the minimum
+/// distance generated between the two objects.
 template <typename S>
-FCL_EXPORT
 S distance(
-    const CollisionObject<S>* o1, const CollisionObject<S>* o2,
-    const DistanceRequest<S>& request, DistanceResult<S>& result);
+    const CollisionObject<S>* o1,
+    const CollisionObject<S>* o2,
+    const DistanceRequest<S>& request,
+    DistanceResult<S>& result);
 
 template <typename S>
-FCL_EXPORT
 S distance(
-    const CollisionGeometry<S>* o1, const Transform3<S>& tf1,
-    const CollisionGeometry<S>* o2, const Transform3<S>& tf2,
-    const DistanceRequest<S>& request, DistanceResult<S>& result);
+    const CollisionGeometry<S>* o1,
+    const Transform3<S>& tf1,
+    const CollisionGeometry<S>* o2,
+    const Transform3<S>& tf2,
+    const DistanceRequest<S>& request,
+    DistanceResult<S>& result);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/distance-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/distance-inl.h"

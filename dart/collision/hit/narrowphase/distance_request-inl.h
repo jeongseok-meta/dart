@@ -35,19 +35,15 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_DISTANCEREQUEST_INL_H
-#define FCL_DISTANCEREQUEST_INL_H
+#pragma once
 
-#include "fcl/narrowphase/distance_request.h"
+#include "dart/collision/hit/narrowphase/distance_request.h"
+#include "dart/collision/hit/narrowphase/distance_result.h"
 
-#include "fcl/narrowphase/distance_result.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-struct DistanceRequest<double>;
+extern template struct DistanceRequest<double>;
 
 //==============================================================================
 template <typename S>
@@ -70,12 +66,9 @@ DistanceRequest<S>::DistanceRequest(
 
 //==============================================================================
 template <typename S>
-bool DistanceRequest<S>::isSatisfied(
-    const DistanceResult<S>& result) const
+bool DistanceRequest<S>::isSatisfied(const DistanceResult<S>& result) const
 {
   return (result.min_distance <= 0);
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

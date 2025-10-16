@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/sampler/sampler_se3_euler_ball-inl.h"
+#include "dart/collision/hit/math/sampler/sampler_se3_euler_ball-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-class SamplerSE3Euler_ball<double>;
+template class SamplerSE3Euler_ball<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

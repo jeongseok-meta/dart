@@ -35,19 +35,17 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BROADPHASE_DETAIL_INTERVALTREENODE_INL_H
-#define FCL_BROADPHASE_DETAIL_INTERVALTREENODE_INL_H
+#pragma once
 
-#include "fcl/broadphase/detail/interval_tree_node.h"
+#include "dart/collision/hit/broadphase/detail/interval_tree_node.h"
 
 #include <iostream>
 
-namespace dart { namespace collision { namespace hit {
+namespace dart::collision::hit {
 namespace detail {
 
 //==============================================================================
-extern template
-class FCL_EXPORT IntervalTreeNode<double>;
+extern template class IntervalTreeNode<double>;
 
 //==============================================================================
 template <typename S>
@@ -59,7 +57,7 @@ IntervalTreeNode<S>::IntervalTreeNode()
 //==============================================================================
 template <typename S>
 IntervalTreeNode<S>::IntervalTreeNode(SimpleInterval<S>* new_interval)
-  : stored_interval (new_interval),
+  : stored_interval(new_interval),
     key(new_interval->low),
     high(new_interval->high),
     max_high(high)
@@ -82,15 +80,22 @@ void IntervalTreeNode<S>::print(
   stored_interval->print();
   std::cout << ", k = " << key << ", h = " << high << ", mH = " << max_high;
   std::cout << "  l->key = ";
-  if(left == nil) std::cout << "nullptr"; else std::cout << left->key;
+  if (left == nil)
+    std::cout << "nullptr";
+  else
+    std::cout << left->key;
   std::cout << "  r->key = ";
-  if(right == nil) std::cout << "nullptr"; else std::cout << right->key;
+  if (right == nil)
+    std::cout << "nullptr";
+  else
+    std::cout << right->key;
   std::cout << "  p->key = ";
-  if(parent == root) std::cout << "nullptr"; else std::cout << parent->key;
+  if (parent == root)
+    std::cout << "nullptr";
+  else
+    std::cout << parent->key;
   std::cout << "  red = " << (int)red << std::endl;
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

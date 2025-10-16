@@ -35,22 +35,18 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_SHAPE_SHAPE_BASE_INL_H
-#define FCL_SHAPE_SHAPE_BASE_INL_H
+#pragma once
 
-#include "fcl/geometry/shape/shape_base.h"
+#include "dart/collision/hit/geometry/shape/shape_base.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT ShapeBase<double>;
+extern template class ShapeBase<double>;
 
 //==============================================================================
 template <typename S>
-ShapeBase<S>::ShapeBase()
-  : CollisionGeometry<S>()
+ShapeBase<S>::ShapeBase() : CollisionGeometry<S>()
 {
   // Do nothing
 }
@@ -62,6 +58,4 @@ OBJECT_TYPE ShapeBase<S>::getObjectType() const
   return OT_GEOM;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

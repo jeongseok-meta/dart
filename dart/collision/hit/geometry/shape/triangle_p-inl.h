@@ -35,24 +35,19 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_SHAPE_TRIANGLE_P_INL_H
-#define FCL_SHAPE_TRIANGLE_P_INL_H
+#pragma once
 
-#include "fcl/geometry/shape/triangle_p.h"
+#include "dart/collision/hit/geometry/shape/triangle_p.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT TriangleP<double>;
+extern template class TriangleP<double>;
 
 //==============================================================================
 template <typename S>
 TriangleP<S>::TriangleP(
-    const Vector3<S>& a,
-    const Vector3<S>& b,
-    const Vector3<S>& c)
+    const Vector3<S>& a, const Vector3<S>& b, const Vector3<S>& c)
   : ShapeBase<S>(), a(a), b(b), c(c)
 {
   // Do nothing
@@ -88,6 +83,4 @@ std::vector<Vector3<S>> TriangleP<S>::getBoundVertices(
   return result;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

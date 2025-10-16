@@ -32,24 +32,23 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
-// This code is based on code developed by Stephane Redon at UNC and Inria for the CATCH library: http://graphics.ewha.ac.kr/CATCH/
+// This code is based on code developed by Stephane Redon at UNC and Inria for
+// the CATCH library: http://graphics.ewha.ac.kr/CATCH/
 /** @author Jia Pan */
 
-#include "fcl/math/motion/taylor_model/interval_vector-inl.h"
+#include "dart/collision/hit/math/motion/taylor_model/interval_vector-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
-
-//==============================================================================
-template
-struct IVector3<double>;
+namespace dart::collision::hit {
 
 //==============================================================================
-template
-IVector3<double> bound(const IVector3<double>& i, const Vector3<double>& v);
+template struct IVector3<double>;
 
 //==============================================================================
-template
-IVector3<double> bound(const IVector3<double>& i, const IVector3<double>& v);
+template IVector3<double> bound(
+    const IVector3<double>& i, const Vector3<double>& v);
 
-} // namespace dart { namespace collision { namespace hit
+//==============================================================================
+template IVector3<double> bound(
+    const IVector3<double>& i, const IVector3<double>& v);
+
+} // namespace dart::collision::hit

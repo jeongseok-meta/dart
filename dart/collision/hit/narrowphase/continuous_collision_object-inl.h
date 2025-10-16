@@ -35,17 +35,14 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CONTINUOUS_COLLISION_OBJECT_INL_H
-#define FCL_CONTINUOUS_COLLISION_OBJECT_INL_H
+#pragma once
 
-#include "fcl/narrowphase/continuous_collision_object.h"
+#include "dart/collision/hit/narrowphase/continuous_collision_object.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT ContinuousCollisionObject<double>;
+extern template class ContinuousCollisionObject<double>;
 
 //==============================================================================
 template <typename S>
@@ -89,7 +86,7 @@ NODE_TYPE ContinuousCollisionObject<S>::getNodeType() const
 
 //==============================================================================
 template <typename S>
-const AABB<S>&ContinuousCollisionObject<S>::getAABB() const
+const AABB<S>& ContinuousCollisionObject<S>::getAABB() const
 {
   return aabb;
 }
@@ -158,8 +155,8 @@ MotionBase<S>* ContinuousCollisionObject<S>::getMotion() const
 
 //==============================================================================
 template <typename S>
-const CollisionGeometry<S>*
-ContinuousCollisionObject<S>::getCollisionGeometry() const
+const CollisionGeometry<S>* ContinuousCollisionObject<S>::getCollisionGeometry()
+    const
 {
   return cgeom.get();
 }
@@ -172,6 +169,4 @@ ContinuousCollisionObject<S>::collisionGeometry() const
   return cgeom_const;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

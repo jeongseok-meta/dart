@@ -35,29 +35,31 @@
 
 /** @author Jeongseok Lee <jslee02@gmail.com> */
 
-#ifndef FCL_COMMON_PROFILER_H
-#define FCL_COMMON_PROFILER_H
+#pragma once
 
-#include "fcl/config.h"
+#include "dart/collision/hit/config.h"
 
-#if FCL_ENABLE_PROFILING
+#if DART_COLLISION_HIT_ENABLE_PROFILING
 
-  #define FCL_PROFILE_START                ::fcl::detail::Profiler::Start();
-  #define FCL_PROFILE_STOP                 ::fcl::detail::Profiler::Stop();
-  #define FCL_PROFILE_BLOCK_BEGIN(name)    ::fcl::detail::Profiler::Begin(name);
-  #define FCL_PROFILE_BLOCK_END(name)      ::fcl::detail::Profiler::End(name);
-  #define FCL_PROFILE_STATUS(stream)       ::fcl::detail::Profiler::Status(stream);
+  #define DART_COLLISION_HIT_PROFILE_START                                     \
+    ::dart::collision::hit::detail::Profiler::Start();
+  #define DART_COLLISION_HIT_PROFILE_STOP                                      \
+    ::dart::collision::hit::detail::Profiler::Stop();
+  #define DART_COLLISION_HIT_PROFILE_BLOCK_BEGIN(name)                         \
+    ::dart::collision::hit::detail::Profiler::Begin(name);
+  #define DART_COLLISION_HIT_PROFILE_BLOCK_END(name)                           \
+    ::dart::collision::hit::detail::Profiler::End(name);
+  #define DART_COLLISION_HIT_PROFILE_STATUS(stream)                            \
+    ::dart::collision::hit::detail::Profiler::Status(stream);
 
 #else
 
-  #define FCL_PROFILE_START
-  #define FCL_PROFILE_STOP
-  #define FCL_PROFILE_BLOCK_BEGIN(name)
-  #define FCL_PROFILE_BLOCK_END(name)
-  #define FCL_PROFILE_STATUS(stream)
+  #define DART_COLLISION_HIT_PROFILE_START
+  #define DART_COLLISION_HIT_PROFILE_STOP
+  #define DART_COLLISION_HIT_PROFILE_BLOCK_BEGIN(name)
+  #define DART_COLLISION_HIT_PROFILE_BLOCK_END(name)
+  #define DART_COLLISION_HIT_PROFILE_STATUS(stream)
 
-#endif // #if FCL_ENABLE_PROFILING
+#endif // #if DART_COLLISION_HIT_ENABLE_PROFILING
 
-#include "fcl/common/detail/profiler.h"
-
-#endif // #ifndef FCL_COMMON_PROFILER_H
+#include "dart/collision/hit/common/detail/profiler.h"

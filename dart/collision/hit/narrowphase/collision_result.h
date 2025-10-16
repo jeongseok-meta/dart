@@ -35,21 +35,20 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_COLLISIONRESULT_H
-#define FCL_COLLISIONRESULT_H
+#pragma once
+
+#include "dart/collision/hit/common/types.h"
+#include "dart/collision/hit/narrowphase/contact.h"
+#include "dart/collision/hit/narrowphase/cost_source.h"
 
 #include <set>
 #include <vector>
-#include "fcl/common/types.h"
-#include "fcl/narrowphase/contact.h"
-#include "fcl/narrowphase/cost_source.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief collision result
 template <typename S>
-struct FCL_EXPORT CollisionResult
+struct CollisionResult
 {
 private:
   /// @brief contact information
@@ -85,7 +84,7 @@ public:
   /// @brief get all the contacts
   void getContacts(std::vector<Contact<S>>& contacts_);
 
-  /// @brief get all the cost sources 
+  /// @brief get all the cost sources
   void getCostSources(std::vector<CostSource<S>>& cost_sources_);
 
   /// @brief clear the results obtained
@@ -95,8 +94,6 @@ public:
 using CollisionResultf = CollisionResult<float>;
 using CollisionResultd = CollisionResult<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/collision_result-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/collision_result-inl.h"

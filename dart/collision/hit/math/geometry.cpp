@@ -35,44 +35,35 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/geometry-inl.h"
+#include "dart/collision/hit/math/geometry-inl.h"
 
-namespace dart { namespace collision { namespace hit {
-
-//==============================================================================
-template
-void normalize(Vector3d& v, bool* signal);
+namespace dart::collision::hit {
 
 //==============================================================================
-template
-void hat(Matrix3d& mat, const Vector3d& vec);
+template void normalize(Vector3d& v, bool* signal);
 
 //==============================================================================
-template
-void eigen(const Matrix3d& m, Vector3d& dout, Matrix3d& vout);
+template void hat(Matrix3d& mat, const Vector3d& vec);
 
 //==============================================================================
-template
-void eigen_old(const Matrix3d& m, Vector3d& dout, Matrix3d& vout);
+template void eigen(const Matrix3d& m, Vector3d& dout, Matrix3d& vout);
 
 //==============================================================================
-template
-void axisFromEigen(
+template void eigen_old(const Matrix3d& m, Vector3d& dout, Matrix3d& vout);
+
+//==============================================================================
+template void axisFromEigen(
     const Matrix3d& eigenV, const Vector3d& eigenS, Matrix3d& axis);
 
 //==============================================================================
-template
-void axisFromEigen(const Matrix3d& eigenV,
-                   const Vector3d& eigenS,
-                   Transform3d& tf);
+template void axisFromEigen(
+    const Matrix3d& eigenV, const Vector3d& eigenS, Transform3d& tf);
 
 //==============================================================================
-template
-Matrix3d generateCoordinateSystem(const Vector3d& x_axis);
+template Matrix3d generateCoordinateSystem(const Vector3d& x_axis);
 
 //==============================================================================
-template
-void getRadiusAndOriginAndRectangleSize(
+template void getRadiusAndOriginAndRectangleSize(
     const Vector3d* const ps,
     const Vector3d* const ps2,
     Triangle* ts,
@@ -84,8 +75,7 @@ void getRadiusAndOriginAndRectangleSize(
     double& r);
 
 //==============================================================================
-template
-void getRadiusAndOriginAndRectangleSize(
+template void getRadiusAndOriginAndRectangleSize(
     const Vector3d* const ps,
     const Vector3d* const ps2,
     Triangle* ts,
@@ -96,8 +86,7 @@ void getRadiusAndOriginAndRectangleSize(
     double& r);
 
 //==============================================================================
-template
-void circumCircleComputation(
+template void circumCircleComputation(
     const Vector3d& a,
     const Vector3d& b,
     const Vector3d& c,
@@ -105,8 +94,7 @@ void circumCircleComputation(
     double& radius);
 
 //==============================================================================
-template
-double maximumDistance(
+template double maximumDistance(
     const Vector3d* const ps,
     const Vector3d* const ps2,
     Triangle* ts,
@@ -115,8 +103,7 @@ double maximumDistance(
     const Vector3d& query);
 
 //==============================================================================
-template
-void getExtentAndCenter(
+template void getExtentAndCenter(
     const Vector3d* const ps,
     const Vector3d* const ps2,
     Triangle* ts,
@@ -127,21 +114,20 @@ void getExtentAndCenter(
     Vector3d& extent);
 
 //==============================================================================
-template
-void getCovariance(
+template void getCovariance(
     const Vector3d* const ps,
     const Vector3d* const ps2,
     Triangle* ts,
     unsigned int* indices,
-    int n, Matrix3d& M);
+    int n,
+    Matrix3d& M);
 
 //==============================================================================
 namespace detail {
 //==============================================================================
 
 //==============================================================================
-template
-double maximumDistance_mesh(
+template double maximumDistance_mesh(
     const Vector3d* const ps,
     const Vector3d* const ps2,
     Triangle* ts,
@@ -150,8 +136,7 @@ double maximumDistance_mesh(
     const Vector3d& query);
 
 //==============================================================================
-template
-double maximumDistance_pointcloud(
+template double maximumDistance_pointcloud(
     const Vector3d* const ps,
     const Vector3d* const ps2,
     unsigned int* indices,
@@ -159,8 +144,7 @@ double maximumDistance_pointcloud(
     const Vector3d& query);
 
 //==============================================================================
-template
-void getExtentAndCenter_pointcloud(
+template void getExtentAndCenter_pointcloud(
     const Vector3d* const ps,
     const Vector3d* const ps2,
     unsigned int* indices,
@@ -170,8 +154,7 @@ void getExtentAndCenter_pointcloud(
     Vector3d& extent);
 
 //==============================================================================
-template
-void getExtentAndCenter_mesh(
+template void getExtentAndCenter_mesh(
     const Vector3d* const ps,
     const Vector3d* const ps2,
     Triangle* ts,
@@ -185,4 +168,4 @@ void getExtentAndCenter_mesh(
 } // namespace detail
 //==============================================================================
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

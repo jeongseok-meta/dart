@@ -35,43 +35,37 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BV_OBB_INL_H
-#define FCL_BV_OBB_INL_H
+#pragma once
 
-#include "fcl/math/bv/OBB.h"
+#include "dart/collision/hit/common/unused.h"
+#include "dart/collision/hit/math/bv/OBB.h"
 
-#include "fcl/common/unused.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT OBB<double>;
+extern template class OBB<double>;
 
 //==============================================================================
-extern template
-void computeVertices(const OBB<double>& b, Vector3<double> vertices[8]);
+extern template void computeVertices(
+    const OBB<double>& b, Vector3<double> vertices[8]);
 
 //==============================================================================
-extern template
-OBB<double> merge_largedist(const OBB<double>& b1, const OBB<double>& b2);
+extern template OBB<double> merge_largedist(
+    const OBB<double>& b1, const OBB<double>& b2);
 
 //==============================================================================
-extern template
-OBB<double> merge_smalldist(const OBB<double>& b1, const OBB<double>& b2);
+extern template OBB<double> merge_smalldist(
+    const OBB<double>& b1, const OBB<double>& b2);
 
 //==============================================================================
-extern template
-bool obbDisjoint(
+extern template bool obbDisjoint(
     const Matrix3<double>& B,
     const Vector3<double>& T,
     const Vector3<double>& a,
     const Vector3<double>& b);
 
 //==============================================================================
-extern template
-bool obbDisjoint(
+extern template bool obbDisjoint(
     const Transform3<double>& tf,
     const Vector3<double>& a,
     const Vector3<double>& b);
@@ -85,9 +79,10 @@ OBB<S>::OBB()
 
 //==============================================================================
 template <typename S>
-OBB<S>::OBB(const Matrix3<S>& axis_,
-                 const Vector3<S>& center_,
-                 const Vector3<S>& extent_)
+OBB<S>::OBB(
+    const Matrix3<S>& axis_,
+    const Vector3<S>& center_,
+    const Vector3<S>& extent_)
   : axis(axis_), To(center_), extent(extent_)
 {
   // Do nothing
@@ -101,8 +96,7 @@ bool OBB<S>::overlap(const OBB<S>& other) const
   /// other.frame
 
   Vector3<S> t = other.To - To;
-  Vector3<S> T(
-        axis.col(0).dot(t), axis.col(1).dot(t), axis.col(2).dot(t));
+  Vector3<S> T(axis.col(0).dot(t), axis.col(1).dot(t), axis.col(2).dot(t));
   Matrix3<S> R = axis.transpose() * other.axis;
 
   return !obbDisjoint(R, T, extent, other.extent);
@@ -112,7 +106,7 @@ bool OBB<S>::overlap(const OBB<S>& other) const
 template <typename S>
 bool OBB<S>::overlap(const OBB& other, OBB& overlap_part) const
 {
-  FCL_UNUSED(overlap_part);
+  DART_COLLISION_HIT_UNUSED(overlap_part);
 
   return overlap(other);
 }
@@ -123,15 +117,15 @@ bool OBB<S>::contain(const Vector3<S>& p) const
 {
   Vector3<S> local_p = p - To;
   S proj = local_p.dot(axis.col(0));
-  if((proj > extent[0]) || (proj < -extent[0]))
+  if ((proj > extent[0]) || (proj < -extent[0]))
     return false;
 
   proj = local_p.dot(axis.col(1));
-  if((proj > extent[1]) || (proj < -extent[1]))
+  if ((proj > extent[1]) || (proj < -extent[1]))
     return false;
 
   proj = local_p.dot(axis.col(2));
-  if((proj > extent[2]) || (proj < -extent[2]))
+  if ((proj > extent[2]) || (proj < -extent[2]))
     return false;
 
   return true;
@@ -139,7 +133,7 @@ bool OBB<S>::contain(const Vector3<S>& p) const
 
 //==============================================================================
 template <typename S>
-OBB<S>& OBB<S>::operator +=(const Vector3<S>& p)
+OBB<S>& OBB<S>::operator+=(const Vector3<S>& p)
 {
   OBB<S> bvp(axis, p, Vector3<S>::Zero());
   *this += bvp;
@@ -149,7 +143,7 @@ OBB<S>& OBB<S>::operator +=(const Vector3<S>& p)
 
 //==============================================================================
 template <typename S>
-OBB<S>& OBB<S>::operator +=(const OBB<S>& other)
+OBB<S>& OBB<S>::operator+=(const OBB<S>& other)
 {
   *this = *this + other;
 
@@ -158,17 +152,15 @@ OBB<S>& OBB<S>::operator +=(const OBB<S>& other)
 
 //==============================================================================
 template <typename S>
-OBB<S> OBB<S>::operator +(const OBB<S>& other) const
+OBB<S> OBB<S>::operator+(const OBB<S>& other) const
 {
   Vector3<S> center_diff = To - other.To;
   S max_extent = std::max(std::max(extent[0], extent[1]), extent[2]);
-  S max_extent2 = std::max(std::max(other.extent[0], other.extent[1]), other.extent[2]);
-  if(center_diff.norm() > 2 * (max_extent + max_extent2))
-  {
+  S max_extent2
+      = std::max(std::max(other.extent[0], other.extent[1]), other.extent[2]);
+  if (center_diff.norm() > 2 * (max_extent + max_extent2)) {
     return merge_largedist(*this, other);
-  }
-  else
-  {
+  } else {
     return merge_smalldist(*this, other);
   }
 }
@@ -217,12 +209,11 @@ const Vector3<S> OBB<S>::center() const
 
 //==============================================================================
 template <typename S>
-S OBB<S>::distance(const OBB& other, Vector3<S>* P,
-                             Vector3<S>* Q) const
+S OBB<S>::distance(const OBB& other, Vector3<S>* P, Vector3<S>* Q) const
 {
-  FCL_UNUSED(other);
-  FCL_UNUSED(P);
-  FCL_UNUSED(Q);
+  DART_COLLISION_HIT_UNUSED(other);
+  DART_COLLISION_HIT_UNUSED(P);
+  DART_COLLISION_HIT_UNUSED(Q);
 
   std::cerr << "OBB distance not implemented!\n";
   return 0.0;
@@ -265,8 +256,7 @@ OBB<S> merge_largedist(const OBB<S>& b1, const OBB<S>& b2)
   b.axis.col(0).normalize();
 
   Vector3<S> vertex_proj[16];
-  for(int i = 0; i < 16; ++i)
-  {
+  for (int i = 0; i < 16; ++i) {
     vertex_proj[i] = vertex[i];
     vertex_proj[i].noalias() -= b.axis.col(0) * vertex[i].dot(b.axis.col(0));
   }
@@ -275,29 +265,21 @@ OBB<S> merge_largedist(const OBB<S>& b1, const OBB<S>& b2)
   eigen_old(M, s, E);
 
   int min, mid, max;
-  if (s[0] > s[1])
-  {
+  if (s[0] > s[1]) {
     max = 0;
     min = 1;
-  }
-  else
-  {
+  } else {
     min = 0;
     max = 1;
   }
 
-  if (s[2] < s[min])
-  {
+  if (s[2] < s[min]) {
     mid = min;
     min = 2;
-  }
-  else if (s[2] > s[max])
-  {
+  } else if (s[2] > s[max]) {
     mid = max;
     max = 2;
-  }
-  else
-  {
+  } else {
     mid = 2;
   }
 
@@ -306,7 +288,7 @@ OBB<S> merge_largedist(const OBB<S>& b1, const OBB<S>& b2)
 
   // set obb centers and extensions
   getExtentAndCenter<S>(
-        vertex, nullptr, nullptr, nullptr, 16, b.axis, b.To, b.extent);
+      vertex, nullptr, nullptr, nullptr, 16, b.axis, b.To, b.extent);
 
   return b;
 }
@@ -319,13 +301,12 @@ OBB<S> merge_smalldist(const OBB<S>& b1, const OBB<S>& b2)
   b.To = (b1.To + b2.To) * 0.5;
   Quaternion<S> q0(b1.axis);
   Quaternion<S> q1(b2.axis);
-  if(q0.dot(q1) < 0)
+  if (q0.dot(q1) < 0)
     q1.coeffs() = -q1.coeffs();
 
   Quaternion<S> q(q0.coeffs() + q1.coeffs());
   q.normalize();
   b.axis = q.toRotationMatrix();
-
 
   Vector3<S> vertex[8], diff;
   S real_max = std::numeric_limits<S>::max();
@@ -333,35 +314,30 @@ OBB<S> merge_smalldist(const OBB<S>& b1, const OBB<S>& b2)
   Vector3<S> pmax(-real_max, -real_max, -real_max);
 
   computeVertices(b1, vertex);
-  for(int i = 0; i < 8; ++i)
-  {
+  for (int i = 0; i < 8; ++i) {
     diff = vertex[i] - b.To;
-    for(int j = 0; j < 3; ++j)
-    {
+    for (int j = 0; j < 3; ++j) {
       S dot = diff.dot(b.axis.col(j));
-      if(dot > pmax[j])
+      if (dot > pmax[j])
         pmax[j] = dot;
-      else if(dot < pmin[j])
+      else if (dot < pmin[j])
         pmin[j] = dot;
     }
   }
 
   computeVertices(b2, vertex);
-  for(int i = 0; i < 8; ++i)
-  {
+  for (int i = 0; i < 8; ++i) {
     diff = vertex[i] - b.To;
-    for(int j = 0; j < 3; ++j)
-    {
+    for (int j = 0; j < 3; ++j) {
       S dot = diff.dot(b.axis.col(j));
-      if(dot > pmax[j])
+      if (dot > pmax[j])
         pmax[j] = dot;
-      else if(dot < pmin[j])
+      else if (dot < pmin[j])
         pmin[j] = dot;
     }
   }
 
-  for(int j = 0; j < 3; ++j)
-  {
+  for (int j = 0; j < 3; ++j) {
     b.To += (b.axis.col(j) * (0.5 * (pmax[j] + pmin[j])));
     b.extent[j] = 0.5 * (pmax[j] - pmin[j]);
   }
@@ -371,8 +347,7 @@ OBB<S> merge_smalldist(const OBB<S>& b1, const OBB<S>& b2)
 
 //==============================================================================
 template <typename S, typename Derived>
-OBB<S> translate(
-    const OBB<S>& bv, const Eigen::MatrixBase<Derived>& t)
+OBB<S> translate(const OBB<S>& bv, const Eigen::MatrixBase<Derived>& t)
 {
   OBB<S> res(bv);
   res.To += t;
@@ -381,9 +356,11 @@ OBB<S> translate(
 
 //==============================================================================
 template <typename S, typename DerivedA, typename DerivedB>
-bool overlap(const Eigen::MatrixBase<DerivedA>& R0,
-             const Eigen::MatrixBase<DerivedB>& T0,
-             const OBB<S>& b1, const OBB<S>& b2)
+bool overlap(
+    const Eigen::MatrixBase<DerivedA>& R0,
+    const Eigen::MatrixBase<DerivedB>& T0,
+    const OBB<S>& b1,
+    const OBB<S>& b2)
 {
   typename DerivedA::PlainObject R0b2 = R0 * b2.axis;
   typename DerivedA::PlainObject R = b1.axis.transpose() * R0b2;
@@ -396,8 +373,11 @@ bool overlap(const Eigen::MatrixBase<DerivedA>& R0,
 
 //==============================================================================
 template <typename S>
-bool obbDisjoint(const Matrix3<S>& B, const Vector3<S>& T,
-                 const Vector3<S>& a, const Vector3<S>& b)
+bool obbDisjoint(
+    const Matrix3<S>& B,
+    const Vector3<S>& T,
+    const Vector3<S>& a,
+    const Vector3<S>& b)
 {
   S t, s;
   const S reps = 1e-6;
@@ -410,124 +390,121 @@ bool obbDisjoint(const Matrix3<S>& B, const Vector3<S>& T,
   // A1 x A2 = A0
   t = ((T[0] < 0.0) ? -T[0] : T[0]);
 
-  if(t > (a[0] + Bf.row(0).dot(b)))
+  if (t > (a[0] + Bf.row(0).dot(b)))
     return true;
 
   // B1 x B2 = B0
-  s =  B.col(0).dot(T);
+  s = B.col(0).dot(T);
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (b[0] + Bf.col(0).dot(a)))
+  if (t > (b[0] + Bf.col(0).dot(a)))
     return true;
 
   // A2 x A0 = A1
   t = ((T[1] < 0.0) ? -T[1] : T[1]);
 
-  if(t > (a[1] + Bf.row(1).dot(b)))
+  if (t > (a[1] + Bf.row(1).dot(b)))
     return true;
 
   // A0 x A1 = A2
-  t =((T[2] < 0.0) ? -T[2] : T[2]);
+  t = ((T[2] < 0.0) ? -T[2] : T[2]);
 
-  if(t > (a[2] + Bf.row(2).dot(b)))
+  if (t > (a[2] + Bf.row(2).dot(b)))
     return true;
 
   // B2 x B0 = B1
   s = B.col(1).dot(T);
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (b[1] + Bf.col(1).dot(a)))
+  if (t > (b[1] + Bf.col(1).dot(a)))
     return true;
 
   // B0 x B1 = B2
   s = B.col(2).dot(T);
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (b[2] + Bf.col(2).dot(a)))
+  if (t > (b[2] + Bf.col(2).dot(a)))
     return true;
 
   // A0 x B0
   s = T[2] * B(1, 0) - T[1] * B(2, 0);
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (a[1] * Bf(2, 0) + a[2] * Bf(1, 0) +
-          b[1] * Bf(0, 2) + b[2] * Bf(0, 1)))
+  if (t
+      > (a[1] * Bf(2, 0) + a[2] * Bf(1, 0) + b[1] * Bf(0, 2) + b[2] * Bf(0, 1)))
     return true;
 
   // A0 x B1
   s = T[2] * B(1, 1) - T[1] * B(2, 1);
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (a[1] * Bf(2, 1) + a[2] * Bf(1, 1) +
-          b[0] * Bf(0, 2) + b[2] * Bf(0, 0)))
+  if (t
+      > (a[1] * Bf(2, 1) + a[2] * Bf(1, 1) + b[0] * Bf(0, 2) + b[2] * Bf(0, 0)))
     return true;
 
   // A0 x B2
   s = T[2] * B(1, 2) - T[1] * B(2, 2);
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (a[1] * Bf(2, 2) + a[2] * Bf(1, 2) +
-          b[0] * Bf(0, 1) + b[1] * Bf(0, 0)))
+  if (t
+      > (a[1] * Bf(2, 2) + a[2] * Bf(1, 2) + b[0] * Bf(0, 1) + b[1] * Bf(0, 0)))
     return true;
 
   // A1 x B0
   s = T[0] * B(2, 0) - T[2] * B(0, 0);
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (a[0] * Bf(2, 0) + a[2] * Bf(0, 0) +
-          b[1] * Bf(1, 2) + b[2] * Bf(1, 1)))
+  if (t
+      > (a[0] * Bf(2, 0) + a[2] * Bf(0, 0) + b[1] * Bf(1, 2) + b[2] * Bf(1, 1)))
     return true;
 
   // A1 x B1
   s = T[0] * B(2, 1) - T[2] * B(0, 1);
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (a[0] * Bf(2, 1) + a[2] * Bf(0, 1) +
-          b[0] * Bf(1, 2) + b[2] * Bf(1, 0)))
+  if (t
+      > (a[0] * Bf(2, 1) + a[2] * Bf(0, 1) + b[0] * Bf(1, 2) + b[2] * Bf(1, 0)))
     return true;
 
   // A1 x B2
   s = T[0] * B(2, 2) - T[2] * B(0, 2);
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (a[0] * Bf(2, 2) + a[2] * Bf(0, 2) +
-          b[0] * Bf(1, 1) + b[1] * Bf(1, 0)))
+  if (t
+      > (a[0] * Bf(2, 2) + a[2] * Bf(0, 2) + b[0] * Bf(1, 1) + b[1] * Bf(1, 0)))
     return true;
 
   // A2 x B0
   s = T[1] * B(0, 0) - T[0] * B(1, 0);
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (a[0] * Bf(1, 0) + a[1] * Bf(0, 0) +
-          b[1] * Bf(2, 2) + b[2] * Bf(2, 1)))
+  if (t
+      > (a[0] * Bf(1, 0) + a[1] * Bf(0, 0) + b[1] * Bf(2, 2) + b[2] * Bf(2, 1)))
     return true;
 
   // A2 x B1
   s = T[1] * B(0, 1) - T[0] * B(1, 1);
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (a[0] * Bf(1, 1) + a[1] * Bf(0, 1) +
-          b[0] * Bf(2, 2) + b[2] * Bf(2, 0)))
+  if (t
+      > (a[0] * Bf(1, 1) + a[1] * Bf(0, 1) + b[0] * Bf(2, 2) + b[2] * Bf(2, 0)))
     return true;
 
   // A2 x B2
   s = T[1] * B(0, 2) - T[0] * B(1, 2);
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (a[0] * Bf(1, 2) + a[1] * Bf(0, 2) +
-          b[0] * Bf(2, 1) + b[1] * Bf(2, 0)))
+  if (t
+      > (a[0] * Bf(1, 2) + a[1] * Bf(0, 2) + b[0] * Bf(2, 1) + b[1] * Bf(2, 0)))
     return true;
 
   return false;
-
 }
 
 //==============================================================================
 template <typename S>
 bool obbDisjoint(
-    const Transform3<S>& tf,
-    const Vector3<S>& a,
-    const Vector3<S>& b)
+    const Transform3<S>& tf, const Vector3<S>& a, const Vector3<S>& b)
 {
   S t, s;
   const S reps = 1e-6;
@@ -538,119 +515,132 @@ bool obbDisjoint(
   // if any of these tests are one-sided, then the polyhedra are disjoint
 
   // A1 x A2 = A0
-  t = ((tf.translation()[0] < 0.0) ? -tf.translation()[0] : tf.translation()[0]);
+  t
+      = ((tf.translation()[0] < 0.0) ? -tf.translation()[0]
+                                     : tf.translation()[0]);
 
-  if(t > (a[0] + Bf.row(0).dot(b)))
+  if (t > (a[0] + Bf.row(0).dot(b)))
     return true;
 
   // B1 x B2 = B0
-  s =  tf.linear().col(0).dot(tf.translation());
+  s = tf.linear().col(0).dot(tf.translation());
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (b[0] + Bf.col(0).dot(a)))
+  if (t > (b[0] + Bf.col(0).dot(a)))
     return true;
 
   // A2 x A0 = A1
-  t = ((tf.translation()[1] < 0.0) ? -tf.translation()[1] : tf.translation()[1]);
+  t
+      = ((tf.translation()[1] < 0.0) ? -tf.translation()[1]
+                                     : tf.translation()[1]);
 
-  if(t > (a[1] + Bf.row(1).dot(b)))
+  if (t > (a[1] + Bf.row(1).dot(b)))
     return true;
 
   // A0 x A1 = A2
-  t =((tf.translation()[2] < 0.0) ? -tf.translation()[2] : tf.translation()[2]);
+  t
+      = ((tf.translation()[2] < 0.0) ? -tf.translation()[2]
+                                     : tf.translation()[2]);
 
-  if(t > (a[2] + Bf.row(2).dot(b)))
+  if (t > (a[2] + Bf.row(2).dot(b)))
     return true;
 
   // B2 x B0 = B1
   s = tf.linear().col(1).dot(tf.translation());
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (b[1] + Bf.col(1).dot(a)))
+  if (t > (b[1] + Bf.col(1).dot(a)))
     return true;
 
   // B0 x B1 = B2
   s = tf.linear().col(2).dot(tf.translation());
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (b[2] + Bf.col(2).dot(a)))
+  if (t > (b[2] + Bf.col(2).dot(a)))
     return true;
 
   // A0 x B0
-  s = tf.translation()[2] * tf.linear()(1, 0) - tf.translation()[1] * tf.linear()(2, 0);
+  s = tf.translation()[2] * tf.linear()(1, 0)
+      - tf.translation()[1] * tf.linear()(2, 0);
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (a[1] * Bf(2, 0) + a[2] * Bf(1, 0) +
-          b[1] * Bf(0, 2) + b[2] * Bf(0, 1)))
+  if (t
+      > (a[1] * Bf(2, 0) + a[2] * Bf(1, 0) + b[1] * Bf(0, 2) + b[2] * Bf(0, 1)))
     return true;
 
   // A0 x B1
-  s = tf.translation()[2] * tf.linear()(1, 1) - tf.translation()[1] * tf.linear()(2, 1);
+  s = tf.translation()[2] * tf.linear()(1, 1)
+      - tf.translation()[1] * tf.linear()(2, 1);
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (a[1] * Bf(2, 1) + a[2] * Bf(1, 1) +
-          b[0] * Bf(0, 2) + b[2] * Bf(0, 0)))
+  if (t
+      > (a[1] * Bf(2, 1) + a[2] * Bf(1, 1) + b[0] * Bf(0, 2) + b[2] * Bf(0, 0)))
     return true;
 
   // A0 x B2
-  s = tf.translation()[2] * tf.linear()(1, 2) - tf.translation()[1] * tf.linear()(2, 2);
+  s = tf.translation()[2] * tf.linear()(1, 2)
+      - tf.translation()[1] * tf.linear()(2, 2);
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (a[1] * Bf(2, 2) + a[2] * Bf(1, 2) +
-          b[0] * Bf(0, 1) + b[1] * Bf(0, 0)))
+  if (t
+      > (a[1] * Bf(2, 2) + a[2] * Bf(1, 2) + b[0] * Bf(0, 1) + b[1] * Bf(0, 0)))
     return true;
 
   // A1 x B0
-  s = tf.translation()[0] * tf.linear()(2, 0) - tf.translation()[2] * tf.linear()(0, 0);
+  s = tf.translation()[0] * tf.linear()(2, 0)
+      - tf.translation()[2] * tf.linear()(0, 0);
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (a[0] * Bf(2, 0) + a[2] * Bf(0, 0) +
-          b[1] * Bf(1, 2) + b[2] * Bf(1, 1)))
+  if (t
+      > (a[0] * Bf(2, 0) + a[2] * Bf(0, 0) + b[1] * Bf(1, 2) + b[2] * Bf(1, 1)))
     return true;
 
   // A1 x B1
-  s = tf.translation()[0] * tf.linear()(2, 1) - tf.translation()[2] * tf.linear()(0, 1);
+  s = tf.translation()[0] * tf.linear()(2, 1)
+      - tf.translation()[2] * tf.linear()(0, 1);
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (a[0] * Bf(2, 1) + a[2] * Bf(0, 1) +
-          b[0] * Bf(1, 2) + b[2] * Bf(1, 0)))
+  if (t
+      > (a[0] * Bf(2, 1) + a[2] * Bf(0, 1) + b[0] * Bf(1, 2) + b[2] * Bf(1, 0)))
     return true;
 
   // A1 x B2
-  s = tf.translation()[0] * tf.linear()(2, 2) - tf.translation()[2] * tf.linear()(0, 2);
+  s = tf.translation()[0] * tf.linear()(2, 2)
+      - tf.translation()[2] * tf.linear()(0, 2);
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (a[0] * Bf(2, 2) + a[2] * Bf(0, 2) +
-          b[0] * Bf(1, 1) + b[1] * Bf(1, 0)))
+  if (t
+      > (a[0] * Bf(2, 2) + a[2] * Bf(0, 2) + b[0] * Bf(1, 1) + b[1] * Bf(1, 0)))
     return true;
 
   // A2 x B0
-  s = tf.translation()[1] * tf.linear()(0, 0) - tf.translation()[0] * tf.linear()(1, 0);
+  s = tf.translation()[1] * tf.linear()(0, 0)
+      - tf.translation()[0] * tf.linear()(1, 0);
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (a[0] * Bf(1, 0) + a[1] * Bf(0, 0) +
-          b[1] * Bf(2, 2) + b[2] * Bf(2, 1)))
+  if (t
+      > (a[0] * Bf(1, 0) + a[1] * Bf(0, 0) + b[1] * Bf(2, 2) + b[2] * Bf(2, 1)))
     return true;
 
   // A2 x B1
-  s = tf.translation()[1] * tf.linear()(0, 1) - tf.translation()[0] * tf.linear()(1, 1);
+  s = tf.translation()[1] * tf.linear()(0, 1)
+      - tf.translation()[0] * tf.linear()(1, 1);
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (a[0] * Bf(1, 1) + a[1] * Bf(0, 1) +
-          b[0] * Bf(2, 2) + b[2] * Bf(2, 0)))
+  if (t
+      > (a[0] * Bf(1, 1) + a[1] * Bf(0, 1) + b[0] * Bf(2, 2) + b[2] * Bf(2, 0)))
     return true;
 
   // A2 x B2
-  s = tf.translation()[1] * tf.linear()(0, 2) - tf.translation()[0] * tf.linear()(1, 2);
+  s = tf.translation()[1] * tf.linear()(0, 2)
+      - tf.translation()[0] * tf.linear()(1, 2);
   t = ((s < 0.0) ? -s : s);
 
-  if(t > (a[0] * Bf(1, 2) + a[1] * Bf(0, 2) +
-          b[0] * Bf(2, 1) + b[1] * Bf(2, 0)))
+  if (t
+      > (a[0] * Bf(1, 2) + a[1] * Bf(0, 2) + b[0] * Bf(2, 1) + b[1] * Bf(2, 0)))
     return true;
 
   return false;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

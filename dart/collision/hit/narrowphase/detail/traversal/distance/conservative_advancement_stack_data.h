@@ -35,24 +35,19 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_CONVERVATIVEADVANCEMENTSTACKDATA_H
-#define FCL_TRAVERSAL_CONVERVATIVEADVANCEMENTSTACKDATA_H
+#pragma once
 
-#include "fcl/common/types.h"
+#include "dart/collision/hit/common/types.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 template <typename S>
-struct FCL_EXPORT ConservativeAdvancementStackData
+struct ConservativeAdvancementStackData
 {
   ConservativeAdvancementStackData(
-      const Vector3<S>& P1_,
-      const Vector3<S>& P2_,
-      int c1_, int c2_, S d_);
+      const Vector3<S>& P1_, const Vector3<S>& P2_, int c1_, int c2_, S d_);
 
   Vector3<S> P1;
   Vector3<S> P2;
@@ -62,8 +57,6 @@ struct FCL_EXPORT ConservativeAdvancementStackData
 };
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/traversal/distance/conservative_advancement_stack_data-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/conservative_advancement_stack_data-inl.h"

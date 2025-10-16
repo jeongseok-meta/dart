@@ -35,16 +35,13 @@
 
 /** @author Jia Pan */
 
-#include "fcl/broadphase/detail/simple_interval-inl.h"
+#include "dart/collision/hit/broadphase/detail/simple_interval-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
-template
-struct SimpleInterval<double>;
+template struct SimpleInterval<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

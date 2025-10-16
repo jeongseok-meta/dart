@@ -38,41 +38,38 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CCD_TAYLOR_MODEL_INL_H
-#define FCL_CCD_TAYLOR_MODEL_INL_H
+#pragma once
 
-#include "fcl/math/motion/taylor_model/taylor_model.h"
+#include "dart/collision/hit/math/motion/taylor_model/taylor_model.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT TaylorModel<double>;
+extern template class TaylorModel<double>;
 
 //==============================================================================
-extern template
-TaylorModel<double> operator * (double d, const TaylorModel<double>& a);
+extern template TaylorModel<double> operator*(
+    double d, const TaylorModel<double>& a);
 
 //==============================================================================
-extern template
-TaylorModel<double> operator + (double d, const TaylorModel<double>& a);
+extern template TaylorModel<double> operator+(
+    double d, const TaylorModel<double>& a);
 
 //==============================================================================
-extern template
-TaylorModel<double> operator - (double d, const TaylorModel<double>& a);
+extern template TaylorModel<double> operator-(
+    double d, const TaylorModel<double>& a);
 
 //==============================================================================
-extern template
-void generateTaylorModelForCosFunc(TaylorModel<double>& tm, double w, double q0);
+extern template void generateTaylorModelForCosFunc(
+    TaylorModel<double>& tm, double w, double q0);
 
 //==============================================================================
-extern template
-void generateTaylorModelForSinFunc(TaylorModel<double>& tm, double w, double q0);
+extern template void generateTaylorModelForSinFunc(
+    TaylorModel<double>& tm, double w, double q0);
 
 //==============================================================================
-extern template
-void generateTaylorModelForLinearFunc(TaylorModel<double>& tm, double p, double v);
+extern template void generateTaylorModelForLinearFunc(
+    TaylorModel<double>& tm, double p, double v);
 
 //==============================================================================
 template <typename S>
@@ -83,14 +80,15 @@ void TaylorModel<S>::setTimeInterval(S l, S r)
 
 //==============================================================================
 template <typename S>
-void TaylorModel<S>::setTimeInterval(const std::shared_ptr<TimeInterval<S> >& time_interval)
+void TaylorModel<S>::setTimeInterval(
+    const std::shared_ptr<TimeInterval<S>>& time_interval)
 {
   time_interval_ = time_interval;
 }
 
 //==============================================================================
 template <typename S>
-const std::shared_ptr<TimeInterval<S> >&TaylorModel<S>::getTimeInterval() const
+const std::shared_ptr<TimeInterval<S>>& TaylorModel<S>::getTimeInterval() const
 {
   return time_interval_;
 }
@@ -104,21 +102,21 @@ S TaylorModel<S>::coeff(std::size_t i) const
 
 //==============================================================================
 template <typename S>
-S&TaylorModel<S>::coeff(std::size_t i)
+S& TaylorModel<S>::coeff(std::size_t i)
 {
   return coeffs_[i];
 }
 
 //==============================================================================
 template <typename S>
-const Interval<S>&TaylorModel<S>::remainder() const
+const Interval<S>& TaylorModel<S>::remainder() const
 {
   return r_;
 }
 
 //==============================================================================
 template <typename S>
-Interval<S>&TaylorModel<S>::remainder()
+Interval<S>& TaylorModel<S>::remainder()
 {
   return r_;
 }
@@ -132,14 +130,18 @@ TaylorModel<S>::TaylorModel()
 
 //==============================================================================
 template <typename S>
-TaylorModel<S>::TaylorModel(const std::shared_ptr<TimeInterval<S>>& time_interval) : time_interval_(time_interval)
+TaylorModel<S>::TaylorModel(
+    const std::shared_ptr<TimeInterval<S>>& time_interval)
+  : time_interval_(time_interval)
 {
   coeffs_[0] = coeffs_[1] = coeffs_[2] = coeffs_[3] = 0;
 }
 
 //==============================================================================
 template <typename S>
-TaylorModel<S>::TaylorModel(S coeff, const std::shared_ptr<TimeInterval<S>>& time_interval) : time_interval_(time_interval)
+TaylorModel<S>::TaylorModel(
+    S coeff, const std::shared_ptr<TimeInterval<S>>& time_interval)
+  : time_interval_(time_interval)
 {
   coeffs_[0] = coeff;
   coeffs_[1] = coeffs_[2] = coeffs_[3] = r_[0] = r_[1] = 0;
@@ -147,7 +149,11 @@ TaylorModel<S>::TaylorModel(S coeff, const std::shared_ptr<TimeInterval<S>>& tim
 
 //==============================================================================
 template <typename S>
-TaylorModel<S>::TaylorModel(S coeffs[3], const Interval<S>& r, const std::shared_ptr<TimeInterval<S>>& time_interval) : time_interval_(time_interval)
+TaylorModel<S>::TaylorModel(
+    S coeffs[3],
+    const Interval<S>& r,
+    const std::shared_ptr<TimeInterval<S>>& time_interval)
+  : time_interval_(time_interval)
 {
   coeffs_[0] = coeffs[0];
   coeffs_[1] = coeffs[1];
@@ -159,7 +165,14 @@ TaylorModel<S>::TaylorModel(S coeffs[3], const Interval<S>& r, const std::shared
 
 //==============================================================================
 template <typename S>
-TaylorModel<S>::TaylorModel(S c0, S c1, S c2, S c3, const Interval<S>& r, const std::shared_ptr<TimeInterval<S>>& time_interval) : time_interval_(time_interval)
+TaylorModel<S>::TaylorModel(
+    S c0,
+    S c1,
+    S c2,
+    S c3,
+    const Interval<S>& r,
+    const std::shared_ptr<TimeInterval<S>>& time_interval)
+  : time_interval_(time_interval)
 {
   coeffs_[0] = c0;
   coeffs_[1] = c1;
@@ -171,14 +184,15 @@ TaylorModel<S>::TaylorModel(S c0, S c1, S c2, S c3, const Interval<S>& r, const 
 
 //==============================================================================
 template <typename S>
-TaylorModel<S> TaylorModel<S>::operator + (S d) const
+TaylorModel<S> TaylorModel<S>::operator+(S d) const
 {
-  return TaylorModel(coeffs_[0] + d, coeffs_[1], coeffs_[2], coeffs_[3], r_, time_interval_);
+  return TaylorModel(
+      coeffs_[0] + d, coeffs_[1], coeffs_[2], coeffs_[3], r_, time_interval_);
 }
 
 //==============================================================================
 template <typename S>
-TaylorModel<S>& TaylorModel<S>::operator += (S d)
+TaylorModel<S>& TaylorModel<S>::operator+=(S d)
 {
   coeffs_[0] += d;
   return *this;
@@ -186,14 +200,15 @@ TaylorModel<S>& TaylorModel<S>::operator += (S d)
 
 //==============================================================================
 template <typename S>
-TaylorModel<S> TaylorModel<S>::operator - (S d) const
+TaylorModel<S> TaylorModel<S>::operator-(S d) const
 {
-  return TaylorModel(coeffs_[0] - d, coeffs_[1], coeffs_[2], coeffs_[3], r_, time_interval_);
+  return TaylorModel(
+      coeffs_[0] - d, coeffs_[1], coeffs_[2], coeffs_[3], r_, time_interval_);
 }
 
 //==============================================================================
 template <typename S>
-TaylorModel<S>& TaylorModel<S>::operator -= (S d)
+TaylorModel<S>& TaylorModel<S>::operator-=(S d)
 {
   coeffs_[0] -= d;
   return *this;
@@ -201,23 +216,35 @@ TaylorModel<S>& TaylorModel<S>::operator -= (S d)
 
 //==============================================================================
 template <typename S>
-TaylorModel<S> TaylorModel<S>::operator + (const TaylorModel<S>& other) const
+TaylorModel<S> TaylorModel<S>::operator+(const TaylorModel<S>& other) const
 {
   assert(other.time_interval_ == time_interval_);
-  return TaylorModel(coeffs_[0] + other.coeffs_[0], coeffs_[1] + other.coeffs_[1], coeffs_[2] + other.coeffs_[2], coeffs_[3] + other.coeffs_[3], r_ + other.r_, time_interval_);
+  return TaylorModel(
+      coeffs_[0] + other.coeffs_[0],
+      coeffs_[1] + other.coeffs_[1],
+      coeffs_[2] + other.coeffs_[2],
+      coeffs_[3] + other.coeffs_[3],
+      r_ + other.r_,
+      time_interval_);
 }
 
 //==============================================================================
 template <typename S>
-TaylorModel<S> TaylorModel<S>::operator - (const TaylorModel<S>& other) const
+TaylorModel<S> TaylorModel<S>::operator-(const TaylorModel<S>& other) const
 {
   assert(other.time_interval_ == time_interval_);
-  return TaylorModel(coeffs_[0] - other.coeffs_[0], coeffs_[1] - other.coeffs_[1], coeffs_[2] - other.coeffs_[2], coeffs_[3] - other.coeffs_[3], r_ - other.r_, time_interval_);
+  return TaylorModel(
+      coeffs_[0] - other.coeffs_[0],
+      coeffs_[1] - other.coeffs_[1],
+      coeffs_[2] - other.coeffs_[2],
+      coeffs_[3] - other.coeffs_[3],
+      r_ - other.r_,
+      time_interval_);
 }
 
 //==============================================================================
 template <typename S>
-TaylorModel<S>& TaylorModel<S>::operator += (const TaylorModel<S>& other)
+TaylorModel<S>& TaylorModel<S>::operator+=(const TaylorModel<S>& other)
 {
   assert(other.time_interval_ == time_interval_);
   coeffs_[0] += other.coeffs_[0];
@@ -230,7 +257,7 @@ TaylorModel<S>& TaylorModel<S>::operator += (const TaylorModel<S>& other)
 
 //==============================================================================
 template <typename S>
-TaylorModel<S>& TaylorModel<S>::operator -= (const TaylorModel<S>& other)
+TaylorModel<S>& TaylorModel<S>::operator-=(const TaylorModel<S>& other)
 {
   assert(other.time_interval_ == time_interval_);
   coeffs_[0] -= other.coeffs_[0];
@@ -256,7 +283,7 @@ TaylorModel<S>& TaylorModel<S>::operator -= (const TaylorModel<S>& other)
 ///           (c0+c1*t+c2*t^2+c3*t^3)[c,d]+
 ///           (c0'+c1'*t+c2'*t^2+c3'*c^3)[a,b]
 template <typename S>
-TaylorModel<S> TaylorModel<S>::operator * (const TaylorModel<S>& other) const
+TaylorModel<S> TaylorModel<S>::operator*(const TaylorModel<S>& other) const
 {
   TaylorModel res(*this);
   res *= other;
@@ -265,25 +292,33 @@ TaylorModel<S> TaylorModel<S>::operator * (const TaylorModel<S>& other) const
 
 //==============================================================================
 template <typename S>
-TaylorModel<S> TaylorModel<S>::operator * (S d) const
+TaylorModel<S> TaylorModel<S>::operator*(S d) const
 {
-  return TaylorModel(coeffs_[0] * d, coeffs_[1] * d, coeffs_[2] * d, coeffs_[3] * d,  r_ * d, time_interval_);
+  return TaylorModel(
+      coeffs_[0] * d,
+      coeffs_[1] * d,
+      coeffs_[2] * d,
+      coeffs_[3] * d,
+      r_ * d,
+      time_interval_);
 }
 
 //==============================================================================
 template <typename S>
-TaylorModel<S>& TaylorModel<S>::operator *= (const TaylorModel<S>& other)
+TaylorModel<S>& TaylorModel<S>::operator*=(const TaylorModel<S>& other)
 {
   assert(other.time_interval_ == time_interval_);
   S c0, c1, c2, c3;
-  S c0b = other.coeffs_[0], c1b = other.coeffs_[1], c2b = other.coeffs_[2], c3b = other.coeffs_[3];
+  S c0b = other.coeffs_[0], c1b = other.coeffs_[1], c2b = other.coeffs_[2],
+    c3b = other.coeffs_[3];
 
   const Interval<S>& rb = other.r_;
 
   c0 = coeffs_[0] * c0b;
   c1 = coeffs_[0] * c1b + coeffs_[1] * c0b;
   c2 = coeffs_[0] * c2b + coeffs_[1] * c1b + coeffs_[2] * c0b;
-  c3 = coeffs_[0] * c3b + coeffs_[1] * c2b + coeffs_[2] * c1b + coeffs_[3] * c0b;
+  c3 = coeffs_[0] * c3b + coeffs_[1] * c2b + coeffs_[2] * c1b
+       + coeffs_[3] * c0b;
 
   Interval<S> remainder(r_ * rb);
   S tempVal = coeffs_[1] * c3b + coeffs_[2] * c2b + coeffs_[3] * c1b;
@@ -295,8 +330,14 @@ TaylorModel<S>& TaylorModel<S>::operator *= (const TaylorModel<S>& other)
   tempVal = coeffs_[3] * c3b;
   remainder += time_interval_->t6_ * tempVal;
 
-  remainder += ((Interval<S>(coeffs_[0]) + time_interval_->t_ * coeffs_[1] + time_interval_->t2_ * coeffs_[2] + time_interval_->t3_ * coeffs_[3]) * rb +
-                (Interval<S>(c0b) + time_interval_->t_ * c1b + time_interval_->t2_ * c2b + time_interval_->t3_ * c3b) * r_);
+  remainder
+      += ((Interval<S>(coeffs_[0]) + time_interval_->t_ * coeffs_[1]
+           + time_interval_->t2_ * coeffs_[2]
+           + time_interval_->t3_ * coeffs_[3])
+              * rb
+          + (Interval<S>(c0b) + time_interval_->t_ * c1b
+             + time_interval_->t2_ * c2b + time_interval_->t3_ * c3b)
+                * r_);
 
   coeffs_[0] = c0;
   coeffs_[1] = c1;
@@ -310,7 +351,7 @@ TaylorModel<S>& TaylorModel<S>::operator *= (const TaylorModel<S>& other)
 
 //==============================================================================
 template <typename S>
-TaylorModel<S>& TaylorModel<S>::operator *= (S d)
+TaylorModel<S>& TaylorModel<S>::operator*=(S d)
 {
   coeffs_[0] *= d;
   coeffs_[1] *= d;
@@ -322,23 +363,28 @@ TaylorModel<S>& TaylorModel<S>::operator *= (S d)
 
 //==============================================================================
 template <typename S>
-TaylorModel<S> TaylorModel<S>::operator - () const
+TaylorModel<S> TaylorModel<S>::operator-() const
 {
-  return TaylorModel(-coeffs_[0], -coeffs_[1], -coeffs_[2], -coeffs_[3], -r_, time_interval_);
+  return TaylorModel(
+      -coeffs_[0], -coeffs_[1], -coeffs_[2], -coeffs_[3], -r_, time_interval_);
 }
 
 //==============================================================================
 template <typename S>
 void TaylorModel<S>::print() const
 {
-  std::cout << coeffs_[0] << "+" << coeffs_[1] << "*t+" << coeffs_[2] << "*t^2+" << coeffs_[3] << "*t^3+[" << r_[0] << "," << r_[1] << "]" << std::endl;
+  std::cout << coeffs_[0] << "+" << coeffs_[1] << "*t+" << coeffs_[2] << "*t^2+"
+            << coeffs_[3] << "*t^3+[" << r_[0] << "," << r_[1] << "]"
+            << std::endl;
 }
 
 //==============================================================================
 template <typename S>
 Interval<S> TaylorModel<S>::getBound(S t) const
 {
-  return Interval<S>(coeffs_[0] + t * (coeffs_[1] + t * (coeffs_[2] + t * coeffs_[3]))) + r_;
+  return Interval<S>(
+             coeffs_[0] + t * (coeffs_[1] + t * (coeffs_[2] + t * coeffs_[3])))
+         + r_;
 }
 
 //==============================================================================
@@ -349,29 +395,32 @@ Interval<S> TaylorModel<S>::getBound(S t0, S t1) const
   Interval<S> t2(t0 * t0, t1 * t1);
   Interval<S> t3(t0 * t2[0], t1 * t2[1]);
 
-  return Interval<S>(coeffs_[0]) + t * coeffs_[1] + t2 * coeffs_[2] + t3 * coeffs_[3] + r_;
+  return Interval<S>(coeffs_[0]) + t * coeffs_[1] + t2 * coeffs_[2]
+         + t3 * coeffs_[3] + r_;
 }
 
 //==============================================================================
 template <typename S>
 Interval<S> TaylorModel<S>::getBound() const
 {
-  return Interval<S>(coeffs_[0] + r_[0], coeffs_[1] + r_[1]) + time_interval_->t_ * coeffs_[1] + time_interval_->t2_ * coeffs_[2] + time_interval_->t3_ * coeffs_[3];
+  return Interval<S>(coeffs_[0] + r_[0], coeffs_[1] + r_[1])
+         + time_interval_->t_ * coeffs_[1] + time_interval_->t2_ * coeffs_[2]
+         + time_interval_->t3_ * coeffs_[3];
 }
 
 //==============================================================================
 template <typename S>
 Interval<S> TaylorModel<S>::getTightBound(S t0, S t1) const
 {
-  if(t0 < time_interval_->t_[0]) t0 = time_interval_->t_[0];
-  if(t1 > time_interval_->t_[1]) t1 = time_interval_->t_[1];
+  if (t0 < time_interval_->t_[0])
+    t0 = time_interval_->t_[0];
+  if (t1 > time_interval_->t_[1])
+    t1 = time_interval_->t_[1];
 
-  if(coeffs_[3] == 0)
-  {
+  if (coeffs_[3] == 0) {
     S a = -coeffs_[1] / (2 * coeffs_[2]);
     Interval<S> polybounds;
-    if(a <= t1 && a >= t0)
-    {
+    if (a <= t1 && a >= t0) {
       S AQ = coeffs_[0] + a * (coeffs_[1] + a * coeffs_[2]);
       S t = t0;
       S LQ = coeffs_[0] + t * (coeffs_[1] + t * coeffs_[2]);
@@ -379,39 +428,37 @@ Interval<S> TaylorModel<S>::getTightBound(S t0, S t1) const
       S RQ = coeffs_[0] + t * (coeffs_[1] + t * coeffs_[2]);
 
       S minQ = LQ, maxQ = RQ;
-      if(LQ > RQ)
-      {
+      if (LQ > RQ) {
         minQ = RQ;
         maxQ = LQ;
       }
 
-      if(minQ > AQ) minQ = AQ;
-      if(maxQ < AQ) maxQ = AQ;
+      if (minQ > AQ)
+        minQ = AQ;
+      if (maxQ < AQ)
+        maxQ = AQ;
 
       polybounds.setValue(minQ, maxQ);
-    }
-    else
-    {
+    } else {
       S t = t0;
       S LQ = coeffs_[0] + t * (coeffs_[1] + t * coeffs_[2]);
       t = t1;
       S RQ = coeffs_[0] + t * (coeffs_[1] + t * coeffs_[2]);
 
-      if(LQ > RQ) polybounds.setValue(RQ, LQ);
-      else polybounds.setValue(LQ, RQ);
+      if (LQ > RQ)
+        polybounds.setValue(RQ, LQ);
+      else
+        polybounds.setValue(LQ, RQ);
     }
 
     return polybounds + r_;
-  }
-  else
-  {
+  } else {
     S t = t0;
     S LQ = coeffs_[0] + t * (coeffs_[1] + t * (coeffs_[2] + t * coeffs_[3]));
     t = t1;
     S RQ = coeffs_[0] + t * (coeffs_[1] + t * (coeffs_[2] + t * coeffs_[3]));
 
-    if(LQ > RQ)
-    {
+    if (LQ > RQ) {
       S tmp = LQ;
       LQ = RQ;
       RQ = tmp;
@@ -420,24 +467,28 @@ Interval<S> TaylorModel<S>::getTightBound(S t0, S t1) const
     // derivative: c1+2*c2*t+3*c3*t^2
 
     S delta = coeffs_[2] * coeffs_[2] - 3 * coeffs_[1] * coeffs_[3];
-    if(delta < 0)
+    if (delta < 0)
       return Interval<S>(LQ, RQ) + r_;
 
-    S r1 = (-coeffs_[2]-sqrt(delta))/(3*coeffs_[3]);
-    S r2 = (-coeffs_[2]+sqrt(delta))/(3*coeffs_[3]);
+    S r1 = (-coeffs_[2] - sqrt(delta)) / (3 * coeffs_[3]);
+    S r2 = (-coeffs_[2] + sqrt(delta)) / (3 * coeffs_[3]);
 
-    if(r1 <= t1 && r1 >= t0)
-    {
-      S Q = coeffs_[0] + r1 * (coeffs_[1] + r1 * (coeffs_[2] + r1 * coeffs_[3]));
-      if(Q < LQ) LQ = Q;
-      else if(Q > RQ) RQ = Q;
+    if (r1 <= t1 && r1 >= t0) {
+      S Q = coeffs_[0]
+            + r1 * (coeffs_[1] + r1 * (coeffs_[2] + r1 * coeffs_[3]));
+      if (Q < LQ)
+        LQ = Q;
+      else if (Q > RQ)
+        RQ = Q;
     }
 
-    if(r2 <= t1 && r2 >= t0)
-    {
-      S Q = coeffs_[0] + r2 * (coeffs_[1] + r2 * (coeffs_[2] + r2 * coeffs_[3]));
-      if(Q < LQ) LQ = Q;
-      else if(Q > RQ) RQ = Q;
+    if (r2 <= t1 && r2 >= t0) {
+      S Q = coeffs_[0]
+            + r2 * (coeffs_[1] + r2 * (coeffs_[2] + r2 * coeffs_[3]));
+      if (Q < LQ)
+        LQ = Q;
+      else if (Q > RQ)
+        RQ = Q;
     }
 
     return Interval<S>(LQ, RQ) + r_;
@@ -461,7 +512,7 @@ void TaylorModel<S>::setZero()
 
 //==============================================================================
 template <typename S>
-TaylorModel<S> operator * (S d, const TaylorModel<S>& a)
+TaylorModel<S> operator*(S d, const TaylorModel<S>& a)
 {
   TaylorModel<S> res(a);
   res.coeff(0) *= d;
@@ -474,14 +525,14 @@ TaylorModel<S> operator * (S d, const TaylorModel<S>& a)
 
 //==============================================================================
 template <typename S>
-TaylorModel<S> operator + (S d, const TaylorModel<S>& a)
+TaylorModel<S> operator+(S d, const TaylorModel<S>& a)
 {
   return a + d;
 }
 
 //==============================================================================
 template <typename S>
-TaylorModel<S> operator - (S d, const TaylorModel<S>& a)
+TaylorModel<S> operator-(S d, const TaylorModel<S>& a)
 {
   return -a + d;
 }
@@ -494,50 +545,53 @@ void generateTaylorModelForCosFunc(TaylorModel<S>& tm, S w, S q0)
   S t = w * a + q0;
   S w2 = w * w;
   S fa = cos(t);
-  S fda = -w*sin(t);
-  S fdda = -w2*fa;
-  S fddda = -w2*fda;
+  S fda = -w * sin(t);
+  S fdda = -w2 * fa;
+  S fddda = -w2 * fda;
 
-  tm.coeff(0) = fa-a*(fda-0.5*a*(fdda-1.0/3.0*a*fddda));
-  tm.coeff(1) = fda-a*fdda+0.5*a*a*fddda;
-  tm.coeff(2) = 0.5*(fdda-a*fddda);
-  tm.coeff(3) = 1.0/6.0*fddda;
+  tm.coeff(0) = fa - a * (fda - 0.5 * a * (fdda - 1.0 / 3.0 * a * fddda));
+  tm.coeff(1) = fda - a * fdda + 0.5 * a * a * fddda;
+  tm.coeff(2) = 0.5 * (fdda - a * fddda);
+  tm.coeff(3) = 1.0 / 6.0 * fddda;
 
   // compute bounds for w^3 cos(wt+q0)/16, t \in [t0, t1]
   Interval<S> fddddBounds;
-  if(w == 0) fddddBounds.setValue(0);
-  else
-  {
+  if (w == 0)
+    fddddBounds.setValue(0);
+  else {
     S cosQL = cos(tm.getTimeInterval()->t_[0] * w + q0);
     S cosQR = cos(tm.getTimeInterval()->t_[1] * w + q0);
 
-    if(cosQL < cosQR) fddddBounds.setValue(cosQL, cosQR);
-    else fddddBounds.setValue(cosQR, cosQL);
+    if (cosQL < cosQR)
+      fddddBounds.setValue(cosQL, cosQR);
+    else
+      fddddBounds.setValue(cosQR, cosQL);
 
     // enlarge to handle round-off errors
     fddddBounds[0] -= 1e-15;
     fddddBounds[1] += 1e-15;
 
-    // cos reaches maximum if there exists an integer k in [(w*t0+q0)/2pi, (w*t1+q0)/2pi];
-    // cos reaches minimum if there exists an integer k in [(w*t0+q0-pi)/2pi, (w*t1+q0-pi)/2pi]
+    // cos reaches maximum if there exists an integer k in [(w*t0+q0)/2pi,
+    // (w*t1+q0)/2pi]; cos reaches minimum if there exists an integer k in
+    // [(w*t0+q0-pi)/2pi, (w*t1+q0-pi)/2pi]
 
     S k1 = (tm.getTimeInterval()->t_[0] * w + q0) / (2 * constants<S>::pi());
     S k2 = (tm.getTimeInterval()->t_[1] * w + q0) / (2 * constants<S>::pi());
 
-
-    if(w > 0)
-    {
-      if(ceil(k2) - floor(k1) > 1) fddddBounds[1] = 1;
+    if (w > 0) {
+      if (ceil(k2) - floor(k1) > 1)
+        fddddBounds[1] = 1;
       k1 -= 0.5;
       k2 -= 0.5;
-      if(ceil(k2) - floor(k1) > 1) fddddBounds[0] = -1;
-    }
-    else
-    {
-      if(ceil(k1) - floor(k2) > 1) fddddBounds[1] = 1;
+      if (ceil(k2) - floor(k1) > 1)
+        fddddBounds[0] = -1;
+    } else {
+      if (ceil(k1) - floor(k2) > 1)
+        fddddBounds[1] = 1;
       k1 -= 0.5;
       k2 -= 0.5;
-      if(ceil(k1) - floor(k2) > 1) fddddBounds[0] = -1;
+      if (ceil(k1) - floor(k2) > 1)
+        fddddBounds[0] = -1;
     }
   }
 
@@ -549,12 +603,14 @@ void generateTaylorModelForCosFunc(TaylorModel<S>& tm, S w, S q0)
   S midSize4 = midSize2 * midSize2;
 
   // [0, midSize4] * fdddBounds
-  if(fddddBounds[0] > 0)
+  if (fddddBounds[0] > 0)
     tm.remainder().setValue(0, fddddBounds[1] * midSize4 * (1.0 / 24));
-  else if(fddddBounds[0] < 0)
+  else if (fddddBounds[0] < 0)
     tm.remainder().setValue(fddddBounds[0] * midSize4 * (1.0 / 24), 0);
   else
-    tm.remainder().setValue(fddddBounds[0] * midSize4 * (1.0 / 24), fddddBounds[1] * midSize4 * (1.0 / 24));
+    tm.remainder().setValue(
+        fddddBounds[0] * midSize4 * (1.0 / 24),
+        fddddBounds[1] * midSize4 * (1.0 / 24));
 }
 
 //==============================================================================
@@ -565,67 +621,76 @@ void generateTaylorModelForSinFunc(TaylorModel<S>& tm, S w, S q0)
   S t = w * a + q0;
   S w2 = w * w;
   S fa = sin(t);
-  S fda = w*cos(t);
-  S fdda = -w2*fa;
-  S fddda = -w2*fda;
+  S fda = w * cos(t);
+  S fdda = -w2 * fa;
+  S fddda = -w2 * fda;
 
-  tm.coeff(0) = fa-a*(fda-0.5*a*(fdda-1.0/3.0*a*fddda));
-  tm.coeff(1) = fda-a*fdda+0.5*a*a*fddda;
-  tm.coeff(2) = 0.5*(fdda-a*fddda);
-  tm.coeff(3) = 1.0/6.0*fddda;
+  tm.coeff(0) = fa - a * (fda - 0.5 * a * (fdda - 1.0 / 3.0 * a * fddda));
+  tm.coeff(1) = fda - a * fdda + 0.5 * a * a * fddda;
+  tm.coeff(2) = 0.5 * (fdda - a * fddda);
+  tm.coeff(3) = 1.0 / 6.0 * fddda;
 
   // compute bounds for w^3 sin(wt+q0)/16, t \in [t0, t1]
 
   Interval<S> fddddBounds;
 
-  if(w == 0) fddddBounds.setValue(0);
-  else
-  {
+  if (w == 0)
+    fddddBounds.setValue(0);
+  else {
     S sinQL = sin(w * tm.getTimeInterval()->t_[0] + q0);
     S sinQR = sin(w * tm.getTimeInterval()->t_[1] + q0);
 
-    if(sinQL < sinQR) fddddBounds.setValue(sinQL, sinQR);
-    else fddddBounds.setValue(sinQR, sinQL);
+    if (sinQL < sinQR)
+      fddddBounds.setValue(sinQL, sinQR);
+    else
+      fddddBounds.setValue(sinQR, sinQL);
 
     // enlarge to handle round-off errors
     fddddBounds[0] -= 1e-15;
     fddddBounds[1] += 1e-15;
 
-    // sin reaches maximum if there exists an integer k in [(w*t0+q0-pi/2)/2pi, (w*t1+q0-pi/2)/2pi];
-    // sin reaches minimum if there exists an integer k in [(w*t0+q0-pi-pi/2)/2pi, (w*t1+q0-pi-pi/2)/2pi]
+    // sin reaches maximum if there exists an integer k in [(w*t0+q0-pi/2)/2pi,
+    // (w*t1+q0-pi/2)/2pi]; sin reaches minimum if there exists an integer k in
+    // [(w*t0+q0-pi-pi/2)/2pi, (w*t1+q0-pi-pi/2)/2pi]
 
-    S k1 = (tm.getTimeInterval()->t_[0] * w + q0) / (2 * constants<S>::pi()) - 0.25;
-    S k2 = (tm.getTimeInterval()->t_[1] * w + q0) / (2 * constants<S>::pi()) - 0.25;
+    S k1 = (tm.getTimeInterval()->t_[0] * w + q0) / (2 * constants<S>::pi())
+           - 0.25;
+    S k2 = (tm.getTimeInterval()->t_[1] * w + q0) / (2 * constants<S>::pi())
+           - 0.25;
 
-    if(w > 0)
-    {
-      if(ceil(k2) - floor(k1) > 1) fddddBounds[1] = 1;
+    if (w > 0) {
+      if (ceil(k2) - floor(k1) > 1)
+        fddddBounds[1] = 1;
       k1 -= 0.5;
       k2 -= 0.5;
-      if(ceil(k2) - floor(k1) > 1) fddddBounds[0] = -1;
-    }
-    else
-    {
-      if(ceil(k1) - floor(k2) > 1) fddddBounds[1] = 1;
+      if (ceil(k2) - floor(k1) > 1)
+        fddddBounds[0] = -1;
+    } else {
+      if (ceil(k1) - floor(k2) > 1)
+        fddddBounds[1] = 1;
       k1 -= 0.5;
       k2 -= 0.5;
-      if(ceil(k1) - floor(k2) > 1) fddddBounds[0] = -1;
+      if (ceil(k1) - floor(k2) > 1)
+        fddddBounds[0] = -1;
     }
 
     S w4 = w2 * w2;
     fddddBounds *= w4;
 
-    S midSize = 0.5 * (tm.getTimeInterval()->t_[1] - tm.getTimeInterval()->t_[0]);
+    S midSize
+        = 0.5 * (tm.getTimeInterval()->t_[1] - tm.getTimeInterval()->t_[0]);
     S midSize2 = midSize * midSize;
     S midSize4 = midSize2 * midSize2;
 
     // [0, midSize4] * fdddBounds
-    if(fddddBounds[0] > 0)
+    if (fddddBounds[0] > 0)
       tm.remainder().setValue(0, fddddBounds[1] * midSize4 * (1.0 / 24));
-    else if(fddddBounds[0] < 0)
+    else if (fddddBounds[0] < 0)
       tm.remainder().setValue(fddddBounds[0] * midSize4 * (1.0 / 24), 0);
     else
-      tm.remainder().setValue(fddddBounds[0] * midSize4 * (1.0 / 24), fddddBounds[1] * midSize4 * (1.0 / 24));
+      tm.remainder().setValue(
+          fddddBounds[0] * midSize4 * (1.0 / 24),
+          fddddBounds[1] * midSize4 * (1.0 / 24));
   }
 }
 
@@ -641,6 +706,4 @@ void generateTaylorModelForLinearFunc(TaylorModel<S>& tm, S p, S v)
   tm.remainder()[1] = 0;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

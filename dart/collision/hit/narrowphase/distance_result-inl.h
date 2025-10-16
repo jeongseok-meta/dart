@@ -35,34 +35,25 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_DISTANCERESULT_INL_H
-#define FCL_DISTANCERESULT_INL_H
+#pragma once
 
-#include "fcl/narrowphase/distance_result.h"
+#include "dart/collision/hit/narrowphase/distance_result.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-struct DistanceResult<double>;
+extern template struct DistanceResult<double>;
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 DistanceResult<S>::DistanceResult(S min_distance_)
-  : min_distance(min_distance_),
-    o1(nullptr),
-    o2(nullptr),
-    b1(NONE),
-    b2(NONE)
+  : min_distance(min_distance_), o1(nullptr), o2(nullptr), b1(NONE), b2(NONE)
 {
   // Do nothing
 }
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void DistanceResult<S>::update(
     S distance,
     const CollisionGeometry<S>* o1_,
@@ -70,8 +61,7 @@ void DistanceResult<S>::update(
     int b1_,
     int b2_)
 {
-  if(min_distance > distance)
-  {
+  if (min_distance > distance) {
     min_distance = distance;
     o1 = o1_;
     o2 = o2_;
@@ -82,7 +72,6 @@ void DistanceResult<S>::update(
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void DistanceResult<S>::update(
     S distance,
     const CollisionGeometry<S>* o1_,
@@ -92,8 +81,7 @@ void DistanceResult<S>::update(
     const Vector3<S>& p1,
     const Vector3<S>& p2)
 {
-  if(min_distance > distance)
-  {
+  if (min_distance > distance) {
     min_distance = distance;
     o1 = o1_;
     o2 = o2_;
@@ -106,11 +94,9 @@ void DistanceResult<S>::update(
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void DistanceResult<S>::update(const DistanceResult& other_result)
 {
-  if(min_distance > other_result.min_distance)
-  {
+  if (min_distance > other_result.min_distance) {
     min_distance = other_result.min_distance;
     o1 = other_result.o1;
     o2 = other_result.o2;
@@ -123,7 +109,6 @@ void DistanceResult<S>::update(const DistanceResult& other_result)
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void DistanceResult<S>::clear()
 {
   min_distance = std::numeric_limits<S>::max();
@@ -133,6 +118,4 @@ void DistanceResult<S>::clear()
   b2 = NONE;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

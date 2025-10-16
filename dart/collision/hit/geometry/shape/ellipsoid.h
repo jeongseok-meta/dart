@@ -35,23 +35,20 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_SHAPE_ELLIPSOID_H
-#define FCL_SHAPE_ELLIPSOID_H
+#pragma once
+
+#include "dart/collision/hit/geometry/shape/shape_base.h"
 
 #include <ostream>
 #include <string>
 
-#include "fcl/geometry/shape/shape_base.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Center at zero point ellipsoid
 template <typename S_>
-class FCL_EXPORT Ellipsoid : public ShapeBase<S_>
+class Ellipsoid : public ShapeBase<S_>
 {
 public:
-
   using S = S_;
 
   /// @brief Constructor
@@ -86,8 +83,8 @@ public:
   /// @return The string representation of this instance.
   std::string representation(int precision = 20) const;
 
-  friend
-  std::ostream& operator<<(std::ostream& out, const Ellipsoid& ellipsoid) {
+  friend std::ostream& operator<<(std::ostream& out, const Ellipsoid& ellipsoid)
+  {
     out << "Ellipsoid(radii: " << ellipsoid.radii.transpose() << ")";
     return out;
   }
@@ -96,8 +93,6 @@ public:
 using Ellipsoidf = Ellipsoid<float>;
 using Ellipsoidd = Ellipsoid<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/geometry/shape/ellipsoid-inl.h"
-
-#endif
+#include "dart/collision/hit/geometry/shape/ellipsoid-inl.h"

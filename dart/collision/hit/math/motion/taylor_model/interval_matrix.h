@@ -32,20 +32,19 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
-// This code is based on code developed by Stephane Redon at UNC and Inria for the CATCH library: http://graphics.ewha.ac.kr/CATCH/
+// This code is based on code developed by Stephane Redon at UNC and Inria for
+// the CATCH library: http://graphics.ewha.ac.kr/CATCH/
 /** @author Jia Pan */
 
-#ifndef FCL_CCD_INTERVAL_MATRIX_H
-#define FCL_CCD_INTERVAL_MATRIX_H
+#pragma once
 
-#include "fcl/math/motion/taylor_model/interval.h"
-#include "fcl/math/motion/taylor_model/interval_vector.h"
+#include "dart/collision/hit/math/motion/taylor_model/interval.h"
+#include "dart/collision/hit/math/motion/taylor_model/interval_vector.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 template <typename S>
-struct FCL_EXPORT IMatrix3
+struct IMatrix3
 {
   IVector3<S> v_[3];
 
@@ -71,23 +70,23 @@ struct FCL_EXPORT IMatrix3
   Matrix3<S> getLow() const;
   Matrix3<S> getHigh() const;
 
-  const Interval<S>& operator () (size_t i, size_t j) const;
+  const Interval<S>& operator()(size_t i, size_t j) const;
 
-  Interval<S>& operator () (size_t i, size_t j);
+  Interval<S>& operator()(size_t i, size_t j);
 
-  IMatrix3 operator + (const IMatrix3& m) const;
-  IMatrix3& operator += (const IMatrix3& m);
+  IMatrix3 operator+(const IMatrix3& m) const;
+  IMatrix3& operator+=(const IMatrix3& m);
 
-  IMatrix3 operator - (const IMatrix3& m) const;
-  IMatrix3& operator -= (const IMatrix3& m);
+  IMatrix3 operator-(const IMatrix3& m) const;
+  IMatrix3& operator-=(const IMatrix3& m);
 
-  IVector3<S> operator * (const Vector3<S>& v) const;
-  IVector3<S> operator * (const IVector3<S>& v) const;
-  IMatrix3 operator * (const IMatrix3& m) const;
-  IMatrix3 operator * (const Matrix3<S>& m) const;
+  IVector3<S> operator*(const Vector3<S>& v) const;
+  IVector3<S> operator*(const IVector3<S>& v) const;
+  IMatrix3 operator*(const IMatrix3& m) const;
+  IMatrix3 operator*(const Matrix3<S>& m) const;
 
-  IMatrix3& operator *= (const IMatrix3& m);
-  IMatrix3& operator *= (const Matrix3<S>& m);
+  IMatrix3& operator*=(const IMatrix3& m);
+  IMatrix3& operator*=(const Matrix3<S>& m);
 
   IMatrix3& rotationConstrain();
 
@@ -95,11 +94,8 @@ struct FCL_EXPORT IMatrix3
 };
 
 template <typename S>
-FCL_EXPORT
 IMatrix3<S> rotationConstrain(const IMatrix3<S>& m);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/motion/taylor_model/interval_matrix-inl.h"
-
-#endif
+#include "dart/collision/hit/math/motion/taylor_model/interval_matrix-inl.h"

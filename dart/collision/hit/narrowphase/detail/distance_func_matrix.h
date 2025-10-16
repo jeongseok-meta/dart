@@ -35,18 +35,15 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_DISTANCE_FUNC_MATRIX_H
-#define FCL_DISTANCE_FUNC_MATRIX_H
+#pragma once
 
-#include "fcl/geometry/collision_geometry.h"
-#include "fcl/narrowphase/distance_request.h"
-#include "fcl/narrowphase/distance_result.h"
+#include "dart/collision/hit/geometry/collision_geometry.h"
+#include "dart/collision/hit/narrowphase/distance_request.h"
+#include "dart/collision/hit/narrowphase/distance_result.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /// @brief distance matrix stores the functions for distance between different
 /// types of objects and provides a uniform call interface
@@ -70,7 +67,7 @@ struct DistanceFunctionMatrix
       const NarrowPhaseSolver* nsolver,
       const DistanceRequest<S>& request,
       DistanceResult<S>& result);
-  
+
   /// @brief each item in the distance matrix is a function to handle distance
   /// between objects of type1 and type2
   DistanceFunc distance_matrix[NODE_COUNT][NODE_COUNT];
@@ -79,8 +76,6 @@ struct DistanceFunctionMatrix
 };
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/distance_func_matrix-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/distance_func_matrix-inl.h"

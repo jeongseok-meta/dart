@@ -35,17 +35,15 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_MATH_SAMPLERSE3QUATBALL_H
-#define FCL_MATH_SAMPLERSE3QUATBALL_H
+#pragma once
 
-#include "fcl/common/types.h"
-#include "fcl/math/sampler/sampler_base.h"
+#include "dart/collision/hit/common/types.h"
+#include "dart/collision/hit/math/sampler/sampler_base.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 template <typename S>
-class FCL_EXPORT SamplerSE3Quat_ball : public SamplerBase<S>
+class SamplerSE3Quat_ball : public SamplerBase<S>
 {
 public:
   SamplerSE3Quat_ball();
@@ -65,8 +63,6 @@ protected:
 using SamplerSE3Quat_ballf = SamplerSE3Quat_ball<float>;
 using SamplerSE3Quat_balld = SamplerSE3Quat_ball<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/sampler/sampler_se3_quat_ball-inl.h"
-
-#endif
+#include "dart/collision/hit/math/sampler/sampler_se3_quat_ball-inl.h"

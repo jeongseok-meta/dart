@@ -35,40 +35,36 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/bv/OBB-inl.h"
+#include "dart/collision/hit/math/bv/OBB-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
-
-//==============================================================================
-template
-class OBB<double>;
+namespace dart::collision::hit {
 
 //==============================================================================
-template
-void computeVertices(const OBB<double>& b, Vector3<double> vertices[8]);
+template class OBB<double>;
 
 //==============================================================================
-template
-OBB<double> merge_largedist(const OBB<double>& b1, const OBB<double>& b2);
+template void computeVertices(
+    const OBB<double>& b, Vector3<double> vertices[8]);
 
 //==============================================================================
-template
-OBB<double> merge_smalldist(const OBB<double>& b1, const OBB<double>& b2);
+template OBB<double> merge_largedist(
+    const OBB<double>& b1, const OBB<double>& b2);
 
 //==============================================================================
-template
-bool obbDisjoint(
+template OBB<double> merge_smalldist(
+    const OBB<double>& b1, const OBB<double>& b2);
+
+//==============================================================================
+template bool obbDisjoint(
     const Matrix3<double>& B,
     const Vector3<double>& T,
     const Vector3<double>& a,
     const Vector3<double>& b);
 
 //==============================================================================
-template
-bool obbDisjoint(
+template bool obbDisjoint(
     const Transform3<double>& tf,
     const Vector3<double>& a,
     const Vector3<double>& b);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

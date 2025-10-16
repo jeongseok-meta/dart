@@ -35,15 +35,13 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_COLLISION_H
-#define FCL_COLLISION_H
+#pragma once
 
-#include "fcl/narrowphase/collision_object.h"
-#include "fcl/narrowphase/collision_request.h"
-#include "fcl/narrowphase/collision_result.h"
+#include "dart/collision/hit/narrowphase/collision_object.h"
+#include "dart/collision/hit/narrowphase/collision_request.h"
+#include "dart/collision/hit/narrowphase/collision_result.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Main collision interface: given two collision objects, and the
 /// requirements for contacts, including num of max contacts, whether perform
@@ -53,20 +51,21 @@ namespace dart { namespace collision { namespace hit
 /// performs the collision between them. Return value is the number of contacts
 /// generated between the two objects.
 template <typename S>
-FCL_EXPORT
-std::size_t collide(const CollisionObject<S>* o1, const CollisionObject<S>* o2,
-                    const CollisionRequest<S>& request,
-                    CollisionResult<S>& result);
+std::size_t collide(
+    const CollisionObject<S>* o1,
+    const CollisionObject<S>* o2,
+    const CollisionRequest<S>& request,
+    CollisionResult<S>& result);
 
 template <typename S>
-FCL_EXPORT
-std::size_t collide(const CollisionGeometry<S>* o1, const Transform3<S>& tf1,
-                    const CollisionGeometry<S>* o2, const Transform3<S>& tf2,
-                    const CollisionRequest<S>& request,
-                    CollisionResult<S>& result);
+std::size_t collide(
+    const CollisionGeometry<S>* o1,
+    const Transform3<S>& tf1,
+    const CollisionGeometry<S>* o2,
+    const Transform3<S>& tf2,
+    const CollisionRequest<S>& request,
+    CollisionResult<S>& result);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/collision-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/collision-inl.h"

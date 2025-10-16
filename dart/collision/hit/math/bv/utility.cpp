@@ -35,9 +35,9 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/bv/utility-inl.h"
+#include "dart/collision/hit/math/bv/utility-inl.h"
 
-namespace dart { namespace collision { namespace hit {
+namespace dart::collision::hit {
 namespace detail {
 
 //==============================================================================
@@ -45,24 +45,19 @@ namespace OBB_fit_functions {
 //==============================================================================
 
 //==============================================================================
-template
-void fit1(const Vector3d* const ps, OBB<double>& bv);
+template void fit1(const Vector3d* const ps, OBB<double>& bv);
 
 //==============================================================================
-template
-void fit2(const Vector3d* const ps, OBB<double>& bv);
+template void fit2(const Vector3d* const ps, OBB<double>& bv);
 
 //==============================================================================
-template
-void fit3(const Vector3d* const ps, OBB<double>& bv);
+template void fit3(const Vector3d* const ps, OBB<double>& bv);
 
 //==============================================================================
-template
-void fit6(const Vector3d* const ps, OBB<double>& bv);
+template void fit6(const Vector3d* const ps, OBB<double>& bv);
 
 //==============================================================================
-template
-void fitn(const Vector3d* const ps, int n, OBB<double>& bv);
+template void fitn(const Vector3d* const ps, int n, OBB<double>& bv);
 
 //==============================================================================
 } // namespace OBB_fit_functions
@@ -73,24 +68,19 @@ namespace RSS_fit_functions {
 //==============================================================================
 
 //==============================================================================
-template
-void fit1(const Vector3d* const ps, RSS<double>& bv);
+template void fit1(const Vector3d* const ps, RSS<double>& bv);
 
 //==============================================================================
-template
-void fit2(const Vector3d* const ps, RSS<double>& bv);
+template void fit2(const Vector3d* const ps, RSS<double>& bv);
 
 //==============================================================================
-template
-void fit3(const Vector3d* const ps, RSS<double>& bv);
+template void fit3(const Vector3d* const ps, RSS<double>& bv);
 
 //==============================================================================
-template
-void fit6(const Vector3d* const ps, RSS<double>& bv);
+template void fit6(const Vector3d* const ps, RSS<double>& bv);
 
 //==============================================================================
-template
-void fitn(const Vector3d* const ps, int n, RSS<double>& bv);
+template void fitn(const Vector3d* const ps, int n, RSS<double>& bv);
 
 //==============================================================================
 } // namespace RSS_fit_functions
@@ -101,20 +91,16 @@ namespace kIOS_fit_functions {
 //==============================================================================
 
 //==============================================================================
-template
-void fit1(const Vector3d* const ps, kIOS<double>& bv);
+template void fit1(const Vector3d* const ps, kIOS<double>& bv);
 
 //==============================================================================
-template
-void fit2(const Vector3d* const ps, kIOS<double>& bv);
+template void fit2(const Vector3d* const ps, kIOS<double>& bv);
 
 //==============================================================================
-template
-void fit3(const Vector3d* const ps, kIOS<double>& bv);
+template void fit3(const Vector3d* const ps, kIOS<double>& bv);
 
 //==============================================================================
-template
-void fitn(const Vector3d* const ps, int n, kIOS<double>& bv);
+template void fitn(const Vector3d* const ps, int n, kIOS<double>& bv);
 
 //==============================================================================
 } // namespace kIOS_fit_functions
@@ -125,76 +111,59 @@ namespace OBBRSS_fit_functions {
 //==============================================================================
 
 //==============================================================================
-template
-void fit1(const Vector3d* const ps, OBBRSS<double>& bv);
+template void fit1(const Vector3d* const ps, OBBRSS<double>& bv);
 
 //==============================================================================
-template
-void fit2(const Vector3d* const ps, OBBRSS<double>& bv);
+template void fit2(const Vector3d* const ps, OBBRSS<double>& bv);
 
 //==============================================================================
-template
-void fit3(const Vector3d* const ps, OBBRSS<double>& bv);
+template void fit3(const Vector3d* const ps, OBBRSS<double>& bv);
 
 //==============================================================================
-template
-void fitn(const Vector3d* const ps, int n, OBBRSS<double>& bv);
+template void fitn(const Vector3d* const ps, int n, OBBRSS<double>& bv);
 
 //==============================================================================
 } // namespace OBBRSS_fit_functions
 //==============================================================================
 
 //==============================================================================
-template
-struct Fitter<double, OBB<double>>;
+template struct Fitter<double, OBB<double>>;
 
 //==============================================================================
-template
-struct Fitter<double, RSS<double>>;
+template struct Fitter<double, RSS<double>>;
 
 //==============================================================================
-template
-struct Fitter<double, kIOS<double>>;
+template struct Fitter<double, kIOS<double>>;
 
 //==============================================================================
-template
-struct Fitter<double, OBBRSS<double>>;
+template struct Fitter<double, OBBRSS<double>>;
 
 //==============================================================================
-template
-class ConvertBVImpl<double, AABB<double>, AABB<double>>;
+template class ConvertBVImpl<double, AABB<double>, AABB<double>>;
 
 //==============================================================================
-template
-class ConvertBVImpl<double, AABB<double>, OBB<double>>;
+template class ConvertBVImpl<double, AABB<double>, OBB<double>>;
 
 //==============================================================================
-template
-class ConvertBVImpl<double, OBB<double>, OBB<double>>;
+template class ConvertBVImpl<double, OBB<double>, OBB<double>>;
 
 //==============================================================================
-template
-class ConvertBVImpl<double, OBBRSS<double>, OBB<double>>;
+template class ConvertBVImpl<double, OBBRSS<double>, OBB<double>>;
 
 //==============================================================================
-template
-class ConvertBVImpl<double, RSS<double>, OBB<double>>;
+template class ConvertBVImpl<double, RSS<double>, OBB<double>>;
 
 //==============================================================================
-template
-class ConvertBVImpl<double, OBB<double>, RSS<double>>;
+template class ConvertBVImpl<double, OBB<double>, RSS<double>>;
 
 //==============================================================================
-template
-class ConvertBVImpl<double, RSS<double>, RSS<double>>;
+template class ConvertBVImpl<double, RSS<double>, RSS<double>>;
 
 //==============================================================================
-template
-class ConvertBVImpl<double, OBBRSS<double>, RSS<double>>;
+template class ConvertBVImpl<double, OBBRSS<double>, RSS<double>>;
 
 //==============================================================================
-template
-class ConvertBVImpl<double, AABB<double>, RSS<double>>;
+template class ConvertBVImpl<double, AABB<double>, RSS<double>>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

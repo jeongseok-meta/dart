@@ -35,22 +35,17 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_DISTANCERAVERSALNODEBASE_INL_H
-#define FCL_TRAVERSAL_DISTANCERAVERSALNODEBASE_INL_H
+#pragma once
 
-#include "fcl/narrowphase/detail/traversal/distance/distance_traversal_node_base.h"
+#include "dart/collision/hit/common/unused.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/distance_traversal_node_base.h"
 
-#include "fcl/common/unused.h"
+namespace dart::collision::hit {
 
-namespace dart { namespace collision { namespace hit
-{
-
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
-extern template
-class FCL_EXPORT DistanceTraversalNodeBase<double>;
+extern template class DistanceTraversalNodeBase<double>;
 
 //==============================================================================
 template <typename S>
@@ -71,8 +66,8 @@ DistanceTraversalNodeBase<S>::~DistanceTraversalNodeBase()
 template <typename S>
 S DistanceTraversalNodeBase<S>::BVTesting(int b1, int b2) const
 {
-  FCL_UNUSED(b1);
-  FCL_UNUSED(b2);
+  DART_COLLISION_HIT_UNUSED(b1);
+  DART_COLLISION_HIT_UNUSED(b2);
 
   return std::numeric_limits<S>::max();
 }
@@ -81,8 +76,8 @@ S DistanceTraversalNodeBase<S>::BVTesting(int b1, int b2) const
 template <typename S>
 void DistanceTraversalNodeBase<S>::leafTesting(int b1, int b2) const
 {
-  FCL_UNUSED(b1);
-  FCL_UNUSED(b2);
+  DART_COLLISION_HIT_UNUSED(b1);
+  DART_COLLISION_HIT_UNUSED(b2);
 
   // Do nothing
 }
@@ -91,7 +86,7 @@ void DistanceTraversalNodeBase<S>::leafTesting(int b1, int b2) const
 template <typename S>
 bool DistanceTraversalNodeBase<S>::canStop(S c) const
 {
-  FCL_UNUSED(c);
+  DART_COLLISION_HIT_UNUSED(c);
 
   return false;
 }
@@ -104,6 +99,4 @@ void DistanceTraversalNodeBase<S>::enableStatistics(bool enable)
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

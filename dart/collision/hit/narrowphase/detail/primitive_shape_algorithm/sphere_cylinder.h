@@ -34,14 +34,13 @@
 
 /** @author Sean Curtis <sean@tri.global> (2018) */
 
-#ifndef FCL_NARROWPHASE_DETAIL_SPHERECYLINDER_H
-#define FCL_NARROWPHASE_DETAIL_SPHERECYLINDER_H
+#pragma once
 
-#include "fcl/geometry/shape/cylinder.h"
-#include "fcl/geometry/shape/sphere.h"
-#include "fcl/narrowphase/contact_point.h"
+#include "dart/collision/hit/geometry/shape/cylinder.h"
+#include "dart/collision/hit/geometry/shape/sphere.h"
+#include "dart/collision/hit/narrowphase/contact_point.h"
 
-namespace dart { namespace collision { namespace hit {
+namespace dart::collision::hit {
 
 namespace detail {
 
@@ -102,11 +101,12 @@ namespace detail {
  @return True if the objects are colliding (including touching).
  @tparam S The scalar parameter (must be a valid Eigen scalar).  */
 template <typename S>
-FCL_EXPORT bool sphereCylinderIntersect(const Sphere<S>& sphere,
-                                        const Transform3<S>& X_FS,
-                                        const Cylinder<S>& cylinder,
-                                        const Transform3<S>& X_FC,
-                                        std::vector<ContactPoint<S>>* contacts);
+bool sphereCylinderIntersect(
+    const Sphere<S>& sphere,
+    const Transform3<S>& X_FS,
+    const Cylinder<S>& cylinder,
+    const Transform3<S>& X_FC,
+    std::vector<ContactPoint<S>>* contacts);
 
 /** Evaluate the minimum separating distance between a sphere and cylinder. If
  separated, the nearest points on each shape will be returned in frame F.
@@ -123,17 +123,18 @@ FCL_EXPORT bool sphereCylinderIntersect(const Sphere<S>& sphere,
  @return True if the objects are separated.
  @tparam S The scalar parameter (must be a valid Eigen scalar).  */
 template <typename S>
-FCL_EXPORT bool sphereCylinderDistance(const Sphere<S>& sphere,
-                                       const Transform3<S>& X_FS,
-                                       const Cylinder<S>& cylinder,
-                                       const Transform3<S>& X_FC, S* distance,
-                                       Vector3<S>* p_FSc, Vector3<S>* p_FCs);
+bool sphereCylinderDistance(
+    const Sphere<S>& sphere,
+    const Transform3<S>& X_FS,
+    const Cylinder<S>& cylinder,
+    const Transform3<S>& X_FC,
+    S* distance,
+    Vector3<S>* p_FSc,
+    Vector3<S>* p_FCs);
 
 //@}
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/primitive_shape_algorithm/sphere_cylinder-inl.h"
-
-#endif // FCL_NARROWPHASE_DETAIL_SPHERECYLINDER_H
+#include "dart/collision/hit/narrowphase/detail/primitive_shape_algorithm/sphere_cylinder-inl.h"

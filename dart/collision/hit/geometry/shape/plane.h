@@ -35,29 +35,26 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_SHAPE_PLANE_H
-#define FCL_SHAPE_PLANE_H
+#pragma once
+
+#include "dart/collision/hit/geometry/shape/shape_base.h"
 
 #include <ostream>
 #include <string>
 
-#include "fcl/geometry/shape/shape_base.h"
+namespace dart::collision::hit {
 
-namespace dart { namespace collision { namespace hit
-{
-
-/// @brief Infinite plane 
+/// @brief Infinite plane
 template <typename S_>
-class FCL_EXPORT Plane : public ShapeBase<S_>
+class Plane : public ShapeBase<S_>
 {
 public:
-
   using S = S_;
 
-  /// @brief Construct a plane with normal direction and offset 
+  /// @brief Construct a plane with normal direction and offset
   Plane(const Vector3<S>& n, S d);
-  
-  /// @brief Construct a plane with normal direction and offset 
+
+  /// @brief Construct a plane with normal direction and offset
   Plane(S a, S b, S c, S d);
 
   Plane();
@@ -69,13 +66,13 @@ public:
   /// @brief Compute AABB
   void computeLocalAABB() override;
 
-  /// @brief Get node type: a plane 
+  /// @brief Get node type: a plane
   NODE_TYPE getNodeType() const override;
 
-  /// @brief Plane normal 
+  /// @brief Plane normal
   Vector3<S> n;
 
-  /// @brief Plane offset 
+  /// @brief Plane offset
   S d;
 
   /// @brief Create a string that should be sufficient to recreate this shape.
@@ -85,15 +82,14 @@ public:
   /// @return The string representation of this instance.
   std::string representation(int precision = 20) const;
 
-  friend
-  std::ostream& operator<<(std::ostream& out, const Plane& plane) {
+  friend std::ostream& operator<<(std::ostream& out, const Plane& plane)
+  {
     out << "Plane(n: " << plane.n.transpose() << ", d: " << plane.d << ")";
     return out;
   }
 
 protected:
-  
-  /// @brief Turn non-unit normal into unit 
+  /// @brief Turn non-unit normal into unit
   void unitNormalTest();
 };
 
@@ -101,11 +97,8 @@ using Planef = Plane<float>;
 using Planed = Plane<double>;
 
 template <typename S>
-FCL_EXPORT
 Plane<S> transform(const Plane<S>& a, const Transform3<S>& tf);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/geometry/shape/plane-inl.h"
-
-#endif
+#include "dart/collision/hit/geometry/shape/plane-inl.h"

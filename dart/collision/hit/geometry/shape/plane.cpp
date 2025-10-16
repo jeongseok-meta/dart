@@ -35,17 +35,15 @@
 
 /** @author Jia Pan */
 
-#include "fcl/geometry/shape/plane-inl.h"
+#include "dart/collision/hit/geometry/shape/plane-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
-
-//==============================================================================
-template
-class Plane<double>;
+namespace dart::collision::hit {
 
 //==============================================================================
-template
-Plane<double> transform(const Plane<double>& a, const Transform3<double>& tf);
+template class Plane<double>;
 
-} // namespace dart { namespace collision { namespace hit
+//==============================================================================
+template Plane<double> transform(
+    const Plane<double>& a, const Transform3<double>& tf);
+
+} // namespace dart::collision::hit

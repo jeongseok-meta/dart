@@ -33,28 +33,25 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 
-// This code is based on code developed by Stephane Redon at UNC and Inria for the CATCH library: http://graphics.ewha.ac.kr/CATCH/
+// This code is based on code developed by Stephane Redon at UNC and Inria for
+// the CATCH library: http://graphics.ewha.ac.kr/CATCH/
 /** @author Jia Pan */
 
-#ifndef FCL_CCD_INTERVAL_INL_H
-#define FCL_CCD_INTERVAL_INL_H
+#pragma once
 
-#include "fcl/math/motion/taylor_model/interval.h"
+#include "dart/collision/hit/math/motion/taylor_model/interval.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-struct Interval<double>;
+extern template struct Interval<double>;
 
 //==============================================================================
-extern template
-Interval<double> bound(const Interval<double>& i, double v);
+extern template Interval<double> bound(const Interval<double>& i, double v);
 
 //==============================================================================
-extern template
-Interval<double> bound(const Interval<double>& i, const Interval<double>& other);
+extern template Interval<double> bound(
+    const Interval<double>& i, const Interval<double>& other);
 
 //==============================================================================
 template <typename S>
@@ -74,14 +71,16 @@ Interval<S>::Interval(S v)
 template <typename S>
 Interval<S>::Interval(S left, S right)
 {
-  i_[0] = left; i_[1] = right;
+  i_[0] = left;
+  i_[1] = right;
 }
 
 //==============================================================================
 template <typename S>
 void Interval<S>::setValue(S a, S b)
 {
-  i_[0] = a; i_[1] = b;
+  i_[0] = a;
+  i_[1] = b;
 }
 
 //==============================================================================
@@ -93,44 +92,46 @@ void Interval<S>::setValue(S x)
 
 //==============================================================================
 template <typename S>
-S Interval<S>::operator [] (size_t i) const
+S Interval<S>::operator[](size_t i) const
 {
   return i_[i];
 }
 
 //==============================================================================
 template <typename S>
-S& Interval<S>::operator [] (size_t i)
+S& Interval<S>::operator[](size_t i)
 {
   return i_[i];
 }
 
 //==============================================================================
 template <typename S>
-bool Interval<S>::operator == (const Interval& other) const
+bool Interval<S>::operator==(const Interval& other) const
 {
-  if(i_[0] != other.i_[0]) return false;
-  if(i_[1] != other.i_[1]) return false;
+  if (i_[0] != other.i_[0])
+    return false;
+  if (i_[1] != other.i_[1])
+    return false;
   return true;
 }
 
 //==============================================================================
 template <typename S>
-Interval<S> Interval<S>::operator + (const Interval<S>& other) const
+Interval<S> Interval<S>::operator+(const Interval<S>& other) const
 {
   return Interval(i_[0] + other.i_[0], i_[1] + other.i_[1]);
 }
 
 //==============================================================================
 template <typename S>
-Interval<S> Interval<S>::operator - (const Interval<S>& other) const
+Interval<S> Interval<S>::operator-(const Interval<S>& other) const
 {
   return Interval(i_[0] - other.i_[1], i_[1] - other.i_[0]);
 }
 
 //==============================================================================
 template <typename S>
-Interval<S>& Interval<S>::operator += (const Interval<S>& other)
+Interval<S>& Interval<S>::operator+=(const Interval<S>& other)
 {
   i_[0] += other.i_[0];
   i_[1] += other.i_[1];
@@ -139,7 +140,7 @@ Interval<S>& Interval<S>::operator += (const Interval<S>& other)
 
 //==============================================================================
 template <typename S>
-Interval<S>& Interval<S>::operator -= (const Interval<S>& other)
+Interval<S>& Interval<S>::operator-=(const Interval<S>& other)
 {
   i_[0] -= other.i_[1];
   i_[1] -= other.i_[0];
@@ -148,80 +149,73 @@ Interval<S>& Interval<S>::operator -= (const Interval<S>& other)
 
 //==============================================================================
 template <typename S>
-Interval<S> Interval<S>::operator * (const Interval<S>& other) const
+Interval<S> Interval<S>::operator*(const Interval<S>& other) const
 {
-  if(other.i_[0] >= 0)
-  {
-    if(i_[0] >= 0) return Interval<S>(i_[0] * other.i_[0], i_[1] * other.i_[1]);
-    if(i_[1] <= 0) return Interval<S>(i_[0] * other.i_[1], i_[1] * other.i_[0]);
+  if (other.i_[0] >= 0) {
+    if (i_[0] >= 0)
+      return Interval<S>(i_[0] * other.i_[0], i_[1] * other.i_[1]);
+    if (i_[1] <= 0)
+      return Interval<S>(i_[0] * other.i_[1], i_[1] * other.i_[0]);
     return Interval<S>(i_[0] * other.i_[1], i_[1] * other.i_[1]);
   }
-  if(other.i_[1] <= 0)
-  {
-    if(i_[0] >= 0) return Interval<S>(i_[1] * other.i_[0], i_[0] * other.i_[1]);
-    if(i_[1] <= 0) return Interval<S>(i_[1] * other.i_[1], i_[0] * other.i_[0]);
+  if (other.i_[1] <= 0) {
+    if (i_[0] >= 0)
+      return Interval<S>(i_[1] * other.i_[0], i_[0] * other.i_[1]);
+    if (i_[1] <= 0)
+      return Interval<S>(i_[1] * other.i_[1], i_[0] * other.i_[0]);
     return Interval<S>(i_[1] * other.i_[0], i_[0] * other.i_[0]);
   }
 
-  if(i_[0] >= 0) return Interval<S>(i_[1] * other.i_[0], i_[1] * other.i_[1]);
-  if(i_[1] <= 0) return Interval<S>(i_[0] * other.i_[1], i_[0] * other.i_[0]);
+  if (i_[0] >= 0)
+    return Interval<S>(i_[1] * other.i_[0], i_[1] * other.i_[1]);
+  if (i_[1] <= 0)
+    return Interval<S>(i_[0] * other.i_[1], i_[0] * other.i_[0]);
 
   S v00 = i_[0] * other.i_[0];
   S v11 = i_[1] * other.i_[1];
-  if(v00 <= v11)
-  {
+  if (v00 <= v11) {
     S v01 = i_[0] * other.i_[1];
     S v10 = i_[1] * other.i_[0];
-    if(v01 < v10) return Interval<S>(v01, v11);
+    if (v01 < v10)
+      return Interval<S>(v01, v11);
     return Interval<S>(v10, v11);
   }
 
   S v01 = i_[0] * other.i_[1];
   S v10 = i_[1] * other.i_[0];
-  if(v01 < v10) return Interval<S>(v01, v00);
+  if (v01 < v10)
+    return Interval<S>(v01, v00);
   return Interval<S>(v10, v00);
 }
 
 //==============================================================================
 template <typename S>
-Interval<S>& Interval<S>::operator *= (const Interval<S>& other)
+Interval<S>& Interval<S>::operator*=(const Interval<S>& other)
 {
-  if(other.i_[0] >= 0)
-  {
-    if(i_[0] >= 0)
-    {
+  if (other.i_[0] >= 0) {
+    if (i_[0] >= 0) {
       i_[0] *= other.i_[0];
       i_[1] *= other.i_[1];
-    }
-    else if(i_[1] <= 0)
-    {
+    } else if (i_[1] <= 0) {
       i_[0] *= other.i_[1];
       i_[1] *= other.i_[0];
-    }
-    else
-    {
+    } else {
       i_[0] *= other.i_[1];
       i_[1] *= other.i_[1];
     }
     return *this;
   }
 
-  if(other.i_[1] <= 0)
-  {
-    if(i_[0] >= 0)
-    {
+  if (other.i_[1] <= 0) {
+    if (i_[0] >= 0) {
       S tmp = i_[0];
       i_[0] = i_[1] * other.i_[0];
       i_[1] = tmp * other.i_[1];
-    }
-    else if(i_[1] <= 0)
-    {
+    } else if (i_[1] <= 0) {
       S tmp = i_[0];
       i_[0] = i_[1] * other.i_[1];
       i_[1] = tmp * other.i_[0];
-    }
-    else
-    {
+    } else {
       S tmp = i_[0];
       i_[0] = i_[1] * other.i_[0];
       i_[1] = tmp * other.i_[0];
@@ -229,15 +223,13 @@ Interval<S>& Interval<S>::operator *= (const Interval<S>& other)
     return *this;
   }
 
-  if(i_[0] >= 0)
-  {
+  if (i_[0] >= 0) {
     i_[0] = i_[1] * other.i_[0];
     i_[1] *= other.i_[1];
     return *this;
   }
 
-  if(i_[1] <= 0)
-  {
+  if (i_[1] <= 0) {
     i_[1] = i_[0] * other.i_[0];
     i_[0] *= other.i_[1];
     return *this;
@@ -245,17 +237,13 @@ Interval<S>& Interval<S>::operator *= (const Interval<S>& other)
 
   S v00 = i_[0] * other.i_[0];
   S v11 = i_[1] * other.i_[1];
-  if(v00 <= v11)
-  {
+  if (v00 <= v11) {
     S v01 = i_[0] * other.i_[1];
     S v10 = i_[1] * other.i_[0];
-    if(v01 < v10)
-    {
+    if (v01 < v10) {
       i_[0] = v01;
       i_[1] = v11;
-    }
-    else
-    {
+    } else {
       i_[0] = v10;
       i_[1] = v11;
     }
@@ -264,13 +252,10 @@ Interval<S>& Interval<S>::operator *= (const Interval<S>& other)
 
   S v01 = i_[0] * other.i_[1];
   S v10 = i_[1] * other.i_[0];
-  if(v01 < v10)
-  {
+  if (v01 < v10) {
     i_[0] = v01;
     i_[1] = v00;
-  }
-  else
-  {
+  } else {
     i_[0] = v10;
     i_[1] = v00;
   }
@@ -280,23 +265,21 @@ Interval<S>& Interval<S>::operator *= (const Interval<S>& other)
 
 //==============================================================================
 template <typename S>
-Interval<S> Interval<S>::operator * (S d) const
+Interval<S> Interval<S>::operator*(S d) const
 {
-  if(d >= 0) return Interval(i_[0] * d, i_[1] * d);
+  if (d >= 0)
+    return Interval(i_[0] * d, i_[1] * d);
   return Interval(i_[1] * d, i_[0] * d);
 }
 
 //==============================================================================
 template <typename S>
-Interval<S>& Interval<S>::operator *= (S d)
+Interval<S>& Interval<S>::operator*=(S d)
 {
-  if(d >= 0)
-  {
+  if (d >= 0) {
     i_[0] *= d;
     i_[1] *= d;
-  }
-  else
-  {
+  } else {
     S tmp = i_[0];
     i_[0] = i_[1] * d;
     i_[1] = tmp * d;
@@ -307,14 +290,14 @@ Interval<S>& Interval<S>::operator *= (S d)
 
 //==============================================================================
 template <typename S>
-Interval<S> Interval<S>::operator / (const Interval<S>& other) const
+Interval<S> Interval<S>::operator/(const Interval<S>& other) const
 {
   return *this * Interval(1.0 / other.i_[1], 1.0 / other.i_[0]);
 }
 
 //==============================================================================
 template <typename S>
-Interval<S>& Interval<S>::operator /= (const Interval<S>& other)
+Interval<S>& Interval<S>::operator/=(const Interval<S>& other)
 {
   *this *= Interval(1.0 / other.i_[1], 1.0 / other.i_[0]);
   return *this;
@@ -324,8 +307,10 @@ Interval<S>& Interval<S>::operator /= (const Interval<S>& other)
 template <typename S>
 bool Interval<S>::overlap(const Interval<S>& other) const
 {
-  if(i_[1] < other.i_[0]) return false;
-  if(i_[0] > other.i_[1]) return false;
+  if (i_[1] < other.i_[0])
+    return false;
+  if (i_[0] > other.i_[1])
+    return false;
   return true;
 }
 
@@ -333,16 +318,20 @@ bool Interval<S>::overlap(const Interval<S>& other) const
 template <typename S>
 bool Interval<S>::intersect(const Interval<S>& other)
 {
-  if(i_[1] < other.i_[0]) return false;
-  if(i_[0] > other.i_[1]) return false;
-  if(i_[1] > other.i_[1]) i_[1] = other.i_[1];
-  if(i_[0] < other.i_[0]) i_[0] = other.i_[0];
+  if (i_[1] < other.i_[0])
+    return false;
+  if (i_[0] > other.i_[1])
+    return false;
+  if (i_[1] > other.i_[1])
+    i_[1] = other.i_[1];
+  if (i_[0] < other.i_[0])
+    i_[0] = other.i_[0];
   return true;
 }
 
 //==============================================================================
 template <typename S>
-Interval<S> Interval<S>::operator -() const
+Interval<S> Interval<S>::operator-() const
 {
   return Interval<S>(-i_[1], -i_[0]);
 }
@@ -351,8 +340,10 @@ Interval<S> Interval<S>::operator -() const
 template <typename S>
 S Interval<S>::getAbsLower() const
 {
-  if(i_[0] >= 0) return i_[0];
-  if(i_[1] >= 0) return 0;
+  if (i_[0] >= 0)
+    return i_[0];
+  if (i_[1] >= 0)
+    return 0;
   return -i_[1];
 }
 
@@ -360,7 +351,8 @@ S Interval<S>::getAbsLower() const
 template <typename S>
 S Interval<S>::getAbsUpper() const
 {
-  if(i_[0] + i_[1] >= 0) return i_[1];
+  if (i_[0] + i_[1] >= 0)
+    return i_[1];
   return i_[0];
 }
 
@@ -368,8 +360,10 @@ S Interval<S>::getAbsUpper() const
 template <typename S>
 bool Interval<S>::contains(S v) const
 {
-  if(v < i_[0]) return false;
-  if(v > i_[1]) return false;
+  if (v < i_[0])
+    return false;
+  if (v > i_[1])
+    return false;
   return true;
 }
 
@@ -377,8 +371,10 @@ bool Interval<S>::contains(S v) const
 template <typename S>
 Interval<S>& Interval<S>::bound(S v)
 {
-  if(v < i_[0]) i_[0] = v;
-  if(v > i_[1]) i_[1] = v;
+  if (v < i_[0])
+    i_[0] = v;
+  if (v > i_[1])
+    i_[1] = v;
   return *this;
 }
 
@@ -386,8 +382,10 @@ Interval<S>& Interval<S>::bound(S v)
 template <typename S>
 Interval<S>& Interval<S>::bound(const Interval<S>& other)
 {
-  if(other.i_[0] < i_[0]) i_[0] = other.i_[0];
-  if(other.i_[1] > i_[1]) i_[1] = other.i_[1];
+  if (other.i_[0] < i_[0])
+    i_[0] = other.i_[0];
+  if (other.i_[1] > i_[1])
+    i_[1] = other.i_[1];
   return *this;
 }
 
@@ -409,7 +407,7 @@ S Interval<S>::center() const
 template <typename S>
 S Interval<S>::diameter() const
 {
-  return i_[1] -i_[0];
+  return i_[1] - i_[0];
 }
 
 //==============================================================================
@@ -417,8 +415,10 @@ template <typename S>
 Interval<S> bound(const Interval<S>& i, S v)
 {
   Interval<S> res = i;
-  if(v < res.i_[0]) res.i_[0] = v;
-  if(v > res.i_[1]) res.i_[1] = v;
+  if (v < res.i_[0])
+    res.i_[0] = v;
+  if (v > res.i_[1])
+    res.i_[1] = v;
   return res;
 }
 
@@ -427,11 +427,11 @@ template <typename S>
 Interval<S> bound(const Interval<S>& i, const Interval<S>& other)
 {
   Interval<S> res = i;
-  if(other.i_[0] < res.i_[0]) res.i_[0] = other.i_[0];
-  if(other.i_[1] > res.i_[1]) res.i_[1] = other.i_[1];
+  if (other.i_[0] < res.i_[0])
+    res.i_[0] = other.i_[0];
+  if (other.i_[1] > res.i_[1])
+    res.i_[1] = other.i_[1];
   return res;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

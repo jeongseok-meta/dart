@@ -35,20 +35,17 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_SHAPECONSERVATIVEADVANCEMENTTRAVERSALNODE_H
-#define FCL_TRAVERSAL_SHAPECONSERVATIVEADVANCEMENTTRAVERSALNODE_H
+#pragma once
 
-#include "fcl/narrowphase/detail/traversal/distance/shape_distance_traversal_node.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/shape_distance_traversal_node.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
-template<typename Shape1, typename Shape2, typename NarrowPhaseSolver>
-class FCL_EXPORT ShapeConservativeAdvancementTraversalNode
-    : public ShapeDistanceTraversalNode<Shape1, Shape2, NarrowPhaseSolver>
+template <typename Shape1, typename Shape2, typename NarrowPhaseSolver>
+class ShapeConservativeAdvancementTraversalNode
+  : public ShapeDistanceTraversalNode<Shape1, Shape2, NarrowPhaseSolver>
 {
 public:
   using S = typename Shape1::S;
@@ -75,7 +72,10 @@ public:
 
 template <typename Shape1, typename Shape2, typename NarrowPhaseSolver>
 bool initialize(
-    ShapeConservativeAdvancementTraversalNode<Shape1, Shape2, NarrowPhaseSolver>& node,
+    ShapeConservativeAdvancementTraversalNode<
+        Shape1,
+        Shape2,
+        NarrowPhaseSolver>& node,
     const Shape1& shape1,
     const Transform3<typename Shape1::S>& tf1,
     const Shape2& shape2,
@@ -83,8 +83,6 @@ bool initialize(
     const NarrowPhaseSolver* nsolver);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/traversal/distance/shape_conservative_advancement_traversal_node-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/shape_conservative_advancement_traversal_node-inl.h"

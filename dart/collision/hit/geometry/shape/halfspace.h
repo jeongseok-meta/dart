@@ -35,21 +35,19 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_SHAPE_HALFSPACE_H
-#define FCL_SHAPE_HALFSPACE_H
+#pragma once
+
+#include "dart/collision/hit/geometry/shape/shape_base.h"
+#include "dart/collision/hit/math/bv/OBB.h"
+#include "dart/collision/hit/math/bv/OBBRSS.h"
+#include "dart/collision/hit/math/bv/RSS.h"
+#include "dart/collision/hit/math/bv/kDOP.h"
+#include "dart/collision/hit/math/bv/kIOS.h"
 
 #include <ostream>
 #include <string>
 
-#include "fcl/geometry/shape/shape_base.h"
-#include "fcl/math/bv/OBB.h"
-#include "fcl/math/bv/RSS.h"
-#include "fcl/math/bv/OBBRSS.h"
-#include "fcl/math/bv/kDOP.h"
-#include "fcl/math/bv/kIOS.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Half Space: this is equivalent to the Planed in ODE. The separation
 /// plane is defined as n * x = d.  Points in the negative side of the
@@ -57,10 +55,9 @@ namespace dart { namespace collision { namespace hit
 /// in the positive side of the separation plane (i.e. {x | n * x > d}) are
 /// outside the half space.
 template <typename S_>
-class FCL_EXPORT Halfspace : public ShapeBase<S_>
+class Halfspace : public ShapeBase<S_>
 {
 public:
-
   using S = S_;
 
   /// @brief Construct a half space with normal direction and offset
@@ -80,10 +77,10 @@ public:
 
   /// @brief Get node type: a half space
   NODE_TYPE getNodeType() const override;
-  
+
   /// @brief Planed normal
   Vector3<S> n;
-  
+
   /// @brief Planed offset
   S d;
 
@@ -94,15 +91,14 @@ public:
   /// @return The string representation of this instance.
   std::string representation(int precision = 20) const;
 
-  friend
-  std::ostream& operator<<(std::ostream& out, const Halfspace& halfspace) {
-    out << "Halfspace(n: " << halfspace.n.transpose() << ", d: "
-        << halfspace.d << ")";
+  friend std::ostream& operator<<(std::ostream& out, const Halfspace& halfspace)
+  {
+    out << "Halfspace(n: " << halfspace.n.transpose() << ", d: " << halfspace.d
+        << ")";
     return out;
   }
 
 protected:
-
   /// @brief Turn non-unit normal into unit
   void unitNormalTest();
 };
@@ -111,11 +107,8 @@ using Halfspacef = Halfspace<float>;
 using Halfspaced = Halfspace<double>;
 
 template <typename S>
-FCL_EXPORT
 Halfspace<S> transform(const Halfspace<S>& a, const Transform3<S>& tf);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/geometry/shape/halfspace-inl.h"
-
-#endif
+#include "dart/collision/hit/geometry/shape/halfspace-inl.h"

@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/geometry/collision_geometry-inl.h"
+#include "dart/collision/hit/geometry/collision_geometry-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-class CollisionGeometry<double>;
+template class CollisionGeometry<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

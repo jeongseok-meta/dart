@@ -35,16 +35,13 @@
 
 /** @author Jia Pan */
 
-#include "fcl/narrowphase/detail/convexity_based_algorithm/minkowski_diff-inl.h"
+#include "dart/collision/hit/narrowphase/detail/convexity_based_algorithm/minkowski_diff-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
-template
-struct MinkowskiDiff<double>;
+template struct MinkowskiDiff<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

@@ -35,16 +35,13 @@
 
 /** @author Jia Pan */
 
-#include "fcl/narrowphase/detail/traversal/collision/collision_traversal_node_base-inl.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/collision/collision_traversal_node_base-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
-template
-class CollisionTraversalNodeBase<double>;
+template class CollisionTraversalNodeBase<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

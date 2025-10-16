@@ -34,12 +34,10 @@
 
 /** @author Mark Moll */
 
-#include "fcl/math/constants.h"
+#include "dart/collision/hit/math/constants.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-struct constants<double>;
+template struct constants<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

@@ -35,16 +35,14 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CCD_TBVMOTIONBOUNDVISITOR_H
-#define FCL_CCD_TBVMOTIONBOUNDVISITOR_H
+#pragma once
 
-#include "fcl/math/motion/taylor_model/taylor_matrix.h"
-#include "fcl/math/motion/taylor_model/taylor_vector.h"
-#include "fcl/math/bv/RSS.h"
-#include "fcl/math/motion/bv_motion_bound_visitor.h"
+#include "dart/collision/hit/math/bv/RSS.h"
+#include "dart/collision/hit/math/motion/bv_motion_bound_visitor.h"
+#include "dart/collision/hit/math/motion/taylor_model/taylor_matrix.h"
+#include "dart/collision/hit/math/motion/taylor_model/taylor_vector.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 template <typename S>
 class MotionBase;
@@ -61,8 +59,8 @@ class InterpMotion;
 template <typename S>
 class TranslationMotion;
 
-template<typename BV>
-class FCL_EXPORT TBVMotionBoundVisitor : public BVMotionBoundVisitor<typename BV::S>
+template <typename BV>
+class TBVMotionBoundVisitor : public BVMotionBoundVisitor<typename BV::S>
 {
 public:
   using S = typename BV::S;
@@ -83,8 +81,6 @@ protected:
   Vector3<S> n;
 };
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/motion/tbv_motion_bound_visitor-inl.h"
-
-#endif
+#include "dart/collision/hit/math/motion/tbv_motion_bound_visitor-inl.h"

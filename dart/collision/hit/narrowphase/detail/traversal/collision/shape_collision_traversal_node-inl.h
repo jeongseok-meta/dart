@@ -35,21 +35,18 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_SHAPECOLLISIONTRAVERSALNODE_INL_H
-#define FCL_TRAVERSAL_SHAPECOLLISIONTRAVERSALNODE_INL_H
+#pragma once
 
-#include "fcl/narrowphase/detail/traversal/collision/shape_collision_traversal_node.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/collision/shape_collision_traversal_node.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
 template <typename Shape1, typename Shape2, typename NarrowPhaseSolver>
 ShapeCollisionTraversalNode<Shape1, Shape2, NarrowPhaseSolver>::
-ShapeCollisionTraversalNode()
+    ShapeCollisionTraversalNode()
   : CollisionTraversalNodeBase<typename Shape1::S>()
 {
   model1 = nullptr;
@@ -60,8 +57,8 @@ ShapeCollisionTraversalNode()
 
 //==============================================================================
 template <typename Shape1, typename Shape2, typename NarrowPhaseSolver>
-bool ShapeCollisionTraversalNode<Shape1, Shape2, NarrowPhaseSolver>::
-BVTesting(int, int) const
+bool ShapeCollisionTraversalNode<Shape1, Shape2, NarrowPhaseSolver>::BVTesting(
+    int, int) const
 {
   return false;
 }
@@ -69,68 +66,79 @@ BVTesting(int, int) const
 //==============================================================================
 template <typename Shape1, typename Shape2, typename NarrowPhaseSolver>
 void ShapeCollisionTraversalNode<Shape1, Shape2, NarrowPhaseSolver>::
-leafTesting(int, int) const
+    leafTesting(int, int) const
 {
-  if(model1->isOccupied() && model2->isOccupied())
-  {
+  if (model1->isOccupied() && model2->isOccupied()) {
     bool is_collision = false;
-    if(this->request.enable_contact)
-    {
+    if (this->request.enable_contact) {
       std::vector<ContactPoint<S>> contacts;
-      if(nsolver->shapeIntersect(*model1, this->tf1, *model2, this->tf2, &contacts))
-      {
+      if (nsolver->shapeIntersect(
+              *model1, this->tf1, *model2, this->tf2, &contacts)) {
         is_collision = true;
-        if(this->request.num_max_contacts > this->result->numContacts())
-        {
-          const size_t free_space = this->request.num_max_contacts - this->result->numContacts();
+        if (this->request.num_max_contacts > this->result->numContacts()) {
+          const size_t free_space
+              = this->request.num_max_contacts - this->result->numContacts();
           size_t num_adding_contacts;
 
-          // If the free space is not enough to add all the new contacts, we add contacts in descent order of penetration depth.
-          if (free_space < contacts.size())
-          {
-            std::partial_sort(contacts.begin(), contacts.begin() + free_space, contacts.end(), std::bind(comparePenDepth<S>, std::placeholders::_2, std::placeholders::_1));
+          // If the free space is not enough to add all the new contacts, we add
+          // contacts in descent order of penetration depth.
+          if (free_space < contacts.size()) {
+            std::partial_sort(
+                contacts.begin(),
+                contacts.begin() + free_space,
+                contacts.end(),
+                std::bind(
+                    comparePenDepth<S>,
+                    std::placeholders::_2,
+                    std::placeholders::_1));
             num_adding_contacts = free_space;
-          }
-          else
-          {
+          } else {
             num_adding_contacts = contacts.size();
           }
 
-          for(size_t i = 0; i < num_adding_contacts; ++i)
-            this->result->addContact(Contact<S>(model1, model2, Contact<S>::NONE, Contact<S>::NONE, contacts[i].pos, contacts[i].normal, contacts[i].penetration_depth));
+          for (size_t i = 0; i < num_adding_contacts; ++i)
+            this->result->addContact(Contact<S>(
+                model1,
+                model2,
+                Contact<S>::NONE,
+                Contact<S>::NONE,
+                contacts[i].pos,
+                contacts[i].normal,
+                contacts[i].penetration_depth));
         }
       }
-    }
-    else
-    {
-      if(nsolver->shapeIntersect(*model1, this->tf1, *model2, this->tf2, nullptr))
-      {
+    } else {
+      if (nsolver->shapeIntersect(
+              *model1, this->tf1, *model2, this->tf2, nullptr)) {
         is_collision = true;
-        if(this->request.num_max_contacts > this->result->numContacts())
-          this->result->addContact(Contact<S>(model1, model2, Contact<S>::NONE, Contact<S>::NONE));
+        if (this->request.num_max_contacts > this->result->numContacts())
+          this->result->addContact(
+              Contact<S>(model1, model2, Contact<S>::NONE, Contact<S>::NONE));
       }
     }
 
-    if(is_collision && this->request.enable_cost)
-    {
+    if (is_collision && this->request.enable_cost) {
       AABB<S> aabb1, aabb2;
       computeBV(*model1, this->tf1, aabb1);
       computeBV(*model2, this->tf2, aabb2);
       AABB<S> overlap_part;
       aabb1.overlap(aabb2, overlap_part);
-      this->result->addCostSource(CostSource<S>(overlap_part, cost_density), this->request.num_max_cost_sources);
+      this->result->addCostSource(
+          CostSource<S>(overlap_part, cost_density),
+          this->request.num_max_cost_sources);
     }
-  }
-  else if((!model1->isFree() && !model2->isFree()) && this->request.enable_cost)
-  {
-    if(nsolver->shapeIntersect(*model1, this->tf1, *model2, this->tf2, nullptr))
-    {
+  } else if (
+      (!model1->isFree() && !model2->isFree()) && this->request.enable_cost) {
+    if (nsolver->shapeIntersect(
+            *model1, this->tf1, *model2, this->tf2, nullptr)) {
       AABB<S> aabb1, aabb2;
       computeBV(*model1, this->tf1, aabb1);
       computeBV(*model2, this->tf2, aabb2);
       AABB<S> overlap_part;
       aabb1.overlap(aabb2, overlap_part);
-      this->result->addCostSource(CostSource<S>(overlap_part, cost_density), this->request.num_max_cost_sources);
+      this->result->addCostSource(
+          CostSource<S>(overlap_part, cost_density),
+          this->request.num_max_cost_sources);
     }
   }
 }
@@ -162,6 +170,4 @@ bool initialize(
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

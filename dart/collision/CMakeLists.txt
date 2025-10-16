@@ -21,6 +21,7 @@ set(
   ${header_names}
   dart/all.hpp
   fcl/all.hpp
+  hit/all.hpp
 )
 dart_generate_component_headers(
   COMPONENT_NAME collision
@@ -50,3 +51,4 @@ add_subdirectory(dart)
 add_subdirectory(fcl)
 add_subdirectory(ode)
 add_subdirectory(bullet)
+add_subdirectory(hit)

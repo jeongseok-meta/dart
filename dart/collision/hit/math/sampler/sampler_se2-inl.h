@@ -35,17 +35,14 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_MATH_SAMPLERSE2_INL_H
-#define FCL_MATH_SAMPLERSE2_INL_H
+#pragma once
 
-#include "fcl/math/sampler/sampler_se2.h"
+#include "dart/collision/hit/math/sampler/sampler_se2.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT SamplerSE2<double>;
+extern template class SamplerSE2<double>;
 
 //==============================================================================
 template <typename S>
@@ -56,23 +53,25 @@ SamplerSE2<S>::SamplerSE2()
 
 //==============================================================================
 template <typename S>
-SamplerSE2<S>::SamplerSE2(const Vector2<S>& lower_bound_, const Vector2<S>& upper_bound_) : lower_bound(lower_bound_),
-  upper_bound(upper_bound_)
+SamplerSE2<S>::SamplerSE2(
+    const Vector2<S>& lower_bound_, const Vector2<S>& upper_bound_)
+  : lower_bound(lower_bound_), upper_bound(upper_bound_)
 {
   // Do nothing
 }
 
 //==============================================================================
 template <typename S>
-SamplerSE2<S>::SamplerSE2(S x_min, S x_max, S y_min, S y_max) : lower_bound(Vector2<S>(x_min, y_min)),
-  upper_bound(Vector2<S>(x_max, y_max))
+SamplerSE2<S>::SamplerSE2(S x_min, S x_max, S y_min, S y_max)
+  : lower_bound(Vector2<S>(x_min, y_min)), upper_bound(Vector2<S>(x_max, y_max))
 {
   // Do nothing
 }
 
 //==============================================================================
 template <typename S>
-void SamplerSE2<S>::getBound(Vector2<S>& lower_bound_, Vector2<S>& upper_bound_) const
+void SamplerSE2<S>::getBound(
+    Vector2<S>& lower_bound_, Vector2<S>& upper_bound_) const
 {
   lower_bound_ = lower_bound;
   upper_bound_ = upper_bound;
@@ -80,7 +79,8 @@ void SamplerSE2<S>::getBound(Vector2<S>& lower_bound_, Vector2<S>& upper_bound_)
 
 //==============================================================================
 template <typename S>
-void SamplerSE2<S>::setBound(const Vector2<S>& lower_bound_, const Vector2<S>& upper_bound_)
+void SamplerSE2<S>::setBound(
+    const Vector2<S>& lower_bound_, const Vector2<S>& upper_bound_)
 {
   lower_bound = lower_bound_;
   upper_bound = upper_bound_;
@@ -98,6 +98,4 @@ Vector3<S> SamplerSE2<S>::sample() const
   return q;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

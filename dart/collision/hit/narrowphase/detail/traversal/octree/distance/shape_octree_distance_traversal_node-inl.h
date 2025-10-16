@@ -35,21 +35,18 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_OCTREE_SHAPEOCTREEDISTANCETRAVERSALNODE_INL_H
-#define FCL_TRAVERSAL_OCTREE_SHAPEOCTREEDISTANCETRAVERSALNODE_INL_H
+#pragma once
 
-#include "fcl/narrowphase/detail/traversal/octree/distance/shape_octree_distance_traversal_node.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/octree/distance/shape_octree_distance_traversal_node.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
 template <typename Shape, typename NarrowPhaseSolver>
 ShapeOcTreeDistanceTraversalNode<Shape, NarrowPhaseSolver>::
-ShapeOcTreeDistanceTraversalNode()
+    ShapeOcTreeDistanceTraversalNode()
 {
   model1 = nullptr;
   model2 = nullptr;
@@ -60,19 +57,19 @@ ShapeOcTreeDistanceTraversalNode()
 //==============================================================================
 template <typename Shape, typename NarrowPhaseSolver>
 typename Shape::S
-ShapeOcTreeDistanceTraversalNode<Shape, NarrowPhaseSolver>::
-BVTesting(int, int) const
+ShapeOcTreeDistanceTraversalNode<Shape, NarrowPhaseSolver>::BVTesting(
+    int, int) const
 {
   return -1;
 }
 
 //==============================================================================
 template <typename Shape, typename NarrowPhaseSolver>
-void ShapeOcTreeDistanceTraversalNode<Shape, NarrowPhaseSolver>::
-leafTesting(int, int) const
+void ShapeOcTreeDistanceTraversalNode<Shape, NarrowPhaseSolver>::leafTesting(
+    int, int) const
 {
   otsolver->OcTreeShapeDistance(
-        model2, *model1, this->tf2, this->tf1, this->request, *this->result);
+      model2, *model1, this->tf2, this->tf1, this->request, *this->result);
 }
 
 //==============================================================================
@@ -102,6 +99,4 @@ bool initialize(
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

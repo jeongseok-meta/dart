@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/geometry/shape/cylinder-inl.h"
+#include "dart/collision/hit/geometry/shape/cylinder-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-class Cylinder<double>;
+template class Cylinder<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

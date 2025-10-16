@@ -35,22 +35,19 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BV_OBBRSS_H
-#define FCL_BV_OBBRSS_H
+#pragma once
 
-#include "fcl/math/bv/OBB.h"
-#include "fcl/math/bv/RSS.h"
+#include "dart/collision/hit/math/bv/OBB.h"
+#include "dart/collision/hit/math/bv/RSS.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Class merging the OBB and RSS, can handle collision and distance
 /// simultaneously
 template <typename S_>
-class FCL_EXPORT OBBRSS
+class OBBRSS
 {
 public:
-
   using S = S_;
 
   /// @brief OBB member, for rotation
@@ -69,13 +66,13 @@ public:
   bool contain(const Vector3<S>& p) const;
 
   /// @brief Merge the OBBRSS and a point
-  OBBRSS<S>& operator += (const Vector3<S>& p);
+  OBBRSS<S>& operator+=(const Vector3<S>& p);
 
   /// @brief Merge two OBBRSS
-  OBBRSS<S>& operator += (const OBBRSS<S>& other);
+  OBBRSS<S>& operator+=(const OBBRSS<S>& other);
 
   /// @brief Merge two OBBRSS
-  OBBRSS<S> operator + (const OBBRSS<S>& other) const;
+  OBBRSS<S> operator+(const OBBRSS<S>& other) const;
 
   /// @brief Width of the OBRSS
   S width() const;
@@ -95,12 +92,14 @@ public:
   /// @brief Center of the OBBRSS
   const Vector3<S> center() const;
 
-  /// @brief Distance between two OBBRSS; P and Q , is not nullptr, returns the nearest points
-  S distance(const OBBRSS<S>& other,
-                  Vector3<S>* P = nullptr, Vector3<S>* Q = nullptr) const;
+  /// @brief Distance between two OBBRSS; P and Q , is not nullptr, returns the
+  /// nearest points
+  S distance(
+      const OBBRSS<S>& other,
+      Vector3<S>* P = nullptr,
+      Vector3<S>* Q = nullptr) const;
 
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-
 };
 
 using OBBRSSf = OBBRSS<float>;
@@ -108,40 +107,36 @@ using OBBRSSd = OBBRSS<double>;
 
 /// @brief Translate the OBBRSS bv
 template <typename S>
-FCL_EXPORT
 OBBRSS<S> translate(const OBBRSS<S>& bv, const Vector3<S>& t);
 
 /// @brief Check collision between two OBBRSS, b1 is in configuration (R0, T0)
 /// and b2 is in indentity
 template <typename S, typename DerivedA, typename DerivedB>
-FCL_EXPORT
-bool overlap(const Eigen::MatrixBase<DerivedA>& R0,
-             const Eigen::MatrixBase<DerivedB>& T0,
-             const OBBRSS<S>& b1, const OBBRSS<S>& b2);
+bool overlap(
+    const Eigen::MatrixBase<DerivedA>& R0,
+    const Eigen::MatrixBase<DerivedB>& T0,
+    const OBBRSS<S>& b1,
+    const OBBRSS<S>& b2);
 
 /// @brief Check collision between two OBBRSS, b1 is in configuration (R0, T0)
 /// and b2 is in indentity
 template <typename S>
-FCL_EXPORT
-bool overlap(
-    const Transform3<S>& tf,
-    const OBBRSS<S>& b1,
-    const OBBRSS<S>& b2);
+bool overlap(const Transform3<S>& tf, const OBBRSS<S>& b1, const OBBRSS<S>& b2);
 
 /// @brief Computate distance between two OBBRSS, b1 is in configuation (R0, T0)
 /// and b2 is in indentity; P and Q, is not nullptr, returns the nearest points
 template <typename S, typename DerivedA, typename DerivedB>
-FCL_EXPORT
 S distance(
     const Eigen::MatrixBase<DerivedA>& R0,
     const Eigen::MatrixBase<DerivedB>& T0,
-    const OBBRSS<S>& b1, const OBBRSS<S>& b2,
-    Vector3<S>* P = nullptr, Vector3<S>* Q = nullptr);
+    const OBBRSS<S>& b1,
+    const OBBRSS<S>& b2,
+    Vector3<S>* P = nullptr,
+    Vector3<S>* Q = nullptr);
 
 /// @brief Computate distance between two OBBRSS, b1 is in configuation (R0, T0)
 /// and b2 is in indentity; P and Q, is not nullptr, returns the nearest points
 template <typename S>
-FCL_EXPORT
 S distance(
     const Transform3<S>& tf,
     const OBBRSS<S>& b1,
@@ -149,8 +144,6 @@ S distance(
     Vector3<S>* P = nullptr,
     Vector3<S>* Q = nullptr);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/bv/OBBRSS-inl.h"
-
-#endif
+#include "dart/collision/hit/math/bv/OBBRSS-inl.h"

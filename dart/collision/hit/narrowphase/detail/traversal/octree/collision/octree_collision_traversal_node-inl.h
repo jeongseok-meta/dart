@@ -35,16 +35,13 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_OCTREE_OCTREECOLLISIONTRAVERSALNODE_INL_H
-#define FCL_TRAVERSAL_OCTREE_OCTREECOLLISIONTRAVERSALNODE_INL_H
+#pragma once
 
-#include "fcl/narrowphase/detail/traversal/octree/collision/octree_collision_traversal_node.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/octree/collision/octree_collision_traversal_node.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
 template <typename NarrowPhaseSolver>
@@ -58,8 +55,7 @@ OcTreeCollisionTraversalNode<NarrowPhaseSolver>::OcTreeCollisionTraversalNode()
 
 //==============================================================================
 template <typename NarrowPhaseSolver>
-bool OcTreeCollisionTraversalNode<NarrowPhaseSolver>::BVTesting(
-    int, int) const
+bool OcTreeCollisionTraversalNode<NarrowPhaseSolver>::BVTesting(int, int) const
 {
   return false;
 }
@@ -70,7 +66,7 @@ void OcTreeCollisionTraversalNode<NarrowPhaseSolver>::leafTesting(
     int, int) const
 {
   otsolver->OcTreeIntersect(
-        model1, model2, tf1, tf2, this->request, *this->result);
+      model1, model2, tf1, tf2, this->request, *this->result);
 }
 
 //==============================================================================
@@ -100,6 +96,4 @@ bool initialize(
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

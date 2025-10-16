@@ -35,29 +35,26 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CCD_TRIANGLEMOTIONBOUNDVISITOR_INL_H
-#define FCL_CCD_TRIANGLEMOTIONBOUNDVISITOR_INL_H
+#pragma once
 
-#include "fcl/math/motion/triangle_motion_bound_visitor.h"
+#include "dart/collision/hit/math/motion/interp_motion.h"
+#include "dart/collision/hit/math/motion/screw_motion.h"
+#include "dart/collision/hit/math/motion/spline_motion.h"
+#include "dart/collision/hit/math/motion/translation_motion.h"
+#include "dart/collision/hit/math/motion/triangle_motion_bound_visitor.h"
 
-#include "fcl/math/motion/spline_motion.h"
-#include "fcl/math/motion/screw_motion.h"
-#include "fcl/math/motion/interp_motion.h"
-#include "fcl/math/motion/translation_motion.h"
-#include "fcl/math/motion/triangle_motion_bound_visitor.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT TriangleMotionBoundVisitor<double>;
+extern template class TriangleMotionBoundVisitor<double>;
 
 //==============================================================================
-template<typename S>
+template <typename S>
 TriangleMotionBoundVisitor<S>::TriangleMotionBoundVisitor(
-    const Vector3<S>& a_, const Vector3<S>& b_,
-    const Vector3<S>& c_, const Vector3<S>& n_)
+    const Vector3<S>& a_,
+    const Vector3<S>& b_,
+    const Vector3<S>& c_,
+    const Vector3<S>& n_)
   : a(a_), b(b_), c(c_), n(n_)
 {
   // Do nothing
@@ -76,46 +73,44 @@ struct TriangleMotionBoundVisitorVisitImpl
 };
 
 //==============================================================================
-template<typename S>
-S TriangleMotionBoundVisitor<S>::visit(
-    const SplineMotion<S>& motion) const
+template <typename S>
+S TriangleMotionBoundVisitor<S>::visit(const SplineMotion<S>& motion) const
 {
-  return TriangleMotionBoundVisitorVisitImpl<
-      S, SplineMotion<S>>::run(*this, motion);
+  return TriangleMotionBoundVisitorVisitImpl<S, SplineMotion<S>>::run(
+      *this, motion);
 }
 
 //==============================================================================
-template<typename S>
-S TriangleMotionBoundVisitor<S>::visit(
-    const ScrewMotion<S>& motion) const
+template <typename S>
+S TriangleMotionBoundVisitor<S>::visit(const ScrewMotion<S>& motion) const
 {
-  return TriangleMotionBoundVisitorVisitImpl<
-      S, ScrewMotion<S>>::run(*this, motion);
+  return TriangleMotionBoundVisitorVisitImpl<S, ScrewMotion<S>>::run(
+      *this, motion);
 }
 
 //==============================================================================
-template<typename S>
-S TriangleMotionBoundVisitor<S>::visit(
-    const InterpMotion<S>& motion) const
+template <typename S>
+S TriangleMotionBoundVisitor<S>::visit(const InterpMotion<S>& motion) const
 {
-  return TriangleMotionBoundVisitorVisitImpl<
-      S, InterpMotion<S>>::run(*this, motion);
+  return TriangleMotionBoundVisitorVisitImpl<S, InterpMotion<S>>::run(
+      *this, motion);
 }
 
 //==============================================================================
-template<typename S>
-S TriangleMotionBoundVisitor<S>::visit(
-    const TranslationMotion<S>& motion) const
+template <typename S>
+S TriangleMotionBoundVisitor<S>::visit(const TranslationMotion<S>& motion) const
 {
-  return TriangleMotionBoundVisitorVisitImpl<
-      S, TranslationMotion<S>>::run(*this, motion);
+  return TriangleMotionBoundVisitorVisitImpl<S, TranslationMotion<S>>::run(
+      *this, motion);
 }
 
 //==============================================================================
 /// @brief Compute the motion bound for a triangle along a given direction n
-/// according to mu < |v * n| + ||w x n||(max||ci*||) where ||ci*|| = ||R0(ci) x w|| / \|w\|. w is the angular velocity
-/// and ci are the triangle vertex coordinates.
-/// Notice that the triangle is in the local frame of the object, but n should be in the global frame (the reason is that the motion (t1, t2 and t) is in global frame)
+/// according to mu < |v * n| + ||w x n||(max||ci*||) where ||ci*|| = ||R0(ci) x
+/// w|| / \|w\|. w is the angular velocity and ci are the triangle vertex
+/// coordinates. Notice that the triangle is in the local frame of the object,
+/// but n should be in the global frame (the reason is that the motion (t1, t2
+/// and t) is in global frame)
 template <typename S>
 struct TriangleMotionBoundVisitorVisitImpl<S, ScrewMotion<S>>
 {
@@ -131,12 +126,17 @@ struct TriangleMotionBoundVisitorVisitImpl<S, ScrewMotion<S>>
     S angular_vel = motion.getAngularVelocity();
     const Vector3<S>& p = motion.getAxisOrigin();
 
-    S proj_max = ((tf.linear() * visitor.a + tf.translation() - p).cross(axis)).squaredNorm();
+    S proj_max = ((tf.linear() * visitor.a + tf.translation() - p).cross(axis))
+                     .squaredNorm();
     S tmp;
-    tmp = ((tf.linear() * visitor.b + tf.translation() - p).cross(axis)).squaredNorm();
-    if(tmp > proj_max) proj_max = tmp;
-    tmp = ((tf.linear() * visitor.c + tf.translation() - p).cross(axis)).squaredNorm();
-    if(tmp > proj_max) proj_max = tmp;
+    tmp = ((tf.linear() * visitor.b + tf.translation() - p).cross(axis))
+              .squaredNorm();
+    if (tmp > proj_max)
+      proj_max = tmp;
+    tmp = ((tf.linear() * visitor.c + tf.translation() - p).cross(axis))
+              .squaredNorm();
+    if (tmp > proj_max)
+      proj_max = tmp;
 
     proj_max = std::sqrt(proj_max);
 
@@ -150,9 +150,11 @@ struct TriangleMotionBoundVisitorVisitImpl<S, ScrewMotion<S>>
 
 //==============================================================================
 /// @brief Compute the motion bound for a triangle along a given direction n
-/// according to mu < |v * n| + ||w x n||(max||ci*||) where ||ci*|| = ||R0(ci) x w|| / \|w\|. w is the angular velocity
-/// and ci are the triangle vertex coordinates.
-/// Notice that the triangle is in the local frame of the object, but n should be in the global frame (the reason is that the motion (t1, t2 and t) is in global frame)
+/// according to mu < |v * n| + ||w x n||(max||ci*||) where ||ci*|| = ||R0(ci) x
+/// w|| / \|w\|. w is the angular velocity and ci are the triangle vertex
+/// coordinates. Notice that the triangle is in the local frame of the object,
+/// but n should be in the global frame (the reason is that the motion (t1, t2
+/// and t) is in global frame)
 template <typename S>
 struct TriangleMotionBoundVisitorVisitImpl<S, InterpMotion<S>>
 {
@@ -168,12 +170,17 @@ struct TriangleMotionBoundVisitorVisitImpl<S, InterpMotion<S>>
     S angular_vel = motion.getAngularVelocity();
     const Vector3<S>& linear_vel = motion.getLinearVelocity();
 
-    S proj_max = ((tf.linear() * (visitor.a - reference_p)).cross(angular_axis)).squaredNorm();
+    S proj_max = ((tf.linear() * (visitor.a - reference_p)).cross(angular_axis))
+                     .squaredNorm();
     S tmp;
-    tmp = ((tf.linear() * (visitor.b - reference_p)).cross(angular_axis)).squaredNorm();
-    if(tmp > proj_max) proj_max = tmp;
-    tmp = ((tf.linear() * (visitor.c - reference_p)).cross(angular_axis)).squaredNorm();
-    if(tmp > proj_max) proj_max = tmp;
+    tmp = ((tf.linear() * (visitor.b - reference_p)).cross(angular_axis))
+              .squaredNorm();
+    if (tmp > proj_max)
+      proj_max = tmp;
+    tmp = ((tf.linear() * (visitor.c - reference_p)).cross(angular_axis))
+              .squaredNorm();
+    if (tmp > proj_max)
+      proj_max = tmp;
 
     proj_max = std::sqrt(proj_max);
 
@@ -196,11 +203,16 @@ struct TriangleMotionBoundVisitorVisitImpl<S, SplineMotion<S>>
     S T_bound = motion.computeTBound(visitor.n);
     S tf_t = motion.getCurrentTime();
 
-    S R_bound = std::abs(visitor.a.dot(visitor.n)) + visitor.a.norm() + (visitor.a.cross(visitor.n)).norm();
-    S R_bound_tmp = std::abs(visitor.b.dot(visitor.n)) + visitor.b.norm() + (visitor.b.cross(visitor.n)).norm();
-    if(R_bound_tmp > R_bound) R_bound = R_bound_tmp;
-    R_bound_tmp = std::abs(visitor.c.dot(visitor.n)) + visitor.c.norm() + (visitor.c.cross(visitor.n)).norm();
-    if(R_bound_tmp > R_bound) R_bound = R_bound_tmp;
+    S R_bound = std::abs(visitor.a.dot(visitor.n)) + visitor.a.norm()
+                + (visitor.a.cross(visitor.n)).norm();
+    S R_bound_tmp = std::abs(visitor.b.dot(visitor.n)) + visitor.b.norm()
+                    + (visitor.b.cross(visitor.n)).norm();
+    if (R_bound_tmp > R_bound)
+      R_bound = R_bound_tmp;
+    R_bound_tmp = std::abs(visitor.c.dot(visitor.n)) + visitor.c.norm()
+                  + (visitor.c.cross(visitor.n)).norm();
+    if (R_bound_tmp > R_bound)
+      R_bound = R_bound_tmp;
 
     S dWdW_max = motion.computeDWMax();
     S ratio = std::min(1 - tf_t, dWdW_max);
@@ -226,6 +238,4 @@ struct TriangleMotionBoundVisitorVisitImpl<S, TranslationMotion<S>>
   }
 };
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

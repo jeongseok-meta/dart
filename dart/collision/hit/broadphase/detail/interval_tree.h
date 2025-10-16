@@ -35,23 +35,24 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_INTERVAL_TREE_H
-#define FCL_INTERVAL_TREE_H
+#pragma once
+
+#include "dart/collision/hit/broadphase/detail/interval_tree_node.h"
 
 #include <deque>
-#include <limits>
-#include <cstdlib>
 #include <iostream>
-#include "fcl/broadphase/detail/interval_tree_node.h"
+#include <limits>
 
-namespace dart { namespace collision { namespace hit {
+#include <cstdlib>
+
+namespace dart::collision::hit {
 namespace detail {
 
 /// @brief Class describes the information needed when we take the
 /// right branch in searching for intervals but possibly come back
 /// and check the left branch as well.
 template <typename S>
-struct FCL_EXPORT it_recursion_node
+struct it_recursion_node
 {
 public:
   IntervalTreeNode<S>* start_node;
@@ -64,15 +65,13 @@ public:
 using it_recursion_nodef = it_recursion_node<float>;
 using it_recursion_noded = it_recursion_node<double>;
 
-extern template
-struct it_recursion_node<double>;
+extern template struct it_recursion_node<double>;
 
 /// @brief Interval tree
 template <typename S>
-class FCL_EXPORT IntervalTree
+class IntervalTree
 {
 public:
-
   IntervalTree();
 
   ~IntervalTree();
@@ -99,7 +98,6 @@ public:
   std::deque<SimpleInterval<S>*> query(S low, S high);
 
 protected:
-
   IntervalTreeNode<S>* root;
 
   IntervalTreeNode<S>* nil;
@@ -113,13 +111,15 @@ protected:
   /// @brief Inserts node into the tree as if it were a regular binary tree
   void recursiveInsert(IntervalTreeNode<S>* node);
 
-  /// @brief recursively print a subtree 
+  /// @brief recursively print a subtree
   void recursivePrint(IntervalTreeNode<S>* node) const;
 
   /// @brief recursively find the node corresponding to the interval
-  IntervalTreeNode<S>* recursiveSearch(IntervalTreeNode<S>* node, SimpleInterval<S>* ivl) const;
+  IntervalTreeNode<S>* recursiveSearch(
+      IntervalTreeNode<S>* node, SimpleInterval<S>* ivl) const;
 
-  /// @brief Travels up to the root fixing the max_high fields after an insertion or deletion
+  /// @brief Travels up to the root fixing the max_high fields after an
+  /// insertion or deletion
   void fixupMaxHigh(IntervalTreeNode<S>* node);
 
   void deleteFixup(IntervalTreeNode<S>* node);
@@ -135,8 +135,6 @@ using IntervalTreef = IntervalTree<float>;
 using IntervalTreed = IntervalTree<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/broadphase/detail/interval_tree-inl.h"
-
-#endif
+#include "dart/collision/hit/broadphase/detail/interval_tree-inl.h"

@@ -35,31 +35,26 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_SHAPE_TRIANGLE_P_H
-#define FCL_SHAPE_TRIANGLE_P_H
+#pragma once
+
+#include "dart/collision/hit/geometry/shape/shape_base.h"
 
 #include <iostream>
 
-#include "fcl/geometry/shape/shape_base.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Triangle stores the points instead of only indices of points
 template <typename S_>
-class FCL_EXPORT TriangleP : public ShapeBase<S_>
+class TriangleP : public ShapeBase<S_>
 {
 public:
-
   using S = S_;
 
-  TriangleP(const Vector3<S>& a,
-            const Vector3<S>& b,
-            const Vector3<S>& c);
+  TriangleP(const Vector3<S>& a, const Vector3<S>& b, const Vector3<S>& c);
 
   /// @brief virtual function of compute AABB<S> in local coordinate
   void computeLocalAABB() override;
-  
+
   // Documentation inherited
   NODE_TYPE getNodeType() const override;
 
@@ -71,10 +66,10 @@ public:
   /// a specific configuration
   std::vector<Vector3<S>> getBoundVertices(const Transform3<S>& tf) const;
 
-  friend
-  std::ostream& operator<<(std::ostream& out, const TriangleP& tri) {
-    out << "TriangleP(a: " << tri.a.transpose()
-        << ", b: " << tri.b.transpose() << ", c: " << tri.c.transpose() << ")";
+  friend std::ostream& operator<<(std::ostream& out, const TriangleP& tri)
+  {
+    out << "TriangleP(a: " << tri.a.transpose() << ", b: " << tri.b.transpose()
+        << ", c: " << tri.c.transpose() << ")";
     return out;
   }
 };
@@ -82,8 +77,6 @@ public:
 using TrianglePf = TriangleP<float>;
 using TrianglePd = TriangleP<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/geometry/shape/triangle_p-inl.h"
-
-#endif
+#include "dart/collision/hit/geometry/shape/triangle_p-inl.h"

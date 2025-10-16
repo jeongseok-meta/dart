@@ -35,30 +35,28 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_DISTANCE_INL_H
-#define FCL_DISTANCE_INL_H
+#pragma once
 
-#include "fcl/narrowphase/distance.h"
+#include "dart/collision/hit/narrowphase/collision.h"
+#include "dart/collision/hit/narrowphase/distance.h"
 
-#include "fcl/narrowphase/collision.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-double distance(
+extern template double distance(
     const CollisionObject<double>* o1,
     const CollisionObject<double>* o2,
     const DistanceRequest<double>& request,
     DistanceResult<double>& result);
 
 //==============================================================================
-extern template
-double distance(
-    const CollisionGeometry<double>* o1, const Transform3<double>& tf1,
-    const CollisionGeometry<double>* o2, const Transform3<double>& tf2,
-    const DistanceRequest<double>& request, DistanceResult<double>& result);
+extern template double distance(
+    const CollisionGeometry<double>* o1,
+    const Transform3<double>& tf1,
+    const CollisionGeometry<double>* o2,
+    const Transform3<double>& tf2,
+    const DistanceRequest<double>& request,
+    DistanceResult<double>& result);
 
 //==============================================================================
 template <typename GJKSolver>
@@ -78,13 +76,13 @@ typename NarrowPhaseSolver::S distance(
     DistanceResult<typename NarrowPhaseSolver::S>& result)
 {
   return distance<NarrowPhaseSolver>(
-        o1->collisionGeometry().get(),
-        o1->getTransform(),
-        o2->collisionGeometry().get(),
-        o2->getTransform(),
-        nsolver,
-        request,
-        result);
+      o1->collisionGeometry().get(),
+      o1->getTransform(),
+      o2->collisionGeometry().get(),
+      o2->getTransform(),
+      nsolver,
+      request,
+      result);
 }
 
 //==============================================================================
@@ -101,7 +99,7 @@ typename NarrowPhaseSolver::S distance(
   using S = typename NarrowPhaseSolver::S;
 
   const NarrowPhaseSolver* nsolver = nsolver_;
-  if(!nsolver_)
+  if (!nsolver_)
     nsolver = new NarrowPhaseSolver();
 
   const auto& looktable = getDistanceFunctionLookTable<NarrowPhaseSolver>();
@@ -113,27 +111,21 @@ typename NarrowPhaseSolver::S distance(
 
   S res = std::numeric_limits<S>::max();
 
-
-  if(object_type1 == OT_GEOM && object_type2 == OT_BVH)
-  {
-    if(!looktable.distance_matrix[node_type2][node_type1])
-    {
-      std::cerr << "Warning: distance function between node type " << node_type1 << " and node type " << node_type2 << " is not supported\n";
+  if (object_type1 == OT_GEOM && object_type2 == OT_BVH) {
+    if (!looktable.distance_matrix[node_type2][node_type1]) {
+      std::cerr << "Warning: distance function between node type " << node_type1
+                << " and node type " << node_type2 << " is not supported\n";
+    } else {
+      res = looktable.distance_matrix[node_type2][node_type1](
+          o2, tf2, o1, tf1, nsolver, request, result);
     }
-    else
-    {
-      res = looktable.distance_matrix[node_type2][node_type1](o2, tf2, o1, tf1, nsolver, request, result);
-    }
-  }
-  else
-  {
-    if(!looktable.distance_matrix[node_type1][node_type2])
-    {
-      std::cerr << "Warning: distance function between node type " << node_type1 << " and node type " << node_type2 << " is not supported\n";
-    }
-    else
-    {
-      res = looktable.distance_matrix[node_type1][node_type2](o1, tf1, o2, tf2, nsolver, request, result);
+  } else {
+    if (!looktable.distance_matrix[node_type1][node_type2]) {
+      std::cerr << "Warning: distance function between node type " << node_type1
+                << " and node type " << node_type2 << " is not supported\n";
+    } else {
+      res = looktable.distance_matrix[node_type1][node_type2](
+          o1, tf1, o2, tf2, nsolver, request, result);
     }
   }
 
@@ -144,13 +136,10 @@ typename NarrowPhaseSolver::S distance(
   // of collision checking routine. The downside of this workaround is that the
   // pair of nearest points is not guaranteed to be on the surface of the
   // objects.
-  if(res
-     && result.min_distance < static_cast<S>(0)
-     && request.enable_signed_distance)
-  {
+  if (res && result.min_distance < static_cast<S>(0)
+      && request.enable_signed_distance) {
     if (std::is_same<NarrowPhaseSolver, detail::GJKSolver_libccd<S>>::value
-        && object_type1 == OT_GEOM && object_type2 == OT_GEOM)
-    {
+        && object_type1 == OT_GEOM && object_type2 == OT_GEOM) {
       return res;
     }
 
@@ -164,11 +153,9 @@ typename NarrowPhaseSolver::S distance(
 
     std::size_t index = static_cast<std::size_t>(-1);
     S max_pen_depth = std::numeric_limits<S>::min();
-    for (auto i = 0u; i < collision_result.numContacts(); ++i)
-    {
+    for (auto i = 0u; i < collision_result.numContacts(); ++i) {
       const auto& contact = collision_result.getContact(i);
-      if (max_pen_depth < contact.penetration_depth)
-      {
+      if (max_pen_depth < contact.penetration_depth) {
         max_pen_depth = contact.penetration_depth;
         index = i;
       }
@@ -176,8 +163,7 @@ typename NarrowPhaseSolver::S distance(
     result.min_distance = -max_pen_depth;
     assert(index != static_cast<std::size_t>(-1));
 
-    if (request.enable_nearest_points)
-    {
+    if (request.enable_nearest_points) {
       const Vector3<S>& pos = collision_result.getContact(index).pos;
       result.nearest_points[0] = pos;
       result.nearest_points[1] = pos;
@@ -186,7 +172,7 @@ typename NarrowPhaseSolver::S distance(
     }
   }
 
-  if(!nsolver_)
+  if (!nsolver_)
     delete nsolver;
 
   return res;
@@ -200,51 +186,46 @@ S distance(
     const DistanceRequest<S>& request,
     DistanceResult<S>& result)
 {
-  switch(request.gjk_solver_type)
-  {
-  case GST_LIBCCD:
-    {
+  switch (request.gjk_solver_type) {
+    case GST_LIBCCD: {
       detail::GJKSolver_libccd<S> solver;
       solver.distance_tolerance = request.distance_tolerance;
       return distance(o1, o2, &solver, request, result);
     }
-  case GST_INDEP:
-    {
+    case GST_INDEP: {
       detail::GJKSolver_indep<S> solver;
       solver.gjk_tolerance = request.distance_tolerance;
       return distance(o1, o2, &solver, request, result);
     }
-  default:
-    return -1; // error
+    default:
+      return -1; // error
   }
 }
 
 //==============================================================================
 template <typename S>
 S distance(
-    const CollisionGeometry<S>* o1, const Transform3<S>& tf1,
-    const CollisionGeometry<S>* o2, const Transform3<S>& tf2,
-    const DistanceRequest<S>& request, DistanceResult<S>& result)
+    const CollisionGeometry<S>* o1,
+    const Transform3<S>& tf1,
+    const CollisionGeometry<S>* o2,
+    const Transform3<S>& tf2,
+    const DistanceRequest<S>& request,
+    DistanceResult<S>& result)
 {
-  switch(request.gjk_solver_type)
-  {
-  case GST_LIBCCD:
-    {
+  switch (request.gjk_solver_type) {
+    case GST_LIBCCD: {
       detail::GJKSolver_libccd<S> solver;
       solver.distance_tolerance = request.distance_tolerance;
       return distance(o1, tf1, o2, tf2, &solver, request, result);
     }
-  case GST_INDEP:
-    {
+    case GST_INDEP: {
       detail::GJKSolver_indep<S> solver;
       solver.gjk_tolerance = request.distance_tolerance;
       return distance(o1, tf1, o2, tf2, &solver, request, result);
     }
-  default:
-    return -1;
+    default:
+      return -1;
   }
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

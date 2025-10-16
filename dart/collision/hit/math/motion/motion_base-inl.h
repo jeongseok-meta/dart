@@ -35,17 +35,14 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CCD_MOTION_BASE_INL_H
-#define FCL_CCD_MOTION_BASE_INL_H
+#pragma once
 
-#include "fcl/math/motion/motion_base.h"
+#include "dart/collision/hit/math/motion/motion_base.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT MotionBase<double>;
+extern template class MotionBase<double>;
 
 //==============================================================================
 template <typename S>
@@ -57,7 +54,9 @@ MotionBase<S>::MotionBase()
 
 //==============================================================================
 template <typename S>
-MotionBase<S>::~MotionBase() {}
+MotionBase<S>::~MotionBase()
+{
+}
 
 //==============================================================================
 template <typename S>
@@ -108,11 +107,9 @@ void MotionBase<S>::getCurrentTranslation(Vector3<S>& T) const
 
 //==============================================================================
 template <typename S>
-const std::shared_ptr<TimeInterval<S> >&MotionBase<S>::getTimeInterval() const
+const std::shared_ptr<TimeInterval<S>>& MotionBase<S>::getTimeInterval() const
 {
   return time_interval_;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

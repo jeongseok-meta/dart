@@ -31,32 +31,30 @@
  *  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
- */ 
+ */
 
 /** @author Jia Pan */
 
-#ifndef FCL_BROAD_PHASE_DYNAMIC_AABB_TREE_H
-#define FCL_BROAD_PHASE_DYNAMIC_AABB_TREE_H
+#pragma once
 
-#include <unordered_map>
+#include "dart/collision/hit/broadphase/broadphase_collision_manager.h"
+#include "dart/collision/hit/broadphase/detail/hierarchy_tree.h"
+#include "dart/collision/hit/geometry/shape/box.h"
+#include "dart/collision/hit/geometry/shape/utility.h"
+#include "dart/collision/hit/math/bv/utility.h"
+
 #include <functional>
+#include <unordered_map>
 
-#include "fcl/math/bv/utility.h"
-#include "fcl/geometry/shape/box.h"
-#include "fcl/geometry/shape/utility.h"
-#include "fcl/broadphase/broadphase_collision_manager.h"
-#include "fcl/broadphase/detail/hierarchy_tree.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 template <typename S>
-class FCL_EXPORT DynamicAABBTreeCollisionManager : public BroadPhaseCollisionManager<S>
+class DynamicAABBTreeCollisionManager : public BroadPhaseCollisionManager<S>
 {
 public:
-
   using DynamicAABBNode = detail::NodeBase<AABB<S>>;
-  using DynamicAABBTable = std::unordered_map<CollisionObject<S>*, DynamicAABBNode*> ;
+  using DynamicAABBTable
+      = std::unordered_map<CollisionObject<S>*, DynamicAABBNode*>;
 
   int max_tree_nonbalanced_level;
   int tree_incremental_balance_pass;
@@ -71,7 +69,7 @@ public:
 
   /// @brief add objects to the manager
   void registerObjects(const std::vector<CollisionObject<S>*>& other_objs);
-  
+
   /// @brief add one object to the manager
   void registerObject(CollisionObject<S>* obj);
 
@@ -96,27 +94,41 @@ public:
   /// @brief return the objects managed by the manager
   void getObjects(std::vector<CollisionObject<S>*>& objs) const;
 
-  /// @brief perform collision test between one object and all the objects belonging to the manager
-  void collide(CollisionObject<S>* obj, void* cdata, CollisionCallBack<S> callback) const;
+  /// @brief perform collision test between one object and all the objects
+  /// belonging to the manager
+  void collide(
+      CollisionObject<S>* obj,
+      void* cdata,
+      CollisionCallBack<S> callback) const;
 
-  /// @brief perform distance computation between one object and all the objects belonging to the manager
-  void distance(CollisionObject<S>* obj, void* cdata, DistanceCallBack<S> callback) const;
+  /// @brief perform distance computation between one object and all the objects
+  /// belonging to the manager
+  void distance(
+      CollisionObject<S>* obj, void* cdata, DistanceCallBack<S> callback) const;
 
-  /// @brief perform collision test for the objects belonging to the manager (i.e., N^2 self collision)
+  /// @brief perform collision test for the objects belonging to the manager
+  /// (i.e., N^2 self collision)
   void collide(void* cdata, CollisionCallBack<S> callback) const;
 
-  /// @brief perform distance test for the objects belonging to the manager (i.e., N^2 self distance)
+  /// @brief perform distance test for the objects belonging to the manager
+  /// (i.e., N^2 self distance)
   void distance(void* cdata, DistanceCallBack<S> callback) const;
 
   /// @brief perform collision test with objects belonging to another manager
-  void collide(BroadPhaseCollisionManager<S>* other_manager_, void* cdata, CollisionCallBack<S> callback) const;
+  void collide(
+      BroadPhaseCollisionManager<S>* other_manager_,
+      void* cdata,
+      CollisionCallBack<S> callback) const;
 
   /// @brief perform distance test with objects belonging to another manager
-  void distance(BroadPhaseCollisionManager<S>* other_manager_, void* cdata, DistanceCallBack<S> callback) const;
-  
+  void distance(
+      BroadPhaseCollisionManager<S>* other_manager_,
+      void* cdata,
+      DistanceCallBack<S> callback) const;
+
   /// @brief whether the manager is empty
   bool empty() const;
-  
+
   /// @brief the number of objects managed by the manager
   size_t size() const;
 
@@ -132,10 +144,9 @@ private:
 };
 
 using DynamicAABBTreeCollisionManagerf = DynamicAABBTreeCollisionManager<float>;
-using DynamicAABBTreeCollisionManagerd = DynamicAABBTreeCollisionManager<double>;
+using DynamicAABBTreeCollisionManagerd
+    = DynamicAABBTreeCollisionManager<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/broadphase/broadphase_dynamic_AABB_tree-inl.h"
-
-#endif
+#include "dart/collision/hit/broadphase/broadphase_dynamic_AABB_tree-inl.h"

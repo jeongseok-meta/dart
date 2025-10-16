@@ -35,17 +35,15 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CONTACT_H
-#define FCL_CONTACT_H
+#pragma once
 
-#include "fcl/narrowphase/collision_object.h"
+#include "dart/collision/hit/narrowphase/collision_object.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Contact information returned by collision
 template <typename S>
-struct FCL_EXPORT Contact
+struct Contact
 {
   /// @brief collision object 1
   const CollisionGeometry<S>* o1;
@@ -66,7 +64,7 @@ struct FCL_EXPORT Contact
   /// if object 2 is octree, it is the query cell id (see
   ///                OcTree::getNodeByQueryCellId)
   intptr_t b2;
- 
+
   /// @brief contact normal, pointing from o1 to o2
   Vector3<S> normal;
 
@@ -76,25 +74,32 @@ struct FCL_EXPORT Contact
   /// @brief penetration depth
   S penetration_depth;
 
- 
   /// @brief invalid contact primitive information
   static const int NONE = -1;
 
   Contact();
 
-  Contact(const CollisionGeometry<S>* o1_, const CollisionGeometry<S>* o2_, int b1_, int b2_);
+  Contact(
+      const CollisionGeometry<S>* o1_,
+      const CollisionGeometry<S>* o2_,
+      int b1_,
+      int b2_);
 
-  Contact(const CollisionGeometry<S>* o1_, const CollisionGeometry<S>* o2_, int b1_, int b2_,
-          const Vector3<S>& pos_, const Vector3<S>& normal_, S depth_);
+  Contact(
+      const CollisionGeometry<S>* o1_,
+      const CollisionGeometry<S>* o2_,
+      int b1_,
+      int b2_,
+      const Vector3<S>& pos_,
+      const Vector3<S>& normal_,
+      S depth_);
 
-  bool operator < (const Contact& other) const;
+  bool operator<(const Contact& other) const;
 };
 
 using Contactf = Contact<float>;
 using Contactd = Contact<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/contact-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/contact-inl.h"

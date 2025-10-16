@@ -35,21 +35,17 @@
 
 /** @author Jia Pan */
 
-#include "fcl/narrowphase/detail/traversal/distance/mesh_conservative_advancement_traversal_node-inl.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/mesh_conservative_advancement_traversal_node-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
-template
-class MeshConservativeAdvancementTraversalNodeRSS<double>;
+template class MeshConservativeAdvancementTraversalNodeRSS<double>;
 
 //==============================================================================
-template
-bool initialize(
+template bool initialize(
     MeshConservativeAdvancementTraversalNodeRSS<double>& node,
     const BVHModel<RSS<double>>& model1,
     const Transform3<double>& tf1,
@@ -58,12 +54,10 @@ bool initialize(
     double w);
 
 //==============================================================================
-template
-class MeshConservativeAdvancementTraversalNodeOBBRSS<double>;
+template class MeshConservativeAdvancementTraversalNodeOBBRSS<double>;
 
 //==============================================================================
-template
-bool initialize(
+template bool initialize(
     MeshConservativeAdvancementTraversalNodeOBBRSS<double>& node,
     const BVHModel<OBBRSS<double>>& model1,
     const Transform3<double>& tf1,
@@ -72,4 +66,4 @@ bool initialize(
     double w);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

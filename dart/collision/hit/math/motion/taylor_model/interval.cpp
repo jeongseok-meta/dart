@@ -33,24 +33,22 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 
-// This code is based on code developed by Stephane Redon at UNC and Inria for the CATCH library: http://graphics.ewha.ac.kr/CATCH/
+// This code is based on code developed by Stephane Redon at UNC and Inria for
+// the CATCH library: http://graphics.ewha.ac.kr/CATCH/
 /** @author Jia Pan */
 
-#include "fcl/math/motion/taylor_model/interval-inl.h"
+#include "dart/collision/hit/math/motion/taylor_model/interval-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
-
-//==============================================================================
-template
-struct Interval<double>;
+namespace dart::collision::hit {
 
 //==============================================================================
-template
-Interval<double> bound(const Interval<double>& i, double v);
+template struct Interval<double>;
 
 //==============================================================================
-template
-Interval<double> bound(const Interval<double>& i, const Interval<double>& other);
+template Interval<double> bound(const Interval<double>& i, double v);
 
-} // namespace dart { namespace collision { namespace hit
+//==============================================================================
+template Interval<double> bound(
+    const Interval<double>& i, const Interval<double>& other);
+
+} // namespace dart::collision::hit

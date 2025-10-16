@@ -35,23 +35,20 @@
 
 /** @author Jia Pan */
 
-#include "fcl/geometry/octree/octree-inl.h"
+#include "dart/collision/hit/config.h"
+#include "dart/collision/hit/geometry/octree/octree-inl.h"
 
-#include "fcl/config.h"
+#if DART_COLLISION_HIT_HAVE_OCTOMAP
 
-#if FCL_HAVE_OCTOMAP
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-template
-class OcTree<double>;
+template class OcTree<double>;
 
 //==============================================================================
-template
-void computeChildBV(const AABB<double>& root_bv, unsigned int i, AABB<double>& child_bv);
+template void computeChildBV(
+    const AABB<double>& root_bv, unsigned int i, AABB<double>& child_bv);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
 #endif

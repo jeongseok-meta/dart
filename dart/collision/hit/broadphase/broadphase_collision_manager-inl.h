@@ -35,18 +35,15 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BROADPHASE_BROADPHASECOLLISIONMANAGER_INL_H
-#define FCL_BROADPHASE_BROADPHASECOLLISIONMANAGER_INL_H
+#pragma once
 
-#include "fcl/broadphase/broadphase_collision_manager.h"
+#include "dart/collision/hit/broadphase/broadphase_collision_manager.h"
+#include "dart/collision/hit/common/unused.h"
 
-#include "fcl/common/unused.h"
-
-namespace dart { namespace collision { namespace hit {
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT BroadPhaseCollisionManager<double>;
+extern template class BroadPhaseCollisionManager<double>;
 
 //==============================================================================
 template <typename S>
@@ -68,7 +65,7 @@ template <typename S>
 void BroadPhaseCollisionManager<S>::registerObjects(
     const std::vector<CollisionObject<S>*>& other_objs)
 {
-  for(size_t i = 0; i < other_objs.size(); ++i)
+  for (size_t i = 0; i < other_objs.size(); ++i)
     registerObject(other_objs[i]);
 }
 
@@ -76,7 +73,7 @@ void BroadPhaseCollisionManager<S>::registerObjects(
 template <typename S>
 void BroadPhaseCollisionManager<S>::update(CollisionObject<S>* updated_obj)
 {
-  FCL_UNUSED(updated_obj);
+  DART_COLLISION_HIT_UNUSED(updated_obj);
 
   update();
 }
@@ -86,7 +83,7 @@ template <typename S>
 void BroadPhaseCollisionManager<S>::update(
     const std::vector<CollisionObject<S>*>& updated_objs)
 {
-  FCL_UNUSED(updated_objs);
+  DART_COLLISION_HIT_UNUSED(updated_objs);
 
   update();
 }
@@ -96,8 +93,10 @@ template <typename S>
 bool BroadPhaseCollisionManager<S>::inTestedSet(
     CollisionObject<S>* a, CollisionObject<S>* b) const
 {
-  if(a < b) return tested_set.find(std::make_pair(a, b)) != tested_set.end();
-  else return tested_set.find(std::make_pair(b, a)) != tested_set.end();
+  if (a < b)
+    return tested_set.find(std::make_pair(a, b)) != tested_set.end();
+  else
+    return tested_set.find(std::make_pair(b, a)) != tested_set.end();
 }
 
 //==============================================================================
@@ -105,10 +104,10 @@ template <typename S>
 void BroadPhaseCollisionManager<S>::insertTestedSet(
     CollisionObject<S>* a, CollisionObject<S>* b) const
 {
-  if(a < b) tested_set.insert(std::make_pair(a, b));
-  else tested_set.insert(std::make_pair(b, a));
+  if (a < b)
+    tested_set.insert(std::make_pair(a, b));
+  else
+    tested_set.insert(std::make_pair(b, a));
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

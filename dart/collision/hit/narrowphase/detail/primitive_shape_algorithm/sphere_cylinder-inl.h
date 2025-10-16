@@ -34,30 +34,30 @@
 
 /** @author Sean Curtis <sean@tri.global> (2018) */
 
-#ifndef FCL_NARROWPHASE_DETAIL_SPHERECYLINDER_INL_H
-#define FCL_NARROWPHASE_DETAIL_SPHERECYLINDER_INL_H
+#pragma once
 
-#include "fcl/narrowphase/detail/primitive_shape_algorithm/sphere_cylinder.h"
+#include "dart/collision/hit/narrowphase/detail/primitive_shape_algorithm/sphere_cylinder.h"
 
-namespace dart { namespace collision { namespace hit {
+namespace dart::collision::hit {
 namespace detail {
 
-extern template FCL_EXPORT bool
-sphereCylinderIntersect(const Sphere<double>& sphere,
-                        const Transform3<double>& X_FS,
-                        const Cylinder<double>& cylinder,
-                        const Transform3<double>& X_FC,
-                        std::vector<ContactPoint<double>>* contacts);
+extern template bool sphereCylinderIntersect(
+    const Sphere<double>& sphere,
+    const Transform3<double>& X_FS,
+    const Cylinder<double>& cylinder,
+    const Transform3<double>& X_FC,
+    std::vector<ContactPoint<double>>* contacts);
 
 //==============================================================================
 
-extern template FCL_EXPORT bool
-sphereCylinderDistance(const Sphere<double>& sphere,
-                       const Transform3<double>& X_FS,
-                       const Cylinder<double>& cylinder,
-                       const Transform3<double>& X_FC,
-                       double* distance, Vector3<double>* p_FSc,
-                       Vector3<double>* p_FCs);
+extern template bool sphereCylinderDistance(
+    const Sphere<double>& sphere,
+    const Transform3<double>& X_FS,
+    const Cylinder<double>& cylinder,
+    const Transform3<double>& X_FC,
+    double* distance,
+    Vector3<double>* p_FSc,
+    Vector3<double>* p_FCs);
 
 //==============================================================================
 
@@ -76,8 +76,12 @@ sphereCylinderDistance(const Sphere<double>& sphere,
 // @returns true if the nearest point is a different point than the query point.
 // @pre p_CN_ptr must point to a valid Vector3<S> instance.
 template <typename S>
-bool nearestPointInCylinder(const S& height, const S& radius,
-                            const Vector3<S>& p_CQ, Vector3<S>* p_CN_ptr) {
+bool nearestPointInCylinder(
+    const S& height,
+    const S& radius,
+    const Vector3<S>& p_CQ,
+    Vector3<S>* p_CN_ptr)
+{
   assert(p_CN_ptr != nullptr);
   Vector3<S>& p_CN = *p_CN_ptr;
   p_CN = p_CQ;
@@ -111,10 +115,13 @@ bool nearestPointInCylinder(const S& height, const S& radius,
 //==============================================================================
 
 template <typename S>
-FCL_EXPORT bool sphereCylinderIntersect(
-    const Sphere<S>& sphere, const Transform3<S>& X_FS,
-    const Cylinder<S>& cylinder, const Transform3<S>& X_FC,
-    std::vector<ContactPoint<S>>* contacts) {
+bool sphereCylinderIntersect(
+    const Sphere<S>& sphere,
+    const Transform3<S>& X_FS,
+    const Cylinder<S>& cylinder,
+    const Transform3<S>& X_FC,
+    std::vector<ContactPoint<S>>* contacts)
+{
   const S& r_s = sphere.radius;
   // Find the sphere center So (abbreviated as S) in the cylinder's frame.
   const Transform3<S> X_CS = X_FC.inverse() * X_FS;
@@ -123,8 +130,8 @@ FCL_EXPORT bool sphereCylinderIntersect(
   // Find N, the nearest point *inside* the cylinder to the sphere center S
   // (measure and expressed in frame C).
   Vector3<S> p_CN;
-  bool S_is_outside = nearestPointInCylinder(cylinder.lz, cylinder.radius, p_CS,
-                                             &p_CN);
+  bool S_is_outside
+      = nearestPointInCylinder(cylinder.lz, cylinder.radius, p_CS, &p_CN);
 
   // Compute the position vector from the sphere center S to the nearest point N
   // in the cylinder frame C. If the center is inside the cylinder, this will
@@ -223,11 +230,15 @@ FCL_EXPORT bool sphereCylinderIntersect(
 //==============================================================================
 
 template <typename S>
-FCL_EXPORT bool sphereCylinderDistance(const Sphere<S>& sphere,
-                                       const Transform3<S>& X_FS,
-                                       const Cylinder<S>& cylinder,
-                                       const Transform3<S>& X_FC, S* distance,
-                                       Vector3<S>* p_FSc, Vector3<S>* p_FCs) {
+bool sphereCylinderDistance(
+    const Sphere<S>& sphere,
+    const Transform3<S>& X_FS,
+    const Cylinder<S>& cylinder,
+    const Transform3<S>& X_FC,
+    S* distance,
+    Vector3<S>* p_FSc,
+    Vector3<S>* p_FCs)
+{
   // Find the sphere center S in the cylinder's frame.
   const Transform3<S> X_CS = X_FC.inverse() * X_FS;
   const Vector3<S> p_CS = X_CS.translation();
@@ -236,8 +247,8 @@ FCL_EXPORT bool sphereCylinderDistance(const Sphere<S>& sphere,
   // Find N, the nearest point *inside* the cylinder to the sphere center S
   // (measured and expressed in frame C).
   Vector3<S> p_CN;
-  bool S_is_outside = nearestPointInCylinder(cylinder.lz, cylinder.radius, p_CS,
-                                             &p_CN);
+  bool S_is_outside
+      = nearestPointInCylinder(cylinder.lz, cylinder.radius, p_CS, &p_CN);
 
   if (S_is_outside) {
     // If N is not S, we know the sphere center is *outside* the cylinder (but
@@ -266,11 +277,10 @@ FCL_EXPORT bool sphereCylinderDistance(const Sphere<S>& sphere,
   }
 
   // We didn't *prove* separation, so we must be in penetration.
-  if (distance != nullptr) *distance = -1;
+  if (distance != nullptr)
+    *distance = -1;
   return false;
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif // FCL_NARROWPHASE_DETAIL_SPHERECYLINDER_INL_H
+} // namespace dart::collision::hit

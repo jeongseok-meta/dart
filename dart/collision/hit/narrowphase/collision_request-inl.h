@@ -35,19 +35,15 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_COLLISIONREQUEST_INL_H
-#define FCL_COLLISIONREQUEST_INL_H
+#pragma once
 
-#include "fcl/narrowphase/collision_request.h"
+#include "dart/collision/hit/narrowphase/collision_request.h"
+#include "dart/collision/hit/narrowphase/collision_result.h"
 
-#include "fcl/narrowphase/collision_result.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-struct CollisionRequest<double>;
+extern template struct CollisionRequest<double>;
 
 //==============================================================================
 template <typename S>
@@ -76,11 +72,8 @@ CollisionRequest<S>::CollisionRequest(
 template <typename S>
 bool CollisionRequest<S>::isSatisfied(const CollisionResult<S>& result) const
 {
-  return (!enable_cost)
-      && result.isCollision()
-      && (num_max_contacts <= result.numContacts());
+  return (!enable_cost) && result.isCollision()
+         && (num_max_contacts <= result.numContacts());
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

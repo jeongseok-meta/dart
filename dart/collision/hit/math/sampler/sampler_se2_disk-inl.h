@@ -35,17 +35,14 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_MATH_SAMPLERSE2DISK_INL_H
-#define FCL_MATH_SAMPLERSE2DISK_INL_H
+#pragma once
 
-#include "fcl/math/sampler/sampler_se2_disk.h"
+#include "dart/collision/hit/math/sampler/sampler_se2_disk.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT SamplerSE2_disk<double>;
+extern template class SamplerSE2_disk<double>;
 
 //==============================================================================
 template <typename S>
@@ -65,8 +62,10 @@ SamplerSE2_disk<S>::SamplerSE2_disk(S cx, S cy, S r1, S r2, S crefx, S crefy)
 template <typename S>
 void SamplerSE2_disk<S>::setBound(S cx, S cy, S r1, S r2, S crefx, S crefy)
 {
-  c[0] = cx; c[1] = cy;
-  cref[0] = crefx; cref[1] = crefy;
+  c[0] = cx;
+  c[1] = cy;
+  cref[0] = crefx;
+  cref[1] = crefy;
   r_min = r1;
   r_max = r2;
 }
@@ -85,6 +84,4 @@ Vector3<S> SamplerSE2_disk<S>::sample() const
   return q;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

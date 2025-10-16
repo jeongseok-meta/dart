@@ -1,17 +1,17 @@
-#include "fcl/narrowphase/detail/failed_at_this_configuration.h"
+#include "dart/collision/hit/narrowphase/detail/failed_at_this_configuration.h"
 
 #include <sstream>
 
-namespace dart { namespace collision { namespace hit {
+namespace dart::collision::hit {
 namespace detail {
 
-void ThrowFailedAtThisConfiguration(const std::string& message,
-                                    const char* func,
-                                    const char* file, int line) {
+void ThrowFailedAtThisConfiguration(
+    const std::string& message, const char* func, const char* file, int line)
+{
   std::stringstream ss;
   ss << file << ":(" << line << "): " << func << "(): " << message;
   throw FailedAtThisConfiguration(ss.str());
 }
 
-}  // namespace detail
-}  // namespace dart { namespace collision { namespace hit
+} // namespace detail
+} // namespace dart::collision::hit

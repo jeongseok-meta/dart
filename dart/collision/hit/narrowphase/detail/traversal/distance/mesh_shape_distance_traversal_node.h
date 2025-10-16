@@ -35,25 +35,21 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_MESHSHAPEDISTANCETRAVERSALNODE_H
-#define FCL_TRAVERSAL_MESHSHAPEDISTANCETRAVERSALNODE_H
+#pragma once
 
-#include "fcl/geometry/shape/utility.h"
-#include "fcl/narrowphase/detail/traversal/distance/bvh_shape_distance_traversal_node.h"
+#include "dart/collision/hit/geometry/shape/utility.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/bvh_shape_distance_traversal_node.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /// @brief Traversal node for distance between mesh and shape
 template <typename BV, typename Shape, typename NarrowPhaseSolver>
-class FCL_EXPORT MeshShapeDistanceTraversalNode
-    : public BVHShapeDistanceTraversalNode<BV, Shape>
-{ 
+class MeshShapeDistanceTraversalNode
+  : public BVHShapeDistanceTraversalNode<BV, Shape>
+{
 public:
-
   using S = typename BV::S;
 
   MeshShapeDistanceTraversalNode();
@@ -69,13 +65,14 @@ public:
 
   S rel_err;
   S abs_err;
-    
+
   const NarrowPhaseSolver* nsolver;
 };
 
 template <typename BV, typename Shape, typename NarrowPhaseSolver>
 void meshShapeDistanceOrientedNodeLeafTesting(
-    int b1, int /* b2 */,
+    int b1,
+    int /* b2 */,
     const BVHModel<BV>* model1,
     const Shape& model2,
     Vector3<typename BV::S>* vertices,
@@ -84,10 +81,9 @@ void meshShapeDistanceOrientedNodeLeafTesting(
     const Transform3<typename BV::S>& tf2,
     const NarrowPhaseSolver* nsolver,
     bool enable_statistics,
-    int & num_leaf_tests,
+    int& num_leaf_tests,
     const DistanceRequest<typename BV::S>& /* request */,
     DistanceResult<typename BV::S>& result);
-
 
 template <typename BV, typename Shape, typename NarrowPhaseSolver>
 void distancePreprocessOrientedNode(
@@ -114,13 +110,16 @@ bool initialize(
     const NarrowPhaseSolver* nsolver,
     const DistanceRequest<typename BV::S>& request,
     DistanceResult<typename BV::S>& result,
-    bool use_refit = false, bool refit_bottomup = false);
+    bool use_refit = false,
+    bool refit_bottomup = false);
 
-/// @brief Traversal node for distance between mesh and shape, when mesh BVH is one of the oriented node (RSS, OBBRSS, kIOS)
+/// @brief Traversal node for distance between mesh and shape, when mesh BVH is
+/// one of the oriented node (RSS, OBBRSS, kIOS)
 template <typename Shape, typename NarrowPhaseSolver>
-class FCL_EXPORT MeshShapeDistanceTraversalNodeRSS
-    : public MeshShapeDistanceTraversalNode<
-    RSS<typename Shape::S>, Shape, NarrowPhaseSolver>
+class MeshShapeDistanceTraversalNodeRSS : public MeshShapeDistanceTraversalNode<
+                                              RSS<typename Shape::S>,
+                                              Shape,
+                                              NarrowPhaseSolver>
 {
 public:
   using S = typename Shape::S;
@@ -148,8 +147,11 @@ bool initialize(
     DistanceResult<typename Shape::S>& result);
 
 template <typename Shape, typename NarrowPhaseSolver>
-class FCL_EXPORT MeshShapeDistanceTraversalNodekIOS
-    : public MeshShapeDistanceTraversalNode<kIOS<typename Shape::S>, Shape, NarrowPhaseSolver>
+class MeshShapeDistanceTraversalNodekIOS
+  : public MeshShapeDistanceTraversalNode<
+        kIOS<typename Shape::S>,
+        Shape,
+        NarrowPhaseSolver>
 {
 public:
   using S = typename Shape::S;
@@ -163,22 +165,27 @@ public:
   S BVTesting(int b1, int b2) const;
 
   void leafTesting(int b1, int b2) const;
-
 };
 
-/// @brief Initialize traversal node for distance computation between one mesh and one shape, specialized for kIOS type
+/// @brief Initialize traversal node for distance computation between one mesh
+/// and one shape, specialized for kIOS type
 template <typename Shape, typename NarrowPhaseSolver>
 bool initialize(
     MeshShapeDistanceTraversalNodekIOS<Shape, NarrowPhaseSolver>& node,
-    const BVHModel<kIOS<typename Shape::S>>& model1, const Transform3<typename Shape::S>& tf1,
-    const Shape& model2, const Transform3<typename Shape::S>& tf2,
+    const BVHModel<kIOS<typename Shape::S>>& model1,
+    const Transform3<typename Shape::S>& tf1,
+    const Shape& model2,
+    const Transform3<typename Shape::S>& tf2,
     const NarrowPhaseSolver* nsolver,
     const DistanceRequest<typename Shape::S>& request,
     DistanceResult<typename Shape::S>& result);
 
 template <typename Shape, typename NarrowPhaseSolver>
-class FCL_EXPORT MeshShapeDistanceTraversalNodeOBBRSS
-    : public MeshShapeDistanceTraversalNode<OBBRSS<typename Shape::S>, Shape, NarrowPhaseSolver>
+class MeshShapeDistanceTraversalNodeOBBRSS
+  : public MeshShapeDistanceTraversalNode<
+        OBBRSS<typename Shape::S>,
+        Shape,
+        NarrowPhaseSolver>
 {
 public:
   using S = typename Shape::S;
@@ -192,10 +199,10 @@ public:
   S BVTesting(int b1, int b2) const;
 
   void leafTesting(int b1, int b2) const;
-  
 };
 
-/// @brief Initialize traversal node for distance computation between one mesh and one shape, specialized for OBBRSS type
+/// @brief Initialize traversal node for distance computation between one mesh
+/// and one shape, specialized for OBBRSS type
 template <typename Shape, typename NarrowPhaseSolver>
 bool initialize(
     MeshShapeDistanceTraversalNodeOBBRSS<Shape, NarrowPhaseSolver>& node,
@@ -208,8 +215,6 @@ bool initialize(
     DistanceResult<typename Shape::S>& result);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/traversal/distance/mesh_shape_distance_traversal_node-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/mesh_shape_distance_traversal_node-inl.h"

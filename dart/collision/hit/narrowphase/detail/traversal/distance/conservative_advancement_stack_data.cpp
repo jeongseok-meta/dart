@@ -35,16 +35,13 @@
 
 /** @author Jia Pan */
 
-#include "fcl/narrowphase/detail/traversal/distance/conservative_advancement_stack_data-inl.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/conservative_advancement_stack_data-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
-template
-struct ConservativeAdvancementStackData<double>;
+template struct ConservativeAdvancementStackData<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

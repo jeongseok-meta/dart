@@ -35,21 +35,17 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_OCTREE_OCTREEDISTANCETRAVERSALNODE_INL_H
-#define FCL_TRAVERSAL_OCTREE_OCTREEDISTANCETRAVERSALNODE_INL_H
+#pragma once
 
-#include "fcl/narrowphase/detail/traversal/octree/distance/octree_distance_traversal_node.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/octree/distance/octree_distance_traversal_node.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
 template <typename NarrowPhaseSolver>
-OcTreeDistanceTraversalNode<NarrowPhaseSolver>::
-OcTreeDistanceTraversalNode()
+OcTreeDistanceTraversalNode<NarrowPhaseSolver>::OcTreeDistanceTraversalNode()
 {
   model1 = nullptr;
   model2 = nullptr;
@@ -60,19 +56,17 @@ OcTreeDistanceTraversalNode()
 //==============================================================================
 template <typename NarrowPhaseSolver>
 typename NarrowPhaseSolver::S
-OcTreeDistanceTraversalNode<NarrowPhaseSolver>::
-BVTesting(int, int) const
+OcTreeDistanceTraversalNode<NarrowPhaseSolver>::BVTesting(int, int) const
 {
   return -1;
 }
 
 //==============================================================================
 template <typename NarrowPhaseSolver>
-void OcTreeDistanceTraversalNode<NarrowPhaseSolver>::
-leafTesting(int, int) const
+void OcTreeDistanceTraversalNode<NarrowPhaseSolver>::leafTesting(int, int) const
 {
   otsolver->OcTreeDistance(
-        model1, model2, this->tf1, this->tf2, this->request, *this->result);
+      model1, model2, this->tf1, this->tf2, this->request, *this->result);
 }
 
 //==============================================================================
@@ -102,6 +96,4 @@ bool initialize(
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

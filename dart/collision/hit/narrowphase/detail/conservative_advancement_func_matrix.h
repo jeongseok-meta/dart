@@ -35,41 +35,37 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CONSERVATIVE_ADVANCEMENT_H
-#define FCL_CONSERVATIVE_ADVANCEMENT_H
+#pragma once
 
-#include "fcl/geometry/collision_geometry.h"
-#include "fcl/narrowphase/continuous_collision_request.h"
-#include "fcl/narrowphase/continuous_collision_result.h"
+#include "dart/collision/hit/geometry/collision_geometry.h"
+#include "dart/collision/hit/narrowphase/continuous_collision_request.h"
+#include "dart/collision/hit/narrowphase/continuous_collision_result.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
-template<typename NarrowPhaseSolver>
+template <typename NarrowPhaseSolver>
 struct ConservativeAdvancementFunctionMatrix
 {
   using S = typename NarrowPhaseSolver::S;
 
-  using ConservativeAdvancementFunc
-      = S (*)(const CollisionGeometry<S>* o1,
-              const MotionBase<S>* motion1,
-              const CollisionGeometry<S>* o2,
-              const MotionBase<S>* motion2,
-              const NarrowPhaseSolver* nsolver,
-              const ContinuousCollisionRequest<S>& request,
-              ContinuousCollisionResult<S>& result);
+  using ConservativeAdvancementFunc = S (*)(
+      const CollisionGeometry<S>* o1,
+      const MotionBase<S>* motion1,
+      const CollisionGeometry<S>* o2,
+      const MotionBase<S>* motion2,
+      const NarrowPhaseSolver* nsolver,
+      const ContinuousCollisionRequest<S>& request,
+      ContinuousCollisionResult<S>& result);
 
-  ConservativeAdvancementFunc conservative_advancement_matrix[NODE_COUNT][NODE_COUNT];
+  ConservativeAdvancementFunc conservative_advancement_matrix[NODE_COUNT]
+                                                             [NODE_COUNT];
 
   ConservativeAdvancementFunctionMatrix();
 };
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/conservative_advancement_func_matrix-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/conservative_advancement_func_matrix-inl.h"

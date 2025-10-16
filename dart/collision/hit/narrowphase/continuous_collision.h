@@ -35,23 +35,21 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CONTINUOUS_COLLISION_H
-#define FCL_CONTINUOUS_COLLISION_H
+#pragma once
+
+#include "dart/collision/hit/narrowphase/collision_object.h"
+#include "dart/collision/hit/narrowphase/continuous_collision_object.h"
+#include "dart/collision/hit/narrowphase/detail/conservative_advancement_func_matrix.h"
+#include "dart/collision/hit/narrowphase/detail/gjk_solver_indep.h"
+#include "dart/collision/hit/narrowphase/detail/gjk_solver_libccd.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/collision/mesh_continuous_collision_traversal_node.h"
 
 #include <iostream>
-#include "fcl/narrowphase/collision_object.h"
-#include "fcl/narrowphase/continuous_collision_object.h"
-#include "fcl/narrowphase/detail/gjk_solver_indep.h"
-#include "fcl/narrowphase/detail/gjk_solver_libccd.h"
-#include "fcl/narrowphase/detail/conservative_advancement_func_matrix.h"
-#include "fcl/narrowphase/detail/traversal/collision/mesh_continuous_collision_traversal_node.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief continous collision checking between two objects
 template <typename S>
-FCL_EXPORT
 S continuousCollide(
     const CollisionGeometry<S>* o1,
     const MotionBase<S>* motion1,
@@ -61,7 +59,6 @@ S continuousCollide(
     ContinuousCollisionResult<S>& result);
 
 template <typename S>
-FCL_EXPORT
 S continuousCollide(
     const CollisionGeometry<S>* o1,
     const Transform3<S>& tf1_beg,
@@ -73,7 +70,6 @@ S continuousCollide(
     ContinuousCollisionResult<S>& result);
 
 template <typename S>
-FCL_EXPORT
 S continuousCollide(
     const CollisionObject<S>* o1,
     const Transform3<S>& tf1_end,
@@ -83,15 +79,12 @@ S continuousCollide(
     ContinuousCollisionResult<S>& result);
 
 template <typename S>
-FCL_EXPORT
 S collide(
     const ContinuousCollisionObject<S>* o1,
     const ContinuousCollisionObject<S>* o2,
     const ContinuousCollisionRequest<S>& request,
     ContinuousCollisionResult<S>& result);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/continuous_collision-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/continuous_collision-inl.h"

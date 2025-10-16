@@ -35,19 +35,15 @@
 
 /** @author Jia Pan */
 
-#include "fcl/broadphase/detail/interval_tree-inl.h"
+#include "dart/collision/hit/broadphase/detail/interval_tree-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
-template
-struct it_recursion_node<double>;
+template struct it_recursion_node<double>;
 
-template
-class IntervalTree<double>;
+template class IntervalTree<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

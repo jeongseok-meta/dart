@@ -35,16 +35,13 @@
 
 /** @author Jia Pan */
 
-#include "fcl/narrowphase/detail/gjk_solver_indep-inl.h"
+#include "dart/collision/hit/narrowphase/detail/gjk_solver_indep-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
-template
-struct GJKSolver_indep<double>;
+template struct GJKSolver_indep<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

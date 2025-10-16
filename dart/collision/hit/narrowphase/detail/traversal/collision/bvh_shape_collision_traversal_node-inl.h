@@ -35,18 +35,14 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_BVHSHAPECOLLISIONTRAVERSALNODE_INL_H
-#define FCL_TRAVERSAL_BVHSHAPECOLLISIONTRAVERSALNODE_INL_H
+#pragma once
 
-#include "fcl/narrowphase/detail/traversal/collision/bvh_shape_collision_traversal_node.h"
+#include "dart/collision/hit/common/unused.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/collision/bvh_shape_collision_traversal_node.h"
 
-#include "fcl/common/unused.h"
+namespace dart::collision::hit {
 
-namespace dart { namespace collision { namespace hit
-{
-
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
 template <typename Shape, typename BV>
@@ -86,13 +82,12 @@ int BVHShapeCollisionTraversalNode<Shape, BV>::getFirstRightChild(int b) const
 template <typename Shape, typename BV>
 bool BVHShapeCollisionTraversalNode<Shape, BV>::BVTesting(int b1, int b2) const
 {
-  FCL_UNUSED(b2);
+  DART_COLLISION_HIT_UNUSED(b2);
 
-  if(this->enable_statistics) num_bv_tests++;
+  if (this->enable_statistics)
+    num_bv_tests++;
   return !model1->getBV(b1).bv.overlap(model2_bv);
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

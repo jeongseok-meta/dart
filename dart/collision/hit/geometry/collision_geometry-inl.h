@@ -35,17 +35,14 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_COLLISION_GEOMETRY_INL_H
-#define FCL_COLLISION_GEOMETRY_INL_H
+#pragma once
 
-#include "fcl/geometry/collision_geometry.h"
+#include "dart/collision/hit/geometry/collision_geometry.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT CollisionGeometry<double>;
+extern template class CollisionGeometry<double>;
 
 //==============================================================================
 template <typename S>
@@ -154,18 +151,14 @@ Matrix3<S> CollisionGeometry<S>::computeMomentofInertiaRelatedToCOM() const
 
   Matrix3<S> m;
   m << C(0, 0) - V * (com[1] * com[1] + com[2] * com[2]),
-      C(0, 1) + V * com[0] * com[1],
-      C(0, 2) + V * com[0] * com[2],
+      C(0, 1) + V * com[0] * com[1], C(0, 2) + V * com[0] * com[2],
       C(1, 0) + V * com[1] * com[0],
       C(1, 1) - V * (com[0] * com[0] + com[2] * com[2]),
-      C(1, 2) + V * com[1] * com[2],
-      C(2, 0) + V * com[2] * com[0],
+      C(1, 2) + V * com[1] * com[2], C(2, 0) + V * com[2] * com[0],
       C(2, 1) + V * com[2] * com[1],
       C(2, 2) - V * (com[0] * com[0] + com[1] * com[1]);
 
   return m;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

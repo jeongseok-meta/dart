@@ -35,25 +35,21 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_BVHCOLLISIONTRAVERSALNODE_H
-#define FCL_TRAVERSAL_BVHCOLLISIONTRAVERSALNODE_H
+#pragma once
 
-#include "fcl/geometry/bvh/BVH_model.h"
-#include "fcl/narrowphase/detail/traversal/collision/collision_traversal_node_base.h"
+#include "dart/collision/hit/geometry/bvh/BVH_model.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/collision/collision_traversal_node_base.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /// @brief Traversal node for collision between BVH models
 template <typename BV>
-class FCL_EXPORT BVHCollisionTraversalNode
-    : public CollisionTraversalNodeBase<typename BV::S>
+class BVHCollisionTraversalNode
+  : public CollisionTraversalNodeBase<typename BV::S>
 {
 public:
-
   using S = typename BV::S;
 
   BVHCollisionTraversalNode();
@@ -81,7 +77,7 @@ public:
 
   /// @brief BV culling test in one BVTT node
   bool BVTesting(int b1, int b2) const;
-  
+
   /// @brief The first BVH model
   const BVHModel<BV>* model1;
 
@@ -95,8 +91,6 @@ public:
 };
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/traversal/collision/bvh_collision_traversal_node-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/traversal/collision/bvh_collision_traversal_node-inl.h"

@@ -35,60 +35,89 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_NARROWPHASE_DETAIL_TRIANGLEDISTANCE_H
-#define FCL_NARROWPHASE_DETAIL_TRIANGLEDISTANCE_H
+#pragma once
 
-#include "fcl/common/types.h"
+#include "dart/collision/hit/common/types.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /// @brief Triangle distance functions
 template <typename S>
-class FCL_EXPORT TriangleDistance
+class TriangleDistance
 {
 public:
-
   /// @brief Returns closest points between an segment pair.
   /// The first segment is P + t * A
   /// The second segment is Q + t * B
   /// X, Y are the closest points on the two segments
   /// VEC is the vector between X and Y
-  static void segPoints(const Vector3<S>& P, const Vector3<S>& A, const Vector3<S>& Q, const Vector3<S>& B,
-                        Vector3<S>& VEC, Vector3<S>& X, Vector3<S>& Y);
+  static void segPoints(
+      const Vector3<S>& P,
+      const Vector3<S>& A,
+      const Vector3<S>& Q,
+      const Vector3<S>& B,
+      Vector3<S>& VEC,
+      Vector3<S>& X,
+      Vector3<S>& Y);
 
-  /// @brief Compute the closest points on two triangles given their absolute coordinate, and returns the distance between them
-  /// T1 and T2 are two triangles
-  /// If the triangles are disjoint, P and Q give the closet points of T1 and T2 respectively. However,
-  /// if the triangles overlap, P and Q are basically a random pair of points from the triangles, not
-  /// coincident points on the intersection of the triangles, as might be expected.
-  static S triDistance(const Vector3<S> T1[3], const Vector3<S> T2[3], Vector3<S>& P, Vector3<S>& Q);
+  /// @brief Compute the closest points on two triangles given their absolute
+  /// coordinate, and returns the distance between them T1 and T2 are two
+  /// triangles If the triangles are disjoint, P and Q give the closet points of
+  /// T1 and T2 respectively. However, if the triangles overlap, P and Q are
+  /// basically a random pair of points from the triangles, not coincident
+  /// points on the intersection of the triangles, as might be expected.
+  static S triDistance(
+      const Vector3<S> T1[3],
+      const Vector3<S> T2[3],
+      Vector3<S>& P,
+      Vector3<S>& Q);
 
-  static S triDistance(const Vector3<S>& S1, const Vector3<S>& S2, const Vector3<S>& S3,
-                              const Vector3<S>& T1, const Vector3<S>& T2, const Vector3<S>& T3,
-                              Vector3<S>& P, Vector3<S>& Q);
+  static S triDistance(
+      const Vector3<S>& S1,
+      const Vector3<S>& S2,
+      const Vector3<S>& S3,
+      const Vector3<S>& T1,
+      const Vector3<S>& T2,
+      const Vector3<S>& T3,
+      Vector3<S>& P,
+      Vector3<S>& Q);
 
-  /// @brief Compute the closest points on two triangles given the relative transform between them, and returns the distance between them
-  /// T1 and T2 are two triangles
-  /// If the triangles are disjoint, P and Q give the closet points of T1 and T2 respectively. However,
-  /// if the triangles overlap, P and Q are basically a random pair of points from the triangles, not
-  /// coincident points on the intersection of the triangles, as might be expected.
-  /// The returned P and Q are both in the coordinate of the first triangle's coordinate
-  static S triDistance(const Vector3<S> T1[3], const Vector3<S> T2[3],
-                              const Matrix3<S>& R, const Vector3<S>& Tl,
-                              Vector3<S>& P, Vector3<S>& Q);
+  /// @brief Compute the closest points on two triangles given the relative
+  /// transform between them, and returns the distance between them T1 and T2
+  /// are two triangles If the triangles are disjoint, P and Q give the closet
+  /// points of T1 and T2 respectively. However, if the triangles overlap, P and
+  /// Q are basically a random pair of points from the triangles, not coincident
+  /// points on the intersection of the triangles, as might be expected. The
+  /// returned P and Q are both in the coordinate of the first triangle's
+  /// coordinate
+  static S triDistance(
+      const Vector3<S> T1[3],
+      const Vector3<S> T2[3],
+      const Matrix3<S>& R,
+      const Vector3<S>& Tl,
+      Vector3<S>& P,
+      Vector3<S>& Q);
 
-  static S triDistance(const Vector3<S> T1[3], const Vector3<S> T2[3],
-                              const Transform3<S>& tf,
-                              Vector3<S>& P, Vector3<S>& Q);
+  static S triDistance(
+      const Vector3<S> T1[3],
+      const Vector3<S> T2[3],
+      const Transform3<S>& tf,
+      Vector3<S>& P,
+      Vector3<S>& Q);
 
-  static S triDistance(const Vector3<S>& S1, const Vector3<S>& S2, const Vector3<S>& S3,
-                              const Vector3<S>& T1, const Vector3<S>& T2, const Vector3<S>& T3,
-                              const Matrix3<S>& R, const Vector3<S>& Tl,
-                              Vector3<S>& P, Vector3<S>& Q);
+  static S triDistance(
+      const Vector3<S>& S1,
+      const Vector3<S>& S2,
+      const Vector3<S>& S3,
+      const Vector3<S>& T1,
+      const Vector3<S>& T2,
+      const Vector3<S>& T3,
+      const Matrix3<S>& R,
+      const Vector3<S>& Tl,
+      Vector3<S>& P,
+      Vector3<S>& Q);
 
   static S triDistance(
       const Vector3<S>& S1,
@@ -100,15 +129,12 @@ public:
       const Transform3<S>& tf,
       Vector3<S>& P,
       Vector3<S>& Q);
-
 };
 
 using TriangleDistancef = TriangleDistance<float>;
 using TriangleDistanced = TriangleDistance<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/primitive_shape_algorithm/triangle_distance-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/primitive_shape_algorithm/triangle_distance-inl.h"

@@ -35,26 +35,22 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_SHAPE_CAPSULE_INL_H
-#define FCL_SHAPE_CAPSULE_INL_H
+#pragma once
+
+#include "dart/collision/hit/geometry/shape/capsule.h"
+#include "dart/collision/hit/geometry/shape/representation.h"
 
 #include <iomanip>
 #include <sstream>
 
-#include "fcl/geometry/shape/capsule.h"
-#include "fcl/geometry/shape/representation.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT Capsule<double>;
+extern template class Capsule<double>;
 
 //==============================================================================
 template <typename S>
-Capsule<S>::Capsule(S radius, S lz)
-  : ShapeBase<S>(), radius(radius), lz(lz)
+Capsule<S>::Capsule(S radius, S lz) : ShapeBase<S>(), radius(radius), lz(lz)
 {
   // Do nothing
 }
@@ -82,11 +78,12 @@ NODE_TYPE Capsule<S>::getNodeType() const
 template <typename S>
 S Capsule<S>::computeVolume() const
 {
-  return constants<S>::pi() * radius * radius *(lz + radius * 4/3.0);
+  return constants<S>::pi() * radius * radius * (lz + radius * 4 / 3.0);
 }
 
 //==============================================================================
-// Compare https://www.gamedev.net/articles/programming/math-and-physics/capsule-inertia-tensor-r3856/
+// Compare
+// https://www.gamedev.net/articles/programming/math-and-physics/capsule-inertia-tensor-r3856/
 template <typename S>
 Matrix3<S> Capsule<S>::computeMomentofInertia() const
 {
@@ -96,7 +93,8 @@ Matrix3<S> Capsule<S>::computeMomentofInertia() const
   S v_cyl = r2 * lz * constants<S>::pi();
   S v_sph = r2 * radius * constants<S>::pi() * 4 / 3.0;
 
-  S ix = v_cyl * (l2 / 12. + r2 / 4.) + v_sph * (0.4 * r2 + 0.25 * l2 + 3. * radius * lz / 8.);
+  S ix = v_cyl * (l2 / 12. + r2 / 4.)
+         + v_sph * (0.4 * r2 + 0.25 * l2 + 3. * radius * lz / 8.);
   S iz = (0.5 * v_cyl + 0.4 * v_sph) * r2;
 
   return Vector3<S>(ix, ix, iz).asDiagonal();
@@ -163,7 +161,8 @@ std::vector<Vector3<S>> Capsule<S>::getBoundVertices(
 
 //==============================================================================
 template <typename S>
-std::string Capsule<S>::representation(int precision) const {
+std::string Capsule<S>::representation(int precision) const
+{
   const char* S_str = detail::ScalarRepr<S>::value();
   std::stringstream ss;
   ss << std::setprecision(precision);
@@ -171,6 +170,4 @@ std::string Capsule<S>::representation(int precision) const {
   return ss.str();
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

@@ -35,21 +35,17 @@
 
 /** @author Jia Pan */
 
-#include "fcl/narrowphase/detail/traversal/distance/mesh_distance_traversal_node-inl.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/mesh_distance_traversal_node-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
-template
-class MeshDistanceTraversalNodeRSS<double>;
+template class MeshDistanceTraversalNodeRSS<double>;
 
 //==============================================================================
-template
-bool initialize(
+template bool initialize(
     MeshDistanceTraversalNodeRSS<double>& node,
     const BVHModel<RSS<double>>& model1,
     const Transform3<double>& tf1,
@@ -59,12 +55,10 @@ bool initialize(
     DistanceResult<double>& result);
 
 //==============================================================================
-template
-class MeshDistanceTraversalNodekIOS<double>;
+template class MeshDistanceTraversalNodekIOS<double>;
 
 //==============================================================================
-template
-bool initialize(
+template bool initialize(
     MeshDistanceTraversalNodekIOS<double>& node,
     const BVHModel<kIOS<double>>& model1,
     const Transform3<double>& tf1,
@@ -74,12 +68,10 @@ bool initialize(
     DistanceResult<double>& result);
 
 //==============================================================================
-template
-class MeshDistanceTraversalNodeOBBRSS<double>;
+template class MeshDistanceTraversalNodeOBBRSS<double>;
 
 //==============================================================================
-template
-bool initialize(
+template bool initialize(
     MeshDistanceTraversalNodeOBBRSS<double>& node,
     const BVHModel<OBBRSS<double>>& model1,
     const Transform3<double>& tf1,
@@ -89,4 +81,4 @@ bool initialize(
     DistanceResult<double>& result);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

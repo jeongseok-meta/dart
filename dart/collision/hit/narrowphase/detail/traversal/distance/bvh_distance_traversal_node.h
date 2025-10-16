@@ -35,26 +35,22 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_BVHDISTANCETRAVERSALNODE_H
-#define FCL_TRAVERSAL_BVHDISTANCETRAVERSALNODE_H
+#pragma once
 
-#include "fcl/narrowphase/detail/traversal/traversal_node_base.h"
-#include "fcl/narrowphase/detail/traversal/distance/distance_traversal_node_base.h"
-#include "fcl/geometry/bvh/BVH_model.h"
+#include "dart/collision/hit/geometry/bvh/BVH_model.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/distance_traversal_node_base.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/traversal_node_base.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /// @brief Traversal node for distance computation between BVH models
 template <typename BV>
-class FCL_EXPORT BVHDistanceTraversalNode
-    : public DistanceTraversalNodeBase<typename BV::S>
+class BVHDistanceTraversalNode
+  : public DistanceTraversalNodeBase<typename BV::S>
 {
 public:
-
   using S = typename BV::S;
 
   BVHDistanceTraversalNode();
@@ -95,8 +91,6 @@ public:
 };
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/traversal/distance/bvh_distance_traversal_node-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/bvh_distance_traversal_node-inl.h"

@@ -35,25 +35,27 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_NARROWPHASE_DETAIL_TRIANGLEDISTANCE_INL_H
-#define FCL_NARROWPHASE_DETAIL_TRIANGLEDISTANCE_INL_H
+#pragma once
 
-#include "fcl/narrowphase/detail/primitive_shape_algorithm/triangle_distance.h"
+#include "dart/collision/hit/narrowphase/detail/primitive_shape_algorithm/triangle_distance.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
-extern template
-class FCL_EXPORT TriangleDistance<double>;
+extern template class TriangleDistance<double>;
 
 //==============================================================================
 template <typename S>
-void TriangleDistance<S>::segPoints(const Vector3<S>& P, const Vector3<S>& A, const Vector3<S>& Q, const Vector3<S>& B,
-                                 Vector3<S>& VEC, Vector3<S>& X, Vector3<S>& Y)
+void TriangleDistance<S>::segPoints(
+    const Vector3<S>& P,
+    const Vector3<S>& A,
+    const Vector3<S>& Q,
+    const Vector3<S>& B,
+    Vector3<S>& VEC,
+    Vector3<S>& X,
+    Vector3<S>& Y)
 {
   Vector3<S> T;
   S A_dot_A, B_dot_B, A_dot_B, A_dot_T, B_dot_T;
@@ -74,92 +76,74 @@ void TriangleDistance<S>::segPoints(const Vector3<S>& P, const Vector3<S>& A, co
   // compute t for the closest point on ray P,A to
   // ray Q,B
 
-  S denom = A_dot_A*B_dot_B - A_dot_B*A_dot_B;
+  S denom = A_dot_A * B_dot_B - A_dot_B * A_dot_B;
 
-  t = (A_dot_T*B_dot_B - B_dot_T*A_dot_B) / denom;
+  t = (A_dot_T * B_dot_B - B_dot_T * A_dot_B) / denom;
 
   // clamp result so t is on the segment P,A
 
-  if((t < 0) || std::isnan(t)) t = 0; else if(t > 1) t = 1;
+  if ((t < 0) || std::isnan(t))
+    t = 0;
+  else if (t > 1)
+    t = 1;
 
   // find u for point on ray Q,B closest to point at t
 
-  u = (t*A_dot_B - B_dot_T) / B_dot_B;
+  u = (t * A_dot_B - B_dot_T) / B_dot_B;
 
   // if u is on segment Q,B, t and u correspond to
   // closest points, otherwise, clamp u, recompute and
   // clamp t
 
-  if((u <= 0) || std::isnan(u))
-  {
+  if ((u <= 0) || std::isnan(u)) {
     Y = Q;
 
     t = A_dot_T / A_dot_A;
 
-    if((t <= 0) || std::isnan(t))
-    {
+    if ((t <= 0) || std::isnan(t)) {
       X = P;
       VEC = Q - P;
-    }
-    else if(t >= 1)
-    {
+    } else if (t >= 1) {
       X = P + A;
       VEC = Q - X;
-    }
-    else
-    {
+    } else {
       X = P + A * t;
       TMP = T.cross(A);
       VEC = A.cross(TMP);
     }
-  }
-  else if (u >= 1)
-  {
+  } else if (u >= 1) {
     Y = Q + B;
 
     t = (A_dot_B + A_dot_T) / A_dot_A;
 
-    if((t <= 0) || std::isnan(t))
-    {
+    if ((t <= 0) || std::isnan(t)) {
       X = P;
       VEC = Y - P;
-    }
-    else if(t >= 1)
-    {
+    } else if (t >= 1) {
       X = P + A;
       VEC = Y - X;
-    }
-    else
-    {
+    } else {
       X = P + A * t;
       T = Y - P;
       TMP = T.cross(A);
-      VEC= A.cross(TMP);
+      VEC = A.cross(TMP);
     }
-  }
-  else
-  {
+  } else {
     Y = Q + B * u;
 
-    if((t <= 0) || std::isnan(t))
-    {
+    if ((t <= 0) || std::isnan(t)) {
       X = P;
       TMP = T.cross(B);
       VEC = B.cross(TMP);
-    }
-    else if(t >= 1)
-    {
+    } else if (t >= 1) {
       X = P + A;
       T = Q - X;
       TMP = T.cross(B);
       VEC = B.cross(TMP);
-    }
-    else
-    {
+    } else {
       X = P + A * t;
       VEC = A.cross(B);
-      if(VEC.dot(T) < 0)
-      {
+      if (VEC.dot(T) < 0) {
         VEC = VEC * (-1);
       }
     }
@@ -168,7 +152,11 @@ void TriangleDistance<S>::segPoints(const Vector3<S>& P, const Vector3<S>& A, co
 
 //==============================================================================
 template <typename S>
-S TriangleDistance<S>::triDistance(const Vector3<S> T1[3], const Vector3<S> T2[3], Vector3<S>& P, Vector3<S>& Q)
+S TriangleDistance<S>::triDistance(
+    const Vector3<S> T1[3],
+    const Vector3<S> T2[3],
+    Vector3<S>& P,
+    Vector3<S>& Q)
 {
   // Compute vectors along the 6 sides
 
@@ -201,10 +189,8 @@ S TriangleDistance<S>::triDistance(const Vector3<S> T1[3], const Vector3<S> T2[3
 
   mindd = (T1[0] - T2[0]).squaredNorm() + 1; // Set first minimum safely high
 
-  for(int i = 0; i < 3; ++i)
-  {
-    for(int j = 0; j < 3; ++j)
-    {
+  for (int i = 0; i < 3; ++i) {
+    for (int j = 0; j < 3; ++j) {
       // Find closest points on edges i & j, plus the
       // vector (and distance squared) between these points
       segPoints(T1[i], Sv[i], T2[j], Tv[j], VEC, P, Q);
@@ -215,24 +201,27 @@ S TriangleDistance<S>::triDistance(const Vector3<S> T1[3], const Vector3<S> T2[3
       // Verify this closest point pair only if the distance
       // squared is less than the minimum found thus far.
 
-      if(dd <= mindd)
-      {
+      if (dd <= mindd) {
         minP = P;
         minQ = Q;
         mindd = dd;
 
-        Z = T1[(i+2)%3] - P;
+        Z = T1[(i + 2) % 3] - P;
         S a = Z.dot(VEC);
-        Z = T2[(j+2)%3] - Q;
+        Z = T2[(j + 2) % 3] - Q;
         S b = Z.dot(VEC);
 
-        if((a <= 0) && (b >= 0)) return sqrt(dd);
+        if ((a <= 0) && (b >= 0))
+          return sqrt(dd);
 
         S p = V.dot(VEC);
 
-        if(a < 0) a = 0;
-        if(b > 0) b = 0;
-        if((p - a + b) > 0) shown_disjoint = 1;
+        if (a < 0)
+          a = 0;
+        if (b > 0)
+          b = 0;
+        if ((p - a + b) > 0)
+          shown_disjoint = 1;
       }
     }
   }
@@ -261,8 +250,7 @@ S TriangleDistance<S>::triDistance(const Vector3<S> T1[3], const Vector3<S> T2[3
 
   // If cross product is long enough,
 
-  if(Snl > 1e-15)
-  {
+  if (Snl > 1e-15) {
     // Get projection lengths of T2 points
 
     Vector3<S> Tp;
@@ -280,21 +268,25 @@ S TriangleDistance<S>::triDistance(const Vector3<S> T1[3], const Vector3<S> T2[3
     // find point with smallest projection
 
     int point = -1;
-    if((Tp[0] > 0) && (Tp[1] > 0) && (Tp[2] > 0))
-    {
-      if(Tp[0] < Tp[1]) point = 0; else point = 1;
-      if(Tp[2] < Tp[point]) point = 2;
-    }
-    else if((Tp[0] < 0) && (Tp[1] < 0) && (Tp[2] < 0))
-    {
-      if(Tp[0] > Tp[1]) point = 0; else point = 1;
-      if(Tp[2] > Tp[point]) point = 2;
+    if ((Tp[0] > 0) && (Tp[1] > 0) && (Tp[2] > 0)) {
+      if (Tp[0] < Tp[1])
+        point = 0;
+      else
+        point = 1;
+      if (Tp[2] < Tp[point])
+        point = 2;
+    } else if ((Tp[0] < 0) && (Tp[1] < 0) && (Tp[2] < 0)) {
+      if (Tp[0] > Tp[1])
+        point = 0;
+      else
+        point = 1;
+      if (Tp[2] > Tp[point])
+        point = 2;
     }
 
     // If Sn is a separating direction,
 
-    if(point >= 0)
-    {
+    if (point >= 0) {
       shown_disjoint = 1;
 
       // Test whether the point found, when projected onto the
@@ -302,16 +294,13 @@ S TriangleDistance<S>::triDistance(const Vector3<S> T1[3], const Vector3<S> T2[3
 
       V = T2[point] - T1[0];
       Z = Sn.cross(Sv[0]);
-      if(V.dot(Z) > 0)
-      {
+      if (V.dot(Z) > 0) {
         V = T2[point] - T1[1];
         Z = Sn.cross(Sv[1]);
-        if(V.dot(Z) > 0)
-        {
+        if (V.dot(Z) > 0) {
           V = T2[point] - T1[2];
           Z = Sn.cross(Sv[2]);
-          if(V.dot(Z) > 0)
-          {
+          if (V.dot(Z) > 0) {
             // T[point] passed the test - it's a closest point for
             // the T2 triangle; the other point is on the face of T1
             P = T2[point] + Sn * (Tp[point] / Snl);
@@ -329,8 +318,7 @@ S TriangleDistance<S>::triDistance(const Vector3<S> T1[3], const Vector3<S> T2[3
   Tn = Tv[0].cross(Tv[1]);
   Tnl = Tn.dot(Tn);
 
-  if(Tnl > 1e-15)
-  {
+  if (Tnl > 1e-15) {
     Vector3<S> Sp;
 
     V = T2[0] - T1[0];
@@ -343,33 +331,34 @@ S TriangleDistance<S>::triDistance(const Vector3<S> T1[3], const Vector3<S> T2[3
     Sp[2] = V.dot(Tn);
 
     int point = -1;
-    if((Sp[0] > 0) && (Sp[1] > 0) && (Sp[2] > 0))
-    {
-      if(Sp[0] < Sp[1]) point = 0; else point = 1;
-      if(Sp[2] < Sp[point]) point = 2;
-    }
-    else if((Sp[0] < 0) && (Sp[1] < 0) && (Sp[2] < 0))
-    {
-      if(Sp[0] > Sp[1]) point = 0; else point = 1;
-      if(Sp[2] > Sp[point]) point = 2;
+    if ((Sp[0] > 0) && (Sp[1] > 0) && (Sp[2] > 0)) {
+      if (Sp[0] < Sp[1])
+        point = 0;
+      else
+        point = 1;
+      if (Sp[2] < Sp[point])
+        point = 2;
+    } else if ((Sp[0] < 0) && (Sp[1] < 0) && (Sp[2] < 0)) {
+      if (Sp[0] > Sp[1])
+        point = 0;
+      else
+        point = 1;
+      if (Sp[2] > Sp[point])
+        point = 2;
     }
 
-    if(point >= 0)
-    {
+    if (point >= 0) {
       shown_disjoint = 1;
 
       V = T1[point] - T2[0];
       Z = Tn.cross(Tv[0]);
-      if(V.dot(Z) > 0)
-      {
+      if (V.dot(Z) > 0) {
         V = T1[point] - T2[1];
         Z = Tn.cross(Tv[1]);
-        if(V.dot(Z) > 0)
-        {
+        if (V.dot(Z) > 0) {
           V = T1[point] - T2[2];
           Z = Tn.cross(Tv[2]);
-          if(V.dot(Z) > 0)
-          {
+          if (V.dot(Z) > 0) {
             P = T1[point];
             Q = T1[point] + Tn * (Sp[point] / Tnl);
             return (P - Q).norm();
@@ -384,34 +373,47 @@ S TriangleDistance<S>::triDistance(const Vector3<S> T1[3], const Vector3<S> T2[3
   // we assume case 3 or 4, otherwise we conclude case 2,
   // that the triangles overlap.
 
-  if(shown_disjoint)
-  {
+  if (shown_disjoint) {
     P = minP;
     Q = minQ;
     return sqrt(mindd);
-  }
-  else return 0;
+  } else
+    return 0;
 }
 
 //==============================================================================
 template <typename S>
-S TriangleDistance<S>::triDistance(const Vector3<S>& S1, const Vector3<S>& S2, const Vector3<S>& S3,
-                                       const Vector3<S>& T1, const Vector3<S>& T2, const Vector3<S>& T3,
-                                       Vector3<S>& P, Vector3<S>& Q)
+S TriangleDistance<S>::triDistance(
+    const Vector3<S>& S1,
+    const Vector3<S>& S2,
+    const Vector3<S>& S3,
+    const Vector3<S>& T1,
+    const Vector3<S>& T2,
+    const Vector3<S>& T3,
+    Vector3<S>& P,
+    Vector3<S>& Q)
 {
   Vector3<S> U[3];
   Vector3<S> T[3];
-  U[0] = S1; U[1] = S2; U[2] = S3;
-  T[0] = T1; T[1] = T2; T[2] = T3;
+  U[0] = S1;
+  U[1] = S2;
+  U[2] = S3;
+  T[0] = T1;
+  T[1] = T2;
+  T[2] = T3;
 
   return triDistance(U, T, P, Q);
 }
 
 //==============================================================================
 template <typename S>
-S TriangleDistance<S>::triDistance(const Vector3<S> T1[3], const Vector3<S> T2[3],
-                                       const Matrix3<S>& R, const Vector3<S>& Tl,
-                                       Vector3<S>& P, Vector3<S>& Q)
+S TriangleDistance<S>::triDistance(
+    const Vector3<S> T1[3],
+    const Vector3<S> T2[3],
+    const Matrix3<S>& R,
+    const Vector3<S>& Tl,
+    Vector3<S>& P,
+    Vector3<S>& Q)
 {
   Vector3<S> T_transformed[3];
   T_transformed[0] = R * T2[0] + Tl;
@@ -423,9 +425,12 @@ S TriangleDistance<S>::triDistance(const Vector3<S> T1[3], const Vector3<S> T2[3
 
 //==============================================================================
 template <typename S>
-S TriangleDistance<S>::triDistance(const Vector3<S> T1[3], const Vector3<S> T2[3],
-                                       const Transform3<S>& tf,
-                                       Vector3<S>& P, Vector3<S>& Q)
+S TriangleDistance<S>::triDistance(
+    const Vector3<S> T1[3],
+    const Vector3<S> T2[3],
+    const Transform3<S>& tf,
+    Vector3<S>& P,
+    Vector3<S>& Q)
 {
   Vector3<S> T_transformed[3];
   T_transformed[0] = tf * T2[0];
@@ -437,31 +442,44 @@ S TriangleDistance<S>::triDistance(const Vector3<S> T1[3], const Vector3<S> T2[3
 
 //==============================================================================
 template <typename S>
-S TriangleDistance<S>::triDistance(const Vector3<S>& S1, const Vector3<S>& S2, const Vector3<S>& S3,
-                                       const Vector3<S>& T1, const Vector3<S>& T2, const Vector3<S>& T3,
-                                       const Matrix3<S>& R, const Vector3<S>& Tl,
-                                       Vector3<S>& P, Vector3<S>& Q)
+S TriangleDistance<S>::triDistance(
+    const Vector3<S>& S1,
+    const Vector3<S>& S2,
+    const Vector3<S>& S3,
+    const Vector3<S>& T1,
+    const Vector3<S>& T2,
+    const Vector3<S>& T3,
+    const Matrix3<S>& R,
+    const Vector3<S>& Tl,
+    Vector3<S>& P,
+    Vector3<S>& Q)
 {
   Vector3<S> T1_transformed = R * T1 + Tl;
   Vector3<S> T2_transformed = R * T2 + Tl;
   Vector3<S> T3_transformed = R * T3 + Tl;
-  return triDistance(S1, S2, S3, T1_transformed, T2_transformed, T3_transformed, P, Q);
+  return triDistance(
+      S1, S2, S3, T1_transformed, T2_transformed, T3_transformed, P, Q);
 }
 
 //==============================================================================
 template <typename S>
-S TriangleDistance<S>::triDistance(const Vector3<S>& S1, const Vector3<S>& S2, const Vector3<S>& S3,
-                                       const Vector3<S>& T1, const Vector3<S>& T2, const Vector3<S>& T3,
-                                       const Transform3<S>& tf,
-                                       Vector3<S>& P, Vector3<S>& Q)
+S TriangleDistance<S>::triDistance(
+    const Vector3<S>& S1,
+    const Vector3<S>& S2,
+    const Vector3<S>& S3,
+    const Vector3<S>& T1,
+    const Vector3<S>& T2,
+    const Vector3<S>& T3,
+    const Transform3<S>& tf,
+    Vector3<S>& P,
+    Vector3<S>& Q)
 {
   Vector3<S> T1_transformed = tf * T1;
   Vector3<S> T2_transformed = tf * T2;
   Vector3<S> T3_transformed = tf * T3;
-  return triDistance(S1, S2, S3, T1_transformed, T2_transformed, T3_transformed, P, Q);
+  return triDistance(
+      S1, S2, S3, T1_transformed, T2_transformed, T3_transformed, P, Q);
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

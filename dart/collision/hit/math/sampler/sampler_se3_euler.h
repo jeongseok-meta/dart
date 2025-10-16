@@ -35,43 +35,36 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_MATH_SAMPLERSE3EULER_H
-#define FCL_MATH_SAMPLERSE3EULER_H
+#pragma once
 
-#include "fcl/common/types.h"
-#include "fcl/math/sampler/sampler_base.h"
+#include "dart/collision/hit/common/types.h"
+#include "dart/collision/hit/math/sampler/sampler_base.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 template <typename S>
-class FCL_EXPORT SamplerSE3Euler : public SamplerBase<S>
+class SamplerSE3Euler : public SamplerBase<S>
 {
 public:
   SamplerSE3Euler();
 
-  SamplerSE3Euler(const Vector3<S>& lower_bound_,
-                  const Vector3<S>& upper_bound_);
+  SamplerSE3Euler(
+      const Vector3<S>& lower_bound_, const Vector3<S>& upper_bound_);
 
-  void setBound(const Vector3<S>& lower_bound_,
-                const Vector3<S>& upper_bound_);
+  void setBound(const Vector3<S>& lower_bound_, const Vector3<S>& upper_bound_);
 
-  void getBound(Vector3<S>& lower_bound_,
-                Vector3<S>& upper_bound_) const;
+  void getBound(Vector3<S>& lower_bound_, Vector3<S>& upper_bound_) const;
 
   Vector6<S> sample() const;
 
 protected:
   Vector3<S> lower_bound;
   Vector3<S> upper_bound;
-
 };
 
 using SamplerSE3Eulerf = SamplerSE3Euler<float>;
 using SamplerSE3Eulerd = SamplerSE3Euler<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/sampler/sampler_se3_euler-inl.h"
-
-#endif
+#include "dart/collision/hit/math/sampler/sampler_se3_euler-inl.h"

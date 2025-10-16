@@ -35,23 +35,20 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_SHAPE_SPHERE_H
-#define FCL_SHAPE_SPHERE_H
+#pragma once
 
-#include "fcl/geometry/shape/shape_base.h"
+#include "dart/collision/hit/geometry/shape/shape_base.h"
 
 #include <ostream>
 #include <string>
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Center at zero point sphere
 template <typename S_>
-class FCL_EXPORT Sphere : public ShapeBase<S_>
+class Sphere : public ShapeBase<S_>
 {
 public:
-
   using S = S_;
 
   Sphere(S radius);
@@ -80,8 +77,8 @@ public:
   /// @return The string representation of this instance.
   std::string representation(int precision = 20) const;
 
-  friend
-  std::ostream& operator<<(std::ostream& out, const Sphere& sphere) {
+  friend std::ostream& operator<<(std::ostream& out, const Sphere& sphere)
+  {
     out << "Sphere(" << sphere.radius << ")";
     return out;
   }
@@ -90,8 +87,6 @@ public:
 using Spheref = Sphere<float>;
 using Sphered = Sphere<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/geometry/shape/sphere-inl.h"
-
-#endif
+#include "dart/collision/hit/geometry/shape/sphere-inl.h"

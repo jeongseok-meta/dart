@@ -31,16 +31,14 @@
  *  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
- */ 
+ */
 
 /** @author Jia Pan */
 
-#include "fcl/broadphase/broadphase_dynamic_AABB_tree-inl.h"
+#include "dart/collision/hit/broadphase/broadphase_dynamic_AABB_tree-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-class DynamicAABBTreeCollisionManager<double>;
+template class DynamicAABBTreeCollisionManager<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

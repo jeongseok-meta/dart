@@ -32,19 +32,18 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
-// This code is based on code developed by Stephane Redon at UNC and Inria for the CATCH library: http://graphics.ewha.ac.kr/CATCH/
+// This code is based on code developed by Stephane Redon at UNC and Inria for
+// the CATCH library: http://graphics.ewha.ac.kr/CATCH/
 /** @author Jia Pan */
 
-#ifndef FCL_CCD_INTERVAL_VECTOR_H
-#define FCL_CCD_INTERVAL_VECTOR_H
+#pragma once
 
-#include "fcl/math/motion/taylor_model/interval.h"
+#include "dart/collision/hit/math/motion/taylor_model/interval.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 template <typename S>
-struct FCL_EXPORT IVector3
+struct IVector3
 {
   Interval<S> i_[3];
 
@@ -67,17 +66,18 @@ struct FCL_EXPORT IVector3
 
   void setValue(Interval<S> v[3]);
 
-  void setValue(const Interval<S>& v1, const Interval<S>& v2, const Interval<S>& v3);
+  void setValue(
+      const Interval<S>& v1, const Interval<S>& v2, const Interval<S>& v3);
 
   void setValue(const Vector3<S>& v);
 
   void setValue(S v[3]);
-  
-  IVector3 operator + (const IVector3& other) const;
-  IVector3& operator += (const IVector3& other);
 
-  IVector3 operator - (const IVector3& other) const;
-  IVector3& operator -= (const IVector3& other);
+  IVector3 operator+(const IVector3& other) const;
+  IVector3& operator+=(const IVector3& other);
+
+  IVector3 operator-(const IVector3& other) const;
+  IVector3& operator-=(const IVector3& other);
 
   Interval<S> dot(const IVector3& other) const;
   IVector3 cross(const IVector3& other) const;
@@ -85,12 +85,12 @@ struct FCL_EXPORT IVector3
   Interval<S> dot(const Vector3<S>& other) const;
   IVector3 cross(const Vector3<S>& other) const;
 
-  const Interval<S>& operator [] (size_t i) const;
+  const Interval<S>& operator[](size_t i) const;
 
-  Interval<S>& operator [] (size_t i);
+  Interval<S>& operator[](size_t i);
 
   Vector3<S> getLow() const;
-  
+
   Vector3<S> getHigh() const;
 
   void print() const;
@@ -106,15 +106,11 @@ struct FCL_EXPORT IVector3
 };
 
 template <typename S>
-FCL_EXPORT
 IVector3<S> bound(const IVector3<S>& i, const Vector3<S>& v);
 
 template <typename S>
-FCL_EXPORT
 IVector3<S> bound(const IVector3<S>& i, const IVector3<S>& v);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/motion/taylor_model/interval_vector-inl.h"
-
-#endif
+#include "dart/collision/hit/math/motion/taylor_model/interval_vector-inl.h"

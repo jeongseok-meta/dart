@@ -32,28 +32,26 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
-// This code is based on code developed by Stephane Redon at UNC and Inria for the CATCH library: http://graphics.ewha.ac.kr/CATCH/
+// This code is based on code developed by Stephane Redon at UNC and Inria for
+// the CATCH library: http://graphics.ewha.ac.kr/CATCH/
 /** @author Jia Pan */
 
-#ifndef FCL_CCD_INTERVAL_VECTOR_INL_H
-#define FCL_CCD_INTERVAL_VECTOR_INL_H
+#pragma once
 
-#include "fcl/math/motion/taylor_model/interval_vector.h"
+#include "dart/collision/hit/math/motion/taylor_model/interval_vector.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-struct IVector3<double>;
+extern template struct IVector3<double>;
 
 //==============================================================================
-extern template
-IVector3<double> bound(const IVector3<double>& i, const Vector3<double>& v);
+extern template IVector3<double> bound(
+    const IVector3<double>& i, const Vector3<double>& v);
 
 //==============================================================================
-extern template
-IVector3<double> bound(const IVector3<double>& i, const IVector3<double>& v);
+extern template IVector3<double> bound(
+    const IVector3<double>& i, const IVector3<double>& v);
 
 //==============================================================================
 template <typename S>
@@ -99,7 +97,8 @@ IVector3<S>::IVector3(Interval<S> v[3])
 
 //==============================================================================
 template <typename S>
-IVector3<S>::IVector3(const Interval<S>& v1, const Interval<S>& v2, const Interval<S>& v3)
+IVector3<S>::IVector3(
+    const Interval<S>& v1, const Interval<S>& v2, const Interval<S>& v3)
 {
   setValue(v1, v2, v3);
 }
@@ -158,7 +157,8 @@ void IVector3<S>::setValue(Interval<S> v[3])
 
 //==============================================================================
 template <typename S>
-void IVector3<S>::setValue(const Interval<S>& v1, const Interval<S>& v2, const Interval<S>& v3)
+void IVector3<S>::setValue(
+    const Interval<S>& v1, const Interval<S>& v2, const Interval<S>& v3)
 {
   i_[0] = v1;
   i_[1] = v2;
@@ -192,14 +192,15 @@ void IVector3<S>::setZero()
 
 //==============================================================================
 template <typename S>
-IVector3<S> IVector3<S>::operator + (const IVector3<S>& other) const
+IVector3<S> IVector3<S>::operator+(const IVector3<S>& other) const
 {
-  return IVector3(i_[0] + other.i_[0], i_[1] + other.i_[1], i_[2] + other.i_[2]);
+  return IVector3(
+      i_[0] + other.i_[0], i_[1] + other.i_[1], i_[2] + other.i_[2]);
 }
 
 //==============================================================================
 template <typename S>
-IVector3<S>& IVector3<S>::operator += (const IVector3<S>& other)
+IVector3<S>& IVector3<S>::operator+=(const IVector3<S>& other)
 {
   i_[0] += other[0];
   i_[1] += other[1];
@@ -209,14 +210,15 @@ IVector3<S>& IVector3<S>::operator += (const IVector3<S>& other)
 
 //==============================================================================
 template <typename S>
-IVector3<S> IVector3<S>::operator - (const IVector3<S>& other) const
+IVector3<S> IVector3<S>::operator-(const IVector3<S>& other) const
 {
-  return IVector3(i_[0] - other.i_[0], i_[1] - other.i_[1], i_[2] - other.i_[2]);
+  return IVector3(
+      i_[0] - other.i_[0], i_[1] - other.i_[1], i_[2] - other.i_[2]);
 }
 
 //==============================================================================
 template <typename S>
-IVector3<S>& IVector3<S>::operator -= (const IVector3<S>& other)
+IVector3<S>& IVector3<S>::operator-=(const IVector3<S>& other)
 {
   i_[0] -= other[0];
   i_[1] -= other[1];
@@ -235,9 +237,10 @@ Interval<S> IVector3<S>::dot(const IVector3& other) const
 template <typename S>
 IVector3<S> IVector3<S>::cross(const IVector3<S>& other) const
 {
-  return IVector3(i_[1] * other.i_[2] - i_[2] * other.i_[1],
-                  i_[2] * other.i_[0] - i_[0] * other.i_[2],
-                  i_[0] * other.i_[1] - i_[1] * other.i_[0]);
+  return IVector3(
+      i_[1] * other.i_[2] - i_[2] * other.i_[1],
+      i_[2] * other.i_[0] - i_[0] * other.i_[2],
+      i_[0] * other.i_[1] - i_[1] * other.i_[0]);
 }
 
 //==============================================================================
@@ -249,14 +252,14 @@ Interval<S> IVector3<S>::dot(const Vector3<S>& other) const
 
 //==============================================================================
 template <typename S>
-const Interval<S>&IVector3<S>::operator [](size_t i) const
+const Interval<S>& IVector3<S>::operator[](size_t i) const
 {
   return i_[i];
 }
 
 //==============================================================================
 template <typename S>
-Interval<S>&IVector3<S>::operator [](size_t i)
+Interval<S>& IVector3<S>::operator[](size_t i)
 {
   return i_[i];
 }
@@ -279,9 +282,10 @@ Vector3<S> IVector3<S>::getHigh() const
 template <typename S>
 IVector3<S> IVector3<S>::cross(const Vector3<S>& other) const
 {
-  return IVector3(i_[1] * other[2] - i_[2] * other[1],
-                  i_[2] * other[0] - i_[0] * other[2],
-                  i_[0] * other[1] - i_[1] * other[0]);
+  return IVector3(
+      i_[1] * other[2] - i_[2] * other[1],
+      i_[2] * other[0] - i_[0] * other[2],
+      i_[0] * other[1] - i_[1] * other[0]);
 }
 
 //==============================================================================
@@ -311,26 +315,38 @@ Vector3<S> IVector3<S>::center() const
 template <typename S>
 void IVector3<S>::bound(const IVector3& v)
 {
-  if(v[0][0] < i_[0][0]) i_[0][0] = v[0][0];
-  if(v[1][0] < i_[1][0]) i_[1][0] = v[1][0];
-  if(v[2][0] < i_[2][0]) i_[2][0] = v[2][0];
+  if (v[0][0] < i_[0][0])
+    i_[0][0] = v[0][0];
+  if (v[1][0] < i_[1][0])
+    i_[1][0] = v[1][0];
+  if (v[2][0] < i_[2][0])
+    i_[2][0] = v[2][0];
 
-  if(v[0][1] > i_[0][1]) i_[0][1] = v[0][1];
-  if(v[1][1] > i_[1][1]) i_[1][1] = v[1][1];
-  if(v[2][1] > i_[2][1]) i_[2][1] = v[2][1];
+  if (v[0][1] > i_[0][1])
+    i_[0][1] = v[0][1];
+  if (v[1][1] > i_[1][1])
+    i_[1][1] = v[1][1];
+  if (v[2][1] > i_[2][1])
+    i_[2][1] = v[2][1];
 }
 
 //==============================================================================
 template <typename S>
 void IVector3<S>::bound(const Vector3<S>& v)
 {
-  if(v[0] < i_[0][0]) i_[0][0] = v[0];
-  if(v[1] < i_[1][0]) i_[1][0] = v[1];
-  if(v[2] < i_[2][0]) i_[2][0] = v[2];
+  if (v[0] < i_[0][0])
+    i_[0][0] = v[0];
+  if (v[1] < i_[1][0])
+    i_[1][0] = v[1];
+  if (v[2] < i_[2][0])
+    i_[2][0] = v[2];
 
-  if(v[0] > i_[0][1]) i_[0][1] = v[0];
-  if(v[1] > i_[1][1]) i_[1][1] = v[1];
-  if(v[2] > i_[2][1]) i_[2][1] = v[2];
+  if (v[0] > i_[0][1])
+    i_[0][1] = v[0];
+  if (v[1] > i_[1][1])
+    i_[1][1] = v[1];
+  if (v[2] > i_[2][1])
+    i_[2][1] = v[2];
 }
 
 //==============================================================================
@@ -338,13 +354,19 @@ template <typename S>
 IVector3<S> bound(const IVector3<S>& i, const IVector3<S>& v)
 {
   IVector3<S> res(i);
-  if(v[0][0] < res.i_[0][0]) res.i_[0][0] = v[0][0];
-  if(v[1][0] < res.i_[1][0]) res.i_[1][0] = v[1][0];
-  if(v[2][0] < res.i_[2][0]) res.i_[2][0] = v[2][0];
+  if (v[0][0] < res.i_[0][0])
+    res.i_[0][0] = v[0][0];
+  if (v[1][0] < res.i_[1][0])
+    res.i_[1][0] = v[1][0];
+  if (v[2][0] < res.i_[2][0])
+    res.i_[2][0] = v[2][0];
 
-  if(v[0][1] > res.i_[0][1]) res.i_[0][1] = v[0][1];
-  if(v[1][1] > res.i_[1][1]) res.i_[1][1] = v[1][1];
-  if(v[2][1] > res.i_[2][1]) res.i_[2][1] = v[2][1];
+  if (v[0][1] > res.i_[0][1])
+    res.i_[0][1] = v[0][1];
+  if (v[1][1] > res.i_[1][1])
+    res.i_[1][1] = v[1][1];
+  if (v[2][1] > res.i_[2][1])
+    res.i_[2][1] = v[2][1];
 
   return res;
 }
@@ -354,13 +376,19 @@ template <typename S>
 IVector3<S> bound(const IVector3<S>& i, const Vector3<S>& v)
 {
   IVector3<S> res(i);
-  if(v[0] < res.i_[0][0]) res.i_[0][0] = v[0];
-  if(v[1] < res.i_[1][0]) res.i_[1][0] = v[1];
-  if(v[2] < res.i_[2][0]) res.i_[2][0] = v[2];
+  if (v[0] < res.i_[0][0])
+    res.i_[0][0] = v[0];
+  if (v[1] < res.i_[1][0])
+    res.i_[1][0] = v[1];
+  if (v[2] < res.i_[2][0])
+    res.i_[2][0] = v[2];
 
-  if(v[0] > res.i_[0][1]) res.i_[0][1] = v[0];
-  if(v[1] > res.i_[1][1]) res.i_[1][1] = v[1];
-  if(v[2] > res.i_[2][1]) res.i_[2][1] = v[2];
+  if (v[0] > res.i_[0][1])
+    res.i_[0][1] = v[0];
+  if (v[1] > res.i_[1][1])
+    res.i_[1][1] = v[1];
+  if (v[2] > res.i_[2][1])
+    res.i_[2][1] = v[2];
 
   return res;
 }
@@ -369,13 +397,19 @@ IVector3<S> bound(const IVector3<S>& i, const Vector3<S>& v)
 template <typename S>
 bool IVector3<S>::overlap(const IVector3& v) const
 {
-  if(v[0][1] < i_[0][0]) return false;
-  if(v[1][1] < i_[1][0]) return false;
-  if(v[2][1] < i_[2][0]) return false;
+  if (v[0][1] < i_[0][0])
+    return false;
+  if (v[1][1] < i_[1][0])
+    return false;
+  if (v[2][1] < i_[2][0])
+    return false;
 
-  if(v[0][0] > i_[0][1]) return false;
-  if(v[1][0] > i_[1][1]) return false;
-  if(v[2][0] > i_[2][1]) return false;
+  if (v[0][0] > i_[0][1])
+    return false;
+  if (v[1][0] > i_[1][1])
+    return false;
+  if (v[2][0] > i_[2][1])
+    return false;
 
   return true;
 }
@@ -384,17 +418,21 @@ bool IVector3<S>::overlap(const IVector3& v) const
 template <typename S>
 bool IVector3<S>::contain(const IVector3& v) const
 {
-  if(v[0][0] < i_[0][0]) return false;
-  if(v[1][0] < i_[1][0]) return false;
-  if(v[2][0] < i_[2][0]) return false;
+  if (v[0][0] < i_[0][0])
+    return false;
+  if (v[1][0] < i_[1][0])
+    return false;
+  if (v[2][0] < i_[2][0])
+    return false;
 
-  if(v[0][1] > i_[0][1]) return false;
-  if(v[1][1] > i_[1][1]) return false;
-  if(v[2][1] > i_[2][1]) return false;
+  if (v[0][1] > i_[0][1])
+    return false;
+  if (v[1][1] > i_[1][1])
+    return false;
+  if (v[2][1] > i_[2][1])
+    return false;
 
   return true;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

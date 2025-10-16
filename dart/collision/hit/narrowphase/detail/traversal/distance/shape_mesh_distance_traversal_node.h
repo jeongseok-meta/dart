@@ -35,25 +35,21 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_SHAPEMESHDISTANCETRAVERSALNODE_H
-#define FCL_TRAVERSAL_SHAPEMESHDISTANCETRAVERSALNODE_H
+#pragma once
 
-#include "fcl/narrowphase/detail/traversal/distance/shape_bvh_distance_traversal_node.h"
-#include "fcl/geometry/bvh/BVH_model.h"
+#include "dart/collision/hit/geometry/bvh/BVH_model.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/shape_bvh_distance_traversal_node.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /// @brief Traversal node for distance between shape and mesh
 template <typename Shape, typename BV, typename NarrowPhaseSolver>
-class FCL_EXPORT ShapeMeshDistanceTraversalNode
-    : public ShapeBVHDistanceTraversalNode<Shape, BV>
-{ 
+class ShapeMeshDistanceTraversalNode
+  : public ShapeBVHDistanceTraversalNode<Shape, BV>
+{
 public:
-
   using S = typename BV::S;
 
   ShapeMeshDistanceTraversalNode();
@@ -69,7 +65,7 @@ public:
 
   S rel_err;
   S abs_err;
-    
+
   const NarrowPhaseSolver* nsolver;
 };
 
@@ -89,12 +85,12 @@ bool initialize(
     bool refit_bottomup = false);
 
 template <typename Shape, typename NarrowPhaseSolver>
-class FCL_EXPORT ShapeMeshDistanceTraversalNodeRSS
-    : public ShapeMeshDistanceTraversalNode<
-    Shape, RSS<typename Shape::S>, NarrowPhaseSolver>
+class ShapeMeshDistanceTraversalNodeRSS : public ShapeMeshDistanceTraversalNode<
+                                              Shape,
+                                              RSS<typename Shape::S>,
+                                              NarrowPhaseSolver>
 {
 public:
-
   using S = typename Shape::S;
 
   ShapeMeshDistanceTraversalNodeRSS();
@@ -106,7 +102,6 @@ public:
   S BVTesting(int b1, int b2) const;
 
   void leafTesting(int b1, int b2) const;
-
 };
 
 /// @brief Initialize traversal node for distance computation between one shape
@@ -123,12 +118,13 @@ bool initialize(
     DistanceResult<typename Shape::S>& result);
 
 template <typename Shape, typename NarrowPhaseSolver>
-class FCL_EXPORT ShapeMeshDistanceTraversalNodekIOS
-    : public ShapeMeshDistanceTraversalNode<
-    Shape, kIOS<typename Shape::S>, NarrowPhaseSolver>
+class ShapeMeshDistanceTraversalNodekIOS
+  : public ShapeMeshDistanceTraversalNode<
+        Shape,
+        kIOS<typename Shape::S>,
+        NarrowPhaseSolver>
 {
 public:
-
   using S = typename Shape::S;
 
   ShapeMeshDistanceTraversalNodekIOS();
@@ -140,7 +136,6 @@ public:
   S BVTesting(int b1, int b2) const;
 
   void leafTesting(int b1, int b2) const;
-  
 };
 
 /// @brief Initialize traversal node for distance computation between one shape
@@ -157,12 +152,13 @@ bool initialize(
     DistanceResult<typename Shape::S>& result);
 
 template <typename Shape, typename NarrowPhaseSolver>
-class FCL_EXPORT ShapeMeshDistanceTraversalNodeOBBRSS
-    : public ShapeMeshDistanceTraversalNode<
-    Shape, OBBRSS<typename Shape::S>, NarrowPhaseSolver>
+class ShapeMeshDistanceTraversalNodeOBBRSS
+  : public ShapeMeshDistanceTraversalNode<
+        Shape,
+        OBBRSS<typename Shape::S>,
+        NarrowPhaseSolver>
 {
 public:
-
   using S = typename Shape::S;
 
   ShapeMeshDistanceTraversalNodeOBBRSS();
@@ -174,7 +170,6 @@ public:
   S BVTesting(int b1, int b2) const;
 
   void leafTesting(int b1, int b2) const;
-  
 };
 
 /// @brief Initialize traversal node for distance computation between one shape
@@ -191,8 +186,6 @@ bool initialize(
     DistanceResult<typename Shape::S>& result);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/traversal/distance/shape_mesh_distance_traversal_node-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/shape_mesh_distance_traversal_node-inl.h"

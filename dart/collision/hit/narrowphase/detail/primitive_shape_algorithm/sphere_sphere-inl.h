@@ -35,49 +35,53 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_NARROWPHASE_DETAIL_SPHERESPHERE_INL_H
-#define FCL_NARROWPHASE_DETAIL_SPHERESPHERE_INL_H
+#pragma once
 
-#include "fcl/narrowphase/detail/primitive_shape_algorithm/sphere_sphere.h"
+#include "dart/collision/hit/narrowphase/detail/primitive_shape_algorithm/sphere_sphere.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
-extern template
-FCL_EXPORT
-bool sphereSphereIntersect(const Sphere<double>& s1, const Transform3<double>& tf1,
-                           const Sphere<double>& s2, const Transform3<double>& tf2,
-                           std::vector<ContactPoint<double>>* contacts);
+extern template bool sphereSphereIntersect(
+    const Sphere<double>& s1,
+    const Transform3<double>& tf1,
+    const Sphere<double>& s2,
+    const Transform3<double>& tf2,
+    std::vector<ContactPoint<double>>* contacts);
 
 //==============================================================================
-extern template
-FCL_EXPORT
-bool sphereSphereDistance(const Sphere<double>& s1, const Transform3<double>& tf1,
-                          const Sphere<double>& s2, const Transform3<double>& tf2,
-                          double* dist, Vector3<double>* p1, Vector3<double>* p2);
+extern template bool sphereSphereDistance(
+    const Sphere<double>& s1,
+    const Transform3<double>& tf1,
+    const Sphere<double>& s2,
+    const Transform3<double>& tf2,
+    double* dist,
+    Vector3<double>* p1,
+    Vector3<double>* p2);
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
-bool sphereSphereIntersect(const Sphere<S>& s1, const Transform3<S>& tf1,
-                           const Sphere<S>& s2, const Transform3<S>& tf2,
-                           std::vector<ContactPoint<S>>* contacts)
+bool sphereSphereIntersect(
+    const Sphere<S>& s1,
+    const Transform3<S>& tf1,
+    const Sphere<S>& s2,
+    const Transform3<S>& tf2,
+    std::vector<ContactPoint<S>>* contacts)
 {
   Vector3<S> diff = tf2.translation() - tf1.translation();
   S len = diff.norm();
-  if(len > s1.radius + s2.radius)
+  if (len > s1.radius + s2.radius)
     return false;
 
-  if(contacts)
-  {
-    // If the centers of two sphere are at the same position, the normal is (0, 0, 0).
-    // Otherwise, normal is pointing from center of object 1 to center of object 2
+  if (contacts) {
+    // If the centers of two sphere are at the same position, the normal is (0,
+    // 0, 0). Otherwise, normal is pointing from center of object 1 to center of
+    // object 2
     const Vector3<S> normal = len > 0 ? (diff / len).eval() : diff;
-    const Vector3<S> point = tf1.translation() + diff * s1.radius / (s1.radius + s2.radius);
+    const Vector3<S> point
+        = tf1.translation() + diff * s1.radius / (s1.radius + s2.radius);
     const S penetration_depth = s1.radius + s2.radius - len;
     contacts->emplace_back(normal, point, penetration_depth);
   }
@@ -87,28 +91,33 @@ bool sphereSphereIntersect(const Sphere<S>& s1, const Transform3<S>& tf1,
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
-bool sphereSphereDistance(const Sphere<S>& s1, const Transform3<S>& tf1,
-                          const Sphere<S>& s2, const Transform3<S>& tf2,
-                          S* dist, Vector3<S>* p1, Vector3<S>* p2)
+bool sphereSphereDistance(
+    const Sphere<S>& s1,
+    const Transform3<S>& tf1,
+    const Sphere<S>& s2,
+    const Transform3<S>& tf2,
+    S* dist,
+    Vector3<S>* p1,
+    Vector3<S>* p2)
 {
   Vector3<S> o1 = tf1.translation();
   Vector3<S> o2 = tf2.translation();
   Vector3<S> diff = o1 - o2;
   S len = diff.norm();
-  if(len > s1.radius + s2.radius)
-  {
-    if(dist) *dist = len - (s1.radius + s2.radius);
-    if(p1) *p1 = (o1 - diff * (s1.radius / len));
-    if(p2) *p2 = (o2 + diff * (s2.radius / len));
+  if (len > s1.radius + s2.radius) {
+    if (dist)
+      *dist = len - (s1.radius + s2.radius);
+    if (p1)
+      *p1 = (o1 - diff * (s1.radius / len));
+    if (p2)
+      *p2 = (o2 + diff * (s2.radius / len));
     return true;
   }
 
-  if(dist) *dist = -1;
+  if (dist)
+    *dist = -1;
   return false;
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

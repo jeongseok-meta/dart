@@ -35,57 +35,68 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_NARROWPHASE_DETAIL_CAPSULECAPSULE_INL_H
-#define FCL_NARROWPHASE_DETAIL_CAPSULECAPSULE_INL_H
+#pragma once
 
-#include "fcl/narrowphase/detail/primitive_shape_algorithm/capsule_capsule.h"
+#include "dart/collision/hit/narrowphase/detail/primitive_shape_algorithm/capsule_capsule.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
-extern template
-double clamp(double n, double min, double max);
+extern template double clamp(double n, double min, double max);
 
 //==============================================================================
-extern template double closestPtSegmentSegment(const Vector3d& p_FP1,
-                                               const Vector3d& p_FQ1,
-                                               const Vector3d& p_FP2,
-                                               const Vector3d& p_FQ2, double* s,
-                                               double* t, Vector3d* p_FC1,
-                                               Vector3d* p_FC2);
+extern template double closestPtSegmentSegment(
+    const Vector3d& p_FP1,
+    const Vector3d& p_FQ1,
+    const Vector3d& p_FP2,
+    const Vector3d& p_FQ2,
+    double* s,
+    double* t,
+    Vector3d* p_FC1,
+    Vector3d* p_FC2);
 
 //==============================================================================
-extern template
-bool capsuleCapsuleDistance(
-    const Capsule<double>& s1, const Transform3<double>& tf1,
-    const Capsule<double>& s2, const Transform3<double>& tf2,
-    double* dist, Vector3d* p1_res, Vector3d* p2_res);
+extern template bool capsuleCapsuleDistance(
+    const Capsule<double>& s1,
+    const Transform3<double>& tf1,
+    const Capsule<double>& s2,
+    const Transform3<double>& tf2,
+    double* dist,
+    Vector3d* p1_res,
+    Vector3d* p2_res);
 
 //==============================================================================
 template <typename S>
 S clamp(S n, S min, S max)
 {
-  if (n < min) return min;
-  if (n > max) return max;
+  if (n < min)
+    return min;
+  if (n > max)
+    return max;
   return n;
 }
 
 //==============================================================================
 template <typename S>
-S closestPtSegmentSegment(const Vector3<S>& p_FP1, const Vector3<S>& p_FQ1,
-                          const Vector3<S>& p_FP2, const Vector3<S>& p_FQ2,
-                          S* s, S* t, Vector3<S>* p_FC1, Vector3<S>* p_FC2) {
+S closestPtSegmentSegment(
+    const Vector3<S>& p_FP1,
+    const Vector3<S>& p_FQ1,
+    const Vector3<S>& p_FP2,
+    const Vector3<S>& p_FQ2,
+    S* s,
+    S* t,
+    Vector3<S>* p_FC1,
+    Vector3<S>* p_FC2)
+{
   // TODO(SeanCurtis-TRI): Document the match underlying this function -- the
   //  variables: a, b, c, e, and f are otherwise overly inscrutable.
   const auto kEps = constants<S>::eps_78();
   const auto kEpsSquared = kEps * kEps;
 
-  Vector3<S> p_P1Q1 = p_FQ1 - p_FP1;  // Segment 1's displacement vector: D1.
-  Vector3<S> p_P2Q2 = p_FQ2 - p_FP2;  // Segment 2's displacement vector: D2.
+  Vector3<S> p_P1Q1 = p_FQ1 - p_FP1; // Segment 1's displacement vector: D1.
+  Vector3<S> p_P2Q2 = p_FQ2 - p_FP2; // Segment 2's displacement vector: D2.
   Vector3<S> p_P2P1 = p_FP1 - p_FP2;
 
   S a = p_P1Q1.dot(p_P1Q1); // Squared length of segment S1, always nonnegative.
@@ -118,23 +129,23 @@ S closestPtSegmentSegment(const Vector3<S>& p_FP1, const Vector3<S>& p_FQ1,
       // Mathematically, ae - b² ≥ 0, but we need to protect ourselves from
       // possible rounding error near zero that _might_ produce -epsilon.
       using std::max;
-      const S denom = max(S(0), a*e-b*b);
+      const S denom = max(S(0), a * e - b * b);
 
       // If segments are not parallel, compute closest point on L1 to L2 and
       // clamp to segment S1. Else pick arbitrary s (here 0).
       if (denom > kEpsSquared) {
-        *s = clamp((b*f - c*e) / denom, (S)0.0, (S)1.0);
+        *s = clamp((b * f - c * e) / denom, (S)0.0, (S)1.0);
       } else {
         *s = 0.0;
       }
       // Compute point on L2 closest to S1(s) using
       // t = Dot((P1 + D1*s) - P2, D2) / Dot(D2,D2) = (b*s + f) / e
-      *t = (b*(*s) + f) / e;
+      *t = (b * (*s) + f) / e;
 
       // If t in [0,1] done. Else clamp t, recompute s for the new value
       // of t using s = Dot((P2 + D2*t) - P1, D1) / Dot(D1,D1) = (t*b - c) / a
       // and clamp s to [0, 1].
-      if(*t < 0.0) {
+      if (*t < 0.0) {
         *t = 0.0;
         *s = clamp(-c / a, (S)0.0, (S)1.0);
       } else if (*t > 1.0) {
@@ -151,15 +162,21 @@ S closestPtSegmentSegment(const Vector3<S>& p_FP1, const Vector3<S>& p_FQ1,
 // Given a transform relating frames A and B, returns Bz_A, the z-axis of frame
 // B, expressed in frame A.
 template <typename S>
-Vector3<S> z_axis(const Transform3<S>& X_AB) {
+Vector3<S> z_axis(const Transform3<S>& X_AB)
+{
   return X_AB.matrix().template block<3, 1>(0, 2);
 }
 
 //==============================================================================
 template <typename S>
-bool capsuleCapsuleDistance(const Capsule<S>& s1, const Transform3<S>& X_FC1,
-          const Capsule<S>& s2, const Transform3<S>& X_FC2,
-          S* dist, Vector3<S>* p_FW1, Vector3<S>* p_FW2)
+bool capsuleCapsuleDistance(
+    const Capsule<S>& s1,
+    const Transform3<S>& X_FC1,
+    const Capsule<S>& s2,
+    const Transform3<S>& X_FC2,
+    S* dist,
+    Vector3<S>* p_FW1,
+    Vector3<S>* p_FW2)
 {
   assert(dist != nullptr);
   assert(p_FW1 != nullptr);
@@ -175,8 +192,8 @@ bool capsuleCapsuleDistance(const Capsule<S>& s1, const Transform3<S>& X_FC1,
   // `z- = -lz / 2 * Cz`, respectively. Cz_F is simply the third column of the
   // rotation matrix, R_FC. This "half arm" is the position vector from the
   // canonical frame's origin to the z+ point: p_CoZ+_F in frame F.
-  auto calc_half_arm = [](const Capsule<S>& c,
-                          const Transform3<S>& X_FC) -> Vector3<S> {
+  auto calc_half_arm
+      = [](const Capsule<S>& c, const Transform3<S>& X_FC) -> Vector3<S> {
     const S half_length = c.lz / 2;
     const Vector3<S> Cz_F = z_axis(X_FC);
     return half_length * Cz_F;
@@ -201,8 +218,8 @@ bool capsuleCapsuleDistance(const Capsule<S>& s1, const Transform3<S>& X_FC1,
   //  from the end point. Furthermore, it returns the values for s and t,
   //  neither of which is required by this function. The API should be
   //  streamlined so there is less waste.
-  const S squared_dist = closestPtSegmentSegment(p_FC1a, p_FC1b, p_FC2a, p_FC2b,
-                                                 &s, &t, &p_FN1, &p_FN2);
+  const S squared_dist = closestPtSegmentSegment(
+      p_FC1a, p_FC1b, p_FC2a, p_FC2b, &s, &t, &p_FN1, &p_FN2);
 
   const S segment_dist = sqrt(squared_dist);
   *dist = segment_dist - s1.radius - s2.radius;
@@ -239,6 +256,4 @@ bool capsuleCapsuleDistance(const Capsule<S>& s1, const Transform3<S>& X_FC1,
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/bv/kIOS-inl.h"
+#include "dart/collision/hit/math/bv/kIOS-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
- 
-template
-class kIOS<double>;
+namespace dart::collision::hit {
 
-} // namespace dart { namespace collision { namespace hit
+template class kIOS<double>;
+
+} // namespace dart::collision::hit

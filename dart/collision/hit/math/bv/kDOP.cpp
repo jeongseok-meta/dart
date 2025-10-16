@@ -35,41 +35,32 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/bv/kDOP-inl.h"
+#include "dart/collision/hit/math/bv/kDOP-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
-
-//==============================================================================
-template
-class KDOP<double, 16>;
+namespace dart::collision::hit {
 
 //==============================================================================
-template
-class KDOP<double, 18>;
+template class KDOP<double, 16>;
 
 //==============================================================================
-template
-class KDOP<double, 24>;
+template class KDOP<double, 18>;
 
 //==============================================================================
-template
-void minmax(double a, double b, double& minv, double& maxv);
+template class KDOP<double, 24>;
 
 //==============================================================================
-template
-void minmax(double p, double& minv, double& maxv);
+template void minmax(double a, double b, double& minv, double& maxv);
 
 //==============================================================================
-template
-void getDistances<double, 5>(const Vector3<double>& p, double* d);
+template void minmax(double p, double& minv, double& maxv);
 
 //==============================================================================
-template
-void getDistances<double, 6>(const Vector3<double>& p, double* d);
+template void getDistances<double, 5>(const Vector3<double>& p, double* d);
 
 //==============================================================================
-template
-void getDistances<double, 9>(const Vector3<double>& p, double* d);
+template void getDistances<double, 6>(const Vector3<double>& p, double* d);
 
-} // namespace dart { namespace collision { namespace hit
+//==============================================================================
+template void getDistances<double, 9>(const Vector3<double>& p, double* d);
+
+} // namespace dart::collision::hit

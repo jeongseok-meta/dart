@@ -35,22 +35,19 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_SHAPEMESHCOLLISIONTRAVERSALNODE_H
-#define FCL_TRAVERSAL_SHAPEMESHCOLLISIONTRAVERSALNODE_H
+#pragma once
 
-#include "fcl/geometry/shape/utility.h"
-#include "fcl/narrowphase/detail/traversal/collision/shape_bvh_collision_traversal_node.h"
+#include "dart/collision/hit/geometry/shape/utility.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/collision/shape_bvh_collision_traversal_node.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /// @brief Traversal node for collision between shape and mesh
 template <typename Shape, typename BV, typename NarrowPhaseSolver>
-class FCL_EXPORT ShapeMeshCollisionTraversalNode
-    : public ShapeBVHCollisionTraversalNode<Shape, BV>
+class ShapeMeshCollisionTraversalNode
+  : public ShapeBVHCollisionTraversalNode<Shape, BV>
 {
 public:
   using S = typename BV::S;
@@ -74,7 +71,6 @@ public:
 /// @brief Initialize traversal node for collision between one mesh and one
 /// shape, given current object transform
 template <typename Shape, typename BV, typename NarrowPhaseSolver>
-FCL_EXPORT
 bool initialize(
     ShapeMeshCollisionTraversalNode<Shape, BV, NarrowPhaseSolver>& node,
     const Shape& model1,
@@ -84,13 +80,17 @@ bool initialize(
     const NarrowPhaseSolver* nsolver,
     const CollisionRequest<typename BV::S>& request,
     CollisionResult<typename BV::S>& result,
-    bool use_refit = false, bool refit_bottomup = false);
+    bool use_refit = false,
+    bool refit_bottomup = false);
 
-/// @brief Traversal node for shape and mesh, when mesh BVH is one of the oriented node (OBB, RSS, OBBRSS, kIOS)
+/// @brief Traversal node for shape and mesh, when mesh BVH is one of the
+/// oriented node (OBB, RSS, OBBRSS, kIOS)
 template <typename Shape, typename NarrowPhaseSolver>
-class FCL_EXPORT ShapeMeshCollisionTraversalNodeOBB
-    : public ShapeMeshCollisionTraversalNode<
-    Shape, OBB<typename Shape::S>, NarrowPhaseSolver>
+class ShapeMeshCollisionTraversalNodeOBB
+  : public ShapeMeshCollisionTraversalNode<
+        Shape,
+        OBB<typename Shape::S>,
+        NarrowPhaseSolver>
 {
 public:
   ShapeMeshCollisionTraversalNodeOBB();
@@ -103,7 +103,6 @@ public:
 /// @brief Initialize the traversal node for collision between one mesh and one
 /// shape, specialized for OBB type
 template <typename Shape, typename NarrowPhaseSolver>
-FCL_EXPORT
 bool initialize(
     ShapeMeshCollisionTraversalNodeOBB<Shape, NarrowPhaseSolver>& node,
     const Shape& model1,
@@ -115,8 +114,11 @@ bool initialize(
     CollisionResult<typename Shape::S>& result);
 
 template <typename Shape, typename NarrowPhaseSolver>
-class FCL_EXPORT ShapeMeshCollisionTraversalNodeRSS
-    : public ShapeMeshCollisionTraversalNode<Shape, RSS<typename Shape::S>, NarrowPhaseSolver>
+class ShapeMeshCollisionTraversalNodeRSS
+  : public ShapeMeshCollisionTraversalNode<
+        Shape,
+        RSS<typename Shape::S>,
+        NarrowPhaseSolver>
 {
 public:
   ShapeMeshCollisionTraversalNodeRSS();
@@ -124,13 +126,11 @@ public:
   bool BVTesting(int b1, int b2) const;
 
   void leafTesting(int b1, int b2) const;
-
 };
 
 /// @brief Initialize the traversal node for collision between one mesh and one
 /// shape, specialized for RSS type
 template <typename Shape, typename NarrowPhaseSolver>
-FCL_EXPORT
 bool initialize(
     ShapeMeshCollisionTraversalNodeRSS<Shape, NarrowPhaseSolver>& node,
     const Shape& model1,
@@ -142,8 +142,11 @@ bool initialize(
     CollisionResult<typename Shape::S>& result);
 
 template <typename Shape, typename NarrowPhaseSolver>
-class FCL_EXPORT ShapeMeshCollisionTraversalNodekIOS
-    : public ShapeMeshCollisionTraversalNode<Shape, kIOS<typename Shape::S>, NarrowPhaseSolver>
+class ShapeMeshCollisionTraversalNodekIOS
+  : public ShapeMeshCollisionTraversalNode<
+        Shape,
+        kIOS<typename Shape::S>,
+        NarrowPhaseSolver>
 {
 public:
   ShapeMeshCollisionTraversalNodekIOS();
@@ -151,13 +154,11 @@ public:
   bool BVTesting(int b1, int b2) const;
 
   void leafTesting(int b1, int b2) const;
-
 };
 
 /// @brief Initialize the traversal node for collision between one mesh and one
 /// shape, specialized for kIOS type
 template <typename Shape, typename NarrowPhaseSolver>
-FCL_EXPORT
 bool initialize(
     ShapeMeshCollisionTraversalNodekIOS<Shape, NarrowPhaseSolver>& node,
     const Shape& model1,
@@ -169,8 +170,11 @@ bool initialize(
     CollisionResult<typename Shape::S>& result);
 
 template <typename Shape, typename NarrowPhaseSolver>
-class FCL_EXPORT ShapeMeshCollisionTraversalNodeOBBRSS
-    : public ShapeMeshCollisionTraversalNode<Shape, OBBRSS<typename Shape::S>, NarrowPhaseSolver>
+class ShapeMeshCollisionTraversalNodeOBBRSS
+  : public ShapeMeshCollisionTraversalNode<
+        Shape,
+        OBBRSS<typename Shape::S>,
+        NarrowPhaseSolver>
 {
 public:
   ShapeMeshCollisionTraversalNodeOBBRSS();
@@ -178,13 +182,11 @@ public:
   bool BVTesting(int b1, int b2) const;
 
   void leafTesting(int b1, int b2) const;
-
 };
 
 /// @brief Initialize the traversal node for collision between one mesh and one
 /// shape, specialized for OBBRSS type
 template <typename Shape, typename NarrowPhaseSolver>
-FCL_EXPORT
 bool initialize(
     ShapeMeshCollisionTraversalNodeOBBRSS<Shape, NarrowPhaseSolver>& node,
     const Shape& model1,
@@ -196,8 +198,6 @@ bool initialize(
     CollisionResult<typename Shape::S>& result);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/traversal/collision/shape_mesh_collision_traversal_node-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/traversal/collision/shape_mesh_collision_traversal_node-inl.h"

@@ -35,14 +35,12 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BV_RSS_H
-#define FCL_BV_RSS_H
+#pragma once
 
-#include "fcl/math/constants.h"
-#include "fcl/math/geometry.h"
+#include "dart/collision/hit/math/constants.h"
+#include "dart/collision/hit/math/geometry.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief A class for rectangle swept sphere bounding volume.
 ///
@@ -55,10 +53,9 @@ namespace dart { namespace collision { namespace hit
 /// relative orientation between frame T and F and p_FoTo_F (the #To field) is
 /// the position of T's origin in frame F.
 template <typename S_>
-class FCL_EXPORT RSS
+class RSS
 {
 public:
-
   using S = S_;
 
   /// @brief Frame T's orientation in frame F.
@@ -88,7 +85,8 @@ public:
   bool overlap(const RSS<S>& other) const;
 
   /// @brief Check collision between two RSS and return the overlap part.
-  /// For RSS, we return nothing, as the overlap part of two RSSs usually is not a RSS.
+  /// For RSS, we return nothing, as the overlap part of two RSSs usually is not
+  /// a RSS.
   bool overlap(const RSS<S>& other, RSS<S>& overlap_part) const;
 
   /// @brief Check whether the RSS contains a point
@@ -96,13 +94,13 @@ public:
 
   /// @brief A simple way to merge the RSS and a point, not compact.
   /// @todo This function may have some bug.
-  RSS<S>& operator += (const Vector3<S>& p);
+  RSS<S>& operator+=(const Vector3<S>& p);
 
   /// @brief Merge the RSS and another RSS
-  RSS<S>& operator += (const RSS<S>& other);
+  RSS<S>& operator+=(const RSS<S>& other);
 
   /// @brief Return the merged RSS of current RSS and the other one
-  RSS<S> operator + (const RSS<S>& other) const;
+  RSS<S> operator+(const RSS<S>& other) const;
 
   /// @brief Width of the RSS
   S width() const;
@@ -127,25 +125,39 @@ public:
   /// Note: only works correctly if #axis and #l[] are set.
   void setToFromCenter(const Vector3<S>& p_FoCenter_F);
 
-  /// @brief the distance between two RSS; P and Q, if not nullptr, return the nearest points
-  S distance(const RSS<S>& other,
-             Vector3<S>* P = nullptr,
-             Vector3<S>* Q = nullptr) const;
+  /// @brief the distance between two RSS; P and Q, if not nullptr, return the
+  /// nearest points
+  S distance(
+      const RSS<S>& other,
+      Vector3<S>* P = nullptr,
+      Vector3<S>* Q = nullptr) const;
 
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
 private:
   // Internal monogram notation alias of axis.
-  Matrix3<S>& R_FT() { return axis; }
+  Matrix3<S>& R_FT()
+  {
+    return axis;
+  }
 
   // Internal monogram notation const alias of axis.
-  const Matrix3<S>& R_FT() const { return axis; }
+  const Matrix3<S>& R_FT() const
+  {
+    return axis;
+  }
 
   // Internal monogram notation alias of To.
-  Vector3<S>& p_FoTo_F() { return To; }
+  Vector3<S>& p_FoTo_F()
+  {
+    return To;
+  }
 
   // Internal monogram notation alias of To.
-  const Vector3<S>& p_FoTo_F() const { return To; }
+  const Vector3<S>& p_FoTo_F() const
+  {
+    return To;
+  }
 };
 
 using RSSf = RSS<float>;
@@ -153,7 +165,6 @@ using RSSd = RSS<double>;
 
 /// @brief Clip value between a and b
 template <typename S>
-FCL_EXPORT
 void clipToRange(S& val, S a, S b);
 
 /// @brief Finds the parameters t & u corresponding to the two closest points on
@@ -169,9 +180,7 @@ void clipToRange(S& val, S a, S b);
 /// Reference: "On fast computation of distance between line segments." Vladimir
 /// J. Lumelsky, in Information Processing Letters, no. 21, pages 55-61, 1985.
 template <typename S>
-FCL_EXPORT
-void segCoords(S& t, S& u, S a, S b,
-               S A_dot_B, S A_dot_T, S B_dot_T);
+void segCoords(S& t, S& u, S a, S b, S A_dot_B, S A_dot_T, S B_dot_T);
 
 /// @brief Returns whether the nearest point on rectangle edge
 /// Pb + B*u, 0 <= u <= b, to the rectangle edge,
@@ -179,16 +188,13 @@ void segCoords(S& t, S& u, S a, S b,
 /// determined by the point Pa and the direction Anorm.
 /// A,B, and Anorm are unit vectors. T is the vector between Pa and Pb.
 template <typename S>
-FCL_EXPORT
-bool inVoronoi(S a, S b,
-               S Anorm_dot_B, S Anorm_dot_T,
-               S A_dot_B, S A_dot_T, S B_dot_T);
+bool inVoronoi(
+    S a, S b, S Anorm_dot_B, S Anorm_dot_T, S A_dot_B, S A_dot_T, S B_dot_T);
 
 /// @brief Distance between two oriented rectangles; P and Q (optional return
 /// values) are the closest points in the rectangles, both are in the local
 /// frame of the first rectangle.
 template <typename S>
-FCL_EXPORT
 S rectDistance(
     const Matrix3<S>& Rab,
     const Vector3<S>& Tab,
@@ -201,7 +207,6 @@ S rectDistance(
 /// values) are the closest points in the rectangles, both are in the local
 /// frame of the first rectangle.
 template <typename S>
-FCL_EXPORT
 S rectDistance(
     const Transform3<S>& tfab,
     const S a[2],
@@ -215,7 +220,6 @@ S rectDistance(
 /// points. Notice that P and Q are both in the local frame of the first RSS
 /// (not global frame and not even the local frame of object 1)
 template <typename S, typename DerivedA, typename DerivedB>
-FCL_EXPORT
 S distance(
     const Eigen::MatrixBase<DerivedA>& R0,
     const Eigen::MatrixBase<DerivedB>& T0,
@@ -227,7 +231,6 @@ S distance(
 /// @brief Check collision between two RSSs, b1 is in configuration (R0, T0) and
 /// b2 is in identity.
 template <typename S, typename DerivedA, typename DerivedB>
-FCL_EXPORT
 bool overlap(
     const Eigen::MatrixBase<DerivedA>& R0,
     const Eigen::MatrixBase<DerivedB>& T0,
@@ -236,11 +239,8 @@ bool overlap(
 
 /// @brief Translate the RSS bv
 template <typename S>
-FCL_EXPORT
 RSS<S> translate(const RSS<S>& bv, const Vector3<S>& t);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/bv/RSS-inl.h"
-
-#endif
+#include "dart/collision/hit/math/bv/RSS-inl.h"

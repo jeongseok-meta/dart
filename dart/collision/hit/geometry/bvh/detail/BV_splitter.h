@@ -35,22 +35,20 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BV_SPLITTER_H
-#define FCL_BV_SPLITTER_H
+#pragma once
 
-#include <vector>
+#include "dart/collision/hit/geometry/bvh/BVH_internal.h"
+#include "dart/collision/hit/geometry/bvh/detail/BV_splitter_base.h"
+#include "dart/collision/hit/math/bv/OBBRSS.h"
+#include "dart/collision/hit/math/bv/kIOS.h"
+#include "dart/collision/hit/math/triangle.h"
+
 #include <iostream>
-#include "fcl/math/triangle.h"
-#include "fcl/math/bv/kIOS.h"
-#include "fcl/math/bv/OBBRSS.h"
-#include "fcl/geometry/bvh/BVH_internal.h"
-#include "fcl/geometry/bvh/detail/BV_splitter_base.h"
+#include <vector>
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /// @brief Three types of split algorithms are provided in FCL as default
 enum SplitMethodType
@@ -62,10 +60,9 @@ enum SplitMethodType
 
 /// @brief A class describing the split rule that splits each BV node
 template <typename BV>
-class FCL_EXPORT BVSplitter : public BVSplitterBase<BV>
+class BVSplitter : public BVSplitterBase<BV>
 {
 public:
-
   using S = typename BV::S;
 
   BVSplitter(SplitMethodType method);
@@ -74,8 +71,7 @@ public:
   virtual ~BVSplitter();
 
   /// @brief Set the geometry data needed by the split rule
-  void set(
-      Vector3<S>* vertices_, Triangle* tri_indices_, BVHModelType type_);
+  void set(Vector3<S>* vertices_, Triangle* tri_indices_, BVHModelType type_);
 
   /// @brief Compute the split rule according to a subset of geometry and the
   /// corresponding BV node
@@ -89,7 +85,6 @@ public:
   void clear();
 
 private:
-
   /// @brief The axis based on which the split decision is made. For most BV,
   /// the axis is aligned with one of the world coordinate, so only split_axis
   /// is needed. For oriented node, we can use a vector to make a better split
@@ -170,8 +165,6 @@ void computeSplitValue_median(
     S& split_value);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/geometry/bvh/detail/BV_splitter-inl.h"
-
-#endif
+#include "dart/collision/hit/geometry/bvh/detail/BV_splitter-inl.h"

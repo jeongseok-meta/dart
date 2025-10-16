@@ -35,21 +35,18 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_SHAPE_SPHERE_INL_H
-#define FCL_SHAPE_SPHERE_INL_H
+#pragma once
+
+#include "dart/collision/hit/geometry/shape/representation.h"
+#include "dart/collision/hit/geometry/shape/sphere.h"
 
 #include <iomanip>
 #include <sstream>
 
-#include "fcl/geometry/shape/sphere.h"
-#include "fcl/geometry/shape/representation.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT Sphere<double>;
+extern template class Sphere<double>;
 
 //==============================================================================
 template <typename S>
@@ -72,7 +69,8 @@ void Sphere<S>::computeLocalAABB()
 template <typename S>
 NODE_TYPE Sphere<S>::getNodeType() const
 {
-  return GEOM_SPHERE; }
+  return GEOM_SPHERE;
+}
 
 //==============================================================================
 template <typename S>
@@ -121,7 +119,8 @@ std::vector<Vector3<S>> Sphere<S>::getBoundVertices(
 
 //==============================================================================
 template <typename S>
-std::string Sphere<S>::representation(int precision) const {
+std::string Sphere<S>::representation(int precision) const
+{
   const char* S_str = detail::ScalarRepr<S>::value();
   std::stringstream ss;
   ss << std::setprecision(precision);
@@ -129,6 +128,4 @@ std::string Sphere<S>::representation(int precision) const {
   return ss.str();
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

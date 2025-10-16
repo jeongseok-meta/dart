@@ -35,18 +35,17 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_COSTSOURCE_H
-#define FCL_COSTSOURCE_H
+#pragma once
 
-#include "fcl/common/types.h"
-#include "fcl/math/bv/AABB.h"
+#include "dart/collision/hit/common/types.h"
+#include "dart/collision/hit/math/bv/AABB.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-/// @brief Cost source describes an area with a cost. The area is described by an AABB<S> region.
+/// @brief Cost source describes an area with a cost. The area is described by
+/// an AABB<S> region.
 template <typename S>
-struct FCL_EXPORT CostSource
+struct CostSource
 {
   /// @brief aabb lower bound
   Vector3<S> aabb_min;
@@ -59,20 +58,21 @@ struct FCL_EXPORT CostSource
 
   S total_cost;
 
-  CostSource(const Vector3<S>& aabb_min_, const Vector3<S>& aabb_max_, S cost_density_);
+  CostSource(
+      const Vector3<S>& aabb_min_,
+      const Vector3<S>& aabb_max_,
+      S cost_density_);
 
   CostSource(const AABB<S>& aabb, S cost_density_);
 
   CostSource();
 
-  bool operator < (const CostSource& other) const;
+  bool operator<(const CostSource& other) const;
 };
 
 using CostSourcef = CostSource<float>;
 using CostSourced = CostSource<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/cost_source-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/cost_source-inl.h"

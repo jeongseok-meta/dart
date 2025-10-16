@@ -35,32 +35,35 @@
 
 /** @author Jia Pan */
 
-#include "fcl/narrowphase/detail/primitive_shape_algorithm/capsule_capsule-inl.h"
+#include "dart/collision/hit/narrowphase/detail/primitive_shape_algorithm/capsule_capsule-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
-template
-double clamp(double n, double min, double max);
+template double clamp(double n, double min, double max);
 
 //==============================================================================
-template double closestPtSegmentSegment(const Vector3d& p_FP1,
-                                        const Vector3d& p_FQ1,
-                                        const Vector3d& p_FP2,
-                                        const Vector3d& p_FQ2, double* s,
-                                        double* t, Vector3d* p_FC1,
-                                        Vector3d* p_FC2);
+template double closestPtSegmentSegment(
+    const Vector3d& p_FP1,
+    const Vector3d& p_FQ1,
+    const Vector3d& p_FP2,
+    const Vector3d& p_FQ2,
+    double* s,
+    double* t,
+    Vector3d* p_FC1,
+    Vector3d* p_FC2);
 
 //==============================================================================
-template
-bool capsuleCapsuleDistance(
-    const Capsule<double>& s1, const Transform3<double>& tf1,
-    const Capsule<double>& s2, const Transform3<double>& tf2,
-    double* dist, Vector3d* p1_res, Vector3d* p2_res);
+template bool capsuleCapsuleDistance(
+    const Capsule<double>& s1,
+    const Transform3<double>& tf1,
+    const Capsule<double>& s2,
+    const Transform3<double>& tf2,
+    double* dist,
+    Vector3d* p1_res,
+    Vector3d* p2_res);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

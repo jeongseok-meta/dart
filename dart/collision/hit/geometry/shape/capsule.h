@@ -35,38 +35,35 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_SHAPE_CAPSULE_H
-#define FCL_SHAPE_CAPSULE_H
+#pragma once
+
+#include "dart/collision/hit/geometry/shape/shape_base.h"
 
 #include <ostream>
 #include <string>
 
-#include "fcl/geometry/shape/shape_base.h"
+namespace dart::collision::hit {
 
-namespace dart { namespace collision { namespace hit
-{
-
-/// @brief Center at zero point capsule 
+/// @brief Center at zero point capsule
 template <typename S_>
-class FCL_EXPORT Capsule : public ShapeBase<S_>
+class Capsule : public ShapeBase<S_>
 {
 public:
-
   using S = S_;
 
   /// @brief Constructor
   Capsule(S radius, S lz);
 
-  /// @brief Radius of capsule 
+  /// @brief Radius of capsule
   S radius;
 
-  /// @brief Length along z axis 
+  /// @brief Length along z axis
   S lz;
 
   /// @brief Compute AABB<S>
   void computeLocalAABB() override;
 
-  /// @brief Get node type: a capsule 
+  /// @brief Get node type: a capsule
   NODE_TYPE getNodeType() const override;
 
   // Documentation inherited
@@ -86,8 +83,8 @@ public:
   /// @return The string representation of this instance.
   std::string representation(int precision = 20) const;
 
-  friend
-  std::ostream& operator<<(std::ostream& out, const Capsule& capsule) {
+  friend std::ostream& operator<<(std::ostream& out, const Capsule& capsule)
+  {
     out << "Capsule(r: " << capsule.radius << ", lz: " << capsule.lz << ")";
     return out;
   }
@@ -96,8 +93,6 @@ public:
 using Capsulef = Capsule<float>;
 using Capsuled = Capsule<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/geometry/shape/capsule-inl.h"
-
-#endif
+#include "dart/collision/hit/geometry/shape/capsule-inl.h"

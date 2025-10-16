@@ -35,16 +35,13 @@
 
 /** @author Jia Pan  */
 
-#ifndef FCL_BROADPHASE_DETAIL_NODEBASE_INL_H
-#define FCL_BROADPHASE_DETAIL_NODEBASE_INL_H
+#pragma once
 
-#include "fcl/broadphase/detail/node_base.h"
+#include "dart/collision/hit/broadphase/detail/node_base.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 //============================================================================//
 //                                                                            //
@@ -76,6 +73,4 @@ NodeBase<BV>::NodeBase()
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

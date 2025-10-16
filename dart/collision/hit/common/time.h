@@ -35,18 +35,14 @@
 
 /** @author Ioan Sucan */
 
-#ifndef FCL_COMMON_TIME_H
-#define FCL_COMMON_TIME_H
+#pragma once
 
 #include <chrono>
-#include "fcl/export.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Namespace containing time datatypes and time operations
-namespace time
-{
+namespace time {
 
 /// @brief Representation of a point in time
 using point = std::chrono::system_clock::time_point;
@@ -55,18 +51,13 @@ using point = std::chrono::system_clock::time_point;
 using duration = std::chrono::system_clock::duration;
 
 /// @brief Get the current time point
-FCL_EXPORT
 point now(void);
 
 /// @brief Return the time duration representing a given number of seconds
-FCL_EXPORT
 duration seconds(double sec);
 
 /// @brief Return the number of seconds that a time duration represents
-FCL_EXPORT
-double seconds(const duration &d);
+double seconds(const duration& d);
 
 } // namespace time
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

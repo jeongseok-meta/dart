@@ -35,10 +35,9 @@
 
 /** @author Jia Pan */
 
-#include "fcl/geometry/bvh/BV_node_base.h"
+#include "dart/collision/hit/geometry/bvh/BV_node_base.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
 bool BVNodeBase::isLeaf() const
@@ -64,4 +63,4 @@ int BVNodeBase::rightChild() const
   return first_child + 1;
 }
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

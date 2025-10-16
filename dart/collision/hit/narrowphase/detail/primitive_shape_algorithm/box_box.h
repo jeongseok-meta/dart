@@ -35,24 +35,24 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_NARROWPHASE_DETAIL_BOXBOX_H
-#define FCL_NARROWPHASE_DETAIL_BOXBOX_H
+#pragma once
 
-#include "fcl/common/types.h"
-#include "fcl/narrowphase/contact_point.h"
-#include "fcl/geometry/shape/box.h"
+#include "dart/collision/hit/common/types.h"
+#include "dart/collision/hit/geometry/shape/box.h"
+#include "dart/collision/hit/narrowphase/contact_point.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 template <typename S>
-FCL_EXPORT
-void lineClosestApproach(const Vector3<S>& pa, const Vector3<S>& ua,
-                         const Vector3<S>& pb, const Vector3<S>& ub,
-                         S* alpha, S* beta);
+void lineClosestApproach(
+    const Vector3<S>& pa,
+    const Vector3<S>& ua,
+    const Vector3<S>& pb,
+    const Vector3<S>& ub,
+    S* alpha,
+    S* beta);
 
 // find all the intersection points between the 2D rectangle with vertices
 // at (+/-h[0],+/-h[1]) and the 2D quadrilateral with vertices (p[0],p[1]),
@@ -62,7 +62,6 @@ void lineClosestApproach(const Vector3<S>& pa, const Vector3<S>& ua,
 // the number of intersection points is returned by the function (this will
 // be in the range 0 to 8).
 template <typename S>
-FCL_EXPORT
 int intersectRectQuad2(S h[2], S p[8], S ret[16]);
 
 // given n points in the plane (array p, of size 2*n), generate m points that
@@ -73,11 +72,9 @@ int intersectRectQuad2(S h[2], S p[8], S ret[16]);
 // n must be in the range [1..8]. m must be in the range [1..n]. i0 must be
 // in the range [0..n-1].
 template <typename S>
-FCL_EXPORT
 void cullPoints2(int n, S p[], int m, int i0, int iret[]);
 
 template <typename S, typename DerivedA, typename DerivedB>
-FCL_EXPORT
 int boxBox2(
     const Vector3<S>& side1,
     const Eigen::MatrixBase<DerivedA>& R1,
@@ -92,7 +89,6 @@ int boxBox2(
     std::vector<ContactPoint<S>>& contacts);
 
 template <typename S>
-FCL_EXPORT
 int boxBox2(
     const Vector3<S>& side1,
     const Transform3<S>& tf1,
@@ -105,14 +101,14 @@ int boxBox2(
     std::vector<ContactPoint<S>>& contacts);
 
 template <typename S>
-FCL_EXPORT
-bool boxBoxIntersect(const Box<S>& s1, const Transform3<S>& tf1,
-                     const Box<S>& s2, const Transform3<S>& tf2,
-                     std::vector<ContactPoint<S>>* contacts_);
+bool boxBoxIntersect(
+    const Box<S>& s1,
+    const Transform3<S>& tf1,
+    const Box<S>& s2,
+    const Transform3<S>& tf2,
+    std::vector<ContactPoint<S>>* contacts_);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/primitive_shape_algorithm/box_box-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/primitive_shape_algorithm/box_box-inl.h"

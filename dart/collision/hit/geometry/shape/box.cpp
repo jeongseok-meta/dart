@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/geometry/shape/box-inl.h"
+#include "dart/collision/hit/geometry/shape/box-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-class Box<double>;
+template class Box<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

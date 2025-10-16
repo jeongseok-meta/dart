@@ -35,21 +35,19 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_SHAPEDISTANCETRAVERSALNODE_INL_H
-#define FCL_TRAVERSAL_SHAPEDISTANCETRAVERSALNODE_INL_H
+#pragma once
 
-#include "fcl/narrowphase/detail/traversal/distance/shape_distance_traversal_node.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/shape_distance_traversal_node.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
 template <typename Shape1, typename Shape2, typename NarrowPhaseSolver>
 ShapeDistanceTraversalNode<Shape1, Shape2, NarrowPhaseSolver>::
-ShapeDistanceTraversalNode() : DistanceTraversalNodeBase<typename Shape1::S>()
+    ShapeDistanceTraversalNode()
+  : DistanceTraversalNodeBase<typename Shape1::S>()
 {
   model1 = nullptr;
   model2 = nullptr;
@@ -60,7 +58,8 @@ ShapeDistanceTraversalNode() : DistanceTraversalNodeBase<typename Shape1::S>()
 //==============================================================================
 template <typename Shape1, typename Shape2, typename NarrowPhaseSolver>
 typename Shape1::S
-ShapeDistanceTraversalNode<Shape1, Shape2, NarrowPhaseSolver>::BVTesting(int, int) const
+ShapeDistanceTraversalNode<Shape1, Shape2, NarrowPhaseSolver>::BVTesting(
+    int, int) const
 {
   return -1; // should not be used
 }
@@ -82,23 +81,34 @@ void ShapeDistanceTraversalNode<Shape1, Shape2, NarrowPhaseSolver>::leafTesting(
   Vector3<S> closest_p1 = Vector3<S>::Zero();
   Vector3<S> closest_p2 = Vector3<S>::Zero();
 
-  if (this->request.enable_signed_distance == true)
-  {
-    nsolver->shapeSignedDistance(*model1, this->tf1, *model2, this->tf2, &distance, &closest_p1, &closest_p2);
-  }
-  else
-  {
-    nsolver->shapeDistance(*model1, this->tf1, *model2, this->tf2, &distance, &closest_p1, &closest_p2);
+  if (this->request.enable_signed_distance == true) {
+    nsolver->shapeSignedDistance(
+        *model1,
+        this->tf1,
+        *model2,
+        this->tf2,
+        &distance,
+        &closest_p1,
+        &closest_p2);
+  } else {
+    nsolver->shapeDistance(
+        *model1,
+        this->tf1,
+        *model2,
+        this->tf2,
+        &distance,
+        &closest_p1,
+        &closest_p2);
   }
 
   this->result->update(
-        distance,
-        model1,
-        model2,
-        DistanceResult<S>::NONE,
-        DistanceResult<S>::NONE,
-        closest_p1,
-        closest_p2);
+      distance,
+      model1,
+      model2,
+      DistanceResult<S>::NONE,
+      DistanceResult<S>::NONE,
+      closest_p1,
+      closest_p2);
 }
 
 //==============================================================================
@@ -126,6 +136,4 @@ bool initialize(
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

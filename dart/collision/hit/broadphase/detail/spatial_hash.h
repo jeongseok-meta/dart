@@ -31,33 +31,29 @@
  *  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
- */ 
+ */
 
 /** @author Jia Pan */
 
-#ifndef FCL_BROADPHASE_SPATIALHASH_H
-#define FCL_BROADPHASE_SPATIALHASH_H
+#pragma once
 
-#include "fcl/math/bv/AABB.h"
+#include "dart/collision/hit/math/bv/AABB.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /// @brief Spatial hash function: hash an AABB to a set of integer values
 template <typename S_>
-struct FCL_EXPORT SpatialHash
+struct SpatialHash
 {
   using S = S_;
 
   SpatialHash(const AABB<S>& scene_limit_, S cell_size_);
-    
-  std::vector<unsigned int> operator() (const AABB<S>& aabb) const;
+
+  std::vector<unsigned int> operator()(const AABB<S>& aabb) const;
 
 private:
-
   S cell_size;
   AABB<S> scene_limit;
   unsigned int width[3];
@@ -67,8 +63,6 @@ using SpatialHashf = SpatialHash<float>;
 using SpatialHashd = SpatialHash<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/broadphase/detail/spatial_hash-inl.h"
-
-#endif
+#include "dart/collision/hit/broadphase/detail/spatial_hash-inl.h"

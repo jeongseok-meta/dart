@@ -35,13 +35,11 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BV_BVNODE_INL_H
-#define FCL_BV_BVNODE_INL_H
+#pragma once
 
-#include "fcl/geometry/bvh/BV_node.h"
+#include "dart/collision/hit/geometry/bvh/BV_node.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
 template <typename BV>
@@ -112,6 +110,4 @@ struct GetOrientationImpl<S, OBBRSS<S>>
   }
 };
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

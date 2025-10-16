@@ -35,65 +35,72 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_NARROWPHASE_DETAIL_GJKLIBCCD_H
-#define FCL_NARROWPHASE_DETAIL_GJKLIBCCD_H
+#pragma once
 
-#include <ccd/ccd.h>
-#include <ccd/quat.h>
-#include <ccd/vec3.h>
+#include "dart/collision/hit/ccd/ccd.h"
+#include "dart/collision/hit/ccd/quat.h"
+#include "dart/collision/hit/ccd/vec3.h"
+#include "dart/collision/hit/common/unused.h"
+#include "dart/collision/hit/geometry/shape/box.h"
+#include "dart/collision/hit/geometry/shape/capsule.h"
+#include "dart/collision/hit/geometry/shape/cone.h"
+#include "dart/collision/hit/geometry/shape/convex.h"
+#include "dart/collision/hit/geometry/shape/cylinder.h"
+#include "dart/collision/hit/geometry/shape/ellipsoid.h"
+#include "dart/collision/hit/geometry/shape/halfspace.h"
+#include "dart/collision/hit/geometry/shape/plane.h"
+#include "dart/collision/hit/geometry/shape/sphere.h"
+#include "dart/collision/hit/geometry/shape/triangle_p.h"
+#include "dart/collision/hit/narrowphase/detail/convexity_based_algorithm/alloc.h"
+#include "dart/collision/hit/narrowphase/detail/convexity_based_algorithm/list.h"
+#include "dart/collision/hit/narrowphase/detail/convexity_based_algorithm/polytope.h"
+#include "dart/collision/hit/narrowphase/detail/convexity_based_algorithm/simplex.h"
 
-#include "fcl/common/unused.h"
+namespace dart::collision::hit {
 
-#include "fcl/geometry/shape/box.h"
-#include "fcl/geometry/shape/capsule.h"
-#include "fcl/geometry/shape/cone.h"
-#include "fcl/geometry/shape/convex.h"
-#include "fcl/geometry/shape/cylinder.h"
-#include "fcl/geometry/shape/ellipsoid.h"
-#include "fcl/geometry/shape/halfspace.h"
-#include "fcl/geometry/shape/plane.h"
-#include "fcl/geometry/shape/sphere.h"
-#include "fcl/geometry/shape/triangle_p.h"
-
-#include "fcl/narrowphase/detail/convexity_based_algorithm/simplex.h"
-#include "fcl/narrowphase/detail/convexity_based_algorithm/polytope.h"
-#include "fcl/narrowphase/detail/convexity_based_algorithm/alloc.h"
-#include "fcl/narrowphase/detail/convexity_based_algorithm/list.h"
-
-namespace dart { namespace collision { namespace hit
-{
-
-namespace detail
-{
+namespace detail {
 
 /// @brief callback function used by GJK algorithm
 
-using GJKSupportFunction = void (*)(const void* obj, const ccd_vec3_t* dir_, ccd_vec3_t* v);
+using GJKSupportFunction
+    = void (*)(const void* obj, const ccd_vec3_t* dir_, ccd_vec3_t* v);
 using GJKCenterFunction = void (*)(const void* obj, ccd_vec3_t* c);
 
 /// @brief initialize GJK stuffs
 template <typename S, typename T>
-class FCL_EXPORT GJKInitializer
+class GJKInitializer
 {
 public:
   /// @brief Get GJK support function
-  static GJKSupportFunction getSupportFunction() { return nullptr; }
+  static GJKSupportFunction getSupportFunction()
+  {
+    return nullptr;
+  }
 
   /// @brief Get GJK center function
-  static GJKCenterFunction getCenterFunction() { return nullptr; }
+  static GJKCenterFunction getCenterFunction()
+  {
+    return nullptr;
+  }
 
   /// @brief Get GJK object from a shape
   /// Notice that only local transformation is applied.
   /// Gloal transformation are considered later
-  static void* createGJKObject(const T& /* s */, const Transform3<S>& /*tf*/) { return nullptr; }
+  static void* createGJKObject(const T& /* s */, const Transform3<S>& /*tf*/)
+  {
+    return nullptr;
+  }
 
   /// @brief Delete GJK object
-  static void deleteGJKObject(void* o) { FCL_UNUSED(o); }
+  static void deleteGJKObject(void* o)
+  {
+    DART_COLLISION_HIT_UNUSED(o);
+  }
 };
 
 /// @brief initialize GJK Cylinder<S>
 template <typename S>
-class FCL_EXPORT GJKInitializer<S, Cylinder<S>>
+class GJKInitializer<S, Cylinder<S>>
 {
 public:
   static GJKSupportFunction getSupportFunction();
@@ -104,7 +111,7 @@ public:
 
 /// @brief initialize GJK Sphere<S>
 template <typename S>
-class FCL_EXPORT GJKInitializer<S, Sphere<S>>
+class GJKInitializer<S, Sphere<S>>
 {
 public:
   static GJKSupportFunction getSupportFunction();
@@ -115,7 +122,7 @@ public:
 
 /// @brief initialize GJK Ellipsoid<S>
 template <typename S>
-class FCL_EXPORT GJKInitializer<S, Ellipsoid<S>>
+class GJKInitializer<S, Ellipsoid<S>>
 {
 public:
   static GJKSupportFunction getSupportFunction();
@@ -126,7 +133,7 @@ public:
 
 /// @brief initialize GJK Box<S>
 template <typename S>
-class FCL_EXPORT GJKInitializer<S, Box<S>>
+class GJKInitializer<S, Box<S>>
 {
 public:
   static GJKSupportFunction getSupportFunction();
@@ -137,7 +144,7 @@ public:
 
 /// @brief initialize GJK Capsule<S>
 template <typename S>
-class FCL_EXPORT GJKInitializer<S, Capsule<S>>
+class GJKInitializer<S, Capsule<S>>
 {
 public:
   static GJKSupportFunction getSupportFunction();
@@ -148,7 +155,7 @@ public:
 
 /// @brief initialize GJK Cone<S>
 template <typename S>
-class FCL_EXPORT GJKInitializer<S, Cone<S>>
+class GJKInitializer<S, Cone<S>>
 {
 public:
   static GJKSupportFunction getSupportFunction();
@@ -159,7 +166,7 @@ public:
 
 /// @brief initialize GJK Convex<S>
 template <typename S>
-class FCL_EXPORT GJKInitializer<S, Convex<S>>
+class GJKInitializer<S, Convex<S>>
 {
 public:
   static GJKSupportFunction getSupportFunction();
@@ -169,26 +176,25 @@ public:
 };
 
 /// @brief initialize GJK Triangle
-FCL_EXPORT
 GJKSupportFunction triGetSupportFunction();
 
-FCL_EXPORT
 GJKCenterFunction triGetCenterFunction();
 
 template <typename S>
-FCL_EXPORT
-void* triCreateGJKObject(const Vector3<S>& P1, const Vector3<S>& P2, const Vector3<S>& P3);
+void* triCreateGJKObject(
+    const Vector3<S>& P1, const Vector3<S>& P2, const Vector3<S>& P3);
 
 template <typename S>
-FCL_EXPORT
-void* triCreateGJKObject(const Vector3<S>& P1, const Vector3<S>& P2, const Vector3<S>& P3, const Transform3<S>& tf);
+void* triCreateGJKObject(
+    const Vector3<S>& P1,
+    const Vector3<S>& P2,
+    const Vector3<S>& P3,
+    const Transform3<S>& tf);
 
-FCL_EXPORT
 void triDeleteGJKObject(void* o);
 
 /// @brief GJK collision algorithm
 template <typename S>
-FCL_EXPORT
 bool GJKCollide(
     void* obj1,
     ccd_support_fn supp1,
@@ -221,11 +227,16 @@ bool GJKCollide(
  * @retval is_separated True if the objects are separated, false otherwise.
  */
 template <typename S>
-FCL_EXPORT
-bool GJKDistance(void* obj1, ccd_support_fn supp1,
-                 void* obj2, ccd_support_fn supp2,
-                 unsigned int max_iterations, S tolerance,
-                 S* dist, Vector3<S>* p1, Vector3<S>* p2);
+bool GJKDistance(
+    void* obj1,
+    ccd_support_fn supp1,
+    void* obj2,
+    ccd_support_fn supp2,
+    unsigned int max_iterations,
+    S tolerance,
+    S* dist,
+    Vector3<S>* p1,
+    Vector3<S>* p2);
 
 /** Compute the signed distance between two objects using GJK and EPA algorithm.
  * @param[in] obj1 A convex geometric object.
@@ -247,17 +258,18 @@ bool GJKDistance(void* obj1, ccd_support_fn supp1,
  * @retval is_separated True if the objects are separated, false otherwise.
  */
 template <typename S>
-FCL_EXPORT
-bool GJKSignedDistance(void* obj1, ccd_support_fn supp1,
-                       void* obj2, ccd_support_fn supp2,
-                       unsigned int max_iterations, S tolerance,
-                       S* dist, Vector3<S>* p1, Vector3<S>* p2);
-
-
+bool GJKSignedDistance(
+    void* obj1,
+    ccd_support_fn supp1,
+    void* obj2,
+    ccd_support_fn supp2,
+    unsigned int max_iterations,
+    S tolerance,
+    S* dist,
+    Vector3<S>* p1,
+    Vector3<S>* p2);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/convexity_based_algorithm/gjk_libccd-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/convexity_based_algorithm/gjk_libccd-inl.h"

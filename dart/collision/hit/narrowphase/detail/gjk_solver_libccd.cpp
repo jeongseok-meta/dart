@@ -35,16 +35,13 @@
 
 /** @author Jia Pan */
 
-#include "fcl/narrowphase/detail/gjk_solver_libccd-inl.h"
+#include "dart/collision/hit/narrowphase/detail/gjk_solver_libccd-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
-template
-struct GJKSolver_libccd<double>;
+template struct GJKSolver_libccd<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

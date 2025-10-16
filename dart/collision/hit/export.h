@@ -1,7 +1,8 @@
 /*
  * Software License Agreement (BSD License)
  *
- *  Copyright (c) 2023, Toyota Research Institute
+ *  Copyright (c) 2011-2014, Willow Garage, Inc.
+ *  Copyright (c) 2014-2016, Open Source Robotics Foundation
  *  All rights reserved.
  *
  *  Redistribution and use in source and binary forms, with or without
@@ -32,13 +33,9 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 
-/** @author Sean Curtis */
+/** @author Jia Pan */
 
-#include "fcl/geometry/shape/representation.h"
+#pragma once
 
-namespace dart { namespace collision { namespace hit {
-namespace detail {
-
-
-}  // namespace detail
-}  // namespace dart { namespace collision { namespace hit
+// Empty stub file - HIT does not use symbol export/import macros
+// All symbols are exported/imported through DART's main export mechanism

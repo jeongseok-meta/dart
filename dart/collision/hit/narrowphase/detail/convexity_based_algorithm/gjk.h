@@ -35,27 +35,25 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_NARROWPHASE_DETAIL_GJK_H
-#define FCL_NARROWPHASE_DETAIL_GJK_H
+#pragma once
 
-#include "fcl/common/types.h"
-#include "fcl/narrowphase/detail/convexity_based_algorithm/minkowski_diff.h"
+#include "dart/collision/hit/common/types.h"
+#include "dart/collision/hit/narrowphase/detail/convexity_based_algorithm/minkowski_diff.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /// @brief class for GJK algorithm
 template <typename S>
-struct FCL_EXPORT GJK
+struct GJK
 {
   struct SimplexV
   {
     /// @brief support direction
     Vector3<S> d;
-    /// @brieg support vector (i.e., the furthest point on the shape along the support direction)
+    /// @brieg support vector (i.e., the furthest point on the shape along the
+    /// support direction)
     Vector3<S> w;
   };
 
@@ -63,7 +61,7 @@ struct FCL_EXPORT GJK
   {
     /// @brief simplex vertex
     SimplexV* c[4];
-    /// @brief weight 
+    /// @brief weight
     S p[4];
     /// @brief size of simplex (number of vertices)
     size_t rank;
@@ -71,7 +69,12 @@ struct FCL_EXPORT GJK
     Simplex();
   };
 
-  enum Status {Valid, Inside, Failed};
+  enum Status
+  {
+    Valid,
+    Inside,
+    Failed
+  };
 
   MinkowskiDiff<S> shape;
   Vector3<S> ray;
@@ -79,16 +82,18 @@ struct FCL_EXPORT GJK
   Simplex simplices[2];
 
   GJK(unsigned int max_iterations_, S tolerance_);
-  
+
   void initialize();
 
   /// @brief GJK algorithm, given the initial value guess
   Status evaluate(const MinkowskiDiff<S>& shape_, const Vector3<S>& guess);
 
-  /// @brief apply the support function along a direction, the result is return in sv
+  /// @brief apply the support function along a direction, the result is return
+  /// in sv
   void getSupport(const Vector3<S>& d, SimplexV& sv) const;
 
-  /// @brief apply the support function along a direction, the result is return is sv, here shape0 is translating at velocity v
+  /// @brief apply the support function along a direction, the result is return
+  /// is sv, here shape0 is translating at velocity v
   void getSupport(const Vector3<S>& d, const Vector3<S>& v, SimplexV& sv) const;
 
   /// @brief discard one vertex from the simplex
@@ -100,7 +105,8 @@ struct FCL_EXPORT GJK
   /// @brief whether the simplex enclose the origin
   bool encloseOrigin();
 
-  /// @brief get the underlying simplex using in GJK, can be used for cache in next iteration
+  /// @brief get the underlying simplex using in GJK, can be used for cache in
+  /// next iteration
   Simplex* getSimplex() const;
 
   /// @brief get the guess from current simplex
@@ -116,15 +122,12 @@ private:
 
   unsigned int max_iterations;
   S tolerance;
-
 };
 
 using GJKf = GJK<float>;
 using GJKd = GJK<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/convexity_based_algorithm/gjk-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/convexity_based_algorithm/gjk-inl.h"

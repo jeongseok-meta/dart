@@ -35,17 +35,14 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CCD_INTERPMOTION_INL_H
-#define FCL_CCD_INTERPMOTION_INL_H
+#pragma once
 
-#include "fcl/math/motion/interp_motion.h"
+#include "dart/collision/hit/math/motion/interp_motion.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT InterpMotion<double>;
+extern template class InterpMotion<double>;
 
 //==============================================================================
 template <typename S>
@@ -63,8 +60,10 @@ InterpMotion<S>::InterpMotion()
 //==============================================================================
 template <typename S>
 InterpMotion<S>::InterpMotion(
-    const Matrix3<S>& R1, const Vector3<S>& T1,
-    const Matrix3<S>& R2, const Vector3<S>& T2)
+    const Matrix3<S>& R1,
+    const Vector3<S>& T1,
+    const Matrix3<S>& R2,
+    const Vector3<S>& T2)
   : MotionBase<S>(),
     tf1(Transform3<S>::Identity()),
     tf2(Transform3<S>::Identity())
@@ -129,24 +128,28 @@ InterpMotion<S>::InterpMotion(
 template <typename S>
 bool InterpMotion<S>::integrate(S dt) const
 {
-  if(dt > 1) dt = 1;
+  if (dt > 1)
+    dt = 1;
 
   tf.linear() = absoluteRotation(dt).toRotationMatrix();
-  tf.translation() = linear_vel * dt + tf1 * reference_p - tf.linear() * reference_p;
+  tf.translation()
+      = linear_vel * dt + tf1 * reference_p - tf.linear() * reference_p;
 
   return true;
 }
 
 //==============================================================================
 template <typename S>
-S InterpMotion<S>::computeMotionBound(const BVMotionBoundVisitor<S>& mb_visitor) const
+S InterpMotion<S>::computeMotionBound(
+    const BVMotionBoundVisitor<S>& mb_visitor) const
 {
   return mb_visitor.visit(*this);
 }
 
 //==============================================================================
 template <typename S>
-S InterpMotion<S>::computeMotionBound(const TriangleMotionBoundVisitor<S>& mb_visitor) const
+S InterpMotion<S>::computeMotionBound(
+    const TriangleMotionBoundVisitor<S>& mb_visitor) const
 {
   return mb_visitor.visit(*this);
 }
@@ -170,20 +173,21 @@ void InterpMotion<S>::getTaylorModel(TMatrix3<S>& tm, TVector3<S>& tv) const
   TaylorModel<S> sin_model(this->getTimeInterval());
   generateTaylorModelForSinFunc(sin_model, angular_vel, (S)0);
 
-  TMatrix3<S> delta_R = hat_angular_axis * sin_model
-      - (hat_angular_axis * hat_angular_axis).eval() * (cos_model - 1)
-      + Matrix3<S>::Identity();
+  TMatrix3<S> delta_R
+      = hat_angular_axis * sin_model
+        - (hat_angular_axis * hat_angular_axis).eval() * (cos_model - 1)
+        + Matrix3<S>::Identity();
 
-  TaylorModel<S> a(this->getTimeInterval()), b(this->getTimeInterval()), c(this->getTimeInterval());
+  TaylorModel<S> a(this->getTimeInterval()), b(this->getTimeInterval()),
+      c(this->getTimeInterval());
   generateTaylorModelForLinearFunc(a, (S)0, linear_vel[0]);
   generateTaylorModelForLinearFunc(b, (S)0, linear_vel[1]);
   generateTaylorModelForLinearFunc(c, (S)0, linear_vel[2]);
   TVector3<S> delta_T(a, b, c);
 
   tm = delta_R * tf1.linear().eval();
-  tv = tf1 * reference_p
-      + delta_T
-      - delta_R * (tf1.linear() * reference_p).eval();
+  tv = tf1 * reference_p + delta_T
+       - delta_R * (tf1.linear() * reference_p).eval();
 }
 
 //==============================================================================
@@ -196,8 +200,7 @@ void InterpMotion<S>::computeVelocity()
   angular_axis = aa.axis();
   angular_vel = aa.angle();
 
-  if(angular_vel < 0)
-  {
+  if (angular_vel < 0) {
     angular_vel = -angular_vel;
     angular_axis = -angular_axis;
   }
@@ -220,14 +223,14 @@ Quaternion<S> InterpMotion<S>::absoluteRotation(S dt) const
 
 //==============================================================================
 template <typename S>
-const Vector3<S>&InterpMotion<S>::getReferencePoint() const
+const Vector3<S>& InterpMotion<S>::getReferencePoint() const
 {
   return reference_p;
 }
 
 //==============================================================================
 template <typename S>
-const Vector3<S>&InterpMotion<S>::getAngularAxis() const
+const Vector3<S>& InterpMotion<S>::getAngularAxis() const
 {
   return angular_axis;
 }
@@ -241,11 +244,9 @@ S InterpMotion<S>::getAngularVelocity() const
 
 //==============================================================================
 template <typename S>
-const Vector3<S>&InterpMotion<S>::getLinearVelocity() const
+const Vector3<S>& InterpMotion<S>::getLinearVelocity() const
 {
   return linear_vel;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

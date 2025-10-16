@@ -36,8 +36,10 @@
 /** @author Jia Pan */
 /** @author Sean Curtis (2018) Modify API and correct implementation bugs. */
 
-#ifndef FCL_SHAPE_CONVEX_INL_H
-#define FCL_SHAPE_CONVEX_INL_H
+#pragma once
+
+#include "dart/collision/hit/geometry/shape/convex.h"
+#include "dart/collision/hit/geometry/shape/representation.h"
 
 #include <iomanip>
 #include <map>
@@ -45,29 +47,25 @@
 #include <sstream>
 #include <utility>
 
-#include "fcl/geometry/shape/convex.h"
-#include "fcl/geometry/shape/representation.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT Convex<double>;
+extern template class Convex<double>;
 
 //==============================================================================
 template <typename S>
 Convex<S>::Convex(
     const std::shared_ptr<const std::vector<Vector3<S>>>& vertices,
-    int num_faces, const std::shared_ptr<const std::vector<int>>& faces,
+    int num_faces,
+    const std::shared_ptr<const std::vector<int>>& faces,
     bool throw_if_invalid)
-    : ShapeBase<S>(),
-      vertices_(vertices),
-      num_faces_(num_faces),
-      faces_(faces),
-      throw_if_invalid_(throw_if_invalid),
-      find_extreme_via_neighbors_{vertices->size() >
-                                  kMinVertCountForEdgeWalking} {
+  : ShapeBase<S>(),
+    vertices_(vertices),
+    num_faces_(num_faces),
+    faces_(faces),
+    throw_if_invalid_(throw_if_invalid),
+    find_extreme_via_neighbors_{vertices->size() > kMinVertCountForEdgeWalking}
+{
   assert(vertices != nullptr);
   assert(faces != nullptr);
   // Compute an interior point. We're computing the mean point and *not* some
@@ -83,7 +81,8 @@ Convex<S>::Convex(
 
 //==============================================================================
 template <typename S>
-void Convex<S>::computeLocalAABB() {
+void Convex<S>::computeLocalAABB()
+{
   this->aabb_local.min_.setConstant(std::numeric_limits<S>::max());
   this->aabb_local.max_.setConstant(-std::numeric_limits<S>::max());
 
@@ -97,7 +96,8 @@ void Convex<S>::computeLocalAABB() {
 
 //==============================================================================
 template <typename S>
-NODE_TYPE Convex<S>::getNodeType() const {
+NODE_TYPE Convex<S>::getNodeType() const
+{
   return GEOM_CONVEX;
 }
 
@@ -108,15 +108,15 @@ NODE_TYPE Convex<S>::getNodeType() const {
 //  http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.56.127&rep=rep1&type=pdf
 //  http://number-none.com/blow/inertia/bb_inertia.doc
 template <typename S>
-Matrix3<S> Convex<S>::computeMomentofInertia() const {
+Matrix3<S> Convex<S>::computeMomentofInertia() const
+{
   const std::vector<Vector3<S>>& vertices = *vertices_;
   const std::vector<int>& faces = *faces_;
   Matrix3<S> C = Matrix3<S>::Zero();
 
   Matrix3<S> C_canonical;
-  C_canonical << 1/ 60.0, 1/120.0, 1/120.0,
-      1/120.0, 1/ 60.0, 1/120.0,
-      1/120.0, 1/120.0, 1/ 60.0;
+  C_canonical << 1 / 60.0, 1 / 120.0, 1 / 120.0, 1 / 120.0, 1 / 60.0, 1 / 120.0,
+      1 / 120.0, 1 / 120.0, 1 / 60.0;
 
   S vol_times_six = 0;
   int face_index = 0;
@@ -154,16 +154,16 @@ Matrix3<S> Convex<S>::computeMomentofInertia() const {
   S trace_C = C(0, 0) + C(1, 1) + C(2, 2);
 
   Matrix3<S> m;
-  m << trace_C - C(0, 0), -C(0, 1), -C(0, 2),
-      -C(1, 0), trace_C - C(1, 1), -C(1, 2),
-      -C(2, 0), -C(2, 1), trace_C - C(2, 2);
+  m << trace_C - C(0, 0), -C(0, 1), -C(0, 2), -C(1, 0), trace_C - C(1, 1),
+      -C(1, 2), -C(2, 0), -C(2, 1), trace_C - C(2, 2);
 
   return m * (6 / vol_times_six);
 }
 
 //==============================================================================
 template <typename S>
-Vector3<S> Convex<S>::computeCOM() const {
+Vector3<S> Convex<S>::computeCOM() const
+{
   const std::vector<Vector3<S>>& vertices = *vertices_;
   const std::vector<int>& faces = *faces_;
   Vector3<S> com = Vector3<S>::Zero();
@@ -202,7 +202,9 @@ Vector3<S> Convex<S>::computeCOM() const {
 }
 
 //==============================================================================
-template <typename S> S Convex<S>::computeVolume() const {
+template <typename S>
+S Convex<S>::computeVolume() const
+{
   const std::vector<Vector3<S>>& vertices = *vertices_;
   const std::vector<int>& faces = *faces_;
   S vol = 0;
@@ -250,7 +252,8 @@ template <typename S> S Convex<S>::computeVolume() const {
 //==============================================================================
 template <typename S>
 std::vector<Vector3<S>> Convex<S>::getBoundVertices(
-    const Transform3<S>& tf) const {
+    const Transform3<S>& tf) const
+{
   std::vector<Vector3<S>> result;
   result.reserve(vertices_->size());
 
@@ -263,7 +266,8 @@ std::vector<Vector3<S>> Convex<S>::getBoundVertices(
 
 //==============================================================================
 template <typename S>
-const Vector3<S>& Convex<S>::findExtremeVertex(const Vector3<S>& v_C) const {
+const Vector3<S>& Convex<S>::findExtremeVertex(const Vector3<S>& v_C) const
+{
   // TODO(SeanCurtis-TRI): Create an override of this that seeds the search with
   //  the last extremal vertex index (assuming some kind of coherency in the
   //  evaluation sequence).
@@ -282,9 +286,11 @@ const Vector3<S>& Convex<S>::findExtremeVertex(const Vector3<S>& v_C) const {
       const int neighbor_start = neighbors_[extreme_index];
       const int neighbor_count = neighbors_[neighbor_start];
       for (int n_index = neighbor_start + 1;
-           n_index <= neighbor_start + neighbor_count; ++n_index) {
+           n_index <= neighbor_start + neighbor_count;
+           ++n_index) {
         const int neighbor_index = neighbors_[n_index];
-        if (visited[neighbor_index]) continue;
+        if (visited[neighbor_index])
+          continue;
         visited[neighbor_index] = 1;
         const S neighbor_value = v_C.dot(vertices[neighbor_index]);
         // N.B. Testing >= (instead of >) protects us from the (very rare) case
@@ -315,7 +321,8 @@ const Vector3<S>& Convex<S>::findExtremeVertex(const Vector3<S>& v_C) const {
 
 //==============================================================================
 template <typename S>
-std::string Convex<S>::representation(int precision) const {
+std::string Convex<S>::representation(int precision) const
+{
   const char* S_str = detail::ScalarRepr<S>::value();
   std::stringstream ss;
   ss << std::setprecision(precision);
@@ -349,7 +356,8 @@ std::string Convex<S>::representation(int precision) const {
 
 //==============================================================================
 template <typename S>
-void Convex<S>::ValidateMesh(bool throw_on_error) {
+void Convex<S>::ValidateMesh(bool throw_on_error)
+{
   ValidateTopology(throw_on_error);
   // TODO(SeanCurtis-TRI) Implement the missing "all-faces-are-planar" test.
   // TODO(SeanCurtis-TRI) Implement the missing "really-is-convex" test.
@@ -357,7 +365,8 @@ void Convex<S>::ValidateMesh(bool throw_on_error) {
 
 //==============================================================================
 template <typename S>
-void Convex<S>::ValidateTopology(bool throw_on_error) {
+void Convex<S>::ValidateTopology(bool throw_on_error)
+{
   // Computing the vertex neighbors is a pre-requisite to determining validity.
   assert(neighbors_.size() > vertices_->size());
 
@@ -367,8 +376,9 @@ void Convex<S>::ValidateTopology(bool throw_on_error) {
   // To simplify the code, we define an edge as a pair of ints (A, B) such that
   // A < B must be true.
   auto make_edge = [](int v0, int v1) {
-      if (v0 > v1) std::swap(v0, v1);
-      return std::make_pair(v0, v1);
+    if (v0 > v1)
+      std::swap(v0, v1);
+    return std::make_pair(v0, v1);
   };
 
   bool all_connected = true;
@@ -387,9 +397,10 @@ void Convex<S>::ValidateTopology(bool throw_on_error) {
       ss << "\n  Vertex " << v << " is not included in any faces.";
     }
     for (int n_index = neighbor_start + 1;
-         n_index <= neighbor_start + neighbor_count; ++n_index) {
+         n_index <= neighbor_start + neighbor_count;
+         ++n_index) {
       const int n = neighbors_[n_index];
-        per_edge_face_count[make_edge(v, n)] = 0;
+      per_edge_face_count[make_edge(v, n)] = 0;
     }
   }
 
@@ -400,14 +411,14 @@ void Convex<S>::ValidateTopology(bool throw_on_error) {
   const std::vector<int>& faces = *faces_;
   int face_index = 0;
   for (int f = 0; f < num_faces_; ++f) {
-      const int vertex_count = faces[face_index];
-      int prev_v = faces[face_index + vertex_count];
-      for (int i = face_index + 1; i <= face_index + vertex_count; ++i) {
-          const int v = faces[i];
-          ++per_edge_face_count[make_edge(v, prev_v)];
-          prev_v = v;
-      }
-      face_index += vertex_count + 1;
+    const int vertex_count = faces[face_index];
+    int prev_v = faces[face_index + vertex_count];
+    for (int i = face_index + 1; i <= face_index + vertex_count; ++i) {
+      const int v = faces[i];
+      ++per_edge_face_count[make_edge(v, prev_v)];
+      prev_v = v;
+    }
+    face_index += vertex_count + 1;
   }
 
   // Now examine the results.
@@ -437,7 +448,8 @@ void Convex<S>::ValidateTopology(bool throw_on_error) {
 
 //==============================================================================
 template <typename S>
-void Convex<S>::FindVertexNeighbors() {
+void Convex<S>::FindVertexNeighbors()
+{
   // We initially build it using sets. Two faces with a common edge will
   // independently want to report that the edge's vertices are neighbors. So,
   // we rely on the set to eliminate the redundant declaration and then dump
@@ -468,6 +480,4 @@ void Convex<S>::FindVertexNeighbors() {
   }
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

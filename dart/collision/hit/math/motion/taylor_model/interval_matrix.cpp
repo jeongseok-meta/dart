@@ -32,20 +32,18 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
-// This code is based on code developed by Stephane Redon at UNC and Inria for the CATCH library: http://graphics.ewha.ac.kr/CATCH/
+// This code is based on code developed by Stephane Redon at UNC and Inria for
+// the CATCH library: http://graphics.ewha.ac.kr/CATCH/
 /** @author Jia Pan */
 
-#include "fcl/math/motion/taylor_model/interval_matrix-inl.h"
+#include "dart/collision/hit/math/motion/taylor_model/interval_matrix-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
-
-//==============================================================================
-template
-struct IMatrix3<double>;
+namespace dart::collision::hit {
 
 //==============================================================================
-template
-IMatrix3<double> rotationConstrain(const IMatrix3<double>& m);
+template struct IMatrix3<double>;
 
-} // namespace dart { namespace collision { namespace hit
+//==============================================================================
+template IMatrix3<double> rotationConstrain(const IMatrix3<double>& m);
+
+} // namespace dart::collision::hit

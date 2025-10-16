@@ -31,24 +31,23 @@
  *  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
- */ 
+ */
 
 /** @author Jia Pan */
 
-#ifndef FCL_BROAD_PHASE_INTERVAL_TREE_H
-#define FCL_BROAD_PHASE_INTERVAL_TREE_H
+#pragma once
+
+#include "dart/collision/hit/broadphase/broadphase_collision_manager.h"
+#include "dart/collision/hit/broadphase/detail/interval_tree.h"
 
 #include <deque>
 #include <map>
-#include "fcl/broadphase/broadphase_collision_manager.h"
-#include "fcl/broadphase/detail/interval_tree.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Collision manager based on interval tree
 template <typename S>
-class FCL_EXPORT IntervalTreeCollisionManager : public BroadPhaseCollisionManager<S>
+class IntervalTreeCollisionManager : public BroadPhaseCollisionManager<S>
 {
 public:
   IntervalTreeCollisionManager();
@@ -79,36 +78,50 @@ public:
   /// @brief return the objects managed by the manager
   void getObjects(std::vector<CollisionObject<S>*>& objs) const;
 
-  /// @brief perform collision test between one object and all the objects belonging to the manager
-  void collide(CollisionObject<S>* obj, void* cdata, CollisionCallBack<S> callback) const;
+  /// @brief perform collision test between one object and all the objects
+  /// belonging to the manager
+  void collide(
+      CollisionObject<S>* obj,
+      void* cdata,
+      CollisionCallBack<S> callback) const;
 
-  /// @brief perform distance computation between one object and all the objects belonging to the manager
-  void distance(CollisionObject<S>* obj, void* cdata, DistanceCallBack<S> callback) const;
+  /// @brief perform distance computation between one object and all the objects
+  /// belonging to the manager
+  void distance(
+      CollisionObject<S>* obj, void* cdata, DistanceCallBack<S> callback) const;
 
-  /// @brief perform collision test for the objects belonging to the manager (i.e., N^2 self collision)
+  /// @brief perform collision test for the objects belonging to the manager
+  /// (i.e., N^2 self collision)
   void collide(void* cdata, CollisionCallBack<S> callback) const;
 
-  /// @brief perform distance test for the objects belonging to the manager (i.e., N^2 self distance)
+  /// @brief perform distance test for the objects belonging to the manager
+  /// (i.e., N^2 self distance)
   void distance(void* cdata, DistanceCallBack<S> callback) const;
 
   /// @brief perform collision test with objects belonging to another manager
-  void collide(BroadPhaseCollisionManager<S>* other_manager, void* cdata, CollisionCallBack<S> callback) const;
+  void collide(
+      BroadPhaseCollisionManager<S>* other_manager,
+      void* cdata,
+      CollisionCallBack<S> callback) const;
 
   /// @brief perform distance test with objects belonging to another manager
-  void distance(BroadPhaseCollisionManager<S>* other_manager, void* cdata, DistanceCallBack<S> callback) const;
+  void distance(
+      BroadPhaseCollisionManager<S>* other_manager,
+      void* cdata,
+      DistanceCallBack<S> callback) const;
 
   /// @brief whether the manager is empty
   bool empty() const;
-  
+
   /// @brief the number of objects managed by the manager
   size_t size() const;
 
 protected:
-
   /// @brief SAP end point
   struct EndPoint;
 
-  /// @brief Extention interval tree's interval to SAP interval, adding more information
+  /// @brief Extention interval tree's interval to SAP interval, adding more
+  /// information
   struct SAPInterval;
 
   bool checkColl(
@@ -126,9 +139,16 @@ protected:
       DistanceCallBack<S> callback,
       S& min_dist) const;
 
-  bool collide_(CollisionObject<S>* obj, void* cdata, CollisionCallBack<S> callback) const;
+  bool collide_(
+      CollisionObject<S>* obj,
+      void* cdata,
+      CollisionCallBack<S> callback) const;
 
-  bool distance_(CollisionObject<S>* obj, void* cdata, DistanceCallBack<S> callback, S& min_dist) const;
+  bool distance_(
+      CollisionObject<S>* obj,
+      void* cdata,
+      DistanceCallBack<S> callback,
+      S& min_dist) const;
 
   /// @brief vector stores all the end points
   std::vector<EndPoint> endpoints[3];
@@ -147,7 +167,7 @@ using IntervalTreeCollisionManagerd = IntervalTreeCollisionManager<double>;
 
 /// @brief SAP end point
 template <typename S>
-struct FCL_EXPORT IntervalTreeCollisionManager<S>::EndPoint
+struct IntervalTreeCollisionManager<S>::EndPoint
 {
   /// @brief object related with the end point
   CollisionObject<S>* obj;
@@ -155,23 +175,24 @@ struct FCL_EXPORT IntervalTreeCollisionManager<S>::EndPoint
   /// @brief end point value
   S value;
 
-  /// @brief tag for whether it is a lower bound or higher bound of an interval, 0 for lo, and 1 for hi
+  /// @brief tag for whether it is a lower bound or higher bound of an interval,
+  /// 0 for lo, and 1 for hi
   char minmax;
 
-  bool operator<(const EndPoint &p) const;
+  bool operator<(const EndPoint& p) const;
 };
 
-/// @brief Extention interval tree's interval to SAP interval, adding more information
+/// @brief Extention interval tree's interval to SAP interval, adding more
+/// information
 template <typename S>
-struct FCL_EXPORT IntervalTreeCollisionManager<S>::SAPInterval : public detail::SimpleInterval<S>
+struct IntervalTreeCollisionManager<S>::SAPInterval
+  : public detail::SimpleInterval<S>
 {
   CollisionObject<S>* obj;
 
   SAPInterval(S low_, S high_, CollisionObject<S>* obj_);
 };
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/broadphase/broadphase_interval_tree-inl.h"
-
-#endif
+#include "dart/collision/hit/broadphase/broadphase_interval_tree-inl.h"

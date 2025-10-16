@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/geometry/shape/shape_base-inl.h"
+#include "dart/collision/hit/geometry/shape/shape_base-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-class ShapeBase<double>;
+template class ShapeBase<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

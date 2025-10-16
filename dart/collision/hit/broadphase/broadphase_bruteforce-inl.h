@@ -31,22 +31,20 @@
  *  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
- */ 
+ */
 
 /** @author Jia Pan */
 
-#ifndef FCL_BROAD_PHASE_BRUTE_FORCE_INL_H
-#define FCL_BROAD_PHASE_BRUTE_FORCE_INL_H
+#pragma once
 
-#include "fcl/broadphase/broadphase_bruteforce.h"
+#include "dart/collision/hit/broadphase/broadphase_bruteforce.h"
 
 #include <iterator>
 
-namespace dart { namespace collision { namespace hit {
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT NaiveCollisionManager<double>;
+extern template class NaiveCollisionManager<double>;
 
 //==============================================================================
 template <typename S>
@@ -57,7 +55,8 @@ NaiveCollisionManager<S>::NaiveCollisionManager()
 
 //==============================================================================
 template <typename S>
-void NaiveCollisionManager<S>::registerObjects(const std::vector<CollisionObject<S>*>& other_objs)
+void NaiveCollisionManager<S>::registerObjects(
+    const std::vector<CollisionObject<S>*>& other_objs)
 {
   std::copy(other_objs.begin(), other_objs.end(), std::back_inserter(objs));
 }
@@ -99,7 +98,8 @@ void NaiveCollisionManager<S>::clear()
 
 //==============================================================================
 template <typename S>
-void NaiveCollisionManager<S>::getObjects(std::vector<CollisionObject<S>*>& objs_) const
+void NaiveCollisionManager<S>::getObjects(
+    std::vector<CollisionObject<S>*>& objs_) const
 {
   objs_.resize(objs.size());
   std::copy(objs.begin(), objs.end(), objs_.begin());
@@ -107,29 +107,30 @@ void NaiveCollisionManager<S>::getObjects(std::vector<CollisionObject<S>*>& objs
 
 //==============================================================================
 template <typename S>
-void NaiveCollisionManager<S>::collide(CollisionObject<S>* obj, void* cdata, CollisionCallBack<S> callback) const
+void NaiveCollisionManager<S>::collide(
+    CollisionObject<S>* obj, void* cdata, CollisionCallBack<S> callback) const
 {
-  if(size() == 0) return;
+  if (size() == 0)
+    return;
 
-  for(auto* obj2 : objs)
-  {
-    if(callback(obj, obj2, cdata))
+  for (auto* obj2 : objs) {
+    if (callback(obj, obj2, cdata))
       return;
   }
 }
 
 //==============================================================================
 template <typename S>
-void NaiveCollisionManager<S>::distance(CollisionObject<S>* obj, void* cdata, DistanceCallBack<S> callback) const
+void NaiveCollisionManager<S>::distance(
+    CollisionObject<S>* obj, void* cdata, DistanceCallBack<S> callback) const
 {
-  if(size() == 0) return;
+  if (size() == 0)
+    return;
 
   S min_dist = std::numeric_limits<S>::max();
-  for(auto* obj2 : objs)
-  {
-    if(obj->getAABB().distance(obj2->getAABB()) < min_dist)
-    {
-      if(callback(obj, obj2, cdata, min_dist))
+  for (auto* obj2 : objs) {
+    if (obj->getAABB().distance(obj2->getAABB()) < min_dist) {
+      if (callback(obj, obj2, cdata, min_dist))
         return;
     }
   }
@@ -137,19 +138,22 @@ void NaiveCollisionManager<S>::distance(CollisionObject<S>* obj, void* cdata, Di
 
 //==============================================================================
 template <typename S>
-void NaiveCollisionManager<S>::collide(void* cdata, CollisionCallBack<S> callback) const
+void NaiveCollisionManager<S>::collide(
+    void* cdata, CollisionCallBack<S> callback) const
 {
-  if(size() == 0) return;
+  if (size() == 0)
+    return;
 
-  for(typename std::list<CollisionObject<S>*>::const_iterator it1 = objs.begin(), end = objs.end();
-      it1 != end; ++it1)
-  {
-    typename std::list<CollisionObject<S>*>::const_iterator it2 = it1; it2++;
-    for(; it2 != end; ++it2)
-    {
-      if((*it1)->getAABB().overlap((*it2)->getAABB()))
-      {
-        if(callback(*it1, *it2, cdata))
+  for (typename std::list<CollisionObject<S>*>::const_iterator it1
+       = objs.begin(),
+       end = objs.end();
+       it1 != end;
+       ++it1) {
+    typename std::list<CollisionObject<S>*>::const_iterator it2 = it1;
+    it2++;
+    for (; it2 != end; ++it2) {
+      if ((*it1)->getAABB().overlap((*it2)->getAABB())) {
+        if (callback(*it1, *it2, cdata))
           return;
       }
     }
@@ -158,19 +162,23 @@ void NaiveCollisionManager<S>::collide(void* cdata, CollisionCallBack<S> callbac
 
 //==============================================================================
 template <typename S>
-void NaiveCollisionManager<S>::distance(void* cdata, DistanceCallBack<S> callback) const
+void NaiveCollisionManager<S>::distance(
+    void* cdata, DistanceCallBack<S> callback) const
 {
-  if(size() == 0) return;
+  if (size() == 0)
+    return;
 
   S min_dist = std::numeric_limits<S>::max();
-  for(typename std::list<CollisionObject<S>*>::const_iterator it1 = objs.begin(), end = objs.end(); it1 != end; ++it1)
-  {
-    typename std::list<CollisionObject<S>*>::const_iterator it2 = it1; it2++;
-    for(; it2 != end; ++it2)
-    {
-      if((*it1)->getAABB().distance((*it2)->getAABB()) < min_dist)
-      {
-        if(callback(*it1, *it2, cdata, min_dist))
+  for (typename std::list<CollisionObject<S>*>::const_iterator it1
+       = objs.begin(),
+       end = objs.end();
+       it1 != end;
+       ++it1) {
+    typename std::list<CollisionObject<S>*>::const_iterator it2 = it1;
+    it2++;
+    for (; it2 != end; ++it2) {
+      if ((*it1)->getAABB().distance((*it2)->getAABB()) < min_dist) {
+        if (callback(*it1, *it2, cdata, min_dist))
           return;
       }
     }
@@ -179,25 +187,26 @@ void NaiveCollisionManager<S>::distance(void* cdata, DistanceCallBack<S> callbac
 
 //==============================================================================
 template <typename S>
-void NaiveCollisionManager<S>::collide(BroadPhaseCollisionManager<S>* other_manager_, void* cdata, CollisionCallBack<S> callback) const
+void NaiveCollisionManager<S>::collide(
+    BroadPhaseCollisionManager<S>* other_manager_,
+    void* cdata,
+    CollisionCallBack<S> callback) const
 {
-  NaiveCollisionManager* other_manager = static_cast<NaiveCollisionManager*>(other_manager_);
+  NaiveCollisionManager* other_manager
+      = static_cast<NaiveCollisionManager*>(other_manager_);
 
-  if((size() == 0) || (other_manager->size() == 0)) return;
+  if ((size() == 0) || (other_manager->size() == 0))
+    return;
 
-  if(this == other_manager)
-  {
+  if (this == other_manager) {
     collide(cdata, callback);
     return;
   }
 
-  for(auto* obj1 : objs)
-  {
-    for(auto* obj2 : other_manager->objs)
-    {
-      if(obj1->getAABB().overlap(obj2->getAABB()))
-      {
-        if(callback(obj1, obj2, cdata))
+  for (auto* obj1 : objs) {
+    for (auto* obj2 : other_manager->objs) {
+      if (obj1->getAABB().overlap(obj2->getAABB())) {
+        if (callback(obj1, obj2, cdata))
           return;
       }
     }
@@ -206,26 +215,27 @@ void NaiveCollisionManager<S>::collide(BroadPhaseCollisionManager<S>* other_mana
 
 //==============================================================================
 template <typename S>
-void NaiveCollisionManager<S>::distance(BroadPhaseCollisionManager<S>* other_manager_, void* cdata, DistanceCallBack<S> callback) const
+void NaiveCollisionManager<S>::distance(
+    BroadPhaseCollisionManager<S>* other_manager_,
+    void* cdata,
+    DistanceCallBack<S> callback) const
 {
-  NaiveCollisionManager* other_manager = static_cast<NaiveCollisionManager*>(other_manager_);
+  NaiveCollisionManager* other_manager
+      = static_cast<NaiveCollisionManager*>(other_manager_);
 
-  if((size() == 0) || (other_manager->size() == 0)) return;
+  if ((size() == 0) || (other_manager->size() == 0))
+    return;
 
-  if(this == other_manager)
-  {
+  if (this == other_manager) {
     distance(cdata, callback);
     return;
   }
 
   S min_dist = std::numeric_limits<S>::max();
-  for(auto* obj1 : objs)
-  {
-    for(auto* obj2 : other_manager->objs)
-    {
-      if(obj1->getAABB().distance(obj2->getAABB()) < min_dist)
-      {
-        if(callback(obj1, obj2, cdata, min_dist))
+  for (auto* obj1 : objs) {
+    for (auto* obj2 : other_manager->objs) {
+      if (obj1->getAABB().distance(obj2->getAABB()) < min_dist) {
+        if (callback(obj1, obj2, cdata, min_dist))
           return;
       }
     }
@@ -246,6 +256,4 @@ size_t NaiveCollisionManager<S>::size() const
   return objs.size();
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

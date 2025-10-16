@@ -35,50 +35,52 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_COLLISION_NODE_H
-#define FCL_COLLISION_NODE_H
+#pragma once
 
-#include "fcl/geometry/bvh/detail/BVH_front.h"
-#include "fcl/narrowphase/detail/traversal/traversal_recurse.h"
-#include "fcl/narrowphase/detail/traversal/collision/collision_traversal_node_base.h"
-#include "fcl/narrowphase/detail/traversal/collision/mesh_collision_traversal_node.h"
-#include "fcl/narrowphase/detail/traversal/distance/distance_traversal_node_base.h"
+#include "dart/collision/hit/geometry/bvh/detail/BVH_front.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/collision/collision_traversal_node_base.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/collision/mesh_collision_traversal_node.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/distance_traversal_node_base.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/traversal_recurse.h"
 
-/// @brief collision and distance function on traversal nodes. these functions provide a higher level abstraction for collision functions provided in collision_func_matrix
-namespace dart { namespace collision { namespace hit
-{
+/// @brief collision and distance function on traversal nodes. these functions
+/// provide a higher level abstraction for collision functions provided in
+/// collision_func_matrix
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
-/// @brief collision on collision traversal node; can use front list to accelerate
+/// @brief collision on collision traversal node; can use front list to
+/// accelerate
 template <typename S>
-FCL_EXPORT
-void collide(CollisionTraversalNodeBase<S>* node, BVHFrontList* front_list = nullptr);
+void collide(
+    CollisionTraversalNodeBase<S>* node, BVHFrontList* front_list = nullptr);
 
-/// @brief self collision on collision traversal node; can use front list to accelerate
+/// @brief self collision on collision traversal node; can use front list to
+/// accelerate
 template <typename S>
-FCL_EXPORT
-void selfCollide(CollisionTraversalNodeBase<S>* node, BVHFrontList* front_list = nullptr);
+void selfCollide(
+    CollisionTraversalNodeBase<S>* node, BVHFrontList* front_list = nullptr);
 
-/// @brief distance computation on distance traversal node; can use front list to accelerate
+/// @brief distance computation on distance traversal node; can use front list
+/// to accelerate
 template <typename S>
-FCL_EXPORT
-void distance(DistanceTraversalNodeBase<S>* node, BVHFrontList* front_list = nullptr, int qsize = 2);
+void distance(
+    DistanceTraversalNodeBase<S>* node,
+    BVHFrontList* front_list = nullptr,
+    int qsize = 2);
 
 /// @brief special collision on OBB traversal node
 template <typename S>
-FCL_EXPORT
-void collide2(MeshCollisionTraversalNodeOBB<S>* node, BVHFrontList* front_list = nullptr);
+void collide2(
+    MeshCollisionTraversalNodeOBB<S>* node, BVHFrontList* front_list = nullptr);
 
 /// @brief special collision on RSS traversal node
 template <typename S>
-FCL_EXPORT
-void collide2(MeshCollisionTraversalNodeRSS<S>* node, BVHFrontList* front_list = nullptr);
+void collide2(
+    MeshCollisionTraversalNodeRSS<S>* node, BVHFrontList* front_list = nullptr);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/traversal/collision_node-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/traversal/collision_node-inl.h"

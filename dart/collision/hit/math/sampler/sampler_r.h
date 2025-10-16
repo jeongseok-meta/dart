@@ -35,30 +35,28 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_MATH_SAMPLERR_H
-#define FCL_MATH_SAMPLERR_H
+#pragma once
+
+#include "dart/collision/hit/common/types.h"
+#include "dart/collision/hit/math/sampler/sampler_base.h"
 
 #include <cstddef>
-#include "fcl/common/types.h"
-#include "fcl/math/sampler/sampler_base.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 template <typename S, std::size_t N>
-class FCL_EXPORT SamplerR : public SamplerBase<S>
+class SamplerR : public SamplerBase<S>
 {
 public:
   SamplerR();
 
-  SamplerR(const VectorN<S, N>& lower_bound_,
-           const VectorN<S, N>& upper_bound_);
+  SamplerR(
+      const VectorN<S, N>& lower_bound_, const VectorN<S, N>& upper_bound_);
 
-  void setBound(const VectorN<S, N>& lower_bound_,
-                const VectorN<S, N>& upper_bound_);
+  void setBound(
+      const VectorN<S, N>& lower_bound_, const VectorN<S, N>& upper_bound_);
 
-  void getBound(VectorN<S, N>& lower_bound_,
-                VectorN<S, N>& upper_bound_) const;
+  void getBound(VectorN<S, N>& lower_bound_, VectorN<S, N>& upper_bound_) const;
 
   VectorN<S, N> sample() const;
 
@@ -68,7 +66,6 @@ private:
 
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW_IF_VECTORIZABLE_FIXED_SIZE(S, N)
-
 };
 
 template <std::size_t N>
@@ -76,8 +73,6 @@ using SamplerRf = SamplerR<float, N>;
 template <std::size_t N>
 using SamplerRd = SamplerR<double, N>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/sampler/sampler_r-inl.h"
-
-#endif
+#include "dart/collision/hit/math/sampler/sampler_r-inl.h"

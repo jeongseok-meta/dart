@@ -35,21 +35,17 @@
 
 /** @author Jia Pan */
 
-#include "fcl/narrowphase/detail/traversal/collision/mesh_collision_traversal_node-inl.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/collision/mesh_collision_traversal_node-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
-template
-class MeshCollisionTraversalNodeOBB<double>;
+template class MeshCollisionTraversalNodeOBB<double>;
 
 //==============================================================================
-template
-bool initialize(
+template bool initialize(
     MeshCollisionTraversalNodeOBB<double>& node,
     const BVHModel<OBB<double>>& model1,
     const Transform3<double>& tf1,
@@ -59,12 +55,10 @@ bool initialize(
     CollisionResult<double>& result);
 
 //==============================================================================
-template
-class MeshCollisionTraversalNodeRSS<double>;
+template class MeshCollisionTraversalNodeRSS<double>;
 
 //==============================================================================
-template
-bool initialize(
+template bool initialize(
     MeshCollisionTraversalNodeRSS<double>& node,
     const BVHModel<RSS<double>>& model1,
     const Transform3<double>& tf1,
@@ -74,12 +68,10 @@ bool initialize(
     CollisionResult<double>& result);
 
 //==============================================================================
-template
-class MeshCollisionTraversalNodekIOS<double>;
+template class MeshCollisionTraversalNodekIOS<double>;
 
 //==============================================================================
-template
-bool initialize(
+template bool initialize(
     MeshCollisionTraversalNodekIOS<double>& node,
     const BVHModel<kIOS<double>>& model1,
     const Transform3<double>& tf1,
@@ -89,12 +81,10 @@ bool initialize(
     CollisionResult<double>& result);
 
 //==============================================================================
-template
-class MeshCollisionTraversalNodeOBBRSS<double>;
+template class MeshCollisionTraversalNodeOBBRSS<double>;
 
 //==============================================================================
-template
-bool initialize(
+template bool initialize(
     MeshCollisionTraversalNodeOBBRSS<double>& node,
     const BVHModel<OBBRSS<double>>& model1,
     const Transform3<double>& tf1,
@@ -104,4 +94,4 @@ bool initialize(
     CollisionResult<double>& result);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

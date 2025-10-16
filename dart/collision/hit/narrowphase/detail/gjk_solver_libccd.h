@@ -35,31 +35,28 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_NARROWPHASE_GJKSOLVERLIBCCD_H
-#define FCL_NARROWPHASE_GJKSOLVERLIBCCD_H
+#pragma once
+
+#include "dart/collision/hit/common/types.h"
+#include "dart/collision/hit/narrowphase/contact_point.h"
 
 #include <iostream>
 
-#include "fcl/common/types.h"
-#include "fcl/narrowphase/contact_point.h"
+namespace dart::collision::hit {
 
-namespace dart { namespace collision { namespace hit
-{
-
-namespace detail
-{
+namespace detail {
 
 /// @brief collision and distance solver based on libccd library.
 template <typename S_>
-struct FCL_EXPORT GJKSolver_libccd
+struct GJKSolver_libccd
 {
   using S = S_;
 
   /// @brief intersection checking between two shapes
-  /// @deprecated use shapeIntersect(const Shape1&, const Transform3<S>&, const Shape2&, const Transform3<S>&, std::vector<ContactPoint<S>>*) const
-  template<typename Shape1, typename Shape2>
-  FCL_DEPRECATED
-  bool shapeIntersect(
+  /// @deprecated use shapeIntersect(const Shape1&, const Transform3<S>&, const
+  /// Shape2&, const Transform3<S>&, std::vector<ContactPoint<S>>*) const
+  template <typename Shape1, typename Shape2>
+  DART_COLLISION_HIT_DEPRECATED bool shapeIntersect(
       const Shape1& s1,
       const Transform3<S>& tf1,
       const Shape2& s2,
@@ -69,7 +66,7 @@ struct FCL_EXPORT GJKSolver_libccd
       Vector3<S>* normal) const;
 
   /// @brief intersection checking between two shapes
-  template<typename Shape1, typename Shape2>
+  template <typename Shape1, typename Shape2>
   bool shapeIntersect(
       const Shape1& s1,
       const Transform3<S>& tf1,
@@ -78,7 +75,7 @@ struct FCL_EXPORT GJKSolver_libccd
       std::vector<ContactPoint<S>>* contacts = nullptr) const;
 
   /// @brief intersection checking between one shape and a triangle
-  template<typename Shape>
+  template <typename Shape>
   bool shapeTriangleIntersect(
       const Shape& s,
       const Transform3<S>& tf,
@@ -89,8 +86,9 @@ struct FCL_EXPORT GJKSolver_libccd
       S* penetration_depth = nullptr,
       Vector3<S>* normal = nullptr) const;
 
-  //// @brief intersection checking between one shape and a triangle with transformation
-  template<typename Shape>
+  //// @brief intersection checking between one shape and a triangle with
+  /// transformation
+  template <typename Shape>
   bool shapeTriangleIntersect(
       const Shape& s,
       const Transform3<S>& tf1,
@@ -103,7 +101,7 @@ struct FCL_EXPORT GJKSolver_libccd
       Vector3<S>* normal = nullptr) const;
 
   /// @brief distance computation between two shapes
-  template<typename Shape1, typename Shape2>
+  template <typename Shape1, typename Shape2>
   bool shapeDistance(
       const Shape1& s1,
       const Transform3<S>& tf1,
@@ -113,8 +111,7 @@ struct FCL_EXPORT GJKSolver_libccd
       Vector3<S>* p1 = nullptr,
       Vector3<S>* p2 = nullptr) const;
 
-
-  template<typename Shape1, typename Shape2>
+  template <typename Shape1, typename Shape2>
   bool shapeSignedDistance(
       const Shape1& s1,
       const Transform3<S>& tf1,
@@ -125,7 +122,7 @@ struct FCL_EXPORT GJKSolver_libccd
       Vector3<S>* p2 = nullptr) const;
 
   /// @brief distance computation between one shape and a triangle
-  template<typename Shape>
+  template <typename Shape>
   bool shapeTriangleDistance(
       const Shape& s,
       const Transform3<S>& tf,
@@ -136,8 +133,9 @@ struct FCL_EXPORT GJKSolver_libccd
       Vector3<S>* p1 = nullptr,
       Vector3<S>* p2 = nullptr) const;
 
-  /// @brief distance computation between one shape and a triangle with transformation
-  template<typename Shape>
+  /// @brief distance computation between one shape and a triangle with
+  /// transformation
+  template <typename Shape>
   bool shapeTriangleDistance(
       const Shape& s,
       const Transform3<S>& tf1,
@@ -170,8 +168,9 @@ struct FCL_EXPORT GJKSolver_libccd
   /// @brief the threshold used in GJK algorithm to stop distance iteration
   S distance_tolerance;
 
-  friend
-  std::ostream& operator<<(std::ostream& out, const GJKSolver_libccd& solver) {
+  friend std::ostream& operator<<(
+      std::ostream& out, const GJKSolver_libccd& solver)
+  {
     out << "GjkSolver_libccd"
         << "\n    collision_tolerance:      " << solver.collision_tolerance
         << "\n    max collision iterations: " << solver.max_collision_iterations
@@ -180,15 +179,12 @@ struct FCL_EXPORT GJKSolver_libccd
     // NOTE: Cached guesses are not supported.
     return out;
   }
-
 };
 
 using GJKSolver_libccdf = GJKSolver_libccd<float>;
 using GJKSolver_libccdd = GJKSolver_libccd<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/gjk_solver_libccd-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/gjk_solver_libccd-inl.h"

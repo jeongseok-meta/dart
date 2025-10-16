@@ -35,110 +35,131 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_NARROWPHASE_DETAIL_HALFSPACE_INL_H
-#define FCL_NARROWPHASE_DETAIL_HALFSPACE_INL_H
+#pragma once
 
-#include "fcl/narrowphase/detail/primitive_shape_algorithm/halfspace.h"
+#include "dart/collision/hit/narrowphase/detail/primitive_shape_algorithm/halfspace.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
-extern template
-bool sphereHalfspaceIntersect(
-    const Sphere<double>& s1, const Transform3<double>& tf1,
-    const Halfspace<double>& s2, const Transform3<double>& tf2,
+extern template bool sphereHalfspaceIntersect(
+    const Sphere<double>& s1,
+    const Transform3<double>& tf1,
+    const Halfspace<double>& s2,
+    const Transform3<double>& tf2,
     std::vector<ContactPoint<double>>* contacts);
 
 //==============================================================================
-extern template
-bool ellipsoidHalfspaceIntersect(
-    const Ellipsoid<double>& s1, const Transform3<double>& tf1,
-    const Halfspace<double>& s2, const Transform3<double>& tf2,
+extern template bool ellipsoidHalfspaceIntersect(
+    const Ellipsoid<double>& s1,
+    const Transform3<double>& tf1,
+    const Halfspace<double>& s2,
+    const Transform3<double>& tf2,
     std::vector<ContactPoint<double>>* contacts);
 
 //==============================================================================
-extern template
-bool boxHalfspaceIntersect(
-    const Box<double>& s1, const Transform3<double>& tf1,
-    const Halfspace<double>& s2, const Transform3<double>& tf2);
+extern template bool boxHalfspaceIntersect(
+    const Box<double>& s1,
+    const Transform3<double>& tf1,
+    const Halfspace<double>& s2,
+    const Transform3<double>& tf2);
 
 //==============================================================================
-extern template
-bool boxHalfspaceIntersect(
-    const Box<double>& s1, const Transform3<double>& tf1,
-    const Halfspace<double>& s2, const Transform3<double>& tf2,
+extern template bool boxHalfspaceIntersect(
+    const Box<double>& s1,
+    const Transform3<double>& tf1,
+    const Halfspace<double>& s2,
+    const Transform3<double>& tf2,
     std::vector<ContactPoint<double>>* contacts);
 
 //==============================================================================
-extern template
-bool capsuleHalfspaceIntersect(
-    const Capsule<double>& s1, const Transform3<double>& tf1,
-    const Halfspace<double>& s2, const Transform3<double>& tf2,
+extern template bool capsuleHalfspaceIntersect(
+    const Capsule<double>& s1,
+    const Transform3<double>& tf1,
+    const Halfspace<double>& s2,
+    const Transform3<double>& tf2,
     std::vector<ContactPoint<double>>* contacts);
 
 //==============================================================================
-extern template
-bool cylinderHalfspaceIntersect(
-    const Cylinder<double>& s1, const Transform3<double>& tf1,
-    const Halfspace<double>& s2, const Transform3<double>& tf2,
+extern template bool cylinderHalfspaceIntersect(
+    const Cylinder<double>& s1,
+    const Transform3<double>& tf1,
+    const Halfspace<double>& s2,
+    const Transform3<double>& tf2,
     std::vector<ContactPoint<double>>* contacts);
 
 //==============================================================================
-extern template
-bool coneHalfspaceIntersect(
-    const Cone<double>& s1, const Transform3<double>& tf1,
-    const Halfspace<double>& s2, const Transform3<double>& tf2,
+extern template bool coneHalfspaceIntersect(
+    const Cone<double>& s1,
+    const Transform3<double>& tf1,
+    const Halfspace<double>& s2,
+    const Transform3<double>& tf2,
     std::vector<ContactPoint<double>>* contacts);
-
-//==============================================================================
-extern template
-bool convexHalfspaceIntersect(
-    const Convex<double>& s1, const Transform3<double>& tf1,
-    const Halfspace<double>& s2, const Transform3<double>& tf2,
-    Vector3<double>* contact_points, double* penetration_depth, Vector3<double>* normal);
 
 //==============================================================================
 extern template bool convexHalfspaceIntersect(
-    const Convex<double>& convex_C, const Transform3<double>& X_FC,
-    const Halfspace<double>& half_space_H, const Transform3<double>& X_FH,
+    const Convex<double>& s1,
+    const Transform3<double>& tf1,
+    const Halfspace<double>& s2,
+    const Transform3<double>& tf2,
+    Vector3<double>* contact_points,
+    double* penetration_depth,
+    Vector3<double>* normal);
+
+//==============================================================================
+extern template bool convexHalfspaceIntersect(
+    const Convex<double>& convex_C,
+    const Transform3<double>& X_FC,
+    const Halfspace<double>& half_space_H,
+    const Transform3<double>& X_FH,
     std::vector<ContactPoint<double>>* contacts);
 
 //==============================================================================
-extern template
-bool halfspaceTriangleIntersect(
-    const Halfspace<double>& s1, const Transform3<double>& tf1,
-    const Vector3<double>& P1, const Vector3<double>& P2, const Vector3<double>& P3, const Transform3<double>& tf2,
-    Vector3<double>* contact_points, double* penetration_depth, Vector3<double>* normal);
+extern template bool halfspaceTriangleIntersect(
+    const Halfspace<double>& s1,
+    const Transform3<double>& tf1,
+    const Vector3<double>& P1,
+    const Vector3<double>& P2,
+    const Vector3<double>& P3,
+    const Transform3<double>& tf2,
+    Vector3<double>* contact_points,
+    double* penetration_depth,
+    Vector3<double>* normal);
 
 //==============================================================================
-extern template
-bool planeHalfspaceIntersect(
-    const Plane<double>& s1, const Transform3<double>& tf1,
-    const Halfspace<double>& s2, const Transform3<double>& tf2,
+extern template bool planeHalfspaceIntersect(
+    const Plane<double>& s1,
+    const Transform3<double>& tf1,
+    const Halfspace<double>& s2,
+    const Transform3<double>& tf2,
     Plane<double>& pl,
-    Vector3<double>& p, Vector3<double>& d,
+    Vector3<double>& p,
+    Vector3<double>& d,
     double& penetration_depth,
     int& ret);
 
 //==============================================================================
-extern template
-bool halfspacePlaneIntersect(
-    const Halfspace<double>& s1, const Transform3<double>& tf1,
-    const Plane<double>& s2, const Transform3<double>& tf2,
-    Plane<double>& pl, Vector3<double>& p, Vector3<double>& d,
+extern template bool halfspacePlaneIntersect(
+    const Halfspace<double>& s1,
+    const Transform3<double>& tf1,
+    const Plane<double>& s2,
+    const Transform3<double>& tf2,
+    Plane<double>& pl,
+    Vector3<double>& p,
+    Vector3<double>& d,
     double& penetration_depth,
     int& ret);
 
 //==============================================================================
-extern template
-bool halfspaceIntersect(
-    const Halfspace<double>& s1, const Transform3<double>& tf1,
-    const Halfspace<double>& s2, const Transform3<double>& tf2,
-    Vector3<double>& p, Vector3<double>& d,
+extern template bool halfspaceIntersect(
+    const Halfspace<double>& s1,
+    const Transform3<double>& tf1,
+    const Halfspace<double>& s2,
+    const Transform3<double>& tf2,
+    Vector3<double>& p,
+    Vector3<double>& d,
     Halfspace<double>& s,
     double& penetration_depth,
     int& ret);
@@ -152,79 +173,96 @@ S halfspaceIntersectTolerance()
 
 //==============================================================================
 template <typename S>
-bool sphereHalfspaceIntersect(const Sphere<S>& s1, const Transform3<S>& tf1,
-                              const Halfspace<S>& s2, const Transform3<S>& tf2,
-                              std::vector<ContactPoint<S>>* contacts)
+bool sphereHalfspaceIntersect(
+    const Sphere<S>& s1,
+    const Transform3<S>& tf1,
+    const Halfspace<S>& s2,
+    const Transform3<S>& tf2,
+    std::vector<ContactPoint<S>>* contacts)
 {
   const Halfspace<S> new_s2 = transform(s2, tf2);
   const Vector3<S>& center = tf1.translation();
   const S depth = s1.radius - new_s2.signedDistance(center);
 
-  if (depth >= 0)
-  {
-    if (contacts)
-    {
+  if (depth >= 0) {
+    if (contacts) {
       const Vector3<S> normal = -new_s2.n; // pointing from s1 to s2
-      const Vector3<S> point = center - new_s2.n * s1.radius + new_s2.n * (depth * 0.5);
+      const Vector3<S> point
+          = center - new_s2.n * s1.radius + new_s2.n * (depth * 0.5);
       const S penetration_depth = depth;
 
       contacts->emplace_back(normal, point, penetration_depth);
     }
 
     return true;
-  }
-  else
-  {
+  } else {
     return false;
   }
 }
 
 //==============================================================================
 template <typename S>
-bool ellipsoidHalfspaceIntersect(const Ellipsoid<S>& s1, const Transform3<S>& tf1,
-                                 const Halfspace<S>& s2, const Transform3<S>& tf2,
-                                 std::vector<ContactPoint<S>>* contacts)
+bool ellipsoidHalfspaceIntersect(
+    const Ellipsoid<S>& s1,
+    const Transform3<S>& tf1,
+    const Halfspace<S>& s2,
+    const Transform3<S>& tf2,
+    std::vector<ContactPoint<S>>* contacts)
 {
   // We first compute a single contact in the ellipsoid coordinates, tf1, then
   // will transform it to the world frame. So we use a new halfspace that is
   // expressed in the ellipsoid coordinates.
-  const Halfspace<S>& new_s2 = transform(s2, tf1.inverse(Eigen::Isometry) * tf2);
+  const Halfspace<S>& new_s2
+      = transform(s2, tf1.inverse(Eigen::Isometry) * tf2);
 
   // Compute distance between the ellipsoid's center and a contact plane, whose
   // normal is equal to the halfspace's normal.
-  const Vector3<S> normal2(std::pow(new_s2.n[0], 2), std::pow(new_s2.n[1], 2), std::pow(new_s2.n[2], 2));
-  const Vector3<S> radii2(std::pow(s1.radii[0], 2), std::pow(s1.radii[1], 2), std::pow(s1.radii[2], 2));
+  const Vector3<S> normal2(
+      std::pow(new_s2.n[0], 2),
+      std::pow(new_s2.n[1], 2),
+      std::pow(new_s2.n[2], 2));
+  const Vector3<S> radii2(
+      std::pow(s1.radii[0], 2),
+      std::pow(s1.radii[1], 2),
+      std::pow(s1.radii[2], 2));
   const S center_to_contact_plane = std::sqrt(normal2.dot(radii2));
 
   // Depth is the distance between the contact plane and the halfspace.
   const S depth = center_to_contact_plane + new_s2.d;
 
-  if (depth >= 0)
-  {
-    if (contacts)
-    {
+  if (depth >= 0) {
+    if (contacts) {
       // Transform the results to the world coordinates.
-      const Vector3<S> normal = tf1.linear() * -new_s2.n; // pointing from s1 to s2
-      const Vector3<S> support_vector = (1.0/center_to_contact_plane) * Vector3<S>(radii2[0]*new_s2.n[0], radii2[1]*new_s2.n[1], radii2[2]*new_s2.n[2]);
-      const Vector3<S> point_in_halfspace_coords = support_vector * (0.5 * depth / new_s2.n.dot(support_vector) - 1.0);
-      const Vector3<S> point = tf1 * point_in_halfspace_coords; // roughly speaking, a middle point of the intersecting volume
+      const Vector3<S> normal
+          = tf1.linear() * -new_s2.n; // pointing from s1 to s2
+      const Vector3<S> support_vector = (1.0 / center_to_contact_plane)
+                                        * Vector3<S>(
+                                            radii2[0] * new_s2.n[0],
+                                            radii2[1] * new_s2.n[1],
+                                            radii2[2] * new_s2.n[2]);
+      const Vector3<S> point_in_halfspace_coords
+          = support_vector * (0.5 * depth / new_s2.n.dot(support_vector) - 1.0);
+      const Vector3<S> point
+          = tf1 * point_in_halfspace_coords; // roughly speaking, a middle point
+                                             // of the intersecting volume
       const S penetration_depth = depth;
 
       contacts->emplace_back(normal, point, penetration_depth);
     }
 
     return true;
-  }
-  else
-  {
+  } else {
     return false;
   }
 }
 
 //==============================================================================
 template <typename S>
-bool boxHalfspaceIntersect(const Box<S>& s1, const Transform3<S>& tf1,
-                           const Halfspace<S>& s2, const Transform3<S>& tf2)
+bool boxHalfspaceIntersect(
+    const Box<S>& s1,
+    const Transform3<S>& tf1,
+    const Halfspace<S>& s2,
+    const Transform3<S>& tf2)
 {
   Halfspace<S> new_s2 = transform(s2, tf2);
 
@@ -241,16 +279,16 @@ bool boxHalfspaceIntersect(const Box<S>& s1, const Transform3<S>& tf1,
 
 //==============================================================================
 template <typename S>
-bool boxHalfspaceIntersect(const Box<S>& s1, const Transform3<S>& tf1,
-                           const Halfspace<S>& s2, const Transform3<S>& tf2,
-                           std::vector<ContactPoint<S>>* contacts)
+bool boxHalfspaceIntersect(
+    const Box<S>& s1,
+    const Transform3<S>& tf1,
+    const Halfspace<S>& s2,
+    const Transform3<S>& tf2,
+    std::vector<ContactPoint<S>>* contacts)
 {
-  if(!contacts)
-  {
+  if (!contacts) {
     return boxHalfspaceIntersect(s1, tf1, s2, tf2);
-  }
-  else
-  {
+  } else {
     const Halfspace<S> new_s2 = transform(s2, tf2);
 
     const Matrix3<S>& R = tf1.linear();
@@ -261,7 +299,8 @@ bool boxHalfspaceIntersect(const Box<S>& s1, const Transform3<S>& tf1,
     Vector3<S> B = A.cwiseAbs();
 
     S depth = 0.5 * (B[0] + B[1] + B[2]) - new_s2.signedDistance(T);
-    if(depth < 0) return false;
+    if (depth < 0)
+      return false;
 
     Vector3<S> axis[3];
     axis[0] = R.col(0);
@@ -272,33 +311,29 @@ bool boxHalfspaceIntersect(const Box<S>& s1, const Transform3<S>& tf1,
     Vector3<S> p(T);
     int sign = 0;
 
-    if(std::abs(Q[0] - 1) < halfspaceIntersectTolerance<S>() || std::abs(Q[0] + 1) < halfspaceIntersectTolerance<S>())
-    {
+    if (std::abs(Q[0] - 1) < halfspaceIntersectTolerance<S>()
+        || std::abs(Q[0] + 1) < halfspaceIntersectTolerance<S>()) {
       sign = (A[0] > 0) ? -1 : 1;
       p += axis[0] * (0.5 * s1.side[0] * sign);
-    }
-    else if(std::abs(Q[1] - 1) < halfspaceIntersectTolerance<S>() || std::abs(Q[1] + 1) < halfspaceIntersectTolerance<S>())
-    {
+    } else if (
+        std::abs(Q[1] - 1) < halfspaceIntersectTolerance<S>()
+        || std::abs(Q[1] + 1) < halfspaceIntersectTolerance<S>()) {
       sign = (A[1] > 0) ? -1 : 1;
       p += axis[1] * (0.5 * s1.side[1] * sign);
-    }
-    else if(std::abs(Q[2] - 1) < halfspaceIntersectTolerance<S>() || std::abs(Q[2] + 1) < halfspaceIntersectTolerance<S>())
-    {
+    } else if (
+        std::abs(Q[2] - 1) < halfspaceIntersectTolerance<S>()
+        || std::abs(Q[2] + 1) < halfspaceIntersectTolerance<S>()) {
       sign = (A[2] > 0) ? -1 : 1;
       p += axis[2] * (0.5 * s1.side[2] * sign);
-    }
-    else
-    {
-      for(std::size_t i = 0; i < 3; ++i)
-      {
+    } else {
+      for (std::size_t i = 0; i < 3; ++i) {
         sign = (A[i] > 0) ? -1 : 1;
         p += axis[i] * (0.5 * s1.side[i] * sign);
       }
     }
 
     /// compute the contact point from the deepest point
-    if (contacts)
-    {
+    if (contacts) {
       const Vector3<S> normal = -new_s2.n;
       const Vector3<S> point = p + new_s2.n * (depth * 0.5);
       const S penetration_depth = depth;
@@ -312,9 +347,12 @@ bool boxHalfspaceIntersect(const Box<S>& s1, const Transform3<S>& tf1,
 
 //==============================================================================
 template <typename S>
-bool capsuleHalfspaceIntersect(const Capsule<S>& s1, const Transform3<S>& tf1,
-                               const Halfspace<S>& s2, const Transform3<S>& tf2,
-                               std::vector<ContactPoint<S>>* contacts)
+bool capsuleHalfspaceIntersect(
+    const Capsule<S>& s1,
+    const Transform3<S>& tf1,
+    const Halfspace<S>& s2,
+    const Transform3<S>& tf2,
+    std::vector<ContactPoint<S>>* contacts)
 {
   Halfspace<S> new_s2 = transform(s2, tf2);
 
@@ -324,14 +362,13 @@ bool capsuleHalfspaceIntersect(const Capsule<S>& s1, const Transform3<S>& tf1,
   Vector3<S> dir_z = R.col(2);
 
   S cosa = dir_z.dot(new_s2.n);
-  if(std::abs(cosa) < halfspaceIntersectTolerance<S>())
-  {
+  if (std::abs(cosa) < halfspaceIntersectTolerance<S>()) {
     S signed_dist = new_s2.signedDistance(T);
     S depth = s1.radius - signed_dist;
-    if(depth < 0) return false;
+    if (depth < 0)
+      return false;
 
-    if (contacts)
-    {
+    if (contacts) {
       const Vector3<S> normal = -new_s2.n;
       const Vector3<S> point = T + new_s2.n * (0.5 * depth - s1.radius);
       const S penetration_depth = depth;
@@ -340,20 +377,19 @@ bool capsuleHalfspaceIntersect(const Capsule<S>& s1, const Transform3<S>& tf1,
     }
 
     return true;
-  }
-  else
-  {
+  } else {
     int sign = (cosa > 0) ? -1 : 1;
     Vector3<S> p = T + dir_z * (s1.lz * 0.5 * sign);
 
     S signed_dist = new_s2.signedDistance(p);
     S depth = s1.radius - signed_dist;
-    if(depth < 0) return false;
+    if (depth < 0)
+      return false;
 
-    if (contacts)
-    {
+    if (contacts) {
       const Vector3<S> normal = -new_s2.n;
-      const Vector3<S> point = p - new_s2.n * s1.radius + new_s2.n * (0.5 * depth);  // deepest point
+      const Vector3<S> point = p - new_s2.n * s1.radius
+                               + new_s2.n * (0.5 * depth); // deepest point
       const S penetration_depth = depth;
 
       contacts->emplace_back(normal, point, penetration_depth);
@@ -365,9 +401,12 @@ bool capsuleHalfspaceIntersect(const Capsule<S>& s1, const Transform3<S>& tf1,
 
 //==============================================================================
 template <typename S>
-bool cylinderHalfspaceIntersect(const Cylinder<S>& s1, const Transform3<S>& tf1,
-                                const Halfspace<S>& s2, const Transform3<S>& tf2,
-                                std::vector<ContactPoint<S>>* contacts)
+bool cylinderHalfspaceIntersect(
+    const Cylinder<S>& s1,
+    const Transform3<S>& tf1,
+    const Halfspace<S>& s2,
+    const Transform3<S>& tf2,
+    std::vector<ContactPoint<S>>* contacts)
 {
   Halfspace<S> new_s2 = transform(s2, tf2);
 
@@ -377,14 +416,13 @@ bool cylinderHalfspaceIntersect(const Cylinder<S>& s1, const Transform3<S>& tf1,
   Vector3<S> dir_z = R.col(2);
   S cosa = dir_z.dot(new_s2.n);
 
-  if(std::abs(cosa) < halfspaceIntersectTolerance<S>())
-  {
+  if (std::abs(cosa) < halfspaceIntersectTolerance<S>()) {
     S signed_dist = new_s2.signedDistance(T);
     S depth = s1.radius - signed_dist;
-    if(depth < 0) return false;
+    if (depth < 0)
+      return false;
 
-    if (contacts)
-    {
+    if (contacts) {
       const Vector3<S> normal = -new_s2.n;
       const Vector3<S> point = T + new_s2.n * (0.5 * depth - s1.radius);
       const S penetration_depth = depth;
@@ -393,14 +431,12 @@ bool cylinderHalfspaceIntersect(const Cylinder<S>& s1, const Transform3<S>& tf1,
     }
 
     return true;
-  }
-  else
-  {
+  } else {
     Vector3<S> C = dir_z * cosa - new_s2.n;
-    if(std::abs(cosa + 1) < halfspaceIntersectTolerance<S>() || std::abs(cosa - 1) < halfspaceIntersectTolerance<S>())
+    if (std::abs(cosa + 1) < halfspaceIntersectTolerance<S>()
+        || std::abs(cosa - 1) < halfspaceIntersectTolerance<S>())
       C = Vector3<S>(0, 0, 0);
-    else
-    {
+    else {
       S s = C.norm();
       s = s1.radius / s;
       C *= s;
@@ -410,11 +446,10 @@ bool cylinderHalfspaceIntersect(const Cylinder<S>& s1, const Transform3<S>& tf1,
     // deepest point
     Vector3<S> p = T + dir_z * (s1.lz * 0.5 * sign) + C;
     S depth = -new_s2.signedDistance(p);
-    if(depth < 0) return false;
-    else
-    {
-      if (contacts)
-      {
+    if (depth < 0)
+      return false;
+    else {
+      if (contacts) {
         const Vector3<S> normal = -new_s2.n;
         const Vector3<S> point = p + new_s2.n * (0.5 * depth);
         const S penetration_depth = depth;
@@ -429,9 +464,12 @@ bool cylinderHalfspaceIntersect(const Cylinder<S>& s1, const Transform3<S>& tf1,
 
 //==============================================================================
 template <typename S>
-bool coneHalfspaceIntersect(const Cone<S>& s1, const Transform3<S>& tf1,
-                            const Halfspace<S>& s2, const Transform3<S>& tf2,
-                            std::vector<ContactPoint<S>>* contacts)
+bool coneHalfspaceIntersect(
+    const Cone<S>& s1,
+    const Transform3<S>& tf1,
+    const Halfspace<S>& s2,
+    const Transform3<S>& tf2,
+    std::vector<ContactPoint<S>>* contacts)
 {
   Halfspace<S> new_s2 = transform(s2, tf2);
 
@@ -441,17 +479,16 @@ bool coneHalfspaceIntersect(const Cone<S>& s1, const Transform3<S>& tf1,
   Vector3<S> dir_z = R.col(2);
   S cosa = dir_z.dot(new_s2.n);
 
-  if(cosa < halfspaceIntersectTolerance<S>())
-  {
+  if (cosa < halfspaceIntersectTolerance<S>()) {
     S signed_dist = new_s2.signedDistance(T);
     S depth = s1.radius - signed_dist;
-    if(depth < 0) return false;
-    else
-    {
-      if (contacts)
-      {
+    if (depth < 0)
+      return false;
+    else {
+      if (contacts) {
         const Vector3<S> normal = -new_s2.n;
-        const Vector3<S> point = T - dir_z * (s1.lz * 0.5) + new_s2.n * (0.5 * depth - s1.radius);
+        const Vector3<S> point
+            = T - dir_z * (s1.lz * 0.5) + new_s2.n * (0.5 * depth - s1.radius);
         const S penetration_depth = depth;
 
         contacts->emplace_back(normal, point, penetration_depth);
@@ -459,14 +496,12 @@ bool coneHalfspaceIntersect(const Cone<S>& s1, const Transform3<S>& tf1,
 
       return true;
     }
-  }
-  else
-  {
+  } else {
     Vector3<S> C = dir_z * cosa - new_s2.n;
-    if(std::abs(cosa + 1) < halfspaceIntersectTolerance<S>() || std::abs(cosa - 1) < halfspaceIntersectTolerance<S>())
+    if (std::abs(cosa + 1) < halfspaceIntersectTolerance<S>()
+        || std::abs(cosa - 1) < halfspaceIntersectTolerance<S>())
       C = Vector3<S>(0, 0, 0);
-    else
-    {
+    else {
       S s = C.norm();
       s = s1.radius / s;
       C *= s;
@@ -478,14 +513,14 @@ bool coneHalfspaceIntersect(const Cone<S>& s1, const Transform3<S>& tf1,
     S d1 = new_s2.signedDistance(p1);
     S d2 = new_s2.signedDistance(p2);
 
-    if(d1 > 0 && d2 > 0) return false;
-    else
-    {
-      if (contacts)
-      {
+    if (d1 > 0 && d2 > 0)
+      return false;
+    else {
+      if (contacts) {
         const S penetration_depth = -std::min(d1, d2);
         const Vector3<S> normal = -new_s2.n;
-        const Vector3<S> point = ((d1 < d2) ? p1 : p2) + new_s2.n * (0.5 * penetration_depth);
+        const Vector3<S> point
+            = ((d1 < d2) ? p1 : p2) + new_s2.n * (0.5 * penetration_depth);
 
         contacts->emplace_back(normal, point, penetration_depth);
       }
@@ -498,9 +533,14 @@ bool coneHalfspaceIntersect(const Cone<S>& s1, const Transform3<S>& tf1,
 //==============================================================================
 // TODO(SeanCurtis-TRI): This is generally unused in FCL. Consider killing it.
 template <typename S>
-bool convexHalfspaceIntersect(const Convex<S>& s1, const Transform3<S>& tf1,
-                              const Halfspace<S>& s2, const Transform3<S>& tf2,
-                              Vector3<S>* contact_points, S* penetration_depth, Vector3<S>* normal)
+bool convexHalfspaceIntersect(
+    const Convex<S>& s1,
+    const Transform3<S>& tf1,
+    const Halfspace<S>& s2,
+    const Transform3<S>& tf2,
+    Vector3<S>* contact_points,
+    S* penetration_depth,
+    Vector3<S>* normal)
 {
   Halfspace<S> new_s2 = transform(s2, tf2);
 
@@ -511,43 +551,44 @@ bool convexHalfspaceIntersect(const Convex<S>& s1, const Transform3<S>& tf1,
   //  1. We are transforming *every* vertex in the convex. That's a waste.
   //  2. If we don't report contact results, and we detect collision with the
   //     first vertex, we still process all vertices. Also a waste.
-  for (const auto& vertex : s1.getVertices())
-  {
+  for (const auto& vertex : s1.getVertices()) {
     Vector3<S> p = tf1 * vertex;
 
     S d = new_s2.signedDistance(p);
-    if(d < depth)
-    {
+    if (d < depth) {
       depth = d;
       v = p;
     }
   }
 
-  if(depth <= 0)
-  {
+  if (depth <= 0) {
     // Note: this value for contact_point only works because depth is really
     // signed distance, so negating the normal cancels the negation of the
     // "penetration depth".
-    if(contact_points) *contact_points = v - new_s2.n * (0.5 * depth);
+    if (contact_points)
+      *contact_points = v - new_s2.n * (0.5 * depth);
     // TODO(SeanCurtis-TRI): This appears to have the wrong sign for depth.
     //  We've actually computed *signed distance* which is -depth.
-    if(penetration_depth) *penetration_depth = depth;
+    if (penetration_depth)
+      *penetration_depth = depth;
     // Note: This points *into* the half space. It is not clear this matches
     // any documented convention.
-    if(normal) *normal = -new_s2.n;
+    if (normal)
+      *normal = -new_s2.n;
     return true;
-  }
-  else
+  } else
     return false;
 }
 
 //==============================================================================
 template <typename S>
-bool convexHalfspaceIntersect(const Convex<S>& convex_C,
-                              const Transform3<S>& X_FC,
-                              const Halfspace<S>& half_space_H,
-                              const Transform3<S>& X_FH,
-                              std::vector<ContactPoint<S>>* contacts) {
+bool convexHalfspaceIntersect(
+    const Convex<S>& convex_C,
+    const Transform3<S>& X_FC,
+    const Halfspace<S>& half_space_H,
+    const Transform3<S>& X_FH,
+    std::vector<ContactPoint<S>>* contacts)
+{
   Halfspace<S> half_space_C = transform(half_space_H, X_FC.inverse() * X_FH);
 
   Vector3<S> p_CV_deepest;
@@ -563,7 +604,8 @@ bool convexHalfspaceIntersect(const Convex<S>& convex_C,
     if (signed_distance < min_signed_distance) {
       min_signed_distance = signed_distance;
       p_CV_deepest = p_CV;
-      if (signed_distance <= 0 && contacts == nullptr) return true;
+      if (signed_distance <= 0 && contacts == nullptr)
+        return true;
     }
   }
 
@@ -583,9 +625,16 @@ bool convexHalfspaceIntersect(const Convex<S>& convex_C,
 
 //==============================================================================
 template <typename S>
-bool halfspaceTriangleIntersect(const Halfspace<S>& s1, const Transform3<S>& tf1,
-                                const Vector3<S>& P1, const Vector3<S>& P2, const Vector3<S>& P3, const Transform3<S>& tf2,
-                                Vector3<S>* contact_points, S* penetration_depth, Vector3<S>* normal)
+bool halfspaceTriangleIntersect(
+    const Halfspace<S>& s1,
+    const Transform3<S>& tf1,
+    const Vector3<S>& P1,
+    const Vector3<S>& P2,
+    const Vector3<S>& P3,
+    const Transform3<S>& tf2,
+    Vector3<S>* contact_points,
+    S* penetration_depth,
+    Vector3<S>* normal)
 {
   Halfspace<S> new_s1 = transform(s1, tf1);
 
@@ -594,39 +643,42 @@ bool halfspaceTriangleIntersect(const Halfspace<S>& s1, const Transform3<S>& tf1
 
   Vector3<S> p = tf2 * P2;
   S d = new_s1.signedDistance(p);
-  if(d < depth)
-  {
+  if (d < depth) {
     depth = d;
     v = p;
   }
 
   p = tf2 * P3;
   d = new_s1.signedDistance(p);
-  if(d < depth)
-  {
+  if (d < depth) {
     depth = d;
     v = p;
   }
 
-  if(depth <= 0)
-  {
-    if(penetration_depth) *penetration_depth = -depth;
-    if(normal) *normal = new_s1.n;
-    if(contact_points) *contact_points = v - new_s1.n * (0.5 * depth);
+  if (depth <= 0) {
+    if (penetration_depth)
+      *penetration_depth = -depth;
+    if (normal)
+      *normal = new_s1.n;
+    if (contact_points)
+      *contact_points = v - new_s1.n * (0.5 * depth);
     return true;
-  }
-  else
+  } else
     return false;
 }
 
 //==============================================================================
 template <typename S>
-bool planeHalfspaceIntersect(const Plane<S>& s1, const Transform3<S>& tf1,
-                             const Halfspace<S>& s2, const Transform3<S>& tf2,
-                             Plane<S>& pl,
-                             Vector3<S>& p, Vector3<S>& d,
-                             S& penetration_depth,
-                             int& ret)
+bool planeHalfspaceIntersect(
+    const Plane<S>& s1,
+    const Transform3<S>& tf1,
+    const Halfspace<S>& s2,
+    const Transform3<S>& tf2,
+    Plane<S>& pl,
+    Vector3<S>& p,
+    Vector3<S>& d,
+    S& penetration_depth,
+    int& ret)
 {
   Plane<S> new_s1 = transform(s1, tf1);
   Halfspace<S> new_s2 = transform(s2, tf2);
@@ -635,26 +687,20 @@ bool planeHalfspaceIntersect(const Plane<S>& s1, const Transform3<S>& tf1,
 
   Vector3<S> dir = (new_s1.n).cross(new_s2.n);
   S dir_norm = dir.squaredNorm();
-  if(dir_norm < std::numeric_limits<S>::epsilon()) // parallel
+  if (dir_norm < std::numeric_limits<S>::epsilon()) // parallel
   {
-    if((new_s1.n).dot(new_s2.n) > 0)
-    {
-      if(new_s1.d < new_s2.d)
-      {
+    if ((new_s1.n).dot(new_s2.n) > 0) {
+      if (new_s1.d < new_s2.d) {
         penetration_depth = new_s2.d - new_s1.d;
         ret = 1;
         pl = new_s1;
         return true;
-      }
-      else
+      } else
         return false;
-    }
-    else
-    {
-      if(new_s1.d + new_s2.d > 0)
+    } else {
+      if (new_s1.d + new_s2.d > 0)
         return false;
-      else
-      {
+      else {
         penetration_depth = -(new_s1.d + new_s2.d);
         ret = 2;
         pl = new_s1;
@@ -677,23 +723,33 @@ bool planeHalfspaceIntersect(const Plane<S>& s1, const Transform3<S>& tf1,
 
 //==============================================================================
 template <typename S>
-bool halfspacePlaneIntersect(const Halfspace<S>& s1, const Transform3<S>& tf1,
-                             const Plane<S>& s2, const Transform3<S>& tf2,
-                             Plane<S>& pl, Vector3<S>& p, Vector3<S>& d,
-                             S& penetration_depth,
-                             int& ret)
+bool halfspacePlaneIntersect(
+    const Halfspace<S>& s1,
+    const Transform3<S>& tf1,
+    const Plane<S>& s2,
+    const Transform3<S>& tf2,
+    Plane<S>& pl,
+    Vector3<S>& p,
+    Vector3<S>& d,
+    S& penetration_depth,
+    int& ret)
 {
-  return planeHalfspaceIntersect(s2, tf2, s1, tf1, pl, p, d, penetration_depth, ret);
+  return planeHalfspaceIntersect(
+      s2, tf2, s1, tf1, pl, p, d, penetration_depth, ret);
 }
 
 //==============================================================================
 template <typename S>
-bool halfspaceIntersect(const Halfspace<S>& s1, const Transform3<S>& tf1,
-                        const Halfspace<S>& s2, const Transform3<S>& tf2,
-                        Vector3<S>& p, Vector3<S>& d,
-                        Halfspace<S>& s,
-                        S& penetration_depth,
-                        int& ret)
+bool halfspaceIntersect(
+    const Halfspace<S>& s1,
+    const Transform3<S>& tf1,
+    const Halfspace<S>& s2,
+    const Transform3<S>& tf2,
+    Vector3<S>& p,
+    Vector3<S>& d,
+    Halfspace<S>& s,
+    S& penetration_depth,
+    int& ret)
 {
   Halfspace<S> new_s1 = transform(s1, tf1);
   Halfspace<S> new_s2 = transform(s2, tf2);
@@ -702,27 +758,23 @@ bool halfspaceIntersect(const Halfspace<S>& s1, const Transform3<S>& tf1,
 
   Vector3<S> dir = (new_s1.n).cross(new_s2.n);
   S dir_norm = dir.squaredNorm();
-  if(dir_norm < std::numeric_limits<S>::epsilon()) // parallel
+  if (dir_norm < std::numeric_limits<S>::epsilon()) // parallel
   {
-    if((new_s1.n).dot(new_s2.n) > 0)
-    {
-      if(new_s1.d < new_s2.d) // s1 is inside s2
+    if ((new_s1.n).dot(new_s2.n) > 0) {
+      if (new_s1.d < new_s2.d) // s1 is inside s2
       {
         ret = 1;
         penetration_depth = std::numeric_limits<S>::max();
         s = new_s1;
-      }
-      else // s2 is inside s1
+      } else // s2 is inside s1
       {
         ret = 2;
         penetration_depth = std::numeric_limits<S>::max();
         s = new_s2;
       }
       return true;
-    }
-    else
-    {
-      if(new_s1.d + new_s2.d > 0) // not collision
+    } else {
+      if (new_s1.d + new_s2.d > 0) // not collision
         return false;
       else // in each other
       {
@@ -746,6 +798,4 @@ bool halfspaceIntersect(const Halfspace<S>& s1, const Transform3<S>& tf1,
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

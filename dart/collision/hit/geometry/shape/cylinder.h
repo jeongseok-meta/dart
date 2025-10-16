@@ -35,38 +35,35 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_SHAPE_CYLINDER_H
-#define FCL_SHAPE_CYLINDER_H
+#pragma once
+
+#include "dart/collision/hit/geometry/shape/shape_base.h"
 
 #include <ostream>
 #include <string>
 
-#include "fcl/geometry/shape/shape_base.h"
+namespace dart::collision::hit {
 
-namespace dart { namespace collision { namespace hit
-{
-
-/// @brief Center at zero cylinder 
+/// @brief Center at zero cylinder
 template <typename S_>
-class FCL_EXPORT Cylinder : public ShapeBase<S_>
+class Cylinder : public ShapeBase<S_>
 {
 public:
-
   using S = S_;
 
   /// @brief Constructor
   Cylinder(S radius, S lz);
-  
-  /// @brief Radius of the cylinder 
+
+  /// @brief Radius of the cylinder
   S radius;
 
-  /// @brief Length along z axis 
+  /// @brief Length along z axis
   S lz;
 
-  /// @brief Compute AABB 
+  /// @brief Compute AABB
   void computeLocalAABB() override;
 
-  /// @brief Get node type: a cylinder 
+  /// @brief Get node type: a cylinder
   NODE_TYPE getNodeType() const override;
 
   // Documentation inherited
@@ -86,8 +83,8 @@ public:
   /// @return The string representation of this instance.
   std::string representation(int precision = 20) const;
 
-  friend
-  std::ostream& operator<<(std::ostream& out, const Cylinder& cylinder) {
+  friend std::ostream& operator<<(std::ostream& out, const Cylinder& cylinder)
+  {
     out << "Cylinder(r: " << cylinder.radius << ", lz: " << cylinder.lz << ")";
     return out;
   }
@@ -96,8 +93,6 @@ public:
 using Cylinderf = Cylinder<float>;
 using Cylinderd = Cylinder<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/geometry/shape/cylinder-inl.h"
-
-#endif
+#include "dart/collision/hit/geometry/shape/cylinder-inl.h"

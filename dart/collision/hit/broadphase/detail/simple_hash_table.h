@@ -35,24 +35,21 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BROADPHASE_SIMPLEHASHTABLE_H
-#define FCL_BROADPHASE_SIMPLEHASHTABLE_H
+#pragma once
 
-#include <stdexcept>
-#include <set>
-#include <vector>
 #include <list>
+#include <set>
+#include <stdexcept>
+#include <vector>
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /// @brief A simple hash table implemented as multiple buckets. HashFnc is any
 /// extended hash function: HashFnc(key) = {index1, index2, ..., }
-template<typename Key, typename Data, typename HashFnc>
-class FCL_EXPORT SimpleHashTable
+template <typename Key, typename Data, typename HashFnc>
+class SimpleHashTable
 {
 protected:
   typedef std::list<Data> Bin;
@@ -84,8 +81,6 @@ public:
 };
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/broadphase/detail/simple_hash_table-inl.h"
-
-#endif
+#include "dart/collision/hit/broadphase/detail/simple_hash_table-inl.h"

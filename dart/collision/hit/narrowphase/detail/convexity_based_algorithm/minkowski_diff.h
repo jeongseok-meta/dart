@@ -35,27 +35,23 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_NARROWPHASE_DETAIL_MINKOWSKIDIFF_H
-#define FCL_NARROWPHASE_DETAIL_MINKOWSKIDIFF_H
+#pragma once
 
-#include "fcl/math/detail/project.h"
-#include "fcl/geometry/shape/shape_base.h"
+#include "dart/collision/hit/geometry/shape/shape_base.h"
+#include "dart/collision/hit/math/detail/project.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /// @brief the support function for shape
 template <typename S, typename Derived>
 Vector3<S> getSupport(
-    const ShapeBase<S>* shape,
-    const Eigen::MatrixBase<Derived>& dir);
+    const ShapeBase<S>* shape, const Eigen::MatrixBase<Derived>& dir);
 
 /// @brief Minkowski difference class of two shapes
 template <typename S>
-struct FCL_EXPORT MinkowskiDiff
+struct MinkowskiDiff
 {
   /// @brief points to two shapes
   const ShapeBase<S>* shapes[2];
@@ -63,14 +59,14 @@ struct FCL_EXPORT MinkowskiDiff
   /// @brief rotation from shape0 to shape1
   Matrix3<S> toshape1;
 
-  /// @brief transform from shape1 to shape0 
+  /// @brief transform from shape1 to shape0
   Transform3<S> toshape0;
 
   MinkowskiDiff();
 
   /// @brief support function for shape0
   Vector3<S> support0(const Vector3<S>& d) const;
-  
+
   /// @brief support function for shape1
   Vector3<S> support1(const Vector3<S>& d) const;
 
@@ -80,14 +76,18 @@ struct FCL_EXPORT MinkowskiDiff
   /// @brief support function for the d-th shape (d = 0 or 1)
   Vector3<S> support(const Vector3<S>& d, size_t index) const;
 
-  /// @brief support function for translating shape0, which is translating at velocity v
+  /// @brief support function for translating shape0, which is translating at
+  /// velocity v
   Vector3<S> support0(const Vector3<S>& d, const Vector3<S>& v) const;
 
-  /// @brief support function for the pair of shapes, where shape0 is translating at velocity v
+  /// @brief support function for the pair of shapes, where shape0 is
+  /// translating at velocity v
   Vector3<S> support(const Vector3<S>& d, const Vector3<S>& v) const;
 
-  /// @brief support function for the d-th shape (d = 0 or 1), where shape0 is translating at velocity v
-  Vector3<S> support(const Vector3<S>& d, const Vector3<S>& v, size_t index) const;
+  /// @brief support function for the d-th shape (d = 0 or 1), where shape0 is
+  /// translating at velocity v
+  Vector3<S> support(
+      const Vector3<S>& d, const Vector3<S>& v, size_t index) const;
 
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
@@ -96,8 +96,6 @@ using MinkowskiDifff = MinkowskiDiff<float>;
 using MinkowskiDiffd = MinkowskiDiff<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/convexity_based_algorithm/minkowski_diff-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/convexity_based_algorithm/minkowski_diff-inl.h"

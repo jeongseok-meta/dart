@@ -35,16 +35,14 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/detail/seed.h"
+#include "dart/collision/hit/math/detail/seed.h"
 
 #include <chrono>
 #include <mutex>
 #include <random>
 
-namespace dart { namespace collision { namespace hit
-{
-namespace detail
-{
+namespace dart::collision::hit {
+namespace detail {
 
 //==============================================================================
 bool Seed::isFirstSeedGenerated()
@@ -74,17 +72,14 @@ uint_fast32_t Seed::getFirstSeed()
   if (getInstance().firstSeedGenerated)
     return getInstance().firstSeedValue;
 
-  if (getInstance().userSetSeed != 0)
-  {
+  if (getInstance().userSetSeed != 0) {
     getInstance().firstSeedValue = getInstance().userSetSeed;
-  }
-  else
-  {
-    getInstance().firstSeedValue
-        = static_cast<std::uint_fast32_t>(
-          std::chrono::duration_cast<std::chrono::microseconds>(
+  } else {
+    getInstance().firstSeedValue = static_cast<std::uint_fast32_t>(
+        std::chrono::duration_cast<std::chrono::microseconds>(
             std::chrono::system_clock::now()
-            - std::chrono::system_clock::time_point()).count());
+            - std::chrono::system_clock::time_point())
+            .count());
   }
 
   getInstance().firstSeedGenerated = true;
@@ -118,4 +113,4 @@ Seed& Seed::getInstance()
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

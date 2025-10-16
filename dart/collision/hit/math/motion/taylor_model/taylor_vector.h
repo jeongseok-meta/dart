@@ -32,52 +32,55 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
-// This code is based on code developed by Stephane Redon at UNC and Inria for the CATCH library: http://graphics.ewha.ac.kr/CATCH/
+// This code is based on code developed by Stephane Redon at UNC and Inria for
+// the CATCH library: http://graphics.ewha.ac.kr/CATCH/
 /** @author Jia Pan */
 
-#ifndef FCL_CCD_TAYLOR_VECTOR_H
-#define FCL_CCD_TAYLOR_VECTOR_H
+#pragma once
 
-#include "fcl/math/motion/taylor_model/interval_vector.h"
-#include "fcl/math/motion/taylor_model/taylor_model.h"
+#include "dart/collision/hit/math/motion/taylor_model/interval_vector.h"
+#include "dart/collision/hit/math/motion/taylor_model/taylor_model.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 template <typename S>
-class FCL_EXPORT TVector3
+class TVector3
 {
   TaylorModel<S> i_[3];
 
 public:
-  
   TVector3();
   TVector3(const std::shared_ptr<TimeInterval<S>>& time_interval);
   TVector3(TaylorModel<S> v[3]);
-  TVector3(const TaylorModel<S>& v0, const TaylorModel<S>& v1, const TaylorModel<S>& v2);
-  TVector3(const Vector3<S>& v, const std::shared_ptr<TimeInterval<S>>& time_interval);
-  
-  TVector3 operator + (const TVector3& other) const;
-  TVector3& operator += (const TVector3& other);
+  TVector3(
+      const TaylorModel<S>& v0,
+      const TaylorModel<S>& v1,
+      const TaylorModel<S>& v2);
+  TVector3(
+      const Vector3<S>& v,
+      const std::shared_ptr<TimeInterval<S>>& time_interval);
 
-  TVector3 operator + (const Vector3<S>& other) const;
-  TVector3& operator += (const Vector3<S>& other);
+  TVector3 operator+(const TVector3& other) const;
+  TVector3& operator+=(const TVector3& other);
 
-  TVector3 operator - (const TVector3& other) const;
-  TVector3& operator -= (const TVector3& other);
+  TVector3 operator+(const Vector3<S>& other) const;
+  TVector3& operator+=(const Vector3<S>& other);
 
-  TVector3 operator - (const Vector3<S>& other) const;
-  TVector3& operator -= (const Vector3<S>& other);
+  TVector3 operator-(const TVector3& other) const;
+  TVector3& operator-=(const TVector3& other);
 
-  TVector3 operator - () const;
+  TVector3 operator-(const Vector3<S>& other) const;
+  TVector3& operator-=(const Vector3<S>& other);
 
-  TVector3 operator * (const TaylorModel<S>& d) const;
-  TVector3& operator *= (const TaylorModel<S>& d);
-  TVector3 operator * (S d) const;
-  TVector3& operator *= (S d);
+  TVector3 operator-() const;
 
-  const TaylorModel<S>& operator [] (size_t i) const;
-  TaylorModel<S>& operator [] (size_t i);
+  TVector3 operator*(const TaylorModel<S>& d) const;
+  TVector3& operator*=(const TaylorModel<S>& d);
+  TVector3 operator*(S d) const;
+  TVector3& operator*=(S d);
+
+  const TaylorModel<S>& operator[](size_t i) const;
+  TaylorModel<S>& operator[](size_t i);
 
   TaylorModel<S> dot(const TVector3& other) const;
   TVector3 cross(const TVector3& other) const;
@@ -104,23 +107,18 @@ public:
 };
 
 template <typename S>
-FCL_EXPORT
-void generateTVector3ForLinearFunc(TVector3<S>& v, const Vector3<S>& position, const Vector3<S>& velocity);
+void generateTVector3ForLinearFunc(
+    TVector3<S>& v, const Vector3<S>& position, const Vector3<S>& velocity);
 
 template <typename S>
-FCL_EXPORT
-TVector3<S> operator * (const Vector3<S>& v, const TaylorModel<S>& a);
+TVector3<S> operator*(const Vector3<S>& v, const TaylorModel<S>& a);
 
 template <typename S>
-FCL_EXPORT
-TVector3<S> operator + (const Vector3<S>& v1, const TVector3<S>& v2);
+TVector3<S> operator+(const Vector3<S>& v1, const TVector3<S>& v2);
 
 template <typename S>
-FCL_EXPORT
-TVector3<S> operator - (const Vector3<S>& v1, const TVector3<S>& v2);
+TVector3<S> operator-(const Vector3<S>& v1, const TVector3<S>& v2);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/motion/taylor_model/taylor_vector-inl.h"
-
-#endif
+#include "dart/collision/hit/math/motion/taylor_model/taylor_vector-inl.h"

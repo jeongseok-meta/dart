@@ -31,39 +31,40 @@
  *  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
- */ 
+ */
 
 /** @author Jia Pan */
 
-#ifndef FCL_BROADPHASE_BROADPHASECONTINUOUSCOLLISIONMANAGER_H
-#define FCL_BROADPHASE_BROADPHASECONTINUOUSCOLLISIONMANAGER_H
+#pragma once
 
-#include "fcl/broadphase/broadphase_collision_manager.h"
-#include "fcl/narrowphase/collision_object.h"
-#include "fcl/narrowphase/continuous_collision_object.h"
+#include "dart/collision/hit/broadphase/broadphase_collision_manager.h"
+#include "dart/collision/hit/narrowphase/collision_object.h"
+#include "dart/collision/hit/narrowphase/continuous_collision_object.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Callback for continuous collision between two objects. Return value
 /// is whether can stop now.
 template <typename S>
 using ContinuousCollisionCallBack = bool (*)(
     ContinuousCollisionObject<S>* o1,
-    ContinuousCollisionObject<S>* o2, void* cdata);
+    ContinuousCollisionObject<S>* o2,
+    void* cdata);
 
 /// @brief Callback for continuous distance between two objects, Return value is
 /// whether can stop now, also return the minimum distance till now.
 template <typename S>
 using ContinuousDistanceCallBack = bool (*)(
     ContinuousCollisionObject<S>* o1,
-    ContinuousCollisionObject<S>* o2, void* cdata, S& dist);
+    ContinuousCollisionObject<S>* o2,
+    void* cdata,
+    S& dist);
 
 /// @brief Base class for broad phase continuous collision. It helps to
 /// accelerate the continuous collision/distance between N objects. Also support
 /// self collision, self distance and collision/distance with another M objects.
 template <typename S>
-class FCL_EXPORT BroadPhaseContinuousCollisionManager
+class BroadPhaseContinuousCollisionManager
 {
 public:
   BroadPhaseContinuousCollisionManager();
@@ -71,7 +72,8 @@ public:
   virtual ~BroadPhaseContinuousCollisionManager();
 
   /// @brief add objects to the manager
-  virtual void registerObjects(const std::vector<ContinuousCollisionObject<S>*>& other_objs);
+  virtual void registerObjects(
+      const std::vector<ContinuousCollisionObject<S>*>& other_objs);
 
   /// @brief add one object to the manager
   virtual void registerObject(ContinuousCollisionObject<S>* obj) = 0;
@@ -89,44 +91,62 @@ public:
   virtual void update(ContinuousCollisionObject<S>* updated_obj);
 
   /// @brief update the manager by explicitly given the set of objects update
-  virtual void update(const std::vector<ContinuousCollisionObject<S>*>& updated_objs);
+  virtual void update(
+      const std::vector<ContinuousCollisionObject<S>*>& updated_objs);
 
   /// @brief clear the manager
   virtual void clear() = 0;
 
   /// @brief return the objects managed by the manager
-  virtual void getObjects(std::vector<ContinuousCollisionObject<S>*>& objs) const = 0;
+  virtual void getObjects(
+      std::vector<ContinuousCollisionObject<S>*>& objs) const = 0;
 
-  /// @brief perform collision test between one object and all the objects belonging to the manager
-  virtual void collide(ContinuousCollisionObject<S>* obj, void* cdata, CollisionCallBack<S> callback) const = 0;
+  /// @brief perform collision test between one object and all the objects
+  /// belonging to the manager
+  virtual void collide(
+      ContinuousCollisionObject<S>* obj,
+      void* cdata,
+      CollisionCallBack<S> callback) const = 0;
 
-  /// @brief perform distance computation between one object and all the objects belonging to the manager
-  virtual void distance(ContinuousCollisionObject<S>* obj, void* cdata, DistanceCallBack<S> callback) const = 0;
+  /// @brief perform distance computation between one object and all the objects
+  /// belonging to the manager
+  virtual void distance(
+      ContinuousCollisionObject<S>* obj,
+      void* cdata,
+      DistanceCallBack<S> callback) const = 0;
 
-  /// @brief perform collision test for the objects belonging to the manager (i.e., N^2 self collision)
+  /// @brief perform collision test for the objects belonging to the manager
+  /// (i.e., N^2 self collision)
   virtual void collide(void* cdata, CollisionCallBack<S> callback) const = 0;
 
-  /// @brief perform distance test for the objects belonging to the manager (i.e., N^2 self distance)
+  /// @brief perform distance test for the objects belonging to the manager
+  /// (i.e., N^2 self distance)
   virtual void distance(void* cdata, DistanceCallBack<S> callback) const = 0;
 
   /// @brief perform collision test with objects belonging to another manager
-  virtual void collide(BroadPhaseContinuousCollisionManager<S>* other_manager, void* cdata, CollisionCallBack<S> callback) const = 0;
+  virtual void collide(
+      BroadPhaseContinuousCollisionManager<S>* other_manager,
+      void* cdata,
+      CollisionCallBack<S> callback) const = 0;
 
   /// @brief perform distance test with objects belonging to another manager
-  virtual void distance(BroadPhaseContinuousCollisionManager<S>* other_manager, void* cdata, DistanceCallBack<S> callback) const = 0;
+  virtual void distance(
+      BroadPhaseContinuousCollisionManager<S>* other_manager,
+      void* cdata,
+      DistanceCallBack<S> callback) const = 0;
 
   /// @brief whether the manager is empty
   virtual bool empty() const = 0;
-  
+
   /// @brief the number of objects managed by the manager
   virtual size_t size() const = 0;
 };
 
-using BroadPhaseContinuousCollisionManagerf = BroadPhaseContinuousCollisionManager<float>;
-using BroadPhaseContinuousCollisionManagerd = BroadPhaseContinuousCollisionManager<double>;
+using BroadPhaseContinuousCollisionManagerf
+    = BroadPhaseContinuousCollisionManager<float>;
+using BroadPhaseContinuousCollisionManagerd
+    = BroadPhaseContinuousCollisionManager<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/broadphase/broadphase_continuous_collision_manager-inl.h"
-
-#endif
+#include "dart/collision/hit/broadphase/broadphase_continuous_collision_manager-inl.h"

@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/variance3-inl.h"
+#include "dart/collision/hit/math/variance3-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-class Variance3<double>;
+template class Variance3<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

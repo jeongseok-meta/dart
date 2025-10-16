@@ -35,24 +35,20 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BVH_FRONT_H
-#define FCL_BVH_FRONT_H
+#pragma once
 
 #include <list>
-#include "fcl/export.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /// @brief Front list acceleration for collision
 /// Front list is a set of internal and leaf nodes in the BVTT hierarchy, where
 /// the traversal terminates while performing a query during a given time
 /// instance. The front list reﬂects the subset of a BVTT that is traversed for
 /// that particular proximity query.
-struct FCL_EXPORT BVHFrontNode
+struct BVHFrontNode
 {
   /// @brief The nodes to start in the future, i.e. the wave front of the
   /// traversal tree.
@@ -69,10 +65,7 @@ struct FCL_EXPORT BVHFrontNode
 using BVHFrontList = std::list<BVHFrontNode>;
 
 /// @brief Add new front node into the front list
-FCL_EXPORT
 void updateFrontList(BVHFrontList* front_list, int b1, int b2);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

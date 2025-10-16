@@ -35,32 +35,28 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_OCTREE_MESHOCTREECOLLISIONTRAVERSALNODE_H
-#define FCL_TRAVERSAL_OCTREE_MESHOCTREECOLLISIONTRAVERSALNODE_H
+#pragma once
 
-#include "fcl/config.h"
-#if !FCL_HAVE_OCTOMAP
-#error "This header requires fcl to be compiled with octomap support"
+#include "dart/collision/hit/config.h"
+#if !DART_COLLISION_HIT_HAVE_OCTOMAP
+  #error "This header requires fcl to be compiled with octomap support"
 #endif
 
-#include "fcl/geometry/octree/octree.h"
-#include "fcl/geometry/bvh/BVH_model.h"
-#include "fcl/narrowphase/detail/traversal/collision/collision_traversal_node_base.h"
-#include "fcl/narrowphase/detail/traversal/octree/octree_solver.h"
+#include "dart/collision/hit/geometry/bvh/BVH_model.h"
+#include "dart/collision/hit/geometry/octree/octree.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/collision/collision_traversal_node_base.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/octree/octree_solver.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /// @brief Traversal node for mesh-octree collision
 template <typename BV, typename NarrowPhaseSolver>
-class FCL_EXPORT MeshOcTreeCollisionTraversalNode
-    : public CollisionTraversalNodeBase<typename BV::S>
+class MeshOcTreeCollisionTraversalNode
+  : public CollisionTraversalNodeBase<typename BV::S>
 {
 public:
-
   using S = typename BV::S;
 
   MeshOcTreeCollisionTraversalNode();
@@ -94,8 +90,6 @@ bool initialize(
     CollisionResult<typename BV::S>& result);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/traversal/octree/collision/mesh_octree_collision_traversal_node-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/traversal/octree/collision/mesh_octree_collision_traversal_node-inl.h"

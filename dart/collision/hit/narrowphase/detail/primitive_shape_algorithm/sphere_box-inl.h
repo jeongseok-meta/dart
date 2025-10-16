@@ -34,26 +34,30 @@
 
 /** @author Sean Curtis <sean@tri.global> (2018) */
 
-#ifndef FCL_NARROWPHASE_DETAIL_SPHEREBOX_INL_H
-#define FCL_NARROWPHASE_DETAIL_SPHEREBOX_INL_H
+#pragma once
 
-#include "fcl/narrowphase/detail/primitive_shape_algorithm/sphere_box.h"
+#include "dart/collision/hit/narrowphase/detail/primitive_shape_algorithm/sphere_box.h"
 
-namespace dart { namespace collision { namespace hit {
+namespace dart::collision::hit {
 namespace detail {
 
-extern template FCL_EXPORT bool
-sphereBoxIntersect(const Sphere<double>& sphere, const Transform3<double>& X_FS,
-                   const Box<double>& box, const Transform3<double>& X_FB,
-                   std::vector<ContactPoint<double>>* contacts);
+extern template bool sphereBoxIntersect(
+    const Sphere<double>& sphere,
+    const Transform3<double>& X_FS,
+    const Box<double>& box,
+    const Transform3<double>& X_FB,
+    std::vector<ContactPoint<double>>* contacts);
 
 //==============================================================================
 
-extern template FCL_EXPORT bool
-sphereBoxDistance(const Sphere<double>& sphere, const Transform3<double>& X_FS,
-                  const Box<double>& box, const Transform3<double>& X_FB,
-                  double* distance, Vector3<double>* p_FSb,
-                  Vector3<double>* p_FBs);
+extern template bool sphereBoxDistance(
+    const Sphere<double>& sphere,
+    const Transform3<double>& X_FS,
+    const Box<double>& box,
+    const Transform3<double>& X_FB,
+    double* distance,
+    Vector3<double>* p_FSb,
+    Vector3<double>* p_FBs);
 
 //==============================================================================
 
@@ -70,8 +74,9 @@ sphereBoxDistance(const Sphere<double>& sphere, const Transform3<double>& X_FS,
 // @returns true if the nearest point is a different point than the query point.
 // @pre P_BN_ptr must point to a valid Vector3<S> instance.
 template <typename S>
-bool nearestPointInBox(const Vector3<S>& size, const Vector3<S>& p_BQ,
-                       Vector3<S>* p_BN_ptr) {
+bool nearestPointInBox(
+    const Vector3<S>& size, const Vector3<S>& p_BQ, Vector3<S>* p_BN_ptr)
+{
   assert(p_BN_ptr != nullptr);
   Vector3<S>& p_BN = *p_BN_ptr;
   // Clamp the point to the box. If we do *any* clamping we know the center was
@@ -95,10 +100,13 @@ bool nearestPointInBox(const Vector3<S>& size, const Vector3<S>& p_BQ,
 //==============================================================================
 
 template <typename S>
-FCL_EXPORT bool sphereBoxIntersect(const Sphere<S>& sphere,
-                                   const Transform3<S>& X_FS, const Box<S>& box,
-                                   const Transform3<S>& X_FB,
-                                   std::vector<ContactPoint<S>>* contacts) {
+bool sphereBoxIntersect(
+    const Sphere<S>& sphere,
+    const Transform3<S>& X_FS,
+    const Box<S>& box,
+    const Transform3<S>& X_FB,
+    std::vector<ContactPoint<S>>* contacts)
+{
   const S r = sphere.radius;
   // Find the sphere center C in the box's frame.
   const Transform3<S> X_BS = X_FB.inverse() * X_FS;
@@ -151,8 +159,8 @@ FCL_EXPORT bool sphereBoxIntersect(const Sphere<S>& sphere,
       // midway between the projection point, and the point opposite the sphere
       // center in the *negative* normal direction.
       Vector3<S> half_size = box.side / 2;
-      S min_distance =
-          std::numeric_limits<typename constants<S>::Real>::infinity();
+      S min_distance
+          = std::numeric_limits<typename constants<S>::Real>::infinity();
       int min_axis = -1;
       for (int i = 0; i < 3; ++i) {
         S dist = p_BC(i) >= 0 ? half_size(i) - p_BC(i) : p_BC(i) + half_size(i);
@@ -180,10 +188,15 @@ FCL_EXPORT bool sphereBoxIntersect(const Sphere<S>& sphere,
 //==============================================================================
 
 template <typename S>
-FCL_EXPORT bool sphereBoxDistance(const Sphere<S>& sphere,
-                                  const Transform3<S>& X_FS, const Box<S>& box,
-                                  const Transform3<S>& X_FB, S* distance,
-                                  Vector3<S>* p_FSb, Vector3<S>* p_FBs) {
+bool sphereBoxDistance(
+    const Sphere<S>& sphere,
+    const Transform3<S>& X_FS,
+    const Box<S>& box,
+    const Transform3<S>& X_FB,
+    S* distance,
+    Vector3<S>* p_FSb,
+    Vector3<S>* p_FBs)
+{
   // Find the sphere center C in the box's frame.
   const Transform3<S> X_BS = X_FB.inverse() * X_FS;
   const Vector3<S> p_BC = X_BS.translation();
@@ -221,11 +234,10 @@ FCL_EXPORT bool sphereBoxDistance(const Sphere<S>& sphere,
   }
 
   // We didn't *prove* separation, so we must be in penetration.
-  if (distance != nullptr) *distance = -1;
+  if (distance != nullptr)
+    *distance = -1;
   return false;
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif // FCL_NARROWPHASE_DETAIL_SPHEREBOX_INL_H
+} // namespace dart::collision::hit

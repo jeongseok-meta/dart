@@ -35,57 +35,95 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_NARROWPHASE_DETAIL_INTERSECT_H
-#define FCL_NARROWPHASE_DETAIL_INTERSECT_H
+#pragma once
+
+#include "dart/collision/hit/common/types.h"
+#include "dart/collision/hit/math/detail/polysolver.h"
+#include "dart/collision/hit/math/geometry.h"
 
 #include <limits>
-#include "fcl/common/types.h"
-#include "fcl/math/geometry.h"
-#include "fcl/math/detail/polysolver.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
-/// @brief CCD intersect kernel among primitives 
+/// @brief CCD intersect kernel among primitives
 template <typename S>
-class FCL_EXPORT Intersect
+class Intersect
 {
-
 public:
-
   /// @brief CCD intersect between one vertex and one face
-  /// [a0, b0, c0] and [a1, b1, c1] are points for the triangle face in time t0 and t1
-  /// p0 and p1 are points for vertex in time t0 and t1
-  /// p_i returns the coordinate of the collision point
-  static bool intersect_VF(const Vector3<S>& a0, const Vector3<S>& b0, const Vector3<S>& c0, const Vector3<S>& p0,
-                           const Vector3<S>& a1, const Vector3<S>& b1, const Vector3<S>& c1, const Vector3<S>& p1,
-                           S* collision_time, Vector3<S>* p_i, bool useNewton = true);
+  /// [a0, b0, c0] and [a1, b1, c1] are points for the triangle face in time t0
+  /// and t1 p0 and p1 are points for vertex in time t0 and t1 p_i returns the
+  /// coordinate of the collision point
+  static bool intersect_VF(
+      const Vector3<S>& a0,
+      const Vector3<S>& b0,
+      const Vector3<S>& c0,
+      const Vector3<S>& p0,
+      const Vector3<S>& a1,
+      const Vector3<S>& b1,
+      const Vector3<S>& c1,
+      const Vector3<S>& p1,
+      S* collision_time,
+      Vector3<S>* p_i,
+      bool useNewton = true);
 
   /// @brief CCD intersect between two edges
   /// [a0, b0] and [a1, b1] are points for one edge in time t0 and t1
   /// [c0, d0] and [c1, d1] are points for the other edge in time t0 and t1
   /// p_i returns the coordinate of the collision point
-  static bool intersect_EE(const Vector3<S>& a0, const Vector3<S>& b0, const Vector3<S>& c0, const Vector3<S>& d0,
-                           const Vector3<S>& a1, const Vector3<S>& b1, const Vector3<S>& c1, const Vector3<S>& d1,
-                           S* collision_time, Vector3<S>* p_i, bool useNewton = true);
+  static bool intersect_EE(
+      const Vector3<S>& a0,
+      const Vector3<S>& b0,
+      const Vector3<S>& c0,
+      const Vector3<S>& d0,
+      const Vector3<S>& a1,
+      const Vector3<S>& b1,
+      const Vector3<S>& c1,
+      const Vector3<S>& d1,
+      S* collision_time,
+      Vector3<S>* p_i,
+      bool useNewton = true);
 
-  /// @brief CCD intersect between one vertex and one face, using additional filter 
-  static bool intersect_VF_filtered(const Vector3<S>& a0, const Vector3<S>& b0, const Vector3<S>& c0, const Vector3<S>& p0,
-                                    const Vector3<S>& a1, const Vector3<S>& b1, const Vector3<S>& c1, const Vector3<S>& p1,
-                                    S* collision_time, Vector3<S>* p_i, bool useNewton = true);
+  /// @brief CCD intersect between one vertex and one face, using additional
+  /// filter
+  static bool intersect_VF_filtered(
+      const Vector3<S>& a0,
+      const Vector3<S>& b0,
+      const Vector3<S>& c0,
+      const Vector3<S>& p0,
+      const Vector3<S>& a1,
+      const Vector3<S>& b1,
+      const Vector3<S>& c1,
+      const Vector3<S>& p1,
+      S* collision_time,
+      Vector3<S>* p_i,
+      bool useNewton = true);
 
-  /// @brief CCD intersect between two edges, using additional filter 
-  static bool intersect_EE_filtered(const Vector3<S>& a0, const Vector3<S>& b0, const Vector3<S>& c0, const Vector3<S>& d0,
-                                    const Vector3<S>& a1, const Vector3<S>& b1, const Vector3<S>& c1, const Vector3<S>& d1,
-                                    S* collision_time, Vector3<S>* p_i, bool useNewton = true);
+  /// @brief CCD intersect between two edges, using additional filter
+  static bool intersect_EE_filtered(
+      const Vector3<S>& a0,
+      const Vector3<S>& b0,
+      const Vector3<S>& c0,
+      const Vector3<S>& d0,
+      const Vector3<S>& a1,
+      const Vector3<S>& b1,
+      const Vector3<S>& c1,
+      const Vector3<S>& d1,
+      S* collision_time,
+      Vector3<S>* p_i,
+      bool useNewton = true);
 
-  /// @brief CCD intersect between one vertex and and one edge 
-  static bool intersect_VE(const Vector3<S>& a0, const Vector3<S>& b0, const Vector3<S>& p0,
-                           const Vector3<S>& a1, const Vector3<S>& b1, const Vector3<S>& p1,
-                           const Vector3<S>& L);
+  /// @brief CCD intersect between one vertex and and one edge
+  static bool intersect_VE(
+      const Vector3<S>& a0,
+      const Vector3<S>& b0,
+      const Vector3<S>& p0,
+      const Vector3<S>& a1,
+      const Vector3<S>& b1,
+      const Vector3<S>& p1,
+      const Vector3<S>& L);
 
   /// @brief CD intersect between two triangles [P1, P2, P3] and [Q1, Q2, Q3]
   static bool intersect_Triangle(
@@ -139,113 +177,259 @@ public:
       unsigned int* num_contact_points = nullptr,
       S* penetration_depth = nullptr,
       Vector3<S>* normal = nullptr);
-  
+
 private:
+  /// @brief Project function used in intersect_Triangle()
+  static int project6(
+      const Vector3<S>& ax,
+      const Vector3<S>& p1,
+      const Vector3<S>& p2,
+      const Vector3<S>& p3,
+      const Vector3<S>& q1,
+      const Vector3<S>& q2,
+      const Vector3<S>& q3);
 
-  /// @brief Project function used in intersect_Triangle() 
-  static int project6(const Vector3<S>& ax,
-                      const Vector3<S>& p1, const Vector3<S>& p2, const Vector3<S>& p3,
-                      const Vector3<S>& q1, const Vector3<S>& q2, const Vector3<S>& q3);
-
-  /// @brief Check whether one value is zero 
+  /// @brief Check whether one value is zero
   static bool isZero(S v);
 
-  /// @brief Solve the cubic function using Newton method, also satisfies the interval restriction 
-  static bool solveCubicWithIntervalNewton(const Vector3<S>& a0, const Vector3<S>& b0, const Vector3<S>& c0, const Vector3<S>& d0,
-                                           const Vector3<S>& va, const Vector3<S>& vb, const Vector3<S>& vc, const Vector3<S>& vd,
-                                           S& l, S& r, bool bVF, S coeffs[], Vector3<S>* data = nullptr);
+  /// @brief Solve the cubic function using Newton method, also satisfies the
+  /// interval restriction
+  static bool solveCubicWithIntervalNewton(
+      const Vector3<S>& a0,
+      const Vector3<S>& b0,
+      const Vector3<S>& c0,
+      const Vector3<S>& d0,
+      const Vector3<S>& va,
+      const Vector3<S>& vb,
+      const Vector3<S>& vc,
+      const Vector3<S>& vd,
+      S& l,
+      S& r,
+      bool bVF,
+      S coeffs[],
+      Vector3<S>* data = nullptr);
 
-  /// @brief Check whether one point p is within triangle [a, b, c] 
-  static bool insideTriangle(const Vector3<S>& a, const Vector3<S>& b, const Vector3<S>& c, const Vector3<S>&p);
+  /// @brief Check whether one point p is within triangle [a, b, c]
+  static bool insideTriangle(
+      const Vector3<S>& a,
+      const Vector3<S>& b,
+      const Vector3<S>& c,
+      const Vector3<S>& p);
 
-  /// @brief Check whether one point p is within a line segment [a, b] 
-  static bool insideLineSegment(const Vector3<S>& a, const Vector3<S>& b, const Vector3<S>& p);
+  /// @brief Check whether one point p is within a line segment [a, b]
+  static bool insideLineSegment(
+      const Vector3<S>& a, const Vector3<S>& b, const Vector3<S>& p);
 
   /// @brief Calculate the line segment papb that is the shortest route between
   /// two lines p1p2 and p3p4. Calculate also the values of mua and mub where
   ///                    pa = p1 + mua (p2 - p1)
   ///                    pb = p3 + mub (p4 - p3)
   /// return FALSE if no solution exists.
-  static bool linelineIntersect(const Vector3<S>& p1, const Vector3<S>& p2, const Vector3<S>& p3, const Vector3<S>& p4,
-                                Vector3<S>* pa, Vector3<S>* pb, S* mua, S* mub);
+  static bool linelineIntersect(
+      const Vector3<S>& p1,
+      const Vector3<S>& p2,
+      const Vector3<S>& p3,
+      const Vector3<S>& p4,
+      Vector3<S>* pa,
+      Vector3<S>* pb,
+      S* mua,
+      S* mub);
 
-  /// @brief Check whether a root for VF intersection is valid (i.e. within the triangle at intersection t 
-  static bool checkRootValidity_VF(const Vector3<S>& a0, const Vector3<S>& b0, const Vector3<S>& c0, const Vector3<S>& p0,
-                                   const Vector3<S>& va, const Vector3<S>& vb, const Vector3<S>& vc, const Vector3<S>& vp,
-                                   S t);
+  /// @brief Check whether a root for VF intersection is valid (i.e. within the
+  /// triangle at intersection t
+  static bool checkRootValidity_VF(
+      const Vector3<S>& a0,
+      const Vector3<S>& b0,
+      const Vector3<S>& c0,
+      const Vector3<S>& p0,
+      const Vector3<S>& va,
+      const Vector3<S>& vb,
+      const Vector3<S>& vc,
+      const Vector3<S>& vp,
+      S t);
 
-  /// @brief Check whether a root for EE intersection is valid (i.e. within the two edges intersected at the given time 
-  static bool checkRootValidity_EE(const Vector3<S>& a0, const Vector3<S>& b0, const Vector3<S>& c0, const Vector3<S>& d0,
-                                   const Vector3<S>& va, const Vector3<S>& vb, const Vector3<S>& vc, const Vector3<S>& vd,
-                                   S t, Vector3<S>* q_i = nullptr);
+  /// @brief Check whether a root for EE intersection is valid (i.e. within the
+  /// two edges intersected at the given time
+  static bool checkRootValidity_EE(
+      const Vector3<S>& a0,
+      const Vector3<S>& b0,
+      const Vector3<S>& c0,
+      const Vector3<S>& d0,
+      const Vector3<S>& va,
+      const Vector3<S>& vb,
+      const Vector3<S>& vc,
+      const Vector3<S>& vd,
+      S t,
+      Vector3<S>* q_i = nullptr);
 
-  /// @brief Check whether a root for VE intersection is valid 
-  static bool checkRootValidity_VE(const Vector3<S>& a0, const Vector3<S>& b0, const Vector3<S>& p0,
-                                   const Vector3<S>& va, const Vector3<S>& vb, const Vector3<S>& vp,
-                                   S t);
+  /// @brief Check whether a root for VE intersection is valid
+  static bool checkRootValidity_VE(
+      const Vector3<S>& a0,
+      const Vector3<S>& b0,
+      const Vector3<S>& p0,
+      const Vector3<S>& va,
+      const Vector3<S>& vb,
+      const Vector3<S>& vp,
+      S t);
 
-  /// @brief Solve a square function for EE intersection (with interval restriction) 
-  static bool solveSquare(S a, S b, S c,
-                          const Vector3<S>& a0, const Vector3<S>& b0, const Vector3<S>& c0, const Vector3<S>& d0,
-                          const Vector3<S>& va, const Vector3<S>& vb, const Vector3<S>& vc, const Vector3<S>& vd,
-                          bool bVF,
-                          S* ret);
+  /// @brief Solve a square function for EE intersection (with interval
+  /// restriction)
+  static bool solveSquare(
+      S a,
+      S b,
+      S c,
+      const Vector3<S>& a0,
+      const Vector3<S>& b0,
+      const Vector3<S>& c0,
+      const Vector3<S>& d0,
+      const Vector3<S>& va,
+      const Vector3<S>& vb,
+      const Vector3<S>& vc,
+      const Vector3<S>& vd,
+      bool bVF,
+      S* ret);
 
-  /// @brief Solve a square function for VE intersection (with interval restriction) 
-  static bool solveSquare(S a, S b, S c,
-                          const Vector3<S>& a0, const Vector3<S>& b0, const Vector3<S>& p0,
-                          const Vector3<S>& va, const Vector3<S>& vb, const Vector3<S>& vp);
+  /// @brief Solve a square function for VE intersection (with interval
+  /// restriction)
+  static bool solveSquare(
+      S a,
+      S b,
+      S c,
+      const Vector3<S>& a0,
+      const Vector3<S>& b0,
+      const Vector3<S>& p0,
+      const Vector3<S>& va,
+      const Vector3<S>& vb,
+      const Vector3<S>& vp);
 
   /// @brief Compute the cubic coefficients for VF intersection
-  /// See Paper "Interactive Continuous Collision Detection between Deformable Models using Connectivity-Based Culling", Equation 1.
-   
-  static void computeCubicCoeff_VF(const Vector3<S>& a0, const Vector3<S>& b0, const Vector3<S>& c0, const Vector3<S>& p0,
-                                   const Vector3<S>& va, const Vector3<S>& vb, const Vector3<S>& vc, const Vector3<S>& vp,
-                                   S* a, S* b, S* c, S* d);
+  /// See Paper "Interactive Continuous Collision Detection between Deformable
+  /// Models using Connectivity-Based Culling", Equation 1.
 
-  /// @brief Compute the cubic coefficients for EE intersection 
-  static void computeCubicCoeff_EE(const Vector3<S>& a0, const Vector3<S>& b0, const Vector3<S>& c0, const Vector3<S>& d0,
-                                   const Vector3<S>& va, const Vector3<S>& vb, const Vector3<S>& vc, const Vector3<S>& vd,
-                                   S* a, S* b, S* c, S* d);
+  static void computeCubicCoeff_VF(
+      const Vector3<S>& a0,
+      const Vector3<S>& b0,
+      const Vector3<S>& c0,
+      const Vector3<S>& p0,
+      const Vector3<S>& va,
+      const Vector3<S>& vb,
+      const Vector3<S>& vc,
+      const Vector3<S>& vp,
+      S* a,
+      S* b,
+      S* c,
+      S* d);
 
-  /// @brief Compute the cubic coefficients for VE intersection 
-  static void computeCubicCoeff_VE(const Vector3<S>& a0, const Vector3<S>& b0, const Vector3<S>& p0,
-                                   const Vector3<S>& va, const Vector3<S>& vb, const Vector3<S>& vp,
-                                   const Vector3<S>& L,
-                                   S* a, S* b, S* c);
+  /// @brief Compute the cubic coefficients for EE intersection
+  static void computeCubicCoeff_EE(
+      const Vector3<S>& a0,
+      const Vector3<S>& b0,
+      const Vector3<S>& c0,
+      const Vector3<S>& d0,
+      const Vector3<S>& va,
+      const Vector3<S>& vb,
+      const Vector3<S>& vc,
+      const Vector3<S>& vd,
+      S* a,
+      S* b,
+      S* c,
+      S* d);
 
-  /// @brief filter for intersection, works for both VF and EE 
-  static bool intersectPreFiltering(const Vector3<S>& a0, const Vector3<S>& b0, const Vector3<S>& c0, const Vector3<S>& d0,
-                                    const Vector3<S>& a1, const Vector3<S>& b1, const Vector3<S>& c1, const Vector3<S>& d1);
+  /// @brief Compute the cubic coefficients for VE intersection
+  static void computeCubicCoeff_VE(
+      const Vector3<S>& a0,
+      const Vector3<S>& b0,
+      const Vector3<S>& p0,
+      const Vector3<S>& va,
+      const Vector3<S>& vb,
+      const Vector3<S>& vp,
+      const Vector3<S>& L,
+      S* a,
+      S* b,
+      S* c);
 
-  /// @brief distance of point v to a plane n * x - t = 0 
+  /// @brief filter for intersection, works for both VF and EE
+  static bool intersectPreFiltering(
+      const Vector3<S>& a0,
+      const Vector3<S>& b0,
+      const Vector3<S>& c0,
+      const Vector3<S>& d0,
+      const Vector3<S>& a1,
+      const Vector3<S>& b1,
+      const Vector3<S>& c1,
+      const Vector3<S>& d1);
+
+  /// @brief distance of point v to a plane n * x - t = 0
   static S distanceToPlane(const Vector3<S>& n, S t, const Vector3<S>& v);
 
-  /// @brief check wether points v1, v2, v2 are on the same side of plane n * x - t = 0 
-  static bool sameSideOfPlane(const Vector3<S>& v1, const Vector3<S>& v2, const Vector3<S>& v3, const Vector3<S>& n, S t);
+  /// @brief check wether points v1, v2, v2 are on the same side of plane n * x
+  /// - t = 0
+  static bool sameSideOfPlane(
+      const Vector3<S>& v1,
+      const Vector3<S>& v2,
+      const Vector3<S>& v3,
+      const Vector3<S>& n,
+      S t);
 
-  /// @brief clip triangle v1, v2, v3 by the prism made by t1, t2 and t3. The normal of the prism is tn and is cutted up by to 
-  static void clipTriangleByTriangleAndEdgePlanes(const Vector3<S>& v1, const Vector3<S>& v2, const Vector3<S>& v3,
-                                                  const Vector3<S>& t1, const Vector3<S>& t2, const Vector3<S>& t3,
-                                                  const Vector3<S>& tn, S to,
-                                                  Vector3<S> clipped_points[], unsigned int* num_clipped_points, bool clip_triangle = false);
+  /// @brief clip triangle v1, v2, v3 by the prism made by t1, t2 and t3. The
+  /// normal of the prism is tn and is cutted up by to
+  static void clipTriangleByTriangleAndEdgePlanes(
+      const Vector3<S>& v1,
+      const Vector3<S>& v2,
+      const Vector3<S>& v3,
+      const Vector3<S>& t1,
+      const Vector3<S>& t2,
+      const Vector3<S>& t3,
+      const Vector3<S>& tn,
+      S to,
+      Vector3<S> clipped_points[],
+      unsigned int* num_clipped_points,
+      bool clip_triangle = false);
 
-  /// @brief build a plane passed through triangle v1 v2 v3 
-  static bool buildTrianglePlane(const Vector3<S>& v1, const Vector3<S>& v2, const Vector3<S>& v3, Vector3<S>* n, S* t);
+  /// @brief build a plane passed through triangle v1 v2 v3
+  static bool buildTrianglePlane(
+      const Vector3<S>& v1,
+      const Vector3<S>& v2,
+      const Vector3<S>& v3,
+      Vector3<S>* n,
+      S* t);
 
-  /// @brief build a plane pass through edge v1 and v2, normal is tn 
-  static bool buildEdgePlane(const Vector3<S>& v1, const Vector3<S>& v2, const Vector3<S>& tn, Vector3<S>* n, S* t);
+  /// @brief build a plane pass through edge v1 and v2, normal is tn
+  static bool buildEdgePlane(
+      const Vector3<S>& v1,
+      const Vector3<S>& v2,
+      const Vector3<S>& tn,
+      Vector3<S>* n,
+      S* t);
 
-  /// @brief compute the points which has deepest penetration depth 
-  static void computeDeepestPoints(Vector3<S>* clipped_points, unsigned int num_clipped_points, const Vector3<S>& n, S t, S* penetration_depth, Vector3<S>* deepest_points, unsigned int* num_deepest_points);
+  /// @brief compute the points which has deepest penetration depth
+  static void computeDeepestPoints(
+      Vector3<S>* clipped_points,
+      unsigned int num_clipped_points,
+      const Vector3<S>& n,
+      S t,
+      S* penetration_depth,
+      Vector3<S>* deepest_points,
+      unsigned int* num_deepest_points);
 
-  /// @brief clip polygon by plane 
-  static void clipPolygonByPlane(Vector3<S>* polygon_points, unsigned int num_polygon_points, const Vector3<S>& n, S t, Vector3<S> clipped_points[], unsigned int* num_clipped_points);
+  /// @brief clip polygon by plane
+  static void clipPolygonByPlane(
+      Vector3<S>* polygon_points,
+      unsigned int num_polygon_points,
+      const Vector3<S>& n,
+      S t,
+      Vector3<S> clipped_points[],
+      unsigned int* num_clipped_points);
 
-  /// @brief clip a line segment by plane 
-  static void clipSegmentByPlane(const Vector3<S>& v1, const Vector3<S>& v2, const Vector3<S>& n, S t, Vector3<S>* clipped_point);
+  /// @brief clip a line segment by plane
+  static void clipSegmentByPlane(
+      const Vector3<S>& v1,
+      const Vector3<S>& v2,
+      const Vector3<S>& n,
+      S t,
+      Vector3<S>* clipped_point);
 
-  /// @brief compute the cdf(x) 
+  /// @brief compute the cdf(x)
   static S gaussianCDF(S x);
 
   static constexpr S getEpsilon();
@@ -258,8 +442,6 @@ using Intersectf = Intersect<float>;
 using Intersectd = Intersect<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/traversal/collision/intersect-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/traversal/collision/intersect-inl.h"

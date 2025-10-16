@@ -35,17 +35,15 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BROADPHASE_DETAIL_SIMPLEINTERVAL_INL_H
-#define FCL_BROADPHASE_DETAIL_SIMPLEINTERVAL_INL_H
+#pragma once
 
-#include "fcl/broadphase/detail/simple_interval.h"
+#include "dart/collision/hit/broadphase/detail/simple_interval.h"
 
-namespace dart { namespace collision { namespace hit {
+namespace dart::collision::hit {
 namespace detail {
 
 //==============================================================================
-extern template
-struct SimpleInterval<double>;
+extern template struct SimpleInterval<double>;
 
 //==============================================================================
 template <typename S>
@@ -62,6 +60,4 @@ void SimpleInterval<S>::print()
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

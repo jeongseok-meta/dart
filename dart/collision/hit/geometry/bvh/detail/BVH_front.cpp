@@ -35,13 +35,11 @@
 
 /** @author Jia Pan */
 
-#include "fcl/geometry/bvh/detail/BVH_front.h"
+#include "dart/collision/hit/geometry/bvh/detail/BVH_front.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
 BVHFrontNode::BVHFrontNode(int left_, int right_)
@@ -53,8 +51,9 @@ BVHFrontNode::BVHFrontNode(int left_, int right_)
 //==============================================================================
 void updateFrontList(BVHFrontList* front_list, int b1, int b2)
 {
-  if(front_list) front_list->emplace_back(b1, b2);
+  if (front_list)
+    front_list->emplace_back(b1, b2);
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

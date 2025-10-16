@@ -35,26 +35,24 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_NARROWPHASE_DETAIL_PROJECT_H
-#define FCL_NARROWPHASE_DETAIL_PROJECT_H
+#pragma once
 
-#include "fcl/common/types.h"
-#include "fcl/math/geometry.h"
+#include "dart/collision/hit/common/types.h"
+#include "dart/collision/hit/math/geometry.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /// @brief Project functions
 template <typename S>
-class FCL_EXPORT Project
+class Project
 {
 public:
   struct ProjectResult
   {
-    /// @brief Parameterization of the projected point (based on the simplex to be projected, use 2 or 3 or 4 of the array)
+    /// @brief Parameterization of the projected point (based on the simplex to
+    /// be projected, use 2 or 3 or 4 of the array)
     S parameterization[4];
 
     /// @brief square distance from the query point to the projected simplex
@@ -67,30 +65,44 @@ public:
   };
 
   /// @brief Project point p onto line a-b
-  static ProjectResult projectLine(const Vector3<S>& a, const Vector3<S>& b, const Vector3<S>& p);
+  static ProjectResult projectLine(
+      const Vector3<S>& a, const Vector3<S>& b, const Vector3<S>& p);
 
   /// @brief Project point p onto triangle a-b-c
-  static ProjectResult projectTriangle(const Vector3<S>& a, const Vector3<S>& b, const Vector3<S>& c, const Vector3<S>& p);
+  static ProjectResult projectTriangle(
+      const Vector3<S>& a,
+      const Vector3<S>& b,
+      const Vector3<S>& c,
+      const Vector3<S>& p);
 
   /// @brief Project point p onto tetrahedra a-b-c-d
-  static ProjectResult projectTetrahedra(const Vector3<S>& a, const Vector3<S>& b, const Vector3<S>& c, const Vector3<S>& d, const Vector3<S>& p);
+  static ProjectResult projectTetrahedra(
+      const Vector3<S>& a,
+      const Vector3<S>& b,
+      const Vector3<S>& c,
+      const Vector3<S>& d,
+      const Vector3<S>& p);
 
   /// @brief Project origin (0) onto line a-b
-  static ProjectResult projectLineOrigin(const Vector3<S>& a, const Vector3<S>& b);
+  static ProjectResult projectLineOrigin(
+      const Vector3<S>& a, const Vector3<S>& b);
 
   /// @brief Project origin (0) onto triangle a-b-c
-  static ProjectResult projectTriangleOrigin(const Vector3<S>& a, const Vector3<S>& b, const Vector3<S>& c);
+  static ProjectResult projectTriangleOrigin(
+      const Vector3<S>& a, const Vector3<S>& b, const Vector3<S>& c);
 
   /// @brief Project origin (0) onto tetrahedran a-b-c-d
-  static ProjectResult projectTetrahedraOrigin(const Vector3<S>& a, const Vector3<S>& b, const Vector3<S>& c, const Vector3<S>& d);
+  static ProjectResult projectTetrahedraOrigin(
+      const Vector3<S>& a,
+      const Vector3<S>& b,
+      const Vector3<S>& c,
+      const Vector3<S>& d);
 };
 
 using Projectf = Project<float>;
 using Projectd = Project<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/detail/project-inl.h"
-
-#endif
+#include "dart/collision/hit/math/detail/project-inl.h"

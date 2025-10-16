@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/sampler/sampler_se2-inl.h"
+#include "dart/collision/hit/math/sampler/sampler_se2-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-class SamplerSE2<double>;
+template class SamplerSE2<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

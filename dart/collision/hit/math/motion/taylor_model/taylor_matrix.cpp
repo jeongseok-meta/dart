@@ -32,44 +32,41 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
-// This code is based on code developed by Stephane Redon at UNC and Inria for the CATCH library: http://graphics.ewha.ac.kr/CATCH/
+// This code is based on code developed by Stephane Redon at UNC and Inria for
+// the CATCH library: http://graphics.ewha.ac.kr/CATCH/
 /** @author Jia Pan */
 
-#include "fcl/math/motion/taylor_model/taylor_matrix-inl.h"
+#include "dart/collision/hit/math/motion/taylor_model/taylor_matrix-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
-
-//==============================================================================
-template
-class TMatrix3<double>;
+namespace dart::collision::hit {
 
 //==============================================================================
-template
-TMatrix3<double> rotationConstrain(const TMatrix3<double>& m);
+template class TMatrix3<double>;
 
 //==============================================================================
-template
-TMatrix3<double> operator * (const Matrix3<double>& m, const TaylorModel<double>& a);
+template TMatrix3<double> rotationConstrain(const TMatrix3<double>& m);
 
 //==============================================================================
-template
-TMatrix3<double> operator * (const TaylorModel<double>& a, const Matrix3<double>& m);
+template TMatrix3<double> operator*(
+    const Matrix3<double>& m, const TaylorModel<double>& a);
 
 //==============================================================================
-template
-TMatrix3<double> operator * (const TaylorModel<double>& a, const TMatrix3<double>& m);
+template TMatrix3<double> operator*(
+    const TaylorModel<double>& a, const Matrix3<double>& m);
 
 //==============================================================================
-template
-TMatrix3<double> operator * (double d, const TMatrix3<double>& m);
+template TMatrix3<double> operator*(
+    const TaylorModel<double>& a, const TMatrix3<double>& m);
 
 //==============================================================================
-template
-TMatrix3<double> operator + (const Matrix3<double>& m1, const TMatrix3<double>& m2);
+template TMatrix3<double> operator*(double d, const TMatrix3<double>& m);
 
 //==============================================================================
-template
-TMatrix3<double> operator - (const Matrix3<double>& m1, const TMatrix3<double>& m2);
+template TMatrix3<double> operator+(
+    const Matrix3<double>& m1, const TMatrix3<double>& m2);
 
-} // namespace dart { namespace collision { namespace hit
+//==============================================================================
+template TMatrix3<double> operator-(
+    const Matrix3<double>& m1, const TMatrix3<double>& m2);
+
+} // namespace dart::collision::hit

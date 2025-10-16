@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/geometry/shape/ellipsoid-inl.h"
+#include "dart/collision/hit/geometry/shape/ellipsoid-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-class Ellipsoid<double>;
+template class Ellipsoid<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

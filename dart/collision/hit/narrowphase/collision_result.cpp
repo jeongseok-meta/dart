@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/narrowphase/collision_result-inl.h"
+#include "dart/collision/hit/narrowphase/collision_result-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-struct CollisionResult<double>;
+template struct CollisionResult<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

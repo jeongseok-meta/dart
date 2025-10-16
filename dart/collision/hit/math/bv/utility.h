@@ -35,29 +35,23 @@
 
 /** \author Jia Pan */
 
-#ifndef FCL_MATH_BV_UTILITY_H
-#define FCL_MATH_BV_UTILITY_H
+#pragma once
 
-#include "fcl/common/types.h"
+#include "dart/collision/hit/common/types.h"
 
 /** \brief Main namespace */
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Compute a bounding volume that fits a set of n points.
 template <typename BV>
-FCL_EXPORT
 void fit(const Vector3<typename BV::S>* const ps, int n, BV& bv);
 
 /// @brief Convert a bounding volume of type BV1 in configuration tf1 to
 /// bounding volume of type BV2 in identity configuration.
 template <typename BV1, typename BV2>
-FCL_EXPORT
 void convertBV(
     const BV1& bv1, const Transform3<typename BV1::S>& tf1, BV2& bv2);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/bv/utility-inl.h"
-
-#endif
+#include "dart/collision/hit/math/bv/utility-inl.h"

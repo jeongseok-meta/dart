@@ -35,20 +35,17 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_SHAPE_SHAPE_BASE_H
-#define FCL_SHAPE_SHAPE_BASE_H
+#pragma once
 
-#include "fcl/geometry/collision_geometry.h"
+#include "dart/collision/hit/geometry/collision_geometry.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Base class for all basic geometric shapes
 template <typename S_>
-class FCL_EXPORT ShapeBase : public CollisionGeometry<S_>
+class ShapeBase : public CollisionGeometry<S_>
 {
 public:
-
   using S = S_;
 
   ShapeBase();
@@ -60,8 +57,6 @@ public:
 using ShapeBasef = ShapeBase<float>;
 using ShapeBased = ShapeBase<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/geometry/shape/shape_base-inl.h"
-
-#endif
+#include "dart/collision/hit/geometry/shape/shape_base-inl.h"

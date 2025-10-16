@@ -35,38 +35,33 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_SHAPE_HALFSPACE_INL_H
-#define FCL_SHAPE_HALFSPACE_INL_H
+#pragma once
+
+#include "dart/collision/hit/geometry/shape/halfspace.h"
+#include "dart/collision/hit/geometry/shape/representation.h"
 
 #include <iomanip>
 #include <sstream>
 
-#include "fcl/geometry/shape/halfspace.h"
-#include "fcl/geometry/shape/representation.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT Halfspace<double>;
+extern template class Halfspace<double>;
 
 //==============================================================================
-extern template
-Halfspace<double> transform(const Halfspace<double>& a, const Transform3<double>& tf);
+extern template Halfspace<double> transform(
+    const Halfspace<double>& a, const Transform3<double>& tf);
 
 //==============================================================================
 template <typename S>
-Halfspace<S>::Halfspace(const Vector3<S>& n, S d)
-  : ShapeBase<S>(), n(n), d(d)
+Halfspace<S>::Halfspace(const Vector3<S>& n, S d) : ShapeBase<S>(), n(n), d(d)
 {
   unitNormalTest();
 }
 
 //==============================================================================
 template <typename S>
-Halfspace<S>::Halfspace(S a, S b, S c, S d)
-  : ShapeBase<S>(), n(a, b, c), d(d)
+Halfspace<S>::Halfspace(S a, S b, S c, S d) : ShapeBase<S>(), n(a, b, c), d(d)
 {
   unitNormalTest();
 }
@@ -98,28 +93,23 @@ void Halfspace<S>::computeLocalAABB()
 {
   this->aabb_local.min_.setConstant(-std::numeric_limits<S>::max());
   this->aabb_local.max_.setConstant(std::numeric_limits<S>::max());
-  if(n[1] == (S)0.0 && n[2] == (S)0.0)
-  {
+  if (n[1] == (S)0.0 && n[2] == (S)0.0) {
     // normal aligned with x axis
-    if(n[0] < 0)
+    if (n[0] < 0)
       this->aabb_local.min_[0] = -d;
-    else if(n[0] > 0)
+    else if (n[0] > 0)
       this->aabb_local.max_[0] = d;
-  }
-  else if(n[0] == (S)0.0 && n[2] == (S)0.0)
-  {
+  } else if (n[0] == (S)0.0 && n[2] == (S)0.0) {
     // normal aligned with y axis
-    if(n[1] < 0)
+    if (n[1] < 0)
       this->aabb_local.min_[1] = -d;
-    else if(n[1] > 0)
+    else if (n[1] > 0)
       this->aabb_local.max_[1] = d;
-  }
-  else if(n[0] == (S)0.0 && n[1] == (S)0.0)
-  {
+  } else if (n[0] == (S)0.0 && n[1] == (S)0.0) {
     // normal aligned with z axis
-    if(n[2] < 0)
+    if (n[2] < 0)
       this->aabb_local.min_[2] = -d;
-    else if(n[2] > 0)
+    else if (n[2] > 0)
       this->aabb_local.max_[2] = d;
   }
 
@@ -136,7 +126,8 @@ NODE_TYPE Halfspace<S>::getNodeType() const
 
 //==============================================================================
 template <typename S>
-std::string Halfspace<S>::representation(int precision) const {
+std::string Halfspace<S>::representation(int precision) const
+{
   const char* S_str = detail::ScalarRepr<S>::value();
   std::stringstream ss;
   ss << std::setprecision(precision);
@@ -150,14 +141,11 @@ template <typename S>
 void Halfspace<S>::unitNormalTest()
 {
   S l = n.norm();
-  if(l > 0)
-  {
+  if (l > 0) {
     S inv_l = 1.0 / l;
     n *= inv_l;
     d *= inv_l;
-  }
-  else
-  {
+  } else {
     n << 1, 0, 0;
     d = 0;
   }
@@ -179,6 +167,4 @@ Halfspace<S> transform(const Halfspace<S>& a, const Transform3<S>& tf)
   return Halfspace<S>(n, d);
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

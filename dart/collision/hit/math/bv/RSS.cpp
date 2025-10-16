@@ -35,44 +35,38 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/bv/RSS-inl.h"
+#include "dart/collision/hit/math/bv/RSS-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
-
-//==============================================================================
-template
-class RSS<double>;
+namespace dart::collision::hit {
 
 //==============================================================================
-template
-void clipToRange(double& val, double a, double b);
+template class RSS<double>;
 
 //==============================================================================
-template
-void segCoords(
-        double& t,
-        double& u,
-        double a,
-        double b,
-        double A_dot_B,
-        double A_dot_T,
-        double B_dot_T);
+template void clipToRange(double& val, double a, double b);
 
 //==============================================================================
-template
-bool inVoronoi(
-        double a,
-        double b,
-        double Anorm_dot_B,
-        double Anorm_dot_T,
-        double A_dot_B,
-        double A_dot_T,
-        double B_dot_T);
+template void segCoords(
+    double& t,
+    double& u,
+    double a,
+    double b,
+    double A_dot_B,
+    double A_dot_T,
+    double B_dot_T);
 
 //==============================================================================
-template
-double rectDistance(
+template bool inVoronoi(
+    double a,
+    double b,
+    double Anorm_dot_B,
+    double Anorm_dot_T,
+    double A_dot_B,
+    double A_dot_T,
+    double B_dot_T);
+
+//==============================================================================
+template double rectDistance(
     const Matrix3<double>& Rab,
     const Vector3<double>& Tab,
     const double a[2],
@@ -81,8 +75,7 @@ double rectDistance(
     Vector3<double>* Q);
 
 //==============================================================================
-template
-double rectDistance(
+template double rectDistance(
     const Transform3<double>& tfab,
     const double a[2],
     const double b[2],
@@ -90,7 +83,6 @@ double rectDistance(
     Vector3<double>* Q);
 
 //==============================================================================
-template
-RSS<double> translate(const RSS<double>& bv, const Vector3<double>& t);
+template RSS<double> translate(const RSS<double>& bv, const Vector3<double>& t);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

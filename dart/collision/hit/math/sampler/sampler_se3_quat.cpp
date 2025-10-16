@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/sampler/sampler_se3_quat-inl.h"
+#include "dart/collision/hit/math/sampler/sampler_se3_quat-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-class SamplerSE3Quat<double>;
+template class SamplerSE3Quat<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

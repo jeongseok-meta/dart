@@ -35,17 +35,14 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_MATH_RNG_INL_H
-#define FCL_MATH_RNG_INL_H
+#pragma once
 
-#include "fcl/math/rng.h"
+#include "dart/collision/hit/math/rng.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT RNG<double>;
+extern template class RNG<double>;
 
 //==============================================================================
 template <typename S>
@@ -121,8 +118,7 @@ S RNG<S>::halfNormalReal(S r_min, S r_max, S focus)
 template <typename S>
 int RNG<S>::halfNormalInt(int r_min, int r_max, S focus)
 {
-  int r = (int)std::floor(halfNormalReal(
-                       (S)r_min, (S)(r_max) + 1.0, focus));
+  int r = (int)std::floor(halfNormalReal((S)r_min, (S)(r_max) + 1.0, focus));
 
   return (r > r_max) ? r_max : r;
 }
@@ -150,7 +146,8 @@ template <typename S>
 void RNG<S>::eulerRPY(S value[])
 {
   value[0] = constants<S>::pi() * (2.0 * uniDist_(generator_) - 1.0);
-  value[1] = std::acos(1.0 - 2.0 * uniDist_(generator_)) - constants<S>::pi() / 2.0;
+  value[1]
+      = std::acos(1.0 - 2.0 * uniDist_(generator_)) - constants<S>::pi() / 2.0;
   value[2] = constants<S>::pi() * (2.0 * uniDist_(generator_) - 1.0);
 }
 
@@ -168,13 +165,13 @@ void RNG<S>::disk(S r_min, S r_max, S& x, S& y)
 
 //==============================================================================
 template <typename S>
-void RNG<S>::ball(
-    S r_min, S r_max, S& x, S& y, S& z)
+void RNG<S>::ball(S r_min, S r_max, S& x, S& y, S& z)
 {
   auto a = uniform01();
   auto b = uniform01();
   auto c = uniform01();
-  auto r = std::pow(a*std::pow(r_max, 3) + (1 - a)*std::pow(r_min, 3), 1/3.0);
+  auto r = std::pow(
+      a * std::pow(r_max, 3) + (1 - a) * std::pow(r_min, 3), 1 / 3.0);
   auto theta = std::acos(1 - 2 * b);
   auto phi = 2 * constants<S>::pi() * c;
 
@@ -191,19 +188,15 @@ void RNG<S>::ball(
 template <typename S>
 void RNG<S>::setSeed(uint_fast32_t seed)
 {
-  if (detail::Seed::isFirstSeedGenerated())
-  {
+  if (detail::Seed::isFirstSeedGenerated()) {
     std::cerr << "Random number generation already started. Changing seed now "
               << "will not lead to deterministic sampling.\n";
   }
 
-  if (seed == 0)
-  {
+  if (seed == 0) {
     std::cerr << "Random generator seed cannot be 0. Using 1 instead.\n";
     detail::Seed::setUserSetSeed(1);
-  }
-  else
-  {
+  } else {
     detail::Seed::setUserSetSeed(seed);
   }
 }
@@ -215,6 +208,4 @@ uint_fast32_t RNG<S>::getSeed()
   return detail::Seed::getFirstSeed();
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

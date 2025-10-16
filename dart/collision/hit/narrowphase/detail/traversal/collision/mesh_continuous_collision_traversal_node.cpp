@@ -35,16 +35,13 @@
 
 /** @author Jia Pan */
 
-#include "fcl/narrowphase/detail/traversal/collision/mesh_continuous_collision_traversal_node-inl.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/collision/mesh_continuous_collision_traversal_node-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
-template
-struct BVHContinuousCollisionPair<double>;
+template struct BVHContinuousCollisionPair<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

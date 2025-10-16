@@ -35,32 +35,27 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BROADPHASE_DETAIL_INTERVALTREENODE_H
-#define FCL_BROADPHASE_DETAIL_INTERVALTREENODE_H
+#pragma once
 
-#include "fcl/broadphase/detail/simple_interval.h"
-#include "fcl/export.h"
+#include "dart/collision/hit/broadphase/detail/simple_interval.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 template <typename S>
-class FCL_EXPORT IntervalTree;
+class IntervalTree;
 
 /// @brief The node for interval tree
 template <typename S>
-class FCL_EXPORT IntervalTreeNode
+class IntervalTreeNode
 {
 public:
-
   template <typename>
   friend class IntervalTree;
 
   friend class IntervalTree<double>;
-  
+
   /// @brief Create an empty node
   IntervalTreeNode();
 
@@ -69,7 +64,8 @@ public:
 
   ~IntervalTreeNode();
 
-  /// @brief Print the interval node information: set left = nil and right = root
+  /// @brief Print the interval node information: set left = nil and right =
+  /// root
   void print(IntervalTreeNode* left, IntervalTreeNode* right) const;
 
 protected:
@@ -83,7 +79,7 @@ protected:
   S max_high;
 
   /// @brief red or black node: if red = false then the node is black
-  bool red;  
+  bool red;
 
   IntervalTreeNode* left;
 
@@ -96,8 +92,6 @@ using IntervalTreeNodef = IntervalTreeNode<float>;
 using IntervalTreeNoded = IntervalTreeNode<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/broadphase/detail/interval_tree_node-inl.h"
-
-#endif
+#include "dart/collision/hit/broadphase/detail/interval_tree_node-inl.h"

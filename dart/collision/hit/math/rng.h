@@ -35,18 +35,17 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_MATH_RNG_H
-#define FCL_MATH_RNG_H
+#pragma once
+
+#include "dart/collision/hit/math/constants.h"
+#include "dart/collision/hit/math/detail/seed.h"
+
+#include <iostream>
+#include <random>
 
 #include <cassert>
-#include <random>
-#include <iostream>
 
-#include "fcl/math/constants.h"
-#include "fcl/math/detail/seed.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Random number generation. An instance of this class
 /// cannot be used by multiple threads at once (member functions
@@ -55,7 +54,7 @@ namespace dart { namespace collision { namespace hit
 /// threads. It is also guaranteed that all created instances will
 /// have a different random seed.
 template <typename S>
-class FCL_EXPORT RNG
+class RNG
 {
 public:
   /// @brief Constructor. Always sets a different random seed
@@ -121,18 +120,14 @@ public:
   static std::uint_fast32_t getSeed();
 
 private:
-
-  std::mt19937                     generator_;
+  std::mt19937 generator_;
   std::uniform_real_distribution<> uniDist_;
-  std::normal_distribution<>       normalDist_;
-
+  std::normal_distribution<> normalDist_;
 };
 
 using RNGf = RNG<float>;
 using RNGd = RNG<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/rng-inl.h"
-
-#endif
+#include "dart/collision/hit/math/rng-inl.h"

@@ -35,17 +35,14 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_MATH_VARIANCE3_INL_H
-#define FCL_MATH_VARIANCE3_INL_H
+#pragma once
 
-#include "fcl/math/variance3.h"
+#include "dart/collision/hit/math/variance3.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT Variance3<double>;
+extern template class Variance3<double>;
 
 //==============================================================================
 template <typename S>
@@ -72,24 +69,18 @@ void Variance3<S>::init()
 template <typename S>
 Variance3<S>& Variance3<S>::sqrt()
 {
-  for(std::size_t i = 0; i < 3; ++i)
-  {
-    if(sigma[i] < 0)
+  for (std::size_t i = 0; i < 3; ++i) {
+    if (sigma[i] < 0)
       sigma[i] = 0;
 
     sigma[i] = std::sqrt(sigma[i]);
   }
 
-  Sigma.noalias()
-      =  sigma[0] * axis.col(0) * axis.col(0).transpose();
-  Sigma.noalias()
-      += sigma[1] * axis.col(1) * axis.col(1).transpose();
-  Sigma.noalias()
-      += sigma[2] * axis.col(2) * axis.col(2).transpose();
+  Sigma.noalias() = sigma[0] * axis.col(0) * axis.col(0).transpose();
+  Sigma.noalias() += sigma[1] * axis.col(1) * axis.col(1).transpose();
+  Sigma.noalias() += sigma[2] * axis.col(2) * axis.col(2).transpose();
 
   return *this;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

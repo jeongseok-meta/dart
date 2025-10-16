@@ -35,19 +35,16 @@
 
 /** @author Jia Pan  */
 
-#ifndef FCL_BROADPHASE_DETAIL_NODEBASE_H
-#define FCL_BROADPHASE_DETAIL_NODEBASE_H
+#pragma once
 
-#include "fcl/common/types.h"
+#include "dart/collision/hit/common/types.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /// @brief dynamic AABB<S> tree node
-template<typename BV>
+template <typename BV>
 struct NodeBase
 {
   /// @brief the bounding volume for the node
@@ -76,8 +73,6 @@ struct NodeBase
 };
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/broadphase/detail/node_base-inl.h"
-
-#endif
+#include "dart/collision/hit/broadphase/detail/node_base-inl.h"

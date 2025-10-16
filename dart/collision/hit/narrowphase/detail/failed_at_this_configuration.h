@@ -34,8 +34,9 @@
 
 /** @author Sean Curtis (sean@tri.global) */
 
-#ifndef FCL_FAILED_AT_THIS_CONFIGURATION_H
-#define FCL_FAILED_AT_THIS_CONFIGURATION_H
+#pragma once
+
+#include "dart/collision/hit/common/types.h"
 
 #include <exception>
 #include <iomanip>
@@ -44,10 +45,7 @@
 #include <stdexcept>
 #include <string>
 
-#include "fcl/common/types.h"
-#include "fcl/export.h"
-
-namespace dart { namespace collision { namespace hit {
+namespace dart::collision::hit {
 namespace detail {
 
 /** A custom exception type that can be thrown in low-level code indicating
@@ -59,18 +57,24 @@ namespace detail {
  transformed into an exception that propagates to the operating system.
 
  Recommended usage is to throw by invoking the macro
- FCL_THROW_UNEXPECTED_CONFIGURATION_EXCEPTION defined below. Code that exercises
- functionality that throws this type of exception should catch it and transform
- it to a `std::logic_error` by invoking ThrowDetailedConfiguration().  */
-class FCL_EXPORT FailedAtThisConfiguration final
-    : public std::exception {
- public:
+ DART_COLLISION_HIT_THROW_UNEXPECTED_CONFIGURATION_EXCEPTION defined below. Code
+ that exercises functionality that throws this type of exception should catch it
+ and transform it to a `std::logic_error` by invoking
+ ThrowDetailedConfiguration().  */
+class FailedAtThisConfiguration final : public std::exception
+{
+public:
   FailedAtThisConfiguration(const std::string& message)
-      : std::exception(), message_(message) {}
+    : std::exception(), message_(message)
+  {
+  }
 
-  const char* what() const noexcept final { return message_.c_str(); }
+  const char* what() const noexcept final
+  {
+    return message_.c_str();
+  }
 
- private:
+private:
   std::string message_;
 };
 
@@ -83,7 +87,7 @@ class FCL_EXPORT FailedAtThisConfiguration final
  @param func     The name of the invoking function.
  @param file     The name of the file associated with the exception.
  @param line     The line number where the exception is thrown.  */
-FCL_EXPORT void ThrowFailedAtThisConfiguration(
+void ThrowFailedAtThisConfiguration(
     const std::string& message, const char* func, const char* file, int line);
 
 /** Works in conjuction with ThrowDetailedConfiguration() to format the pose
@@ -106,7 +110,8 @@ FCL_EXPORT void ThrowFailedAtThisConfiguration(
                i, j, k, l,
                m, n, o, p; */
 template <typename S>
-void WriteCommaSeparated(std::stringstream* sstream, const Transform3<S>& p) {
+void WriteCommaSeparated(std::stringstream* sstream, const Transform3<S>& p)
+{
   const auto& m = p.matrix();
   std::stringstream& ss = *sstream;
   for (int row = 0; row < 4; ++row) {
@@ -126,7 +131,7 @@ void WriteCommaSeparated(std::stringstream* sstream, const Transform3<S>& p) {
 
 /** Helper class for propagating a low-level exception upwards but with
  configuration-specific details appended. The parameters
- 
+
  @param s1        The first shape in the query.
  @param X_FS1     The pose of the first shape in frame F.
  @param s2        The second shape in the query.
@@ -139,29 +144,30 @@ void WriteCommaSeparated(std::stringstream* sstream, const Transform3<S>& p) {
  @tparam Pose     The pose type (a Transform<S> with scalar type erased).
  */
 template <typename Shape1, typename Shape2, typename Solver, typename S>
-void ThrowDetailedConfiguration(const Shape1& s1, const Transform3<S>& X_FS1,
-                                const Shape2& s2, const Transform3<S>& X_FS2,
-                                const Solver& solver, const std::exception& e) {
+void ThrowDetailedConfiguration(
+    const Shape1& s1,
+    const Transform3<S>& X_FS1,
+    const Shape2& s2,
+    const Transform3<S>& X_FS2,
+    const Solver& solver,
+    const std::exception& e)
+{
   std::stringstream ss;
   const int digits = 20;
   ss << std::setprecision(digits);
   ss << "Error with configuration"
-     << "\n  Original error message: " << e.what()
-     << "\n  Shape 1:\n" << s1.representation(digits)
-     << "\n  X_FS1\n";
+     << "\n  Original error message: " << e.what() << "\n  Shape 1:\n"
+     << s1.representation(digits) << "\n  X_FS1\n";
   WriteCommaSeparated(&ss, X_FS1);
-  ss << "\n  Shape 2:\n" << s2.representation(digits)
-     << "\n  X_FS2\n";
+  ss << "\n  Shape 2:\n" << s2.representation(digits) << "\n  X_FS2\n";
   WriteCommaSeparated(&ss, X_FS2);
   ss << "\n  Solver: " << solver;
   throw std::logic_error(ss.str());
 }
 
-}  // namespace detail
-}  // namespace dart { namespace collision { namespace hit
+} // namespace detail
+} // namespace dart::collision::hit
 
-#define FCL_THROW_FAILED_AT_THIS_CONFIGURATION(message)            \
-  ::fcl::detail::ThrowFailedAtThisConfiguration(message, __func__, __FILE__, \
-                                                __LINE__)
-
-#endif  // FCL_FAILED_AT_THIS_CONFIGURATION_H
+#define DART_COLLISION_HIT_THROW_FAILED_AT_THIS_CONFIGURATION(message)         \
+  ::dart::collision::hit::detail::ThrowFailedAtThisConfiguration(              \
+      message, __func__, __FILE__, __LINE__)

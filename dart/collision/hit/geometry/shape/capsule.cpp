@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/geometry/shape/capsule-inl.h"
+#include "dart/collision/hit/geometry/shape/capsule-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-class Capsule<double>;
+template class Capsule<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

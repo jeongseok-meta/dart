@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/narrowphase/distance_request-inl.h"
+#include "dart/collision/hit/narrowphase/distance_request-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-struct DistanceRequest<double>;
+template struct DistanceRequest<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

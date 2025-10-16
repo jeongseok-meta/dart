@@ -35,61 +35,51 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_MATH_GEOMETRY_H
-#define FCL_MATH_GEOMETRY_H
+#pragma once
 
-#include <cmath>
+#include "dart/collision/hit/common/types.h"
+#include "dart/collision/hit/config.h"
+#include "dart/collision/hit/math/triangle.h"
+
 #include <iostream>
 #include <vector>
 
-#include "fcl/config.h"
-#include "fcl/common/types.h"
-#include "fcl/math/triangle.h"
+#include <cmath>
 
-namespace dart { namespace collision { namespace hit {
+namespace dart::collision::hit {
 
 template <typename S>
-FCL_EXPORT
 void normalize(Vector3<S>& v, bool* signal);
 
 template <typename Derived>
-FCL_EXPORT
-typename Derived::RealScalar triple(const Eigen::MatrixBase<Derived>& x,
-                                    const Eigen::MatrixBase<Derived>& y,
-                                    const Eigen::MatrixBase<Derived>& z);
+typename Derived::RealScalar triple(
+    const Eigen::MatrixBase<Derived>& x,
+    const Eigen::MatrixBase<Derived>& y,
+    const Eigen::MatrixBase<Derived>& z);
 
 template <typename S, int M, int N>
-FCL_EXPORT
-VectorN<S, M+N> combine(
-    const VectorN<S, M>& v1, const VectorN<S, N>& v2);
+VectorN<S, M + N> combine(const VectorN<S, M>& v1, const VectorN<S, N>& v2);
 
 template <typename S>
-FCL_EXPORT
 void hat(Matrix3<S>& mat, const Vector3<S>& vec);
 
 /// @brief compute the eigen vector and eigen vector of a matrix. dout is the
 /// eigen values, vout is the eigen vectors
 template <typename S>
-FCL_EXPORT
 void eigen(const Matrix3<S>& m, Vector3<S>& dout, Matrix3<S>& vout);
 
 /// @brief compute the eigen vector and eigen vector of a matrix. dout is the
 /// eigen values, vout is the eigen vectors
-template<typename S>
-FCL_EXPORT
+template <typename S>
 void eigen_old(const Matrix3<S>& m, Vector3<S>& dout, Matrix3<S>& vout);
 
 template <typename S>
-FCL_EXPORT
-void axisFromEigen(const Matrix3<S>& eigenV,
-                   const Vector3<S>& eigenS,
-                   Matrix3<S>& axis);
+void axisFromEigen(
+    const Matrix3<S>& eigenV, const Vector3<S>& eigenS, Matrix3<S>& axis);
 
 template <typename S>
-FCL_EXPORT
-void axisFromEigen(const Matrix3<S>& eigenV,
-                   const Vector3<S>& eigenS,
-                   Transform3<S>& tf);
+void axisFromEigen(
+    const Matrix3<S>& eigenV, const Vector3<S>& eigenS, Transform3<S>& tf);
 
 /// @brief compute orthogonal coordinate system basis with given x-axis.
 ///
@@ -102,27 +92,31 @@ void axisFromEigen(const Matrix3<S>& eigenV,
 ///         orthogonal to each other. Otherwise, the orientation of the y-axis
 ///         and z-axis to the x-axis is arbitrary.
 template <typename S>
-FCL_EXPORT
 Matrix3<S> generateCoordinateSystem(const Vector3<S>& x_axis);
 
-template <typename DerivedA, typename DerivedB, typename DerivedC, typename DerivedD>
-FCL_EXPORT
+template <
+    typename DerivedA,
+    typename DerivedB,
+    typename DerivedC,
+    typename DerivedD>
 void relativeTransform(
-    const Eigen::MatrixBase<DerivedA>& R1, const Eigen::MatrixBase<DerivedB>& t1,
-    const Eigen::MatrixBase<DerivedA>& R2, const Eigen::MatrixBase<DerivedB>& t2,
-    Eigen::MatrixBase<DerivedC>& R, Eigen::MatrixBase<DerivedD>& t);
+    const Eigen::MatrixBase<DerivedA>& R1,
+    const Eigen::MatrixBase<DerivedB>& t1,
+    const Eigen::MatrixBase<DerivedA>& R2,
+    const Eigen::MatrixBase<DerivedB>& t2,
+    Eigen::MatrixBase<DerivedC>& R,
+    Eigen::MatrixBase<DerivedD>& t);
 
 template <typename S, typename DerivedA, typename DerivedB>
-FCL_EXPORT
 void relativeTransform(
     const Eigen::Transform<S, 3, Eigen::Isometry>& T1,
     const Eigen::Transform<S, 3, Eigen::Isometry>& T2,
-    Eigen::MatrixBase<DerivedA>& R, Eigen::MatrixBase<DerivedB>& t);
+    Eigen::MatrixBase<DerivedA>& R,
+    Eigen::MatrixBase<DerivedB>& t);
 
 /// @brief Compute the RSS bounding volume parameters: radius, rectangle size
 /// and the origin, given the BV axises.
 template <typename S>
-FCL_EXPORT
 void getRadiusAndOriginAndRectangleSize(
     const Vector3<S>* const ps,
     const Vector3<S>* const ps2,
@@ -137,7 +131,6 @@ void getRadiusAndOriginAndRectangleSize(
 /// @brief Compute the RSS bounding volume parameters: radius, rectangle size
 /// and the origin, given the BV axises.
 template <typename S>
-FCL_EXPORT
 void getRadiusAndOriginAndRectangleSize(
     const Vector3<S>* const ps,
     const Vector3<S>* const ps2,
@@ -150,7 +143,6 @@ void getRadiusAndOriginAndRectangleSize(
 
 /// @brief Compute the center and radius for a triangle's circumcircle
 template <typename S>
-FCL_EXPORT
 void circumCircleComputation(
     const Vector3<S>& a,
     const Vector3<S>& b,
@@ -158,9 +150,9 @@ void circumCircleComputation(
     Vector3<S>& center,
     S& radius);
 
-/// @brief Compute the maximum distance from a given center point to a point cloud
+/// @brief Compute the maximum distance from a given center point to a point
+/// cloud
 template <typename S>
-FCL_EXPORT
 S maximumDistance(
     const Vector3<S>* const ps,
     const Vector3<S>* const ps2,
@@ -172,7 +164,6 @@ S maximumDistance(
 /// @brief Compute the bounding volume extent and center for a set or subset of
 /// points, given the BV axises.
 template <typename S>
-FCL_EXPORT
 void getExtentAndCenter(
     const Vector3<S>* const ps,
     const Vector3<S>* const ps2,
@@ -186,7 +177,6 @@ void getExtentAndCenter(
 /// @brief Compute the bounding volume extent and center for a set or subset of
 /// points, given the BV axises.
 template <typename S>
-FCL_EXPORT
 void getExtentAndCenter(
     const Vector3<S>* const ps,
     const Vector3<S>* const ps2,
@@ -200,7 +190,6 @@ void getExtentAndCenter(
 /// ts = null, then indices refer to points directly; otherwise refer to
 /// triangles
 template <typename S>
-FCL_EXPORT
 void getCovariance(
     const Vector3<S>* const ps,
     const Vector3<S>* const ps2,
@@ -209,8 +198,6 @@ void getCovariance(
     int n,
     Matrix3<S>& M);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/geometry-inl.h"
-
-#endif
+#include "dart/collision/hit/math/geometry-inl.h"

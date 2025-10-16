@@ -35,41 +35,44 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BROADPHASE_SPARSEHASHTABLE_H
-#define FCL_BROADPHASE_SPARSEHASHTABLE_H
+#pragma once
 
-#include <stdexcept>
-#include <set>
-#include <vector>
 #include <list>
+#include <set>
+#include <stdexcept>
 #include <unordered_map>
+#include <vector>
 
-namespace dart { namespace collision { namespace hit
+namespace dart::collision::hit {
+
+namespace detail {
+
+template <typename U, typename V>
+class unordered_map_hash_table : public std::unordered_map<U, V>
 {
-
-namespace detail
-{
-
-template<typename U, typename V>
-class FCL_EXPORT unordered_map_hash_table : public std::unordered_map<U, V> {};
+};
 
 /// @brief A hash table implemented using unordered_map
-template <typename Key, typename Data, typename HashFnc,
-          template<typename, typename> class TableT = unordered_map_hash_table>
-class FCL_EXPORT SparseHashTable
+template <
+    typename Key,
+    typename Data,
+    typename HashFnc,
+    template <typename, typename> class TableT = unordered_map_hash_table>
+class SparseHashTable
 {
 protected:
   HashFnc h_;
   typedef std::list<Data> Bin;
   typedef TableT<size_t, Bin> Table;
-  
+
   Table table_;
+
 public:
   SparseHashTable(const HashFnc& h);
 
   /// @brief Init the hash table. The bucket size is dynamically decided.
   void init(size_t);
-  
+
   /// @brief insert one key-value pair into the hash table
   void insert(Key key, Data value);
 
@@ -84,8 +87,6 @@ public:
 };
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/broadphase/detail/sparse_hash_table-inl.h"
-
-#endif
+#include "dart/collision/hit/broadphase/detail/sparse_hash_table-inl.h"

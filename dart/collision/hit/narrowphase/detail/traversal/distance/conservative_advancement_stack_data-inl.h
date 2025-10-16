@@ -35,33 +35,25 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_CONVERVATIVEADVANCEMENTSTACKDATA_INL_H
-#define FCL_TRAVERSAL_CONVERVATIVEADVANCEMENTSTACKDATA_INL_H
+#pragma once
 
-#include "fcl/narrowphase/detail/traversal/distance/conservative_advancement_stack_data.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/conservative_advancement_stack_data.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
-extern template
-struct ConservativeAdvancementStackData<double>;
+extern template struct ConservativeAdvancementStackData<double>;
 
 //==============================================================================
 template <typename S>
 ConservativeAdvancementStackData<S>::ConservativeAdvancementStackData(
-    const Vector3<S>& P1_,
-    const Vector3<S>& P2_,
-    int c1_, int c2_, S d_)
+    const Vector3<S>& P1_, const Vector3<S>& P2_, int c1_, int c2_, S d_)
   : P1(P1_), P2(P2_), c1(c1_), c2(c2_), d(d_)
 {
   // Do nothing
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

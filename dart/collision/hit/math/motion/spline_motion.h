@@ -35,44 +35,57 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CCD_SPLINEMOTION_H
-#define FCL_CCD_SPLINEMOTION_H
+#pragma once
+
+#include "dart/collision/hit/math/detail/polysolver.h"
+#include "dart/collision/hit/math/geometry.h"
+#include "dart/collision/hit/math/motion/bv_motion_bound_visitor.h"
+#include "dart/collision/hit/math/motion/motion_base.h"
+#include "dart/collision/hit/math/motion/triangle_motion_bound_visitor.h"
 
 #include <iostream>
 #include <vector>
-#include "fcl/math/geometry.h"
-#include "fcl/math/motion/motion_base.h"
-#include "fcl/math/detail/polysolver.h"
-#include "fcl/math/motion/bv_motion_bound_visitor.h"
-#include "fcl/math/motion/triangle_motion_bound_visitor.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 template <typename S>
-class FCL_EXPORT SplineMotion : public MotionBase<S>
+class SplineMotion : public MotionBase<S>
 {
 public:
   /// @brief Construct motion from 4 deBoor points
-  SplineMotion(const Vector3<S>& Td0, const Vector3<S>& Td1, const Vector3<S>& Td2, const Vector3<S>& Td3,
-               const Vector3<S>& Rd0, const Vector3<S>& Rd1, const Vector3<S>& Rd2, const Vector3<S>& Rd3);
+  SplineMotion(
+      const Vector3<S>& Td0,
+      const Vector3<S>& Td1,
+      const Vector3<S>& Td2,
+      const Vector3<S>& Td3,
+      const Vector3<S>& Rd0,
+      const Vector3<S>& Rd1,
+      const Vector3<S>& Rd2,
+      const Vector3<S>& Rd3);
 
   // @brief Construct motion from initial and goal transform
-  SplineMotion(const Matrix3<S>& R1, const Vector3<S>& T1,
-               const Matrix3<S>& R2, const Vector3<S>& T2);
+  SplineMotion(
+      const Matrix3<S>& R1,
+      const Vector3<S>& T1,
+      const Matrix3<S>& R2,
+      const Vector3<S>& T2);
 
-  SplineMotion(const Transform3<S>& tf1,
-               const Transform3<S>& tf2);
-  
+  SplineMotion(const Transform3<S>& tf1, const Transform3<S>& tf2);
+
   /// @brief Integrate the motion from 0 to dt
-  /// We compute the current transformation from zero point instead of from last integrate time, for precision.
+  /// We compute the current transformation from zero point instead of from last
+  /// integrate time, for precision.
   bool integrate(S dt) const override;
 
-  /// @brief Compute the motion bound for a bounding volume along a given direction n, which is defined in the visitor
-  S computeMotionBound(const BVMotionBoundVisitor<S>& mb_visitor) const override;
+  /// @brief Compute the motion bound for a bounding volume along a given
+  /// direction n, which is defined in the visitor
+  S computeMotionBound(
+      const BVMotionBoundVisitor<S>& mb_visitor) const override;
 
-  /// @brief Compute the motion bound for a triangle along a given direction n, which is defined in the visitor
-  S computeMotionBound(const TriangleMotionBoundVisitor<S>& mb_visitor) const override;
+  /// @brief Compute the motion bound for a triangle along a given direction n,
+  /// which is defined in the visitor
+  S computeMotionBound(
+      const TriangleMotionBoundVisitor<S>& mb_visitor) const override;
 
   /// @brief Get the rotation and translation in current step
   void getCurrentTransform(Transform3<S>& tf_) const override;
@@ -86,14 +99,15 @@ protected:
   S getWeight1(S t) const;
   S getWeight2(S t) const;
   S getWeight3(S t) const;
-  
+
   Vector3<S> Td[4];
   Vector3<S> Rd[4];
 
   Vector3<S> TA, TB, TC;
   Vector3<S> RA, RB, RC;
 
-  S Rd0Rd0, Rd0Rd1, Rd0Rd2, Rd0Rd3, Rd1Rd1, Rd1Rd2, Rd1Rd3, Rd2Rd2, Rd2Rd3, Rd3Rd3;
+  S Rd0Rd0, Rd0Rd1, Rd0Rd2, Rd0Rd3, Rd1Rd1, Rd1Rd2, Rd1Rd3, Rd2Rd2, Rd2Rd3,
+      Rd3Rd3;
   //// @brief The transformation at current time t
   mutable Transform3<S> tf;
 
@@ -102,7 +116,7 @@ protected:
 
 public:
   S computeTBound(const Vector3<S>& n) const;
-  
+
   S computeDWMax() const;
 
   S getCurrentTime() const;
@@ -110,8 +124,6 @@ public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/motion/spline_motion-inl.h"
-
-#endif
+#include "dart/collision/hit/math/motion/spline_motion-inl.h"

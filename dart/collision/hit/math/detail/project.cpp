@@ -35,16 +35,13 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/detail/project-inl.h"
+#include "dart/collision/hit/math/detail/project-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
-template
-class Project<double>;
+template class Project<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

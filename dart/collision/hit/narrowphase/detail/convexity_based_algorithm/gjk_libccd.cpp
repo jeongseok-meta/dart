@@ -35,58 +35,46 @@
 
 /** @author Jia Pan */
 
-#include "fcl/narrowphase/detail/convexity_based_algorithm/gjk_libccd-inl.h"
+#include "dart/collision/hit/narrowphase/detail/convexity_based_algorithm/gjk_libccd-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
-template
-class GJKInitializer<double, Cylinder<double>>;
+template class GJKInitializer<double, Cylinder<double>>;
 
 //==============================================================================
-template
-class GJKInitializer<double, Sphere<double>>;
+template class GJKInitializer<double, Sphere<double>>;
 
 //==============================================================================
-template
-class GJKInitializer<double, Ellipsoid<double>>;
+template class GJKInitializer<double, Ellipsoid<double>>;
 
 //==============================================================================
-template
-class GJKInitializer<double, Box<double>>;
+template class GJKInitializer<double, Box<double>>;
 
 //==============================================================================
-template
-class GJKInitializer<double, Capsule<double>>;
+template class GJKInitializer<double, Capsule<double>>;
 
 //==============================================================================
-template
-class GJKInitializer<double, Cone<double>>;
+template class GJKInitializer<double, Cone<double>>;
 
 //==============================================================================
-template
-class GJKInitializer<double, Convex<double>>;
+template class GJKInitializer<double, Convex<double>>;
 
 //==============================================================================
-template
-void* triCreateGJKObject(
+template void* triCreateGJKObject(
     const Vector3d& P1, const Vector3d& P2, const Vector3d& P3);
 
 //==============================================================================
-template
-void* triCreateGJKObject(
+template void* triCreateGJKObject(
     const Vector3d& P1,
     const Vector3d& P2,
     const Vector3d& P3,
     const Transform3d& tf);
 
 //==============================================================================
-template
-bool GJKCollide(
+template bool GJKCollide(
     void* obj1,
     ccd_support_fn supp1,
     ccd_center_fn cen1,
@@ -100,8 +88,7 @@ bool GJKCollide(
     Vector3d* normal);
 
 //==============================================================================
-template
-bool GJKDistance(
+template bool GJKDistance(
     void* obj1,
     ccd_support_fn supp1,
     void* obj2,
@@ -112,8 +99,7 @@ bool GJKDistance(
     Vector3d* p1,
     Vector3d* p2);
 
-template
-bool GJKSignedDistance(
+template bool GJKSignedDistance(
     void* obj1,
     ccd_support_fn supp1,
     void* obj2,
@@ -125,4 +111,4 @@ bool GJKSignedDistance(
     Vector3d* p2);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

@@ -35,22 +35,19 @@
 
 /** @author Jia Pan */
 
-#include "fcl/narrowphase/collision-inl.h"
+#include "dart/collision/hit/narrowphase/collision-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-template
-std::size_t collide(
+template std::size_t collide(
     const CollisionObject<double>* o1,
     const CollisionObject<double>* o2,
     const CollisionRequest<double>& request,
     CollisionResult<double>& result);
 
 //==============================================================================
-template
-std::size_t collide(
+template std::size_t collide(
     const CollisionGeometry<double>* o1,
     const Transform3<double>& tf1,
     const CollisionGeometry<double>* o2,
@@ -58,4 +55,4 @@ std::size_t collide(
     const CollisionRequest<double>& request,
     CollisionResult<double>& result);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

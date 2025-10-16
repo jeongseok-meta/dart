@@ -35,25 +35,18 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CONTACT_INL_H
-#define FCL_CONTACT_INL_H
+#pragma once
 
-#include "fcl/narrowphase/contact.h"
+#include "dart/collision/hit/narrowphase/contact.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-struct Contact<double>;
+extern template struct Contact<double>;
 
 //==============================================================================
 template <typename S>
-Contact<S>::Contact()
-  : o1(nullptr),
-    o2(nullptr),
-    b1(NONE),
-    b2(NONE)
+Contact<S>::Contact() : o1(nullptr), o2(nullptr), b1(NONE), b2(NONE)
 {
   // Do nothing
 }
@@ -65,10 +58,7 @@ Contact<S>::Contact(
     const CollisionGeometry<S>* o2_,
     int b1_,
     int b2_)
-  : o1(o1_),
-    o2(o2_),
-    b1(b1_),
-    b2(b2_)
+  : o1(o1_), o2(o2_), b1(b1_), b2(b2_)
 {
   // Do nothing
 }
@@ -96,13 +86,11 @@ Contact<S>::Contact(
 
 //==============================================================================
 template <typename S>
-bool Contact<S>::operator <(const Contact& other) const
+bool Contact<S>::operator<(const Contact& other) const
 {
-  if(b1 == other.b1)
+  if (b1 == other.b1)
     return b2 < other.b2;
   return b1 < other.b1;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

@@ -35,26 +35,23 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_NARROWPHASE_DETAIL_EPA_H
-#define FCL_NARROWPHASE_DETAIL_EPA_H
+#pragma once
 
-#include "fcl/narrowphase/detail/convexity_based_algorithm/gjk.h"
+#include "dart/collision/hit/narrowphase/detail/convexity_based_algorithm/gjk.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
-//static const size_t EPA_MAX_FACES = 128;
-//static const size_t EPA_MAX_VERTICES = 64;
-//static const S EPA_EPS = 0.000001;
-//static const size_t EPA_MAX_ITERATIONS = 255;
-// TODO(JS): remove?
+// static const size_t EPA_MAX_FACES = 128;
+// static const size_t EPA_MAX_VERTICES = 64;
+// static const S EPA_EPS = 0.000001;
+// static const size_t EPA_MAX_ITERATIONS = 255;
+//  TODO(JS): remove?
 
 /// @brief class for EPA algorithm
 template <typename S>
-struct FCL_EXPORT EPA
+struct EPA
 {
 private:
   using SimplexV = typename GJK<S>::SimplexV;
@@ -88,7 +85,7 @@ private:
   {
     SimplexF* cf; // current face in the horizon
     SimplexF* ff; // first face in the horizon
-    size_t nf; // number of faces in the horizon
+    size_t nf;    // number of faces in the horizon
     SimplexHorizon() : cf(nullptr), ff(nullptr), nf(0) {}
   };
 
@@ -99,9 +96,20 @@ private:
   S tolerance;
 
 public:
+  enum Status
+  {
+    Valid,
+    Touching,
+    Degenerated,
+    NonConvex,
+    InvalidHull,
+    OutOfFaces,
+    OutOfVertices,
+    AccuracyReached,
+    FallBack,
+    Failed
+  };
 
-  enum Status {Valid, Touching, Degenerated, NonConvex, InvalidHull, OutOfFaces, OutOfVertices, AccuracyReached, FallBack, Failed};
-  
   Status status;
   typename GJK<S>::Simplex result;
   Vector3<S> normal;
@@ -111,8 +119,7 @@ public:
   size_t nextsv;
   SimplexList hull, stock;
 
-  EPA(
-      unsigned int max_face_num_,
+  EPA(unsigned int max_face_num_,
       unsigned int max_vertex_num_,
       unsigned int max_iterations_,
       S tolerance_);
@@ -130,16 +137,15 @@ public:
 
   Status evaluate(GJK<S>& gjk, const Vector3<S>& guess);
 
-  /// @brief the goal is to add a face connecting vertex w and face edge f[e] 
-  bool expand(size_t pass, SimplexV* w, SimplexF* f, size_t e, SimplexHorizon& horizon);  
+  /// @brief the goal is to add a face connecting vertex w and face edge f[e]
+  bool expand(
+      size_t pass, SimplexV* w, SimplexF* f, size_t e, SimplexHorizon& horizon);
 };
 
 using EPAf = EPA<float>;
 using EPAd = EPA<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/convexity_based_algorithm/epa-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/convexity_based_algorithm/epa-inl.h"

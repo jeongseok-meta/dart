@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/motion/translation_motion-inl.h"
+#include "dart/collision/hit/math/motion/translation_motion-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-class TranslationMotion<double>;
+template class TranslationMotion<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

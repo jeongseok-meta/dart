@@ -35,34 +35,26 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_MATH_SAMPLERSE2_H
-#define FCL_MATH_SAMPLERSE2_H
+#pragma once
 
-#include "fcl/common/types.h"
-#include "fcl/math/sampler/sampler_base.h"
+#include "dart/collision/hit/common/types.h"
+#include "dart/collision/hit/math/sampler/sampler_base.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 template <typename S>
-class FCL_EXPORT SamplerSE2 : public SamplerBase<S>
+class SamplerSE2 : public SamplerBase<S>
 {
 public:
   SamplerSE2();
 
-  SamplerSE2(const Vector2<S>& lower_bound_,
-             const Vector2<S>& upper_bound_);
+  SamplerSE2(const Vector2<S>& lower_bound_, const Vector2<S>& upper_bound_);
 
-  SamplerSE2(S x_min, S x_max,
-             S y_min, S y_max);
+  SamplerSE2(S x_min, S x_max, S y_min, S y_max);
 
+  void setBound(const Vector2<S>& lower_bound_, const Vector2<S>& upper_bound_);
 
-  void setBound(const Vector2<S>& lower_bound_,
-                const Vector2<S>& upper_bound_);
-
-  void getBound(Vector2<S>& lower_bound_,
-                Vector2<S>& upper_bound_) const;
-
+  void getBound(Vector2<S>& lower_bound_, Vector2<S>& upper_bound_) const;
 
   Vector3<S> sample() const;
 
@@ -77,8 +69,6 @@ public:
 using SamplerSE2f = SamplerSE2<float>;
 using SamplerSE2d = SamplerSE2<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/sampler/sampler_se2-inl.h"
-
-#endif
+#include "dart/collision/hit/math/sampler/sampler_se2-inl.h"

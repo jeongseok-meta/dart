@@ -35,24 +35,19 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_MATH_SAMPLERBASE_H
-#define FCL_MATH_SAMPLERBASE_H
+#pragma once
 
-#include "fcl/math/rng.h"
+#include "dart/collision/hit/math/rng.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 template <typename S>
-class FCL_EXPORT SamplerBase
+class SamplerBase
 {
 public:
   mutable RNG<S> rng;
 };
 
-extern template
-class FCL_EXPORT SamplerBase<double>;
+extern template class SamplerBase<double>;
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

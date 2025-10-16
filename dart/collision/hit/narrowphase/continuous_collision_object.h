@@ -35,24 +35,21 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CONTINUOUS_COLLISION_OBJECT_H
-#define FCL_CONTINUOUS_COLLISION_OBJECT_H
+#pragma once
+
+#include "dart/collision/hit/geometry/collision_geometry.h"
 
 #include <memory>
 
-#include "fcl/geometry/collision_geometry.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief the object for continuous collision or distance computation, contains
 /// the geometry and the motion information
 template <typename S>
-class FCL_EXPORT ContinuousCollisionObject
+class ContinuousCollisionObject
 {
 public:
-  ContinuousCollisionObject(
-      const std::shared_ptr<CollisionGeometry<S>>& cgeom);
+  ContinuousCollisionObject(const std::shared_ptr<CollisionGeometry<S>>& cgeom);
 
   ContinuousCollisionObject(
       const std::shared_ptr<CollisionGeometry<S>>& cgeom,
@@ -82,14 +79,13 @@ public:
   MotionBase<S>* getMotion() const;
 
   /// @brief get geometry from the object instance
-  FCL_DEPRECATED
+  DART_COLLISION_HIT_DEPRECATED
   const CollisionGeometry<S>* getCollisionGeometry() const;
 
   /// @brief get geometry from the object instance
   const std::shared_ptr<const CollisionGeometry<S>>& collisionGeometry() const;
 
 protected:
-
   std::shared_ptr<CollisionGeometry<S>> cgeom;
   std::shared_ptr<const CollisionGeometry<S>> cgeom_const;
 
@@ -105,8 +101,6 @@ protected:
 using ContinuousCollisionObjectf = ContinuousCollisionObject<float>;
 using ContinuousCollisionObjectd = ContinuousCollisionObject<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/continuous_collision_object-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/continuous_collision_object-inl.h"

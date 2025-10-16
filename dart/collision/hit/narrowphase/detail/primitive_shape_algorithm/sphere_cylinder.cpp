@@ -34,30 +34,29 @@
 
 /** @author Sean Curtis (sean@tri.global) (2018) */
 
-#include "fcl/narrowphase/detail/primitive_shape_algorithm/sphere_cylinder-inl.h"
+#include "dart/collision/hit/narrowphase/detail/primitive_shape_algorithm/sphere_cylinder-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
-template bool
-sphereCylinderIntersect(const Sphere<double>& sphere,
-                        const Transform3<double>& X_FS,
-                        const Cylinder<double>& cylinder,
-                        const Transform3<double>& X_FC,
-                        std::vector<ContactPoint<double>>* contacts);
+template bool sphereCylinderIntersect(
+    const Sphere<double>& sphere,
+    const Transform3<double>& X_FS,
+    const Cylinder<double>& cylinder,
+    const Transform3<double>& X_FC,
+    std::vector<ContactPoint<double>>* contacts);
 
 //==============================================================================
 
-template bool
-sphereCylinderDistance(const Sphere<double>& sphere,
-                       const Transform3<double>& X_FS,
-                       const Cylinder<double>& cylinder,
-                       const Transform3<double>& X_FC,
-                       double* distance, Vector3<double>* p_FSc,
-                       Vector3<double>* p_FCs);
+template bool sphereCylinderDistance(
+    const Sphere<double>& sphere,
+    const Transform3<double>& X_FS,
+    const Cylinder<double>& cylinder,
+    const Transform3<double>& X_FC,
+    double* distance,
+    Vector3<double>* p_FSc,
+    Vector3<double>* p_FCs);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

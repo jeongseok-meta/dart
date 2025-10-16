@@ -35,15 +35,15 @@
 
 /** @author Jeongseok Lee <jslee02@gmail.com> */
 
-#ifndef FCL_NARROWPHASE_GJKSOLVER_H
-#define FCL_NARROWPHASE_GJKSOLVER_H
+#pragma once
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Type of narrow phase GJK solver
-enum GJKSolverType {GST_LIBCCD, GST_INDEP};
+enum GJKSolverType
+{
+  GST_LIBCCD,
+  GST_INDEP
+};
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

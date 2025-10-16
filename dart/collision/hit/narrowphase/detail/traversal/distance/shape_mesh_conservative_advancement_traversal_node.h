@@ -35,25 +35,21 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_SHAPEMESHCONSERVATIVEADVANCEMENTTRAVERSALNODE_H
-#define FCL_TRAVERSAL_SHAPEMESHCONSERVATIVEADVANCEMENTTRAVERSALNODE_H
+#pragma once
 
-#include "fcl/geometry/shape/utility.h"
-#include "fcl/narrowphase/detail/traversal/distance/shape_mesh_distance_traversal_node.h"
-#include "fcl/narrowphase/detail/traversal/distance/conservative_advancement_stack_data.h"
+#include "dart/collision/hit/geometry/shape/utility.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/conservative_advancement_stack_data.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/shape_mesh_distance_traversal_node.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 template <typename Shape, typename BV, typename NarrowPhaseSolver>
-class FCL_EXPORT ShapeMeshConservativeAdvancementTraversalNode
-    : public ShapeMeshDistanceTraversalNode<Shape, BV, NarrowPhaseSolver>
+class ShapeMeshConservativeAdvancementTraversalNode
+  : public ShapeMeshDistanceTraversalNode<Shape, BV, NarrowPhaseSolver>
 {
 public:
-
   using S = typename BV::S;
 
   ShapeMeshConservativeAdvancementTraversalNode(S w_ = 1);
@@ -61,7 +57,8 @@ public:
   /// @brief BV culling test in one BVTT node
   S BVTesting(int b1, int b2) const;
 
-  /// @brief Conservative advancement testing between leaves (one triangle and one shape)
+  /// @brief Conservative advancement testing between leaves (one triangle and
+  /// one shape)
   void leafTesting(int b1, int b2) const;
 
   /// @brief Whether the traversal process can stop early
@@ -72,8 +69,8 @@ public:
   mutable Vector3<S> closest_p1, closest_p2;
 
   mutable int last_tri_id;
-  
-   /// @brief CA controlling variable: early stop for the early iterations of CA
+
+  /// @brief CA controlling variable: early stop for the early iterations of CA
   S w;
 
   /// @brief The time from beginning point
@@ -92,7 +89,8 @@ public:
 
 template <typename Shape, typename BV, typename NarrowPhaseSolver>
 bool initialize(
-    ShapeMeshConservativeAdvancementTraversalNode<Shape, BV, NarrowPhaseSolver>& node,
+    ShapeMeshConservativeAdvancementTraversalNode<Shape, BV, NarrowPhaseSolver>&
+        node,
     const Shape& model1,
     const Transform3<typename BV::S>& tf1,
     BVHModel<BV>& model2,
@@ -103,9 +101,11 @@ bool initialize(
     bool refit_bottomup = false);
 
 template <typename Shape, typename NarrowPhaseSolver>
-class FCL_EXPORT ShapeMeshConservativeAdvancementTraversalNodeRSS
-    : public ShapeMeshConservativeAdvancementTraversalNode<
-    Shape, RSS<typename Shape::S>, NarrowPhaseSolver>
+class ShapeMeshConservativeAdvancementTraversalNodeRSS
+  : public ShapeMeshConservativeAdvancementTraversalNode<
+        Shape,
+        RSS<typename Shape::S>,
+        NarrowPhaseSolver>
 {
 public:
   using S = typename Shape::S;
@@ -121,7 +121,8 @@ public:
 
 template <typename Shape, typename NarrowPhaseSolver>
 bool initialize(
-    ShapeMeshConservativeAdvancementTraversalNodeRSS<Shape, NarrowPhaseSolver>& node,
+    ShapeMeshConservativeAdvancementTraversalNodeRSS<Shape, NarrowPhaseSolver>&
+        node,
     const Shape& model1,
     const Transform3<typename Shape::S>& tf1,
     const BVHModel<RSS<typename Shape::S>>& model2,
@@ -130,9 +131,11 @@ bool initialize(
     typename Shape::S w = 1);
 
 template <typename Shape, typename NarrowPhaseSolver>
-class FCL_EXPORT ShapeMeshConservativeAdvancementTraversalNodeOBBRSS
-    : public ShapeMeshConservativeAdvancementTraversalNode<
-    Shape, OBBRSS<typename Shape::S>, NarrowPhaseSolver>
+class ShapeMeshConservativeAdvancementTraversalNodeOBBRSS
+  : public ShapeMeshConservativeAdvancementTraversalNode<
+        Shape,
+        OBBRSS<typename Shape::S>,
+        NarrowPhaseSolver>
 {
 public:
   using S = typename Shape::S;
@@ -148,7 +151,9 @@ public:
 
 template <typename Shape, typename NarrowPhaseSolver>
 bool initialize(
-    ShapeMeshConservativeAdvancementTraversalNodeOBBRSS<Shape, NarrowPhaseSolver>& node,
+    ShapeMeshConservativeAdvancementTraversalNodeOBBRSS<
+        Shape,
+        NarrowPhaseSolver>& node,
     const Shape& model1,
     const Transform3<typename Shape::S>& tf1,
     const BVHModel<OBBRSS<typename Shape::S>>& model2,
@@ -157,8 +162,6 @@ bool initialize(
     typename Shape::S w = 1);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/traversal/distance/shape_mesh_conservative_advancement_traversal_node-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/shape_mesh_conservative_advancement_traversal_node-inl.h"

@@ -35,17 +35,15 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_MATH_SAMPLERSE3EULERBALL_H
-#define FCL_MATH_SAMPLERSE3EULERBALL_H
+#pragma once
 
-#include "fcl/common/types.h"
-#include "fcl/math/sampler/sampler_base.h"
+#include "dart/collision/hit/common/types.h"
+#include "dart/collision/hit/math/sampler/sampler_base.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 template <typename S>
-class FCL_EXPORT SamplerSE3Euler_ball : public SamplerBase<S>
+class SamplerSE3Euler_ball : public SamplerBase<S>
 {
 public:
   SamplerSE3Euler_ball();
@@ -53,21 +51,18 @@ public:
   SamplerSE3Euler_ball(S r_);
 
   void setBound(const S& r_);
-  
+
   void getBound(S& r_) const;
 
   Vector6<S> sample() const;
 
 protected:
   S r;
-
 };
 
 using SamplerSE3Euler_ballf = SamplerSE3Euler_ball<float>;
 using SamplerSE3Euler_balld = SamplerSE3Euler_ball<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/sampler/sampler_se3_euler_ball-inl.h"
-
-#endif
+#include "dart/collision/hit/math/sampler/sampler_se3_euler_ball-inl.h"

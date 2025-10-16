@@ -35,13 +35,11 @@
 
 /** @author Ioan Sucan */
 
-#include "fcl/common/time.h"
+#include "dart/collision/hit/common/time.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace time
-{
+namespace time {
 
 //==============================================================================
 point now(void)
@@ -52,16 +50,16 @@ point now(void)
 //==============================================================================
 duration seconds(double sec)
 {
-  long s  = (long)sec;
+  long s = (long)sec;
   long us = (long)((sec - s) * 1000000);
   return std::chrono::seconds(s) + std::chrono::microseconds(us);
 }
 
 //==============================================================================
-double seconds(const duration &d)
+double seconds(const duration& d)
 {
   return std::chrono::duration<double>(d).count();
 }
 
 } // namespace time
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

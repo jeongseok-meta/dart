@@ -35,27 +35,23 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_MESHDISTANCETRAVERSALNODE_H
-#define FCL_TRAVERSAL_MESHDISTANCETRAVERSALNODE_H
+#pragma once
 
-#include "fcl/narrowphase/detail/primitive_shape_algorithm/triangle_distance.h"
-#include "fcl/math/bv/RSS.h"
-#include "fcl/math/bv/OBBRSS.h"
-#include "fcl/math/bv/kIOS.h"
-#include "fcl/narrowphase/detail/traversal/distance/bvh_distance_traversal_node.h"
+#include "dart/collision/hit/math/bv/OBBRSS.h"
+#include "dart/collision/hit/math/bv/RSS.h"
+#include "dart/collision/hit/math/bv/kIOS.h"
+#include "dart/collision/hit/narrowphase/detail/primitive_shape_algorithm/triangle_distance.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/bvh_distance_traversal_node.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /// @brief Traversal node for distance computation between two meshes
 template <typename BV>
-class FCL_EXPORT MeshDistanceTraversalNode : public BVHDistanceTraversalNode<BV>
+class MeshDistanceTraversalNode : public BVHDistanceTraversalNode<BV>
 {
 public:
-
   using S = typename BV::S;
 
   MeshDistanceTraversalNode();
@@ -80,7 +76,6 @@ public:
 /// @brief Initialize traversal node for distance computation between two
 /// meshes, given the current transforms
 template <typename BV>
-FCL_EXPORT
 bool initialize(
     MeshDistanceTraversalNode<BV>& node,
     BVHModel<BV>& model1,
@@ -89,12 +84,13 @@ bool initialize(
     Transform3<typename BV::S>& tf2,
     const DistanceRequest<typename BV::S>& request,
     DistanceResult<typename BV::S>& result,
-    bool use_refit = false, bool refit_bottomup = false);
+    bool use_refit = false,
+    bool refit_bottomup = false);
 
-/// @brief Traversal node for distance computation between two meshes if their underlying BVH node is oriented node (RSS, OBBRSS, kIOS)
+/// @brief Traversal node for distance computation between two meshes if their
+/// underlying BVH node is oriented node (RSS, OBBRSS, kIOS)
 template <typename S>
-class FCL_EXPORT MeshDistanceTraversalNodeRSS
-    : public MeshDistanceTraversalNode<RSS<S>>
+class MeshDistanceTraversalNodeRSS : public MeshDistanceTraversalNode<RSS<S>>
 {
 public:
   MeshDistanceTraversalNodeRSS();
@@ -105,9 +101,14 @@ public:
 
   S BVTesting(int b1, int b2) const
   {
-    if (this->enable_statistics) this->num_bv_tests++;
+    if (this->enable_statistics)
+      this->num_bv_tests++;
 
-    return distance(tf.linear(), tf.translation(), this->model1->getBV(b1).bv, this->model2->getBV(b2).bv);
+    return distance(
+        tf.linear(),
+        tf.translation(),
+        this->model1->getBV(b1).bv,
+        this->model2->getBV(b2).bv);
   }
 
   void leafTesting(int b1, int b2) const;
@@ -123,7 +124,6 @@ using MeshDistanceTraversalNodeRSSd = MeshDistanceTraversalNodeRSS<double>;
 /// @brief Initialize traversal node for distance computation between two
 ///  meshes, specialized for RSS type
 template <typename S>
-FCL_EXPORT
 bool initialize(
     MeshDistanceTraversalNodeRSS<S>& node,
     const BVHModel<RSS<S>>& model1,
@@ -134,21 +134,25 @@ bool initialize(
     DistanceResult<S>& result);
 
 template <typename S>
-class FCL_EXPORT MeshDistanceTraversalNodekIOS
-    : public MeshDistanceTraversalNode<kIOS<S>>
+class MeshDistanceTraversalNodekIOS : public MeshDistanceTraversalNode<kIOS<S>>
 {
 public:
   MeshDistanceTraversalNodekIOS();
 
   void preprocess();
-  
+
   void postprocess();
 
   S BVTesting(int b1, int b2) const
   {
-    if (this->enable_statistics) this->num_bv_tests++;
+    if (this->enable_statistics)
+      this->num_bv_tests++;
 
-    return distance(tf.linear(), tf.translation(), this->model1->getBV(b1).bv, this->model2->getBV(b2).bv);
+    return distance(
+        tf.linear(),
+        tf.translation(),
+        this->model1->getBV(b1).bv,
+        this->model2->getBV(b2).bv);
   }
 
   void leafTesting(int b1, int b2) const;
@@ -164,7 +168,6 @@ using MeshDistanceTraversalNodekIOSd = MeshDistanceTraversalNodekIOS<double>;
 /// @brief Initialize traversal node for distance computation between two
 ///  meshes, specialized for kIOS type
 template <typename S>
-FCL_EXPORT
 bool initialize(
     MeshDistanceTraversalNodekIOS<S>& node,
     const BVHModel<kIOS<S>>& model1,
@@ -175,8 +178,8 @@ bool initialize(
     DistanceResult<S>& result);
 
 template <typename S>
-class FCL_EXPORT MeshDistanceTraversalNodeOBBRSS
-    : public MeshDistanceTraversalNode<OBBRSS<S>>
+class MeshDistanceTraversalNodeOBBRSS
+  : public MeshDistanceTraversalNode<OBBRSS<S>>
 {
 public:
   MeshDistanceTraversalNodeOBBRSS();
@@ -187,9 +190,14 @@ public:
 
   S BVTesting(int b1, int b2) const
   {
-    if (this->enable_statistics) this->num_bv_tests++;
+    if (this->enable_statistics)
+      this->num_bv_tests++;
 
-    return distance(tf.linear(), tf.translation(), this->model1->getBV(b1).bv, this->model2->getBV(b2).bv);
+    return distance(
+        tf.linear(),
+        tf.translation(),
+        this->model1->getBV(b1).bv,
+        this->model2->getBV(b2).bv);
   }
 
   void leafTesting(int b1, int b2) const;
@@ -200,12 +208,12 @@ public:
 };
 
 using MeshDistanceTraversalNodeOBBRSSf = MeshDistanceTraversalNodeOBBRSS<float>;
-using MeshDistanceTraversalNodeOBBRSSd = MeshDistanceTraversalNodeOBBRSS<double>;
+using MeshDistanceTraversalNodeOBBRSSd
+    = MeshDistanceTraversalNodeOBBRSS<double>;
 
 /// @brief Initialize traversal node for distance computation between two
 ///  meshes, specialized for OBBRSS type
 template <typename S>
-FCL_EXPORT
 bool initialize(
     MeshDistanceTraversalNodeOBBRSS<S>& node,
     const BVHModel<OBBRSS<S>>& model1,
@@ -216,8 +224,7 @@ bool initialize(
     DistanceResult<S>& result);
 
 template <typename BV>
-FCL_DEPRECATED_EXPORT
-void meshDistanceOrientedNodeLeafTesting(
+DART_COLLISION_HIT_DEPRECATED_EXPORT void meshDistanceOrientedNodeLeafTesting(
     int b1,
     int b2,
     const BVHModel<BV>* model1,
@@ -234,7 +241,6 @@ void meshDistanceOrientedNodeLeafTesting(
     DistanceResult<typename BV::S>& result);
 
 template <typename BV>
-FCL_EXPORT
 void meshDistanceOrientedNodeLeafTesting(
     int b1,
     int b2,
@@ -251,7 +257,6 @@ void meshDistanceOrientedNodeLeafTesting(
     DistanceResult<typename BV::S>& result);
 
 template <typename BV>
-FCL_EXPORT
 void distancePreprocessOrientedNode(
     const BVHModel<BV>* model1,
     const BVHModel<BV>* model2,
@@ -267,7 +272,6 @@ void distancePreprocessOrientedNode(
     DistanceResult<typename BV::S>& result);
 
 template <typename BV>
-FCL_EXPORT
 void distancePreprocessOrientedNode(
     const BVHModel<BV>* model1,
     const BVHModel<BV>* model2,
@@ -282,7 +286,6 @@ void distancePreprocessOrientedNode(
     DistanceResult<typename BV::S>& result);
 
 template <typename BV>
-FCL_EXPORT
 void distancePostprocessOrientedNode(
     const BVHModel<BV>* model1,
     const BVHModel<BV>* model2,
@@ -291,8 +294,6 @@ void distancePostprocessOrientedNode(
     DistanceResult<typename BV::S>& result);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/traversal/distance/mesh_distance_traversal_node-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/mesh_distance_traversal_node-inl.h"

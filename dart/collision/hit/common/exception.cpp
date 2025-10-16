@@ -35,10 +35,9 @@
 
 /** @author Jia Pan */
 
-#include "fcl/common/exception.h"
+#include "dart/collision/hit/common/exception.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
 Exception::Exception(const std::string& what) : std::runtime_error(what)
@@ -59,4 +58,4 @@ Exception::~Exception() throw()
   // Do nothing
 }
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

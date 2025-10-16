@@ -35,48 +35,39 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BV_DETAIL_UTILITY_INL_H
-#define FCL_BV_DETAIL_UTILITY_INL_H
+#pragma once
 
-#include "fcl/math/geometry.h"
-#include "fcl/math/constants.h"
+#include "dart/collision/hit/math/constants.h"
+#include "dart/collision/hit/math/geometry.h"
 
-namespace dart { namespace collision { namespace hit {
-
-//==============================================================================
-extern template
-void normalize(Vector3d& v, bool* signal);
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-void hat(Matrix3d& mat, const Vector3d& vec);
+extern template void normalize(Vector3d& v, bool* signal);
 
 //==============================================================================
-extern template
-void eigen(const Matrix3d& m, Vector3d& dout, Matrix3d& vout);
+extern template void hat(Matrix3d& mat, const Vector3d& vec);
 
 //==============================================================================
-extern template
-void eigen_old(const Matrix3d& m, Vector3d& dout, Matrix3d& vout);
+extern template void eigen(const Matrix3d& m, Vector3d& dout, Matrix3d& vout);
 
 //==============================================================================
-extern template
-void axisFromEigen(
+extern template void eigen_old(
+    const Matrix3d& m, Vector3d& dout, Matrix3d& vout);
+
+//==============================================================================
+extern template void axisFromEigen(
     const Matrix3d& eigenV, const Vector3d& eigenS, Matrix3d& axis);
 
 //==============================================================================
-extern template
-void axisFromEigen(const Matrix3d& eigenV,
-                   const Vector3d& eigenS,
-                   Transform3d& tf);
+extern template void axisFromEigen(
+    const Matrix3d& eigenV, const Vector3d& eigenS, Transform3d& tf);
 
 //==============================================================================
-extern template
-Matrix3d generateCoordinateSystem(const Vector3d& x_axis);
+extern template Matrix3d generateCoordinateSystem(const Vector3d& x_axis);
 
 //==============================================================================
-extern template
-void getRadiusAndOriginAndRectangleSize(
+extern template void getRadiusAndOriginAndRectangleSize(
     const Vector3d* const ps,
     const Vector3d* const ps2,
     Triangle* ts,
@@ -88,8 +79,7 @@ void getRadiusAndOriginAndRectangleSize(
     double& r);
 
 //==============================================================================
-extern template
-void getRadiusAndOriginAndRectangleSize(
+extern template void getRadiusAndOriginAndRectangleSize(
     const Vector3d* const ps,
     const Vector3d* const ps2,
     Triangle* ts,
@@ -100,8 +90,7 @@ void getRadiusAndOriginAndRectangleSize(
     double& r);
 
 //==============================================================================
-extern template
-void circumCircleComputation(
+extern template void circumCircleComputation(
     const Vector3d& a,
     const Vector3d& b,
     const Vector3d& c,
@@ -109,8 +98,7 @@ void circumCircleComputation(
     double& radius);
 
 //==============================================================================
-extern template
-double maximumDistance(
+extern template double maximumDistance(
     const Vector3d* const ps,
     const Vector3d* const ps2,
     Triangle* ts,
@@ -119,8 +107,7 @@ double maximumDistance(
     const Vector3d& query);
 
 //==============================================================================
-extern template
-void getExtentAndCenter(
+extern template void getExtentAndCenter(
     const Vector3d* const ps,
     const Vector3d* const ps2,
     Triangle* ts,
@@ -131,13 +118,13 @@ void getExtentAndCenter(
     Vector3d& extent);
 
 //==============================================================================
-extern template
-void getCovariance(
+extern template void getCovariance(
     const Vector3d* const ps,
     const Vector3d* const ps2,
     Triangle* ts,
     unsigned int* indices,
-    int n, Matrix3d& M);
+    int n,
+    Matrix3d& M);
 
 //==============================================================================
 namespace detail {
@@ -145,7 +132,6 @@ namespace detail {
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 S maximumDistance_mesh(
     const Vector3<S>* const ps,
     const Vector3<S>* const ps2,
@@ -155,32 +141,31 @@ S maximumDistance_mesh(
     const Vector3<S>& query)
 {
   bool indirect_index = true;
-  if(!indices) indirect_index = false;
+  if (!indices)
+    indirect_index = false;
 
   S maxD = 0;
-  for(int i = 0; i < n; ++i)
-  {
+  for (int i = 0; i < n; ++i) {
     unsigned int index = indirect_index ? indices[i] : i;
     const Triangle& t = ts[index];
 
-    for(int j = 0; j < 3; ++j)
-    {
+    for (int j = 0; j < 3; ++j) {
       int point_id = t[j];
       const Vector3<S>& p = ps[point_id];
 
       S d = (p - query).squaredNorm();
-      if(d > maxD) maxD = d;
+      if (d > maxD)
+        maxD = d;
     }
 
-    if(ps2)
-    {
-      for(int j = 0; j < 3; ++j)
-      {
+    if (ps2) {
+      for (int j = 0; j < 3; ++j) {
         int point_id = t[j];
         const Vector3<S>& p = ps2[point_id];
 
         S d = (p - query).squaredNorm();
-        if(d > maxD) maxD = d;
+        if (d > maxD)
+          maxD = d;
       }
     }
   }
@@ -190,7 +175,6 @@ S maximumDistance_mesh(
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 S maximumDistance_pointcloud(
     const Vector3<S>* const ps,
     const Vector3<S>* const ps2,
@@ -199,22 +183,23 @@ S maximumDistance_pointcloud(
     const Vector3<S>& query)
 {
   bool indirect_index = true;
-  if(!indices) indirect_index = false;
+  if (!indices)
+    indirect_index = false;
 
   S maxD = 0;
-  for(int i = 0; i < n; ++i)
-  {
+  for (int i = 0; i < n; ++i) {
     int index = indirect_index ? indices[i] : i;
 
     const Vector3<S>& p = ps[index];
     S d = (p - query).squaredNorm();
-    if(d > maxD) maxD = d;
+    if (d > maxD)
+      maxD = d;
 
-    if(ps2)
-    {
+    if (ps2) {
       const Vector3<S>& v = ps2[index];
       S d = (v - query).squaredNorm();
-      if(d > maxD) maxD = d;
+      if (d > maxD)
+        maxD = d;
     }
   }
 
@@ -225,7 +210,6 @@ S maximumDistance_pointcloud(
 /// @brief Compute the bounding volume extent and center for a set or subset of
 /// points. The bounding volume axes are known.
 template <typename S>
-FCL_EXPORT
 void getExtentAndCenter_pointcloud(
     const Vector3<S>* const ps,
     const Vector3<S>* const ps2,
@@ -236,46 +220,38 @@ void getExtentAndCenter_pointcloud(
     Vector3<S>& extent)
 {
   bool indirect_index = true;
-  if(!indices) indirect_index = false;
+  if (!indices)
+    indirect_index = false;
 
   auto real_max = std::numeric_limits<S>::max();
 
   Vector3<S> min_coord = Vector3<S>::Constant(real_max);
   Vector3<S> max_coord = Vector3<S>::Constant(-real_max);
 
-  for(int i = 0; i < n; ++i)
-  {
+  for (int i = 0; i < n; ++i) {
     int index = indirect_index ? indices[i] : i;
 
     const Vector3<S>& p = ps[index];
-    Vector3<S> proj(
-        axis.col(0).dot(p),
-        axis.col(1).dot(p),
-        axis.col(2).dot(p));
+    Vector3<S> proj(axis.col(0).dot(p), axis.col(1).dot(p), axis.col(2).dot(p));
 
-    for(int j = 0; j < 3; ++j)
-    {
-      if(proj[j] > max_coord[j])
+    for (int j = 0; j < 3; ++j) {
+      if (proj[j] > max_coord[j])
         max_coord[j] = proj[j];
 
-      if(proj[j] < min_coord[j])
+      if (proj[j] < min_coord[j])
         min_coord[j] = proj[j];
     }
 
-    if(ps2)
-    {
+    if (ps2) {
       const Vector3<S>& v = ps2[index];
       Vector3<S> proj(
-          axis.col(0).dot(v),
-          axis.col(1).dot(v),
-          axis.col(2).dot(v));
+          axis.col(0).dot(v), axis.col(1).dot(v), axis.col(2).dot(v));
 
-      for(int j = 0; j < 3; ++j)
-      {
-        if(proj[j] > max_coord[j])
+      for (int j = 0; j < 3; ++j) {
+        if (proj[j] > max_coord[j])
           max_coord[j] = proj[j];
 
-        if(proj[j] < min_coord[j])
+        if (proj[j] < min_coord[j])
           min_coord[j] = proj[j];
       }
     }
@@ -290,7 +266,6 @@ void getExtentAndCenter_pointcloud(
 /// @brief Compute the bounding volume extent and center for a set or subset of
 /// points. The bounding volume axes are known.
 template <typename S>
-FCL_EXPORT
 void getExtentAndCenter_mesh(
     const Vector3<S>* const ps,
     const Vector3<S>* const ps2,
@@ -302,54 +277,45 @@ void getExtentAndCenter_mesh(
     Vector3<S>& extent)
 {
   bool indirect_index = true;
-  if(!indices) indirect_index = false;
+  if (!indices)
+    indirect_index = false;
 
   auto real_max = std::numeric_limits<S>::max();
 
   Vector3<S> min_coord = Vector3<S>::Constant(real_max);
   Vector3<S> max_coord = Vector3<S>::Constant(-real_max);
 
-  for(int i = 0; i < n; ++i)
-  {
-    unsigned int index = indirect_index? indices[i] : i;
+  for (int i = 0; i < n; ++i) {
+    unsigned int index = indirect_index ? indices[i] : i;
     const Triangle& t = ts[index];
 
-    for(int j = 0; j < 3; ++j)
-    {
+    for (int j = 0; j < 3; ++j) {
       int point_id = t[j];
       const Vector3<S>& p = ps[point_id];
       Vector3<S> proj(
-          axis.col(0).dot(p),
-          axis.col(1).dot(p),
-          axis.col(2).dot(p));
+          axis.col(0).dot(p), axis.col(1).dot(p), axis.col(2).dot(p));
 
-      for(int k = 0; k < 3; ++k)
-      {
-        if(proj[k] > max_coord[k])
+      for (int k = 0; k < 3; ++k) {
+        if (proj[k] > max_coord[k])
           max_coord[k] = proj[k];
 
-        if(proj[k] < min_coord[k])
+        if (proj[k] < min_coord[k])
           min_coord[k] = proj[k];
       }
     }
 
-    if(ps2)
-    {
-      for(int j = 0; j < 3; ++j)
-      {
+    if (ps2) {
+      for (int j = 0; j < 3; ++j) {
         int point_id = t[j];
         const Vector3<S>& p = ps2[point_id];
         Vector3<S> proj(
-            axis.col(0).dot(p),
-            axis.col(1).dot(p),
-            axis.col(2).dot(p));
+            axis.col(0).dot(p), axis.col(1).dot(p), axis.col(2).dot(p));
 
-        for(int k = 0; k < 3; ++k)
-        {
-          if(proj[k] > max_coord[k])
+        for (int k = 0; k < 3; ++k) {
+          if (proj[k] > max_coord[k])
             max_coord[k] = proj[k];
 
-          if(proj[k] < min_coord[k])
+          if (proj[k] < min_coord[k])
             min_coord[k] = proj[k];
         }
       }
@@ -362,8 +328,7 @@ void getExtentAndCenter_mesh(
 }
 
 //==============================================================================
-extern template
-double maximumDistance_mesh(
+extern template double maximumDistance_mesh(
     const Vector3d* const ps,
     const Vector3d* const ps2,
     Triangle* ts,
@@ -372,8 +337,7 @@ double maximumDistance_mesh(
     const Vector3d& query);
 
 //==============================================================================
-extern template
-double maximumDistance_pointcloud(
+extern template double maximumDistance_pointcloud(
     const Vector3d* const ps,
     const Vector3d* const ps2,
     unsigned int* indices,
@@ -381,8 +345,7 @@ double maximumDistance_pointcloud(
     const Vector3d& query);
 
 //==============================================================================
-extern template
-void getExtentAndCenter_pointcloud(
+extern template void getExtentAndCenter_pointcloud(
     const Vector3d* const ps,
     const Vector3d* const ps2,
     unsigned int* indices,
@@ -392,8 +355,7 @@ void getExtentAndCenter_pointcloud(
     Vector3d& extent);
 
 //==============================================================================
-extern template
-void getExtentAndCenter_mesh(
+extern template void getExtentAndCenter_mesh(
     const Vector3d* const ps,
     const Vector3d* const ps2,
     Triangle* ts,
@@ -409,39 +371,33 @@ void getExtentAndCenter_mesh(
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void normalize(Vector3<S>& v, bool* signal)
 {
   S sqr_length = v.squaredNorm();
 
-  if (sqr_length > 0)
-  {
+  if (sqr_length > 0) {
     v /= std::sqrt(sqr_length);
     *signal = true;
-  }
-  else
-  {
+  } else {
     *signal = false;
   }
 }
 
 //==============================================================================
 template <typename Derived>
-FCL_EXPORT
-typename Derived::RealScalar triple(const Eigen::MatrixBase<Derived>& x,
-                                    const Eigen::MatrixBase<Derived>& y,
-                                    const Eigen::MatrixBase<Derived>& z)
+typename Derived::RealScalar triple(
+    const Eigen::MatrixBase<Derived>& x,
+    const Eigen::MatrixBase<Derived>& y,
+    const Eigen::MatrixBase<Derived>& z)
 {
   return x.dot(y.cross(z));
 }
 
 //==============================================================================
 template <typename S, int M, int N>
-FCL_EXPORT
-VectorN<S, M+N> combine(
-    const VectorN<S, M>& v1, const VectorN<S, N>& v2)
+VectorN<S, M + N> combine(const VectorN<S, M>& v1, const VectorN<S, N>& v2)
 {
-  VectorN<S, M+N> v;
+  VectorN<S, M + N> v;
   v << v1, v2;
 
   return v;
@@ -449,21 +405,18 @@ VectorN<S, M+N> combine(
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void hat(Matrix3<S>& mat, const Vector3<S>& vec)
 {
   mat << 0, -vec[2], vec[1], vec[2], 0, -vec[0], -vec[1], vec[0], 0;
 }
 
 //==============================================================================
-template<typename S>
-FCL_EXPORT
+template <typename S>
 void eigen(const Matrix3<S>& m, Vector3<S>& dout, Matrix3<S>& vout)
 {
   // We assume that m is symmetric matrix.
   Eigen::SelfAdjointEigenSolver<Matrix3<S>> eigensolver(m);
-  if (eigensolver.info() != Eigen::Success)
-  {
+  if (eigensolver.info() != Eigen::Success) {
     std::cerr << "[eigen] Failed to compute eigendecomposition.\n";
     return;
   }
@@ -472,8 +425,7 @@ void eigen(const Matrix3<S>& m, Vector3<S>& dout, Matrix3<S>& vout)
 }
 
 //==============================================================================
-template<typename S>
-FCL_EXPORT
+template <typename S>
 void eigen_old(const Matrix3<S>& m, Vector3<S>& dout, Matrix3<S>& vout)
 {
   Matrix3<S> R(m);
@@ -486,50 +438,48 @@ void eigen_old(const Matrix3<S>& m, Vector3<S>& dout, Matrix3<S>& vout)
   S v[3][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
   S d[3];
 
-  for(ip = 0; ip < n; ++ip)
-  {
+  for (ip = 0; ip < n; ++ip) {
     b[ip] = d[ip] = R(ip, ip);
     z[ip] = 0;
   }
 
   nrot = 0;
 
-  for(i = 0; i < 50; ++i)
-  {
+  for (i = 0; i < 50; ++i) {
     sm = 0;
-    for(ip = 0; ip < n; ++ip)
-      for(iq = ip + 1; iq < n; ++iq)
+    for (ip = 0; ip < n; ++ip)
+      for (iq = ip + 1; iq < n; ++iq)
         sm += std::abs(R(ip, iq));
-    if(sm == 0.0)
-    {
+    if (sm == 0.0) {
       vout.col(0) << v[0][0], v[0][1], v[0][2];
       vout.col(1) << v[1][0], v[1][1], v[1][2];
       vout.col(2) << v[2][0], v[2][1], v[2][2];
-      dout[0] = d[0]; dout[1] = d[1]; dout[2] = d[2];
+      dout[0] = d[0];
+      dout[1] = d[1];
+      dout[2] = d[2];
       return;
     }
 
-    if(i < 3) tresh = 0.2 * sm / (n * n);
-    else tresh = 0.0;
+    if (i < 3)
+      tresh = 0.2 * sm / (n * n);
+    else
+      tresh = 0.0;
 
-    for(ip = 0; ip < n; ++ip)
-    {
-      for(iq= ip + 1; iq < n; ++iq)
-      {
+    for (ip = 0; ip < n; ++ip) {
+      for (iq = ip + 1; iq < n; ++iq) {
         g = 100.0 * std::abs(R(ip, iq));
-        if(i > 3 &&
-           std::abs(d[ip]) + g == std::abs(d[ip]) &&
-           std::abs(d[iq]) + g == std::abs(d[iq]))
+        if (i > 3 && std::abs(d[ip]) + g == std::abs(d[ip])
+            && std::abs(d[iq]) + g == std::abs(d[iq]))
           R(ip, iq) = 0.0;
-        else if(std::abs(R(ip, iq)) > tresh)
-        {
+        else if (std::abs(R(ip, iq)) > tresh) {
           h = d[iq] - d[ip];
-          if(std::abs(h) + g == std::abs(h)) t = (R(ip, iq)) / h;
-          else
-          {
+          if (std::abs(h) + g == std::abs(h))
+            t = (R(ip, iq)) / h;
+          else {
             theta = 0.5 * h / (R(ip, iq));
-            t = 1.0 /(std::abs(theta) + std::sqrt(1.0 + theta * theta));
-            if(theta < 0.0) t = -t;
+            t = 1.0 / (std::abs(theta) + std::sqrt(1.0 + theta * theta));
+            if (theta < 0.0)
+              t = -t;
           }
           c = 1.0 / std::sqrt(1 + t * t);
           s = t * c;
@@ -540,16 +490,35 @@ void eigen_old(const Matrix3<S>& m, Vector3<S>& dout, Matrix3<S>& vout)
           d[ip] -= h;
           d[iq] += h;
           R(ip, iq) = 0.0;
-          for(j = 0; j < ip; ++j) { g = R(j, ip); h = R(j, iq); R(j, ip) = g - s * (h + g * tau); R(j, iq) = h + s * (g - h * tau); }
-          for(j = ip + 1; j < iq; ++j) { g = R(ip, j); h = R(j, iq); R(ip, j) = g - s * (h + g * tau); R(j, iq) = h + s * (g - h * tau); }
-          for(j = iq + 1; j < n; ++j) { g = R(ip, j); h = R(iq, j); R(ip, j) = g - s * (h + g * tau); R(iq, j) = h + s * (g - h * tau); }
-          for(j = 0; j < n; ++j) { g = v[j][ip]; h = v[j][iq]; v[j][ip] = g - s * (h + g * tau); v[j][iq] = h + s * (g - h * tau); }
+          for (j = 0; j < ip; ++j) {
+            g = R(j, ip);
+            h = R(j, iq);
+            R(j, ip) = g - s * (h + g * tau);
+            R(j, iq) = h + s * (g - h * tau);
+          }
+          for (j = ip + 1; j < iq; ++j) {
+            g = R(ip, j);
+            h = R(j, iq);
+            R(ip, j) = g - s * (h + g * tau);
+            R(j, iq) = h + s * (g - h * tau);
+          }
+          for (j = iq + 1; j < n; ++j) {
+            g = R(ip, j);
+            h = R(iq, j);
+            R(ip, j) = g - s * (h + g * tau);
+            R(iq, j) = h + s * (g - h * tau);
+          }
+          for (j = 0; j < n; ++j) {
+            g = v[j][ip];
+            h = v[j][iq];
+            v[j][ip] = g - s * (h + g * tau);
+            v[j][iq] = h + s * (g - h * tau);
+          }
           nrot++;
         }
       }
     }
-    for(ip = 0; ip < n; ++ip)
-    {
+    for (ip = 0; ip < n; ++ip) {
       b[ip] += z[ip];
       d[ip] = b[ip];
       z[ip] = 0.0;
@@ -563,36 +532,26 @@ void eigen_old(const Matrix3<S>& m, Vector3<S>& dout, Matrix3<S>& vout)
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
-void axisFromEigen(const Matrix3<S>& eigenV,
-                   const Vector3<S>& eigenS,
-                   Matrix3<S>& axis)
+void axisFromEigen(
+    const Matrix3<S>& eigenV, const Vector3<S>& eigenS, Matrix3<S>& axis)
 {
   int min, mid, max;
 
-  if(eigenS[0] > eigenS[1])
-  {
+  if (eigenS[0] > eigenS[1]) {
     max = 0;
     min = 1;
-  }
-  else
-  {
+  } else {
     min = 0;
     max = 1;
   }
 
-  if(eigenS[2] < eigenS[min])
-  {
+  if (eigenS[2] < eigenS[min]) {
     mid = min;
     min = 2;
-  }
-  else if(eigenS[2] > eigenS[max])
-  {
+  } else if (eigenS[2] > eigenS[max]) {
     mid = max;
     max = 2;
-  }
-  else
-  {
+  } else {
     mid = 2;
   }
 
@@ -603,36 +562,26 @@ void axisFromEigen(const Matrix3<S>& eigenV,
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
-void axisFromEigen(const Matrix3<S>& eigenV,
-                   const Vector3<S>& eigenS,
-                   Transform3<S>& tf)
+void axisFromEigen(
+    const Matrix3<S>& eigenV, const Vector3<S>& eigenS, Transform3<S>& tf)
 {
   int min, mid, max;
 
-  if(eigenS[0] > eigenS[1])
-  {
+  if (eigenS[0] > eigenS[1]) {
     max = 0;
     min = 1;
-  }
-  else
-  {
+  } else {
     min = 0;
     max = 1;
   }
 
-  if(eigenS[2] < eigenS[min])
-  {
+  if (eigenS[2] < eigenS[min]) {
     mid = min;
     min = 2;
-  }
-  else if(eigenS[2] > eigenS[max])
-  {
+  } else if (eigenS[2] > eigenS[max]) {
     mid = max;
     max = 2;
-  }
-  else
-  {
+  } else {
     mid = 2;
   }
 
@@ -643,7 +592,6 @@ void axisFromEigen(const Matrix3<S>& eigenV,
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 Matrix3<S> generateCoordinateSystem(const Vector3<S>& x_axis)
 {
   Matrix3<S> axis;
@@ -654,32 +602,34 @@ Matrix3<S> generateCoordinateSystem(const Vector3<S>& x_axis)
 }
 
 //==============================================================================
-template <typename DerivedA, typename DerivedB, typename DerivedC, typename DerivedD>
-FCL_EXPORT
+template <
+    typename DerivedA,
+    typename DerivedB,
+    typename DerivedC,
+    typename DerivedD>
 void relativeTransform(
-    const Eigen::MatrixBase<DerivedA>& R1, const Eigen::MatrixBase<DerivedB>& t1,
-    const Eigen::MatrixBase<DerivedA>& R2, const Eigen::MatrixBase<DerivedB>& t2,
-    Eigen::MatrixBase<DerivedC>& R, Eigen::MatrixBase<DerivedD>& t)
+    const Eigen::MatrixBase<DerivedA>& R1,
+    const Eigen::MatrixBase<DerivedB>& t1,
+    const Eigen::MatrixBase<DerivedA>& R2,
+    const Eigen::MatrixBase<DerivedB>& t2,
+    Eigen::MatrixBase<DerivedC>& R,
+    Eigen::MatrixBase<DerivedD>& t)
 {
   EIGEN_STATIC_ASSERT(
-        DerivedA::RowsAtCompileTime == 3
-        && DerivedA::ColsAtCompileTime == 3,
-        THIS_METHOD_IS_ONLY_FOR_MATRICES_OF_A_SPECIFIC_SIZE);
+      DerivedA::RowsAtCompileTime == 3 && DerivedA::ColsAtCompileTime == 3,
+      THIS_METHOD_IS_ONLY_FOR_MATRICES_OF_A_SPECIFIC_SIZE);
 
   EIGEN_STATIC_ASSERT(
-        DerivedB::RowsAtCompileTime == 3
-        && DerivedB::ColsAtCompileTime == 1,
-        THIS_METHOD_IS_ONLY_FOR_MATRICES_OF_A_SPECIFIC_SIZE);
+      DerivedB::RowsAtCompileTime == 3 && DerivedB::ColsAtCompileTime == 1,
+      THIS_METHOD_IS_ONLY_FOR_MATRICES_OF_A_SPECIFIC_SIZE);
 
   EIGEN_STATIC_ASSERT(
-        DerivedC::RowsAtCompileTime == 3
-        && DerivedC::ColsAtCompileTime == 3,
-        THIS_METHOD_IS_ONLY_FOR_MATRICES_OF_A_SPECIFIC_SIZE);
+      DerivedC::RowsAtCompileTime == 3 && DerivedC::ColsAtCompileTime == 3,
+      THIS_METHOD_IS_ONLY_FOR_MATRICES_OF_A_SPECIFIC_SIZE);
 
   EIGEN_STATIC_ASSERT(
-        DerivedD::RowsAtCompileTime == 3
-        && DerivedD::ColsAtCompileTime == 1,
-        THIS_METHOD_IS_ONLY_FOR_MATRICES_OF_A_SPECIFIC_SIZE);
+      DerivedD::RowsAtCompileTime == 3 && DerivedD::ColsAtCompileTime == 1,
+      THIS_METHOD_IS_ONLY_FOR_MATRICES_OF_A_SPECIFIC_SIZE);
 
   R.noalias() = R1.transpose() * R2;
   t.noalias() = R1.transpose() * (t2 - t1);
@@ -687,21 +637,19 @@ void relativeTransform(
 
 //==============================================================================
 template <typename S, typename DerivedA, typename DerivedB>
-FCL_EXPORT
 void relativeTransform(
     const Transform3<S>& T1,
     const Transform3<S>& T2,
-    Eigen::MatrixBase<DerivedA>& R, Eigen::MatrixBase<DerivedB>& t)
+    Eigen::MatrixBase<DerivedA>& R,
+    Eigen::MatrixBase<DerivedB>& t)
 {
   EIGEN_STATIC_ASSERT(
-        DerivedA::RowsAtCompileTime == 3
-        && DerivedA::ColsAtCompileTime == 3,
-        THIS_METHOD_IS_ONLY_FOR_MATRICES_OF_A_SPECIFIC_SIZE);
+      DerivedA::RowsAtCompileTime == 3 && DerivedA::ColsAtCompileTime == 3,
+      THIS_METHOD_IS_ONLY_FOR_MATRICES_OF_A_SPECIFIC_SIZE);
 
   EIGEN_STATIC_ASSERT(
-        DerivedB::RowsAtCompileTime == 3
-        && DerivedB::ColsAtCompileTime == 1,
-        THIS_METHOD_IS_ONLY_FOR_MATRICES_OF_A_SPECIFIC_SIZE);
+      DerivedB::RowsAtCompileTime == 3 && DerivedB::ColsAtCompileTime == 1,
+      THIS_METHOD_IS_ONLY_FOR_MATRICES_OF_A_SPECIFIC_SIZE);
 
   R.noalias() = T1.linear().transpose() * T2.linear();
   t.noalias() = T1.linear().transpose() * (T2.translation() - T1.translation());
@@ -709,7 +657,6 @@ void relativeTransform(
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void getRadiusAndOriginAndRectangleSize(
     const Vector3<S>* const ps,
     const Vector3<S>* const ps2,
@@ -722,7 +669,8 @@ void getRadiusAndOriginAndRectangleSize(
     S& r)
 {
   bool indirect_index = true;
-  if(!indices) indirect_index = false;
+  if (!indices)
+    indirect_index = false;
 
   int size_P = ((ps2) ? 2 : 1) * ((ts) ? 3 : 1) * n;
 
@@ -730,15 +678,12 @@ void getRadiusAndOriginAndRectangleSize(
 
   int P_id = 0;
 
-  if(ts)
-  {
-    for(int i = 0; i < n; ++i)
-    {
+  if (ts) {
+    for (int i = 0; i < n; ++i) {
       int index = indirect_index ? indices[i] : i;
       const Triangle& t = ts[index];
 
-      for(int j = 0; j < 3; ++j)
-      {
+      for (int j = 0; j < 3; ++j) {
         int point_id = t[j];
         const Vector3<S>& p = ps[point_id];
         P[P_id][0] = axis.col(0).dot(p);
@@ -747,10 +692,8 @@ void getRadiusAndOriginAndRectangleSize(
         P_id++;
       }
 
-      if(ps2)
-      {
-        for(int j = 0; j < 3; ++j)
-        {
+      if (ps2) {
+        for (int j = 0; j < 3; ++j) {
           int point_id = t[j];
           const Vector3<S>& p = ps2[point_id];
           P[P_id][0] = axis.col(0).dot(p);
@@ -760,11 +703,8 @@ void getRadiusAndOriginAndRectangleSize(
         }
       }
     }
-  }
-  else
-  {
-    for(int i = 0; i < n; ++i)
-    {
+  } else {
+    for (int i = 0; i < n; ++i) {
       int index = indirect_index ? indices[i] : i;
 
       const Vector3<S>& p = ps[index];
@@ -773,8 +713,7 @@ void getRadiusAndOriginAndRectangleSize(
       P[P_id][2] = axis.col(2).dot(p);
       P_id++;
 
-      if(ps2)
-      {
+      if (ps2) {
         const Vector3<S>& v = ps2[index];
         P[P_id][0] = axis.col(0).dot(v);
         P[P_id][1] = axis.col(1).dot(v);
@@ -790,11 +729,12 @@ void getRadiusAndOriginAndRectangleSize(
 
   minz = maxz = P[0][2];
 
-  for(int i = 1; i < size_P; ++i)
-  {
+  for (int i = 1; i < size_P; ++i) {
     S z_value = P[i][2];
-    if(z_value < minz) minz = z_value;
-    else if(z_value > maxz) maxz = z_value;
+    if (z_value < minz)
+      minz = z_value;
+    else if (z_value > maxz)
+      maxz = z_value;
   }
 
   r = (S)0.5 * (maxz - minz);
@@ -810,16 +750,12 @@ void getRadiusAndOriginAndRectangleSize(
   S mintmp, maxtmp;
   mintmp = maxtmp = P[0][0];
 
-  for(int i = 1; i < size_P; ++i)
-  {
+  for (int i = 1; i < size_P; ++i) {
     S x_value = P[i][0];
-    if(x_value < mintmp)
-    {
+    if (x_value < mintmp) {
       minindex = i;
       mintmp = x_value;
-    }
-    else if(x_value > maxtmp)
-    {
+    } else if (x_value > maxtmp) {
       maxindex = i;
       maxtmp = x_value;
     }
@@ -831,28 +767,25 @@ void getRadiusAndOriginAndRectangleSize(
   dz = P[maxindex][2] - cz;
   maxx = P[maxindex][0] - std::sqrt(std::max<S>(radsqr - dz * dz, 0));
 
-
   // grow minx
 
-  for(int i = 0; i < size_P; ++i)
-  {
-    if(P[i][0] < minx)
-    {
+  for (int i = 0; i < size_P; ++i) {
+    if (P[i][0] < minx) {
       dz = P[i][2] - cz;
       x = P[i][0] + std::sqrt(std::max<S>(radsqr - dz * dz, 0));
-      if(x < minx) minx = x;
+      if (x < minx)
+        minx = x;
     }
   }
 
   // grow maxx
 
-  for(int i = 0; i < size_P; ++i)
-  {
-    if(P[i][0] > maxx)
-    {
+  for (int i = 0; i < size_P; ++i) {
+    if (P[i][0] > maxx) {
       dz = P[i][2] - cz;
       x = P[i][0] - std::sqrt(std::max<S>(radsqr - dz * dz, 0));
-      if(x > maxx) maxx = x;
+      if (x > maxx)
+        maxx = x;
     }
   }
 
@@ -862,16 +795,12 @@ void getRadiusAndOriginAndRectangleSize(
 
   minindex = maxindex = 0;
   mintmp = maxtmp = P[0][1];
-  for(int i = 1; i < size_P; ++i)
-  {
+  for (int i = 1; i < size_P; ++i) {
     S y_value = P[i][1];
-    if(y_value < mintmp)
-    {
+    if (y_value < mintmp) {
       minindex = i;
       mintmp = y_value;
-    }
-    else if(y_value > maxtmp)
-    {
+    } else if (y_value > maxtmp) {
       maxindex = i;
       maxtmp = y_value;
     }
@@ -885,97 +814,77 @@ void getRadiusAndOriginAndRectangleSize(
 
   // grow miny
 
-  for(int i = 0; i < size_P; ++i)
-  {
-    if(P[i][1] < miny)
-    {
+  for (int i = 0; i < size_P; ++i) {
+    if (P[i][1] < miny) {
       dz = P[i][2] - cz;
       y = P[i][1] + std::sqrt(std::max<S>(radsqr - dz * dz, 0));
-      if(y < miny) miny = y;
+      if (y < miny)
+        miny = y;
     }
   }
 
   // grow maxy
 
-  for(int i = 0; i < size_P; ++i)
-  {
-    if(P[i][1] > maxy)
-    {
+  for (int i = 0; i < size_P; ++i) {
+    if (P[i][1] > maxy) {
       dz = P[i][2] - cz;
       y = P[i][1] - std::sqrt(std::max<S>(radsqr - dz * dz, 0));
-      if(y > maxy) maxy = y;
+      if (y > maxy)
+        maxy = y;
     }
   }
 
-  // corners may have some points which are not covered - grow lengths if necessary
-  // quite conservative (can be improved)
+  // corners may have some points which are not covered - grow lengths if
+  // necessary quite conservative (can be improved)
   S dx, dy, u, t;
   S a = std::sqrt((S)0.5);
-  for(int i = 0; i < size_P; ++i)
-  {
-    if(P[i][0] > maxx)
-    {
-      if(P[i][1] > maxy)
-      {
+  for (int i = 0; i < size_P; ++i) {
+    if (P[i][0] > maxx) {
+      if (P[i][1] > maxy) {
         dx = P[i][0] - maxx;
         dy = P[i][1] - maxy;
         u = dx * a + dy * a;
-        t = (a*u - dx)*(a*u - dx) +
-            (a*u - dy)*(a*u - dy) +
-            (cz - P[i][2])*(cz - P[i][2]);
+        t = (a * u - dx) * (a * u - dx) + (a * u - dy) * (a * u - dy)
+            + (cz - P[i][2]) * (cz - P[i][2]);
         u = u - std::sqrt(std::max<S>(radsqr - t, 0));
-        if(u > 0)
-        {
-          maxx += u*a;
-          maxy += u*a;
+        if (u > 0) {
+          maxx += u * a;
+          maxy += u * a;
         }
-      }
-      else if(P[i][1] < miny)
-      {
+      } else if (P[i][1] < miny) {
         dx = P[i][0] - maxx;
         dy = P[i][1] - miny;
         u = dx * a - dy * a;
-        t = (a*u - dx)*(a*u - dx) +
-            (-a*u - dy)*(-a*u - dy) +
-            (cz - P[i][2])*(cz - P[i][2]);
+        t = (a * u - dx) * (a * u - dx) + (-a * u - dy) * (-a * u - dy)
+            + (cz - P[i][2]) * (cz - P[i][2]);
         u = u - std::sqrt(std::max<S>(radsqr - t, 0));
-        if(u > 0)
-        {
-          maxx += u*a;
-          miny -= u*a;
+        if (u > 0) {
+          maxx += u * a;
+          miny -= u * a;
         }
       }
-    }
-    else if(P[i][0] < minx)
-    {
-      if(P[i][1] > maxy)
-      {
+    } else if (P[i][0] < minx) {
+      if (P[i][1] > maxy) {
         dx = P[i][0] - minx;
         dy = P[i][1] - maxy;
         u = dy * a - dx * a;
-        t = (-a*u - dx)*(-a*u - dx) +
-            (a*u - dy)*(a*u - dy) +
-            (cz - P[i][2])*(cz - P[i][2]);
+        t = (-a * u - dx) * (-a * u - dx) + (a * u - dy) * (a * u - dy)
+            + (cz - P[i][2]) * (cz - P[i][2]);
         u = u - std::sqrt(std::max<S>(radsqr - t, 0));
-        if(u > 0)
-        {
-          minx -= u*a;
-          maxy += u*a;
+        if (u > 0) {
+          minx -= u * a;
+          maxy += u * a;
         }
-      }
-      else if(P[i][1] < miny)
-      {
+      } else if (P[i][1] < miny) {
         dx = P[i][0] - minx;
         dy = P[i][1] - miny;
         u = -dx * a - dy * a;
-        t = (-a*u - dx)*(-a*u - dx) +
-            (-a*u - dy)*(-a*u - dy) +
-            (cz - P[i][2])*(cz - P[i][2]);
+        t = (-a * u - dx) * (-a * u - dx) + (-a * u - dy) * (-a * u - dy)
+            + (cz - P[i][2]) * (cz - P[i][2]);
         u = u - std::sqrt(std::max<S>(radsqr - t, 0));
-        if (u > 0)
-        {
-          minx -= u*a;
-          miny -= u*a;
+        if (u > 0) {
+          minx -= u * a;
+          miny -= u * a;
         }
       }
     }
@@ -984,15 +893,15 @@ void getRadiusAndOriginAndRectangleSize(
   origin = axis.col(0) * minx + axis.col(1) * miny + axis.col(2) * cz;
 
   l[0] = maxx - minx;
-  if(l[0] < 0) l[0] = 0;
+  if (l[0] < 0)
+    l[0] = 0;
   l[1] = maxy - miny;
-  if(l[1] < 0) l[1] = 0;
-
+  if (l[1] < 0)
+    l[1] = 0;
 }
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void getRadiusAndOriginAndRectangleSize(
     const Vector3<S>* const ps,
     const Vector3<S>* const ps2,
@@ -1004,7 +913,8 @@ void getRadiusAndOriginAndRectangleSize(
     S& r)
 {
   bool indirect_index = true;
-  if(!indices) indirect_index = false;
+  if (!indices)
+    indirect_index = false;
 
   int size_P = ((ps2) ? 2 : 1) * ((ts) ? 3 : 1) * n;
 
@@ -1012,15 +922,12 @@ void getRadiusAndOriginAndRectangleSize(
 
   int P_id = 0;
 
-  if(ts)
-  {
-    for(int i = 0; i < n; ++i)
-    {
+  if (ts) {
+    for (int i = 0; i < n; ++i) {
       int index = indirect_index ? indices[i] : i;
       const Triangle& t = ts[index];
 
-      for(int j = 0; j < 3; ++j)
-      {
+      for (int j = 0; j < 3; ++j) {
         int point_id = t[j];
         const Vector3<S>& p = ps[point_id];
         P[P_id][0] = tf.linear().col(0).dot(p);
@@ -1029,10 +936,8 @@ void getRadiusAndOriginAndRectangleSize(
         P_id++;
       }
 
-      if(ps2)
-      {
-        for(int j = 0; j < 3; ++j)
-        {
+      if (ps2) {
+        for (int j = 0; j < 3; ++j) {
           int point_id = t[j];
           const Vector3<S>& p = ps2[point_id];
           P[P_id][0] = tf.linear().col(0).dot(p);
@@ -1042,11 +947,8 @@ void getRadiusAndOriginAndRectangleSize(
         }
       }
     }
-  }
-  else
-  {
-    for(int i = 0; i < n; ++i)
-    {
+  } else {
+    for (int i = 0; i < n; ++i) {
       int index = indirect_index ? indices[i] : i;
 
       const Vector3<S>& p = ps[index];
@@ -1055,8 +957,7 @@ void getRadiusAndOriginAndRectangleSize(
       P[P_id][2] = tf.linear().col(2).dot(p);
       P_id++;
 
-      if(ps2)
-      {
+      if (ps2) {
         P[P_id][0] = tf.linear().col(0).dot(ps2[index]);
         P[P_id][1] = tf.linear().col(1).dot(ps2[index]);
         P[P_id][2] = tf.linear().col(2).dot(ps2[index]);
@@ -1071,11 +972,12 @@ void getRadiusAndOriginAndRectangleSize(
 
   minz = maxz = P[0][2];
 
-  for(int i = 1; i < size_P; ++i)
-  {
+  for (int i = 1; i < size_P; ++i) {
     S z_value = P[i][2];
-    if(z_value < minz) minz = z_value;
-    else if(z_value > maxz) maxz = z_value;
+    if (z_value < minz)
+      minz = z_value;
+    else if (z_value > maxz)
+      maxz = z_value;
   }
 
   r = (S)0.5 * (maxz - minz);
@@ -1091,16 +993,12 @@ void getRadiusAndOriginAndRectangleSize(
   S mintmp, maxtmp;
   mintmp = maxtmp = P[0][0];
 
-  for(int i = 1; i < size_P; ++i)
-  {
+  for (int i = 1; i < size_P; ++i) {
     S x_value = P[i][0];
-    if(x_value < mintmp)
-    {
+    if (x_value < mintmp) {
       minindex = i;
       mintmp = x_value;
-    }
-    else if(x_value > maxtmp)
-    {
+    } else if (x_value > maxtmp) {
       maxindex = i;
       maxtmp = x_value;
     }
@@ -1112,28 +1010,25 @@ void getRadiusAndOriginAndRectangleSize(
   dz = P[maxindex][2] - cz;
   maxx = P[maxindex][0] - std::sqrt(std::max<S>(radsqr - dz * dz, 0));
 
-
   // grow minx
 
-  for(int i = 0; i < size_P; ++i)
-  {
-    if(P[i][0] < minx)
-    {
+  for (int i = 0; i < size_P; ++i) {
+    if (P[i][0] < minx) {
       dz = P[i][2] - cz;
       x = P[i][0] + std::sqrt(std::max<S>(radsqr - dz * dz, 0));
-      if(x < minx) minx = x;
+      if (x < minx)
+        minx = x;
     }
   }
 
   // grow maxx
 
-  for(int i = 0; i < size_P; ++i)
-  {
-    if(P[i][0] > maxx)
-    {
+  for (int i = 0; i < size_P; ++i) {
+    if (P[i][0] > maxx) {
       dz = P[i][2] - cz;
       x = P[i][0] - std::sqrt(std::max<S>(radsqr - dz * dz, 0));
-      if(x > maxx) maxx = x;
+      if (x > maxx)
+        maxx = x;
     }
   }
 
@@ -1143,16 +1038,12 @@ void getRadiusAndOriginAndRectangleSize(
 
   minindex = maxindex = 0;
   mintmp = maxtmp = P[0][1];
-  for(int i = 1; i < size_P; ++i)
-  {
+  for (int i = 1; i < size_P; ++i) {
     S y_value = P[i][1];
-    if(y_value < mintmp)
-    {
+    if (y_value < mintmp) {
       minindex = i;
       mintmp = y_value;
-    }
-    else if(y_value > maxtmp)
-    {
+    } else if (y_value > maxtmp) {
       maxindex = i;
       maxtmp = y_value;
     }
@@ -1166,97 +1057,77 @@ void getRadiusAndOriginAndRectangleSize(
 
   // grow miny
 
-  for(int i = 0; i < size_P; ++i)
-  {
-    if(P[i][1] < miny)
-    {
+  for (int i = 0; i < size_P; ++i) {
+    if (P[i][1] < miny) {
       dz = P[i][2] - cz;
       y = P[i][1] + std::sqrt(std::max<S>(radsqr - dz * dz, 0));
-      if(y < miny) miny = y;
+      if (y < miny)
+        miny = y;
     }
   }
 
   // grow maxy
 
-  for(int i = 0; i < size_P; ++i)
-  {
-    if(P[i][1] > maxy)
-    {
+  for (int i = 0; i < size_P; ++i) {
+    if (P[i][1] > maxy) {
       dz = P[i][2] - cz;
       y = P[i][1] - std::sqrt(std::max<S>(radsqr - dz * dz, 0));
-      if(y > maxy) maxy = y;
+      if (y > maxy)
+        maxy = y;
     }
   }
 
-  // corners may have some points which are not covered - grow lengths if necessary
-  // quite conservative (can be improved)
+  // corners may have some points which are not covered - grow lengths if
+  // necessary quite conservative (can be improved)
   S dx, dy, u, t;
   S a = std::sqrt((S)0.5);
-  for(int i = 0; i < size_P; ++i)
-  {
-    if(P[i][0] > maxx)
-    {
-      if(P[i][1] > maxy)
-      {
+  for (int i = 0; i < size_P; ++i) {
+    if (P[i][0] > maxx) {
+      if (P[i][1] > maxy) {
         dx = P[i][0] - maxx;
         dy = P[i][1] - maxy;
         u = dx * a + dy * a;
-        t = (a*u - dx)*(a*u - dx) +
-            (a*u - dy)*(a*u - dy) +
-            (cz - P[i][2])*(cz - P[i][2]);
+        t = (a * u - dx) * (a * u - dx) + (a * u - dy) * (a * u - dy)
+            + (cz - P[i][2]) * (cz - P[i][2]);
         u = u - std::sqrt(std::max<S>(radsqr - t, 0));
-        if(u > 0)
-        {
-          maxx += u*a;
-          maxy += u*a;
+        if (u > 0) {
+          maxx += u * a;
+          maxy += u * a;
         }
-      }
-      else if(P[i][1] < miny)
-      {
+      } else if (P[i][1] < miny) {
         dx = P[i][0] - maxx;
         dy = P[i][1] - miny;
         u = dx * a - dy * a;
-        t = (a*u - dx)*(a*u - dx) +
-            (-a*u - dy)*(-a*u - dy) +
-            (cz - P[i][2])*(cz - P[i][2]);
+        t = (a * u - dx) * (a * u - dx) + (-a * u - dy) * (-a * u - dy)
+            + (cz - P[i][2]) * (cz - P[i][2]);
         u = u - std::sqrt(std::max<S>(radsqr - t, 0));
-        if(u > 0)
-        {
-          maxx += u*a;
-          miny -= u*a;
+        if (u > 0) {
+          maxx += u * a;
+          miny -= u * a;
         }
       }
-    }
-    else if(P[i][0] < minx)
-    {
-      if(P[i][1] > maxy)
-      {
+    } else if (P[i][0] < minx) {
+      if (P[i][1] > maxy) {
         dx = P[i][0] - minx;
         dy = P[i][1] - maxy;
         u = dy * a - dx * a;
-        t = (-a*u - dx)*(-a*u - dx) +
-            (a*u - dy)*(a*u - dy) +
-            (cz - P[i][2])*(cz - P[i][2]);
+        t = (-a * u - dx) * (-a * u - dx) + (a * u - dy) * (a * u - dy)
+            + (cz - P[i][2]) * (cz - P[i][2]);
         u = u - std::sqrt(std::max<S>(radsqr - t, 0));
-        if(u > 0)
-        {
-          minx -= u*a;
-          maxy += u*a;
+        if (u > 0) {
+          minx -= u * a;
+          maxy += u * a;
         }
-      }
-      else if(P[i][1] < miny)
-      {
+      } else if (P[i][1] < miny) {
         dx = P[i][0] - minx;
         dy = P[i][1] - miny;
         u = -dx * a - dy * a;
-        t = (-a*u - dx)*(-a*u - dx) +
-            (-a*u - dy)*(-a*u - dy) +
-            (cz - P[i][2])*(cz - P[i][2]);
+        t = (-a * u - dx) * (-a * u - dx) + (-a * u - dy) * (-a * u - dy)
+            + (cz - P[i][2]) * (cz - P[i][2]);
         u = u - std::sqrt(std::max<S>(radsqr - t, 0));
-        if (u > 0)
-        {
-          minx -= u*a;
-          miny -= u*a;
+        if (u > 0) {
+          minx -= u * a;
+          miny -= u * a;
         }
       }
     }
@@ -1267,14 +1138,15 @@ void getRadiusAndOriginAndRectangleSize(
   tf.translation().noalias() += tf.linear().col(2) * cz;
 
   l[0] = maxx - minx;
-  if(l[0] < 0) l[0] = 0;
+  if (l[0] < 0)
+    l[0] = 0;
   l[1] = maxy - miny;
-  if(l[1] < 0) l[1] = 0;
+  if (l[1] < 0)
+    l[1] = 0;
 }
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void circumCircleComputation(
     const Vector3<S>& a,
     const Vector3<S>& b,
@@ -1292,14 +1164,12 @@ void circumCircleComputation(
   radius = std::sqrt(radius) * 0.5;
 
   center = c;
-  center.noalias() += (e2 * e1_len2 - e1 * e2_len2).cross(e3) * (0.5 * 1 / e3_len2);
+  center.noalias()
+      += (e2 * e1_len2 - e1 * e2_len2).cross(e3) * (0.5 * 1 / e3_len2);
 }
-
-
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 S maximumDistance(
     const Vector3<S>* const ps,
     const Vector3<S>* const ps2,
@@ -1308,7 +1178,7 @@ S maximumDistance(
     int n,
     const Vector3<S>& query)
 {
-  if(ts)
+  if (ts)
     return detail::maximumDistance_mesh(ps, ps2, ts, indices, n, query);
   else
     return detail::maximumDistance_pointcloud(ps, ps2, indices, n, query);
@@ -1316,7 +1186,6 @@ S maximumDistance(
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void getExtentAndCenter(
     const Vector3<S>* const ps,
     const Vector3<S>* const ps2,
@@ -1327,31 +1196,30 @@ void getExtentAndCenter(
     Vector3<S>& center,
     Vector3<S>& extent)
 {
-  if(ts)
-    detail::getExtentAndCenter_mesh(ps, ps2, ts, indices, n, axis, center, extent);
+  if (ts)
+    detail::getExtentAndCenter_mesh(
+        ps, ps2, ts, indices, n, axis, center, extent);
   else
-    detail::getExtentAndCenter_pointcloud(ps, ps2, indices, n, axis, center, extent);
+    detail::getExtentAndCenter_pointcloud(
+        ps, ps2, indices, n, axis, center, extent);
 }
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void getCovariance(
     const Vector3<S>* const ps,
     const Vector3<S>* const ps2,
     Triangle* ts,
     unsigned int* indices,
-    int n, Matrix3<S>& M)
+    int n,
+    Matrix3<S>& M)
 {
   Vector3<S> S1 = Vector3<S>::Zero();
-  Vector3<S> S2[3] = {
-    Vector3<S>::Zero(), Vector3<S>::Zero(), Vector3<S>::Zero()
-  };
+  Vector3<S> S2[3]
+      = {Vector3<S>::Zero(), Vector3<S>::Zero(), Vector3<S>::Zero()};
 
-  if(ts)
-  {
-    for(int i = 0; i < n; ++i)
-    {
+  if (ts) {
+    for (int i = 0; i < n; ++i) {
       const Triangle& t = (indices) ? ts[indices[i]] : ts[i];
 
       const Vector3<S>& p1 = ps[t[0]];
@@ -1367,8 +1235,7 @@ void getCovariance(
       S2[0][2] += (p1[0] * p1[2] + p2[0] * p2[2] + p3[0] * p3[2]);
       S2[1][2] += (p1[1] * p1[2] + p2[1] * p2[2] + p3[1] * p3[2]);
 
-      if(ps2)
-      {
+      if (ps2) {
         const Vector3<S>& p1 = ps2[t[0]];
         const Vector3<S>& p2 = ps2[t[1]];
         const Vector3<S>& p3 = ps2[t[2]];
@@ -1383,11 +1250,8 @@ void getCovariance(
         S2[1][2] += (p1[1] * p1[2] + p2[1] * p2[2] + p3[1] * p3[2]);
       }
     }
-  }
-  else
-  {
-    for(int i = 0; i < n; ++i)
-    {
+  } else {
+    for (int i = 0; i < n; ++i) {
       const Vector3<S>& p = (indices) ? ps[indices[i]] : ps[i];
       S1 += p;
       S2[0][0] += (p[0] * p[0]);
@@ -1397,7 +1261,7 @@ void getCovariance(
       S2[0][2] += (p[0] * p[2]);
       S2[1][2] += (p[1] * p[2]);
 
-      if(ps2) // another frame
+      if (ps2) // another frame
       {
         const Vector3<S>& p = (indices) ? ps2[indices[i]] : ps2[i];
         S1 += p;
@@ -1413,17 +1277,15 @@ void getCovariance(
 
   int n_points = ((ps2) ? 2 : 1) * ((ts) ? 3 : 1) * n;
 
-  M(0, 0) = S2[0][0] - S1[0]*S1[0] / n_points;
-  M(1, 1) = S2[1][1] - S1[1]*S1[1] / n_points;
-  M(2, 2) = S2[2][2] - S1[2]*S1[2] / n_points;
-  M(0, 1) = S2[0][1] - S1[0]*S1[1] / n_points;
-  M(1, 2) = S2[1][2] - S1[1]*S1[2] / n_points;
-  M(0, 2) = S2[0][2] - S1[0]*S1[2] / n_points;
+  M(0, 0) = S2[0][0] - S1[0] * S1[0] / n_points;
+  M(1, 1) = S2[1][1] - S1[1] * S1[1] / n_points;
+  M(2, 2) = S2[2][2] - S1[2] * S1[2] / n_points;
+  M(0, 1) = S2[0][1] - S1[0] * S1[1] / n_points;
+  M(1, 2) = S2[1][2] - S1[1] * S1[2] / n_points;
+  M(0, 2) = S2[0][2] - S1[0] * S1[2] / n_points;
   M(1, 0) = M(0, 1);
   M(2, 0) = M(0, 2);
   M(2, 1) = M(1, 2);
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

@@ -35,22 +35,19 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_SHAPEDISTANCETRAVERSALNODE_H
-#define FCL_TRAVERSAL_SHAPEDISTANCETRAVERSALNODE_H
+#pragma once
 
-#include "fcl/narrowphase/detail/traversal/traversal_node_base.h"
-#include "fcl/narrowphase/detail/traversal/distance/distance_traversal_node_base.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/distance_traversal_node_base.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/traversal_node_base.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /// @brief Traversal node for distance between two shapes
-template<typename Shape1, typename Shape2, typename NarrowPhaseSolver>
-class FCL_EXPORT ShapeDistanceTraversalNode
-    : public DistanceTraversalNodeBase<typename Shape1::S>
+template <typename Shape1, typename Shape2, typename NarrowPhaseSolver>
+class ShapeDistanceTraversalNode
+  : public DistanceTraversalNodeBase<typename Shape1::S>
 {
 public:
   using S = typename Shape1::S;
@@ -82,8 +79,6 @@ bool initialize(
     DistanceResult<typename Shape1::S>& result);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/traversal/distance/shape_distance_traversal_node-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/shape_distance_traversal_node-inl.h"

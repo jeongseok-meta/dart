@@ -34,45 +34,49 @@
 
 /** @author Mark Moll */
 
-#ifndef FCL_MATH_CONSTANTS_
-#define FCL_MATH_CONSTANTS_
+#pragma once
 
-#include "fcl/common/types.h"
+#include "dart/collision/hit/common/types.h"
 
 #include <limits>
+
 #include <cmath>
 
-namespace dart { namespace collision { namespace hit {
+namespace dart::collision::hit {
 
 namespace detail {
 
 // Helper struct for determining the underlying numerical type of scalars.
 // Allows us to treat AutoDiffScalar<double> and double as double type and
 // AutoDiffScalar<float> and float as float type.
-template<typename S>
-struct ScalarTrait {
+template <typename S>
+struct ScalarTrait
+{
   // NOTE: This relies on AutoDiffScalar's `Real` class member and serves as
   // an entry path for any custom scalar class that likewise defines a `Real`
   // class member.
   typedef typename S::Real type;
 };
 
-template<>
-struct ScalarTrait<long double> {
+template <>
+struct ScalarTrait<long double>
+{
   typedef long double type;
 };
 
-template<>
-struct ScalarTrait<double> {
+template <>
+struct ScalarTrait<double>
+{
   typedef double type;
 };
 
-template<>
-struct ScalarTrait<float> {
+template <>
+struct ScalarTrait<float>
+{
   typedef float type;
 };
 
-}  // namespace detail
+} // namespace detail
 
 /// A collection of scalar-dependent constants. This provides the ability to
 /// get mathematical constants and tolerance values that are appropriately
@@ -126,63 +130,74 @@ struct ScalarTrait<float> {
 ///
 /// \tparam S The scalar type for which constant values will be retrieved.
 template <typename S>
-struct FCL_EXPORT constants
+struct constants
 {
-typedef typename detail::ScalarTrait<S>::type Real;
+  typedef typename detail::ScalarTrait<S>::type Real;
 
-/// The mathematical constant pi.
-static constexpr S pi() { return S(3.141592653589793238462643383279502884197169399375105820974944592L); }
+  /// The mathematical constant pi.
+  static constexpr S pi()
+  {
+    return S(
+        3.141592653589793238462643383279502884197169399375105820974944592L);
+  }
 
-/// The golden ratio.
-static constexpr S phi() { return S(1.618033988749894848204586834365638117720309179805762862135448623L); }
+  /// The golden ratio.
+  static constexpr S phi()
+  {
+    return S(
+        1.618033988749894848204586834365638117720309179805762862135448623L);
+  }
 
-/// Defines the default accuracy for gjk and epa tolerance. It is defined as
-/// ε^(7/8) -- where ε is the machine precision epsilon for
-/// the in-use Real. The value is a much smaller epsilon for doubles than
-/// for floats (2e-14 vs 9e-7, respectively). The choice of ε^(7/8) as the
-/// default GJK tolerance reflects a tolerance that is a *slightly* tighter
-/// bound than the historical value of 1e-6 used for 32-bit floats.
-static Real gjk_default_tolerance() {
-  static const Real value = eps_78();
-  return value;
-}
+  /// Defines the default accuracy for gjk and epa tolerance. It is defined as
+  /// ε^(7/8) -- where ε is the machine precision epsilon for
+  /// the in-use Real. The value is a much smaller epsilon for doubles than
+  /// for floats (2e-14 vs 9e-7, respectively). The choice of ε^(7/8) as the
+  /// default GJK tolerance reflects a tolerance that is a *slightly* tighter
+  /// bound than the historical value of 1e-6 used for 32-bit floats.
+  static Real gjk_default_tolerance()
+  {
+    static const Real value = eps_78();
+    return value;
+  }
 
-/// Returns ε for the precision of the underlying scalar type.
-static constexpr Real eps() {
-  static_assert(std::is_floating_point<Real>::value,
-                "Constants can only be evaluated for scalars with floating "
-                "point implementations");
-  return std::numeric_limits<Real>::epsilon();
-}
+  /// Returns ε for the precision of the underlying scalar type.
+  static constexpr Real eps()
+  {
+    static_assert(
+        std::is_floating_point<Real>::value,
+        "Constants can only be evaluated for scalars with floating "
+        "point implementations");
+    return std::numeric_limits<Real>::epsilon();
+  }
 
-// TODO(SeanCurtis-TRI) These are *not* declared constexpr because the clang
-//  compiler available in the current CI configuration for ubuntu and mac does
-//  not have std::pow declared as constexpr. When that changes, these can
-//  likewise be declared as constexpr.
+  // TODO(SeanCurtis-TRI) These are *not* declared constexpr because the clang
+  //  compiler available in the current CI configuration for ubuntu and mac does
+  //  not have std::pow declared as constexpr. When that changes, these can
+  //  likewise be declared as constexpr.
 
-/// Returns ε^(7/8) for the precision of the underlying scalar type.
-static Real eps_78() {
-  static const Real value = std::pow(eps(), 7./8.);
-  return value;
-}
+  /// Returns ε^(7/8) for the precision of the underlying scalar type.
+  static Real eps_78()
+  {
+    static const Real value = std::pow(eps(), 7. / 8.);
+    return value;
+  }
 
-/// Returns ε^(3/4) for the precision of the underlying scalar type.
-static Real eps_34() {
-  static const Real value = std::pow(eps(), 3./4.);
-  return value;
-}
+  /// Returns ε^(3/4) for the precision of the underlying scalar type.
+  static Real eps_34()
+  {
+    static const Real value = std::pow(eps(), 3. / 4.);
+    return value;
+  }
 
-/// Returns ε^(1/2) for the precision of the underlying scalar type.
-static Real eps_12() {
-  static const Real value = std::pow(eps(), 1./2.);
-  return value;
-}
-
+  /// Returns ε^(1/2) for the precision of the underlying scalar type.
+  static Real eps_12()
+  {
+    static const Real value = std::pow(eps(), 1. / 2.);
+    return value;
+  }
 };
 
 using constantsf = constants<float>;
 using constantsd = constants<double>;
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

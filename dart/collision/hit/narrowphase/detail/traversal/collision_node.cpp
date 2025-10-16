@@ -35,33 +35,33 @@
 
 /** @author Jia Pan */
 
-#include "fcl/narrowphase/detail/traversal/collision_node-inl.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/collision_node-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
-template
-void collide(CollisionTraversalNodeBase<double>* node, BVHFrontList* front_list);
+template void collide(
+    CollisionTraversalNodeBase<double>* node, BVHFrontList* front_list);
 
 //==============================================================================
-template
-void selfCollide(CollisionTraversalNodeBase<double>* node, BVHFrontList* front_list);
+template void selfCollide(
+    CollisionTraversalNodeBase<double>* node, BVHFrontList* front_list);
 
 //==============================================================================
-template
-void distance(DistanceTraversalNodeBase<double>* node, BVHFrontList* front_list, int qsize);
+template void distance(
+    DistanceTraversalNodeBase<double>* node,
+    BVHFrontList* front_list,
+    int qsize);
 
 //==============================================================================
-template
-void collide2(MeshCollisionTraversalNodeOBB<double>* node, BVHFrontList* front_list);
+template void collide2(
+    MeshCollisionTraversalNodeOBB<double>* node, BVHFrontList* front_list);
 
 //==============================================================================
-template
-void collide2(MeshCollisionTraversalNodeRSS<double>* node, BVHFrontList* front_list);
+template void collide2(
+    MeshCollisionTraversalNodeRSS<double>* node, BVHFrontList* front_list);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

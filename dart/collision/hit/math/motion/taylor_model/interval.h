@@ -33,21 +33,21 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 
-// This code is based on code developed by Stephane Redon at UNC and Inria for the CATCH library: http://graphics.ewha.ac.kr/CATCH/
+// This code is based on code developed by Stephane Redon at UNC and Inria for
+// the CATCH library: http://graphics.ewha.ac.kr/CATCH/
 /** @author Jia Pan */
 
-#ifndef FCL_CCD_INTERVAL_H
-#define FCL_CCD_INTERVAL_H
+#pragma once
+
+#include "dart/collision/hit/common/types.h"
 
 #include <iostream>
-#include "fcl/common/types.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Interval class for [a, b]
 template <typename S>
-struct FCL_EXPORT Interval
+struct Interval
 {
   S i_[2];
 
@@ -65,43 +65,43 @@ struct FCL_EXPORT Interval
   void setValue(S x);
 
   /// @brief access the interval endpoints: 0 for left, 1 for right end
-  S operator [] (size_t i) const;
+  S operator[](size_t i) const;
 
   /// @brief access the interval endpoints: 0 for left, 1 for right end
-  S& operator [] (size_t i);
+  S& operator[](size_t i);
 
   /// @brief whether two intervals are the same
-  bool operator == (const Interval& other) const;
+  bool operator==(const Interval& other) const;
 
   /// @brief add two intervals
-  Interval operator + (const Interval& other) const;
+  Interval operator+(const Interval& other) const;
 
   /// @brief minus another interval
-  Interval operator - (const Interval& other) const;
+  Interval operator-(const Interval& other) const;
 
-  Interval& operator += (const Interval& other);
+  Interval& operator+=(const Interval& other);
 
-  Interval& operator -= (const Interval& other);
+  Interval& operator-=(const Interval& other);
 
-  Interval operator * (const Interval& other) const;
+  Interval operator*(const Interval& other) const;
 
-  Interval& operator *= (const Interval& other);
+  Interval& operator*=(const Interval& other);
 
-  Interval operator * (S d) const;
+  Interval operator*(S d) const;
 
-  Interval& operator *= (S d);
+  Interval& operator*=(S d);
 
   /// @brief other must not contain 0
-  Interval operator / (const Interval& other) const;
+  Interval operator/(const Interval& other) const;
 
-  Interval& operator /= (const Interval& other);
+  Interval& operator/=(const Interval& other);
 
   /// @brief determine whether the intersection between intervals is empty
   bool overlap(const Interval& other) const;
 
   bool intersect(const Interval& other);
 
-  Interval operator - () const;
+  Interval operator-() const;
 
   /// @brief Return the nearest distance for points within the interval to zero
   S getAbsLower() const;
@@ -125,15 +125,11 @@ struct FCL_EXPORT Interval
 };
 
 template <typename S>
-FCL_EXPORT
 Interval<S> bound(const Interval<S>& i, S v);
 
 template <typename S>
-FCL_EXPORT
 Interval<S> bound(const Interval<S>& i, const Interval<S>& other);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/motion/taylor_model/interval-inl.h"
-
-#endif
+#include "dart/collision/hit/math/motion/taylor_model/interval-inl.h"

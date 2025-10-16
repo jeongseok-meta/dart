@@ -35,23 +35,23 @@
 
 /** @author Ioan Sucan */
 
-#ifndef FCL_COMMON_DETAIL_PROFILER_H
-#define FCL_COMMON_DETAIL_PROFILER_H
+#pragma once
+
+#include "dart/collision/hit/common/time.h"
 
 #include <algorithm>
 #include <chrono>
 #include <iostream>
 #include <map>
-#include <cmath>
 #include <mutex>
 #include <sstream>
 #include <string>
 #include <thread>
 #include <vector>
-#include "fcl/common/time.h"
-#include "fcl/export.h"
 
-namespace dart { namespace collision { namespace hit {
+#include <cmath>
+
+namespace dart::collision::hit {
 namespace detail {
 
 /// @brief This is a simple thread-safe tool for counting time
@@ -59,7 +59,7 @@ namespace detail {
 /// external profiling tools in that it allows the user to count
 /// time spent in various bits of code (sub-function granularity)
 /// or count how many times certain pieces of code are executed.
-class FCL_EXPORT Profiler
+class Profiler
 {
 public:
   // non-copyable
@@ -68,13 +68,13 @@ public:
 
   /// @brief This instance will call Profiler::begin() when constructed and
   /// Profiler::end() when it goes out of scope.
-  class FCL_EXPORT ScopedBlock;
+  class ScopedBlock;
 
   /// @brief This instance will call Profiler::start() when constructed and
   /// Profiler::stop() when it goes out of scope.
   /// If the profiler was already started, this block's constructor and
   /// destructor take no action
-  class FCL_EXPORT ScopedStart;
+  class ScopedStart;
 
   /// @brief Return an instance of the class
   static Profiler& Instance(void);
@@ -108,35 +108,35 @@ public:
   static void Event(const std::string& name, const unsigned int times = 1);
 
   /// @brief Count a specific event for a number of times
-  void event(const std::string &name, const unsigned int times = 1);
+  void event(const std::string& name, const unsigned int times = 1);
 
   /// @brief Maintain the average of a specific value
   static void Average(const std::string& name, const double value);
 
   /// @brief Maintain the average of a specific value
-  void average(const std::string &name, const double value);
+  void average(const std::string& name, const double value);
 
   /// @brief Begin counting time for a specific chunk of code
-  static void Begin(const std::string &name);
+  static void Begin(const std::string& name);
 
   /// @brief Stop counting time for a specific chunk of code
-  static void End(const std::string &name);
+  static void End(const std::string& name);
 
   /// @brief Begin counting time for a specific chunk of code
-  void begin(const std::string &name);
+  void begin(const std::string& name);
 
   /// @brief Stop counting time for a specific chunk of code
-  void end(const std::string &name);
+  void end(const std::string& name);
 
   /// @brief Print the status of the profiled code chunks and
   /// events. Optionally, computation done by different threads
   /// can be printed separately.
-  static void Status(std::ostream &out = std::cout, bool merge = true);
+  static void Status(std::ostream& out = std::cout, bool merge = true);
 
   /// @brief Print the status of the profiled code chunks and
   /// events. Optionally, computation done by different threads
   /// can be printed separately.
-  void status(std::ostream &out = std::cout, bool merge = true);
+  void status(std::ostream& out = std::cout, bool merge = true);
 
   /// @brief Check if the profiler is counting time or not
   bool running(void) const;
@@ -145,26 +145,25 @@ public:
   static bool Running(void);
 
 private:
-
   /// @brief Information about time spent in a section of the code
   struct TimeInfo
   {
     TimeInfo(void);
 
     /// @brief Total time counted.
-    time::duration    total;
+    time::duration total;
 
     /// @brief The shortest counted time interval
-    time::duration    shortest;
+    time::duration shortest;
 
     /// @brief The longest counted time interval
-    time::duration    longest;
+    time::duration longest;
 
     /// @brief Number of times a chunk of time was added to this structure
     unsigned long int parts;
 
     /// @brief The point in time when counting time started
-    time::point       start;
+    time::point start;
 
     /// @brief Begin counting time
     void set(void);
@@ -177,10 +176,10 @@ private:
   struct AvgInfo
   {
     /// @brief The sum of the values to average
-    double            total;
+    double total;
 
     /// @brief The sub of squares of the values to average
-    double            totalSqr;
+    double totalSqr;
 
     /// @brief Number of times a value was added to this structure
     unsigned long int parts;
@@ -193,59 +192,53 @@ private:
     std::map<std::string, unsigned long int> events;
 
     /// @brief The stored averages
-    std::map<std::string, AvgInfo>           avg;
+    std::map<std::string, AvgInfo> avg;
 
     /// @brief The amount of time spent in various places
-    std::map<std::string, TimeInfo>          time;
+    std::map<std::string, TimeInfo> time;
   };
 
-  void printThreadInfo(std::ostream &out, const PerThread &data);
+  void printThreadInfo(std::ostream& out, const PerThread& data);
 
-  std::mutex                             lock_;
-  std::map<std::thread::id, PerThread>   data_;
-  TimeInfo                               tinfo_;
-  bool                                   running_;
-  bool                                   printOnDestroy_;
-
+  std::mutex lock_;
+  std::map<std::thread::id, PerThread> data_;
+  TimeInfo tinfo_;
+  bool running_;
+  bool printOnDestroy_;
 };
 
 /// @brief This instance will call Profiler::begin() when constructed and
 /// Profiler::end() when it goes out of scope.
-class FCL_EXPORT Profiler::ScopedBlock
+class Profiler::ScopedBlock
 {
 public:
   /// @brief Start counting time for the block named \e name of the profiler
   /// \e prof
-  ScopedBlock(const std::string &name, Profiler &prof = Profiler::Instance());
+  ScopedBlock(const std::string& name, Profiler& prof = Profiler::Instance());
 
   ~ScopedBlock(void);
 
 private:
-
-  std::string  name_;
-  Profiler    &prof_;
+  std::string name_;
+  Profiler& prof_;
 };
 
 /// @brief This instance will call Profiler::start() when constructed and
 /// Profiler::stop() when it goes out of scope.
 /// If the profiler was already started, this block's constructor and
 /// destructor take no action
-class FCL_EXPORT Profiler::ScopedStart
+class Profiler::ScopedStart
 {
 public:
-
   /// @brief Take as argument the profiler instance to operate on (\e prof)
-  ScopedStart(Profiler &prof = Profiler::Instance());
+  ScopedStart(Profiler& prof = Profiler::Instance());
 
   ~ScopedStart(void);
 
 private:
-
-  Profiler &prof_;
-  bool      wasRunning_;
+  Profiler& prof_;
+  bool wasRunning_;
 };
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif // #ifndef FCL_COMMON_DETAIL_PROFILER_H
+} // namespace dart::collision::hit

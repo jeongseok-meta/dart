@@ -35,33 +35,28 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BROADPHASE_SIMPLEHASHTABLE_INL_H
-#define FCL_BROADPHASE_SIMPLEHASHTABLE_INL_H
+#pragma once
 
-#include "fcl/broadphase/detail/simple_hash_table.h"
+#include "dart/collision/hit/broadphase/detail/simple_hash_table.h"
 
 #include <iterator>
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
-template<typename Key, typename Data, typename HashFnc>
-SimpleHashTable<Key, Data, HashFnc>::SimpleHashTable(const HashFnc& h)
-  : h_(h)
+template <typename Key, typename Data, typename HashFnc>
+SimpleHashTable<Key, Data, HashFnc>::SimpleHashTable(const HashFnc& h) : h_(h)
 {
   // Do nothing
 }
 
 //==============================================================================
-template<typename Key, typename Data, typename HashFnc>
+template <typename Key, typename Data, typename HashFnc>
 void SimpleHashTable<Key, Data, HashFnc>::init(size_t size)
 {
-  if(size == 0)
-  {
+  if (size == 0) {
     throw std::logic_error("SimpleHashTable must have non-zero size.");
   }
 
@@ -70,47 +65,47 @@ void SimpleHashTable<Key, Data, HashFnc>::init(size_t size)
 }
 
 //==============================================================================
-template<typename Key, typename Data, typename HashFnc>
+template <typename Key, typename Data, typename HashFnc>
 void SimpleHashTable<Key, Data, HashFnc>::insert(Key key, Data value)
 {
   std::vector<unsigned int> indices = h_(key);
   size_t range = table_.size();
-  for(size_t i = 0; i < indices.size(); ++i)
+  for (size_t i = 0; i < indices.size(); ++i)
     table_[indices[i] % range].push_back(value);
 }
 
 //==============================================================================
-template<typename Key, typename Data, typename HashFnc>
+template <typename Key, typename Data, typename HashFnc>
 std::vector<Data> SimpleHashTable<Key, Data, HashFnc>::query(Key key) const
 {
   size_t range = table_.size();
   std::vector<unsigned int> indices = h_(key);
   std::set<Data> result;
-  for(size_t i = 0; i < indices.size(); ++i)
-  {
+  for (size_t i = 0; i < indices.size(); ++i) {
     unsigned int index = indices[i] % range;
-    std::copy(table_[index].begin(), table_[index].end(),
-              std::inserter(result, result.end()));
+    std::copy(
+        table_[index].begin(),
+        table_[index].end(),
+        std::inserter(result, result.end()));
   }
 
   return std::vector<Data>(result.begin(), result.end());
 }
 
 //==============================================================================
-template<typename Key, typename Data, typename HashFnc>
+template <typename Key, typename Data, typename HashFnc>
 void SimpleHashTable<Key, Data, HashFnc>::remove(Key key, Data value)
 {
   size_t range = table_.size();
   std::vector<unsigned int> indices = h_(key);
-  for(size_t i = 0; i < indices.size(); ++i)
-  {
+  for (size_t i = 0; i < indices.size(); ++i) {
     unsigned int index = indices[i] % range;
     table_[index].remove(value);
   }
 }
 
 //==============================================================================
-template<typename Key, typename Data, typename HashFnc>
+template <typename Key, typename Data, typename HashFnc>
 void SimpleHashTable<Key, Data, HashFnc>::clear()
 {
   table_.clear();
@@ -118,6 +113,4 @@ void SimpleHashTable<Key, Data, HashFnc>::clear()
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

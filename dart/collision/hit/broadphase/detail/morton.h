@@ -36,47 +36,43 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_MORTON_H
-#define FCL_MORTON_H
+#pragma once
 
-#include "fcl/common/types.h"
-#include "fcl/math/bv/AABB.h"
+#include "dart/collision/hit/common/types.h"
+#include "dart/collision/hit/math/bv/AABB.h"
 
 #include <bitset>
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @cond IGNORE
-namespace detail
-{
+namespace detail {
 
 template <typename S>
-FCL_EXPORT
 uint32 quantize(S x, uint32 n);
 
 /// @brief compute 30 bit morton code
-FCL_EXPORT
 uint32 morton_code(uint32 x, uint32 y, uint32 z);
 
 /// @brief compute 60 bit morton code
-FCL_EXPORT
 uint64 morton_code60(uint32 x, uint32 y, uint32 z);
 
 /// @brief Functor to compute the morton code for a given AABB
 /// This is specialized for 32- and 64-bit unsigned integers giving
 /// a 30- or 60-bit code, respectively, and for `std::bitset<N>` where
 /// N is the length of the code and must be a multiple of 3.
-template<typename S, typename T>
-struct FCL_EXPORT morton_functor {};
+template <typename S, typename T>
+struct morton_functor
+{
+};
 
 /// @brief Functor to compute 30 bit morton code for a given AABB<S>
-template<typename S>
-struct FCL_EXPORT morton_functor<S, uint32>
+template <typename S>
+struct morton_functor<S, uint32>
 {
   morton_functor(const AABB<S>& bbox);
 
-  uint32 operator() (const Vector3<S>& point) const;
+  uint32 operator()(const Vector3<S>& point) const;
 
   const Vector3<S> base;
   const Vector3<S> inv;
@@ -88,12 +84,12 @@ using morton_functoru32f = morton_functor<float, uint32>;
 using morton_functoru32d = morton_functor<double, uint32>;
 
 /// @brief Functor to compute 60 bit morton code for a given AABB<S>
-template<typename S>
-struct FCL_EXPORT morton_functor<S, uint64>
+template <typename S>
+struct morton_functor<S, uint64>
 {
   morton_functor(const AABB<S>& bbox);
 
-  uint64 operator() (const Vector3<S>& point) const;
+  uint64 operator()(const Vector3<S>& point) const;
 
   const Vector3<S> base;
   const Vector3<S> inv;
@@ -106,14 +102,14 @@ using morton_functoru64d = morton_functor<double, uint64>;
 
 /// @brief Functor to compute N bit morton code for a given AABB<S>
 /// N must be a multiple of 3.
-template<typename S, size_t N>
-struct FCL_EXPORT morton_functor<S, std::bitset<N>>
+template <typename S, size_t N>
+struct morton_functor<S, std::bitset<N>>
 {
-  static_assert(N%3==0, "Number of bits must be a multiple of 3");
+  static_assert(N % 3 == 0, "Number of bits must be a multiple of 3");
 
   morton_functor(const AABB<S>& bbox);
 
-  std::bitset<N> operator() (const Vector3<S>& point) const;
+  std::bitset<N> operator()(const Vector3<S>& point) const;
 
   const Vector3<S> base;
   const Vector3<S> inv;
@@ -123,8 +119,6 @@ struct FCL_EXPORT morton_functor<S, std::bitset<N>>
 
 } // namespace detail
 /// @endcond
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/broadphase/detail/morton-inl.h"
-
-#endif
+#include "dart/collision/hit/broadphase/detail/morton-inl.h"

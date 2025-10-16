@@ -35,18 +35,16 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CCD_TRANSLATIONMOTION_H
-#define FCL_CCD_TRANSLATIONMOTION_H
+#pragma once
 
-#include "fcl/math/motion/motion_base.h"
-#include "fcl/math/motion/bv_motion_bound_visitor.h"
-#include "fcl/math/motion/triangle_motion_bound_visitor.h"
+#include "dart/collision/hit/math/motion/bv_motion_bound_visitor.h"
+#include "dart/collision/hit/math/motion/motion_base.h"
+#include "dart/collision/hit/math/motion/triangle_motion_bound_visitor.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 template <typename S>
-class FCL_EXPORT TranslationMotion : public MotionBase<S>
+class TranslationMotion : public MotionBase<S>
 {
 public:
   /// @brief Construct motion from intial and goal transform
@@ -69,7 +67,7 @@ public:
 
   Vector3<S> getVelocity() const;
 
- private:
+private:
   /// @brief initial and goal transforms
   Quaternion<S> rot;
   Vector3<S> trans_start, trans_range;
@@ -83,8 +81,6 @@ public:
 using TranslationMotionf = TranslationMotion<float>;
 using TranslationMotiond = TranslationMotion<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/motion/translation_motion-inl.h"
-
-#endif
+#include "dart/collision/hit/math/motion/translation_motion-inl.h"

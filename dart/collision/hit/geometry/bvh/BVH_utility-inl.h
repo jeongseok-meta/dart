@@ -35,45 +35,36 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BVH_UTILITY_INL_H
-#define FCL_BVH_UTILITY_INL_H
+#pragma once
 
-#include "fcl/geometry/bvh/BVH_utility.h"
+#include "dart/collision/hit/geometry/bvh/BVH_utility.h"
+#include "dart/collision/hit/math/bv/utility.h"
 
-#include "fcl/math/bv/utility.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-void BVHExpand(
+extern template void BVHExpand(
     BVHModel<OBB<double>>& model, const Variance3<double>* ucs, double r);
 
 //==============================================================================
-extern template
-void BVHExpand(
+extern template void BVHExpand(
     BVHModel<RSS<double>>& model, const Variance3<double>* ucs, double r);
 
 //==============================================================================
 template <typename S, typename BV>
-FCL_EXPORT
 void BVHExpand(BVHModel<BV>& model, const Variance3<S>* ucs, S r)
 {
-  for(int i = 0; i < model.num_bvs; ++i)
-  {
+  for (int i = 0; i < model.num_bvs; ++i) {
     BVNode<BV>& bvnode = model.getBV(i);
 
     BV bv;
-    for(int j = 0; j < bvnode.num_primitives; ++j)
-    {
+    for (int j = 0; j < bvnode.num_primitives; ++j) {
       int v_id = bvnode.first_primitive + j;
       const Variance3<S>& uc = ucs[v_id];
 
       Vector3<S>& v = model.vertices[bvnode.first_primitive + j];
 
-      for(int k = 0; k < 3; ++k)
-      {
+      for (int k = 0; k < 3; ++k) {
         bv += (v + uc.axis.col(k) * (r * uc.sigma[k]));
         bv += (v - uc.axis.col(k) * (r * uc.sigma[k]));
       }
@@ -85,14 +76,9 @@ void BVHExpand(BVHModel<BV>& model, const Variance3<S>* ucs, S r)
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
-void BVHExpand(
-    BVHModel<OBB<S>>& model,
-    const Variance3<S>* ucs,
-    S r)
+void BVHExpand(BVHModel<OBB<S>>& model, const Variance3<S>* ucs, S r)
 {
-  for(int i = 0; i < model.getNumBVs(); ++i)
-  {
+  for (int i = 0; i < model.getNumBVs(); ++i) {
     BVNode<OBB<S>>& bvnode = model.getBV(i);
 
     Vector3<S>* vs = new Vector3<S>[bvnode.num_primitives * 6];
@@ -100,15 +86,13 @@ void BVHExpand(
     // and reuse it rather than creating and destructing the array every
     // iteration.
 
-    for(int j = 0; j < bvnode.num_primitives; ++j)
-    {
+    for (int j = 0; j < bvnode.num_primitives; ++j) {
       int v_id = bvnode.first_primitive + j;
       const Variance3<S>& uc = ucs[v_id];
 
-      Vector3<S>&v = model.vertices[bvnode.first_primitive + j];
+      Vector3<S>& v = model.vertices[bvnode.first_primitive + j];
 
-      for(int k = 0; k < 3; ++k)
-      {
+      for (int k = 0; k < 3; ++k) {
         const auto index1 = 6 * j + 2 * k;
         const auto index2 = index1 + 1;
         vs[index1] = v;
@@ -121,7 +105,7 @@ void BVHExpand(
     OBB<S> bv;
     fit(vs, bvnode.num_primitives * 6, bv);
 
-    delete [] vs;
+    delete[] vs;
 
     bvnode.bv = bv;
   }
@@ -129,14 +113,9 @@ void BVHExpand(
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
-void BVHExpand(
-    BVHModel<RSS<S>>& model,
-    const Variance3<S>* ucs,
-    S r)
+void BVHExpand(BVHModel<RSS<S>>& model, const Variance3<S>* ucs, S r)
 {
-  for(int i = 0; i < model.getNumBVs(); ++i)
-  {
+  for (int i = 0; i < model.getNumBVs(); ++i) {
     BVNode<RSS<S>>& bvnode = model.getBV(i);
 
     Vector3<S>* vs = new Vector3<S>[bvnode.num_primitives * 6];
@@ -144,15 +123,13 @@ void BVHExpand(
     // and reuse it rather than creating and destructing the array every
     // iteration.
 
-    for(int j = 0; j < bvnode.num_primitives; ++j)
-    {
+    for (int j = 0; j < bvnode.num_primitives; ++j) {
       int v_id = bvnode.first_primitive + j;
       const Variance3<S>& uc = ucs[v_id];
 
-      Vector3<S>&v = model.vertices[bvnode.first_primitive + j];
+      Vector3<S>& v = model.vertices[bvnode.first_primitive + j];
 
-      for(int k = 0; k < 3; ++k)
-      {
+      for (int k = 0; k < 3; ++k) {
         vs[6 * j + 2 * k] = v + uc.axis.col(k) * (r * uc.sigma[k]);
         vs[6 * j + 2 * k + 1] = v - uc.axis.col(k) * (r * uc.sigma[k]);
       }
@@ -161,12 +138,10 @@ void BVHExpand(
     RSS<S> bv;
     fit(vs, bvnode.num_primitives * 6, bv);
 
-    delete [] vs;
+    delete[] vs;
 
     bvnode.bv = bv;
   }
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

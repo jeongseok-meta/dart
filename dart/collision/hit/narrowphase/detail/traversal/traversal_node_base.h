@@ -35,29 +35,26 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_TRAVERSALNODEBASE_H
-#define FCL_TRAVERSAL_TRAVERSALNODEBASE_H
+#pragma once
 
-#include "fcl/common/types.h"
+#include "dart/collision/hit/common/types.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /// @brief Node structure encoding the information required for traversal.
 template <typename S>
-class FCL_EXPORT TraversalNodeBase
+class TraversalNodeBase
 {
 public:
   virtual ~TraversalNodeBase();
 
   virtual void preprocess();
-  
+
   virtual void postprocess();
 
-  /// @brief Whether b is a leaf node in the first BVH tree 
+  /// @brief Whether b is a leaf node in the first BVH tree
   virtual bool isFirstNodeLeaf(int b) const;
 
   /// @brief Whether b is a leaf node in the second BVH tree
@@ -91,8 +88,6 @@ public:
 };
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/traversal/traversal_node_base-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/traversal/traversal_node_base-inl.h"

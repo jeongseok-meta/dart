@@ -35,54 +35,76 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_NARROWPHASE_DETAIL_SPHERETRIANGLE_H
-#define FCL_NARROWPHASE_DETAIL_SPHERETRIANGLE_H
+#pragma once
 
-#include "fcl/geometry/shape/sphere.h"
-#include "fcl/narrowphase/contact_point.h"
+#include "dart/collision/hit/geometry/shape/sphere.h"
+#include "dart/collision/hit/narrowphase/contact_point.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /** @brief the minimum distance from a point to a line */
 template <typename S>
-FCL_EXPORT
-S segmentSqrDistance(const Vector3<S>& from, const Vector3<S>& to,const Vector3<S>& p, Vector3<S>& nearest);
+S segmentSqrDistance(
+    const Vector3<S>& from,
+    const Vector3<S>& to,
+    const Vector3<S>& p,
+    Vector3<S>& nearest);
 
 /// @brief Whether a point's projection is in a triangle
 template <typename S>
-FCL_EXPORT
-bool projectInTriangle(const Vector3<S>& p1, const Vector3<S>& p2, const Vector3<S>& p3, const Vector3<S>& normal, const Vector3<S>& p);
+bool projectInTriangle(
+    const Vector3<S>& p1,
+    const Vector3<S>& p2,
+    const Vector3<S>& p3,
+    const Vector3<S>& normal,
+    const Vector3<S>& p);
 
 template <typename S>
-FCL_EXPORT
-bool sphereTriangleIntersect(const Sphere<S>& s, const Transform3<S>& tf,
-                             const Vector3<S>& P1, const Vector3<S>& P2, const Vector3<S>& P3, Vector3<S>* contact_points, S* penetration_depth, Vector3<S>* normal_);
+bool sphereTriangleIntersect(
+    const Sphere<S>& s,
+    const Transform3<S>& tf,
+    const Vector3<S>& P1,
+    const Vector3<S>& P2,
+    const Vector3<S>& P3,
+    Vector3<S>* contact_points,
+    S* penetration_depth,
+    Vector3<S>* normal_);
 
 template <typename S>
-FCL_EXPORT
-bool sphereTriangleDistance(const Sphere<S>& sp, const Transform3<S>& tf,
-                            const Vector3<S>& P1, const Vector3<S>& P2, const Vector3<S>& P3,
-                            S* dist);
+bool sphereTriangleDistance(
+    const Sphere<S>& sp,
+    const Transform3<S>& tf,
+    const Vector3<S>& P1,
+    const Vector3<S>& P2,
+    const Vector3<S>& P3,
+    S* dist);
 
 template <typename S>
-FCL_EXPORT
-bool sphereTriangleDistance(const Sphere<S>& sp, const Transform3<S>& tf,
-                            const Vector3<S>& P1, const Vector3<S>& P2, const Vector3<S>& P3,
-                            S* dist, Vector3<S>* p1, Vector3<S>* p2);
+bool sphereTriangleDistance(
+    const Sphere<S>& sp,
+    const Transform3<S>& tf,
+    const Vector3<S>& P1,
+    const Vector3<S>& P2,
+    const Vector3<S>& P3,
+    S* dist,
+    Vector3<S>* p1,
+    Vector3<S>* p2);
 
 template <typename S>
-FCL_EXPORT
-bool sphereTriangleDistance(const Sphere<S>& sp, const Transform3<S>& tf1,
-                            const Vector3<S>& P1, const Vector3<S>& P2, const Vector3<S>& P3, const Transform3<S>& tf2,
-                            S* dist, Vector3<S>* p1, Vector3<S>* p2);
+bool sphereTriangleDistance(
+    const Sphere<S>& sp,
+    const Transform3<S>& tf1,
+    const Vector3<S>& P1,
+    const Vector3<S>& P2,
+    const Vector3<S>& P3,
+    const Transform3<S>& tf2,
+    S* dist,
+    Vector3<S>* p1,
+    Vector3<S>* p2);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/primitive_shape_algorithm/sphere_triangle-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/primitive_shape_algorithm/sphere_triangle-inl.h"

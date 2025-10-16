@@ -35,26 +35,24 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_MESHCONSERVATIVEADVANCEMENTTRAVERSALNODE_H
-#define FCL_TRAVERSAL_MESHCONSERVATIVEADVANCEMENTTRAVERSALNODE_H
+#pragma once
 
-#include "fcl/math/motion/tbv_motion_bound_visitor.h"
-#include "fcl/narrowphase/detail/traversal/distance/mesh_distance_traversal_node.h"
-#include "fcl/narrowphase/detail/traversal/distance/conservative_advancement_stack_data.h"
+#include "dart/collision/hit/math/motion/tbv_motion_bound_visitor.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/conservative_advancement_stack_data.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/mesh_distance_traversal_node.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
-/// @brief continuous collision node using conservative advancement. when using this default version, must refit the BVH in current configuration (R_t, T_t) into default configuration
+/// @brief continuous collision node using conservative advancement. when using
+/// this default version, must refit the BVH in current configuration (R_t, T_t)
+/// into default configuration
 template <typename BV>
-class FCL_EXPORT MeshConservativeAdvancementTraversalNode
-    : public MeshDistanceTraversalNode<BV>
+class MeshConservativeAdvancementTraversalNode
+  : public MeshDistanceTraversalNode<BV>
 {
 public:
-
   using S = typename BV::S;
 
   MeshConservativeAdvancementTraversalNode(S w_ = 1);
@@ -69,9 +67,9 @@ public:
   bool canStop(S c) const;
 
   mutable S min_distance;
- 
+
   mutable Vector3<S> closest_p1, closest_p2;
-  
+
   mutable int last_tri_id1, last_tri_id2;
 
   /// @brief CA controlling variable: early stop for the early iterations of CA
@@ -97,7 +95,6 @@ public:
 /// @brief Initialize traversal node for conservative advancement computation
 /// between two meshes, given the current transforms
 template <typename BV>
-FCL_EXPORT
 bool initialize(
     MeshConservativeAdvancementTraversalNode<BV>& node,
     BVHModel<BV>& model1,
@@ -109,8 +106,8 @@ bool initialize(
     bool refit_bottomup = false);
 
 template <typename S>
-class FCL_EXPORT MeshConservativeAdvancementTraversalNodeRSS
-    : public MeshConservativeAdvancementTraversalNode<RSS<S>>
+class MeshConservativeAdvancementTraversalNodeRSS
+  : public MeshConservativeAdvancementTraversalNode<RSS<S>>
 {
 public:
   MeshConservativeAdvancementTraversalNodeRSS(S w_ = 1);
@@ -122,12 +119,7 @@ public:
 
     Vector3<S> P1, P2;
     S d = distance(
-        R,
-        T,
-        this->model1->getBV(b1).bv,
-        this->model2->getBV(b2).bv,
-        &P1,
-        &P2);
+        R, T, this->model1->getBV(b1).bv, this->model2->getBV(b2).bv, &P1, &P2);
 
     this->stack.emplace_back(P1, P2, b1, b2, d);
 
@@ -144,13 +136,14 @@ public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
 
-using MeshConservativeAdvancementTraversalNodeRSSf = MeshConservativeAdvancementTraversalNodeRSS<float>;
-using MeshConservativeAdvancementTraversalNodeRSSd = MeshConservativeAdvancementTraversalNodeRSS<double>;
+using MeshConservativeAdvancementTraversalNodeRSSf
+    = MeshConservativeAdvancementTraversalNodeRSS<float>;
+using MeshConservativeAdvancementTraversalNodeRSSd
+    = MeshConservativeAdvancementTraversalNodeRSS<double>;
 
 /// @brief Initialize traversal node for conservative advancement computation
 /// between two meshes, given the current transforms, specialized for RSS
 template <typename S>
-FCL_EXPORT
 bool initialize(
     MeshConservativeAdvancementTraversalNodeRSS<S>& node,
     const BVHModel<RSS<S>>& model1,
@@ -160,8 +153,8 @@ bool initialize(
     S w = 1);
 
 template <typename S>
-class FCL_EXPORT MeshConservativeAdvancementTraversalNodeOBBRSS
-    : public MeshConservativeAdvancementTraversalNode<OBBRSS<S>>
+class MeshConservativeAdvancementTraversalNodeOBBRSS
+  : public MeshConservativeAdvancementTraversalNode<OBBRSS<S>>
 {
 public:
   MeshConservativeAdvancementTraversalNodeOBBRSS(S w_ = 1);
@@ -173,12 +166,7 @@ public:
 
     Vector3<S> P1, P2;
     S d = distance(
-        R,
-        T,
-        this->model1->getBV(b1).bv,
-        this->model2->getBV(b2).bv,
-        &P1,
-        &P2);
+        R, T, this->model1->getBV(b1).bv, this->model2->getBV(b2).bv, &P1, &P2);
 
     this->stack.emplace_back(P1, P2, b1, b2, d);
 
@@ -195,11 +183,12 @@ public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
 
-using MeshConservativeAdvancementTraversalNodeOBBRSSf = MeshConservativeAdvancementTraversalNodeOBBRSS<float>;
-using MeshConservativeAdvancementTraversalNodeOBBRSSd = MeshConservativeAdvancementTraversalNodeOBBRSS<double>;
+using MeshConservativeAdvancementTraversalNodeOBBRSSf
+    = MeshConservativeAdvancementTraversalNodeOBBRSS<float>;
+using MeshConservativeAdvancementTraversalNodeOBBRSSd
+    = MeshConservativeAdvancementTraversalNodeOBBRSS<double>;
 
 template <typename S>
-FCL_EXPORT
 bool initialize(
     MeshConservativeAdvancementTraversalNodeOBBRSS<S>& node,
     const BVHModel<OBBRSS<S>>& model1,
@@ -209,11 +198,9 @@ bool initialize(
     S w = 1);
 
 template <typename S, typename BV>
-FCL_EXPORT
 const Vector3<S> getBVAxis(const BV& bv, int i);
 
 template <typename BV>
-FCL_EXPORT
 bool meshConservativeAdvancementTraversalNodeCanStop(
     typename BV::S c,
     typename BV::S min_distance,
@@ -228,7 +215,6 @@ bool meshConservativeAdvancementTraversalNodeCanStop(
     typename BV::S& delta_t);
 
 template <typename BV>
-FCL_EXPORT
 bool meshConservativeAdvancementOrientedNodeCanStop(
     typename BV::S c,
     typename BV::S min_distance,
@@ -243,7 +229,6 @@ bool meshConservativeAdvancementOrientedNodeCanStop(
     typename BV::S& delta_t);
 
 template <typename BV>
-FCL_EXPORT
 void meshConservativeAdvancementOrientedNodeLeafTesting(
     int b1,
     int b2,
@@ -267,8 +252,6 @@ void meshConservativeAdvancementOrientedNodeLeafTesting(
     int& num_leaf_tests);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/traversal/distance/mesh_conservative_advancement_traversal_node-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/mesh_conservative_advancement_traversal_node-inl.h"

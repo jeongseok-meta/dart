@@ -35,23 +35,20 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BV_OBB_H
-#define FCL_BV_OBB_H
+#pragma once
+
+#include "dart/collision/hit/common/types.h"
+#include "dart/collision/hit/math/geometry.h"
 
 #include <iostream>
 
-#include "fcl/common/types.h"
-#include "fcl/math/geometry.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Oriented bounding box class
 template <typename S_>
-class FCL_EXPORT OBB
+class OBB
 {
 public:
-
   using S = S_;
 
   /// @brief Orientation of OBB. The axes of the rotation matrix are the
@@ -75,23 +72,27 @@ public:
       const Vector3<S>& center,
       const Vector3<S>& extent);
 
-  /// @brief Check collision between two OBB, return true if collision happens. 
+  /// @brief Check collision between two OBB, return true if collision happens.
   bool overlap(const OBB<S>& other) const;
-  
-  /// @brief Check collision between two OBB and return the overlap part. For OBB, the overlap_part return value is NOT used as the overlap part of two obbs usually is not an obb. 
+
+  /// @brief Check collision between two OBB and return the overlap part. For
+  /// OBB, the overlap_part return value is NOT used as the overlap part of two
+  /// obbs usually is not an obb.
   bool overlap(const OBB<S>& other, OBB<S>& overlap_part) const;
 
   /// @brief Check whether the OBB contains a point.
   bool contain(const Vector3<S>& p) const;
 
-  /// @brief A simple way to merge the OBB and a point (the result is not compact).
-  OBB<S>& operator +=(const Vector3<S>& p);
+  /// @brief A simple way to merge the OBB and a point (the result is not
+  /// compact).
+  OBB<S>& operator+=(const Vector3<S>& p);
 
   /// @brief Merge the OBB and another OBB (the result is not compact).
-  OBB<S>& operator += (const OBB<S>& other);
+  OBB<S>& operator+=(const OBB<S>& other);
 
-  /// @brief Return the merged OBB of current OBB and the other one (the result is not compact).
-  OBB<S> operator + (const OBB<S>& other) const;
+  /// @brief Return the merged OBB of current OBB and the other one (the result
+  /// is not compact).
+  OBB<S> operator+(const OBB<S>& other) const;
 
   /// @brief Width of the OBB.
   S width() const;
@@ -112,11 +113,10 @@ public:
   const Vector3<S> center() const;
 
   /// @brief Distance between two OBBs, not implemented.
-  S distance(const OBB& other, Vector3<S>* P = nullptr,
-                  Vector3<S>* Q = nullptr) const;
+  S distance(
+      const OBB& other, Vector3<S>* P = nullptr, Vector3<S>* Q = nullptr) const;
 
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-
 };
 
 using OBBf = OBB<float>;
@@ -124,38 +124,33 @@ using OBBd = OBB<double>;
 
 /// @brief Compute the 8 vertices of a OBB
 template <typename S>
-FCL_EXPORT
 void computeVertices(const OBB<S>& b, Vector3<S> vertices[8]);
 
 /// @brief OBB merge method when the centers of two smaller OBB are far away
 template <typename S>
-FCL_EXPORT
 OBB<S> merge_largedist(const OBB<S>& b1, const OBB<S>& b2);
 
 /// @brief OBB merge method when the centers of two smaller OBB are close
 template <typename S>
-FCL_EXPORT
 OBB<S> merge_smalldist(const OBB<S>& b1, const OBB<S>& b2);
 
 /// @brief Translate the OBB bv
 template <typename S, typename Derived>
-FCL_EXPORT
-OBB<S> translate(
-    const OBB<S>& bv, const Eigen::MatrixBase<Derived>& t);
+OBB<S> translate(const OBB<S>& bv, const Eigen::MatrixBase<Derived>& t);
 
 /// @brief Check collision between two obbs, b1 is in configuration (R0, T0) and
 /// b2 is in identity.
 template <typename S, typename DerivedA, typename DerivedB>
-FCL_EXPORT
-bool overlap(const Eigen::MatrixBase<DerivedA>& R0,
-             const Eigen::MatrixBase<DerivedB>& T0,
-             const OBB<S>& b1, const OBB<S>& b2);
+bool overlap(
+    const Eigen::MatrixBase<DerivedA>& R0,
+    const Eigen::MatrixBase<DerivedB>& T0,
+    const OBB<S>& b1,
+    const OBB<S>& b2);
 
 /// @brief Check collision between two boxes: the first box is in configuration
 /// (R, T) and its half dimension is set by a; the second box is in identity
 /// configuration and its half dimension is set by b.
 template <typename S>
-FCL_EXPORT
 bool obbDisjoint(
     const Matrix3<S>& B,
     const Vector3<S>& T,
@@ -166,14 +161,9 @@ bool obbDisjoint(
 /// (R, T) and its half dimension is set by a; the second box is in identity
 /// configuration and its half dimension is set by b.
 template <typename S>
-FCL_EXPORT
 bool obbDisjoint(
-    const Transform3<S>& tf,
-    const Vector3<S>& a,
-    const Vector3<S>& b);
+    const Transform3<S>& tf, const Vector3<S>& a, const Vector3<S>& b);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/bv/OBB-inl.h"
-
-#endif
+#include "dart/collision/hit/math/bv/OBB-inl.h"

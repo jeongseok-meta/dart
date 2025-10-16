@@ -38,24 +38,23 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CCD_TAYLOR_MODEL_H
-#define FCL_CCD_TAYLOR_MODEL_H
+#pragma once
 
-#include <memory>
+#include "dart/collision/hit/math/constants.h"
+#include "dart/collision/hit/math/motion/taylor_model/interval.h"
+#include "dart/collision/hit/math/motion/taylor_model/time_interval.h"
+
 #include <iostream>
-#include "fcl/math/constants.h"
-#include "fcl/math/motion/taylor_model/interval.h"
-#include "fcl/math/motion/taylor_model/time_interval.h"
+#include <memory>
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief TaylorModel implements a third order Taylor model, i.e., a cubic
 /// approximation of a function over a time interval, with an interval
 /// remainder. All the operations on two Taylor models assume their time
 /// intervals are the same.
 template <typename S>
-class FCL_EXPORT TaylorModel
+class TaylorModel
 {
   /// @brief time interval
   std::shared_ptr<TimeInterval<S>> time_interval_;
@@ -67,9 +66,8 @@ class FCL_EXPORT TaylorModel
   Interval<S> r_;
 
 public:
-
   void setTimeInterval(S l, S r);
-  
+
   void setTimeInterval(const std::shared_ptr<TimeInterval<S>>& time_interval);
 
   const std::shared_ptr<TimeInterval<S>>& getTimeInterval() const;
@@ -78,31 +76,40 @@ public:
   S& coeff(std::size_t i);
   const Interval<S>& remainder() const;
   Interval<S>& remainder();
-  
+
   TaylorModel();
   TaylorModel(const std::shared_ptr<TimeInterval<S>>& time_interval);
   TaylorModel(S coeff, const std::shared_ptr<TimeInterval<S>>& time_interval);
-  TaylorModel(S coeffs[3], const Interval<S>& r, const std::shared_ptr<TimeInterval<S>>& time_interval);
-  TaylorModel(S c0, S c1, S c2, S c3, const Interval<S>& r, const std::shared_ptr<TimeInterval<S>>& time_interval);
+  TaylorModel(
+      S coeffs[3],
+      const Interval<S>& r,
+      const std::shared_ptr<TimeInterval<S>>& time_interval);
+  TaylorModel(
+      S c0,
+      S c1,
+      S c2,
+      S c3,
+      const Interval<S>& r,
+      const std::shared_ptr<TimeInterval<S>>& time_interval);
 
-  TaylorModel operator + (const TaylorModel& other) const;
-  TaylorModel& operator += (const TaylorModel& other);
+  TaylorModel operator+(const TaylorModel& other) const;
+  TaylorModel& operator+=(const TaylorModel& other);
 
-  TaylorModel operator - (const TaylorModel& other) const;
-  TaylorModel& operator -= (const TaylorModel& other);
+  TaylorModel operator-(const TaylorModel& other) const;
+  TaylorModel& operator-=(const TaylorModel& other);
 
-  TaylorModel operator + (S d) const;
-  TaylorModel& operator += (S d);
+  TaylorModel operator+(S d) const;
+  TaylorModel& operator+=(S d);
 
-  TaylorModel operator - (S d) const;
-  TaylorModel& operator -= (S d);
+  TaylorModel operator-(S d) const;
+  TaylorModel& operator-=(S d);
 
-  TaylorModel operator * (const TaylorModel& other) const;
-  TaylorModel operator * (S d) const;
-  TaylorModel& operator *= (const TaylorModel& other);
-  TaylorModel& operator *= (S d);
+  TaylorModel operator*(const TaylorModel& other) const;
+  TaylorModel operator*(S d) const;
+  TaylorModel& operator*=(const TaylorModel& other);
+  TaylorModel& operator*=(S d);
 
-  TaylorModel operator - () const;
+  TaylorModel operator-() const;
 
   void print() const;
 
@@ -118,34 +125,26 @@ public:
 };
 
 template <typename S>
-FCL_EXPORT
-TaylorModel<S> operator * (S d, const TaylorModel<S>& a);
+TaylorModel<S> operator*(S d, const TaylorModel<S>& a);
 
 template <typename S>
-FCL_EXPORT
-TaylorModel<S> operator + (S d, const TaylorModel<S>& a);
+TaylorModel<S> operator+(S d, const TaylorModel<S>& a);
 
 template <typename S>
-FCL_EXPORT
-TaylorModel<S> operator - (S d, const TaylorModel<S>& a);
+TaylorModel<S> operator-(S d, const TaylorModel<S>& a);
 
 /// @brief Generate Taylor model for cos(w t + q0)
 template <typename S>
-FCL_EXPORT
 void generateTaylorModelForCosFunc(TaylorModel<S>& tm, S w, S q0);
 
 /// @brief Generate Taylor model for sin(w t + q0)
 template <typename S>
-FCL_EXPORT
 void generateTaylorModelForSinFunc(TaylorModel<S>& tm, S w, S q0);
 
 /// @brief Generate Taylor model for p + v t
 template <typename S>
-FCL_EXPORT
 void generateTaylorModelForLinearFunc(TaylorModel<S>& tm, S p, S v);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/motion/taylor_model/taylor_model-inl.h"
-
-#endif
+#include "dart/collision/hit/math/motion/taylor_model/taylor_model-inl.h"

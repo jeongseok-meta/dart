@@ -35,17 +35,14 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_MATH_SAMPLERSE3QUAT_INL_H
-#define FCL_MATH_SAMPLERSE3QUAT_INL_H
+#pragma once
 
-#include "fcl/math/sampler/sampler_se3_quat.h"
+#include "dart/collision/hit/math/sampler/sampler_se3_quat.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT SamplerSE3Quat<double>;
+extern template class SamplerSE3Quat<double>;
 
 //==============================================================================
 template <typename S>
@@ -56,15 +53,17 @@ SamplerSE3Quat<S>::SamplerSE3Quat()
 
 //==============================================================================
 template <typename S>
-SamplerSE3Quat<S>::SamplerSE3Quat(const Vector3<S>& lower_bound_, const Vector3<S>& upper_bound_) : lower_bound(lower_bound_),
-  upper_bound(upper_bound_)
+SamplerSE3Quat<S>::SamplerSE3Quat(
+    const Vector3<S>& lower_bound_, const Vector3<S>& upper_bound_)
+  : lower_bound(lower_bound_), upper_bound(upper_bound_)
 {
   // Do nothing
 }
 
 //==============================================================================
 template <typename S>
-void SamplerSE3Quat<S>::getBound(Vector3<S>& lower_bound_, Vector3<S>& upper_bound_) const
+void SamplerSE3Quat<S>::getBound(
+    Vector3<S>& lower_bound_, Vector3<S>& upper_bound_) const
 {
   lower_bound_ = lower_bound;
   upper_bound_ = upper_bound;
@@ -72,7 +71,8 @@ void SamplerSE3Quat<S>::getBound(Vector3<S>& lower_bound_, Vector3<S>& upper_bou
 
 //==============================================================================
 template <typename S>
-void SamplerSE3Quat<S>::setBound(const Vector3<S>& lower_bound_, const Vector3<S>& upper_bound_)
+void SamplerSE3Quat<S>::setBound(
+    const Vector3<S>& lower_bound_, const Vector3<S>& upper_bound_)
 
 {
   lower_bound = lower_bound_;
@@ -98,6 +98,4 @@ Vector6<S> SamplerSE3Quat<S>::sample() const
   return q;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

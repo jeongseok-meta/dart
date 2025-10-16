@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/narrowphase/cost_source-inl.h"
+#include "dart/collision/hit/narrowphase/cost_source-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-struct CostSource<double>;
+template struct CostSource<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

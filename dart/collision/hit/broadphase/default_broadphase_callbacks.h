@@ -34,27 +34,27 @@
 
 /** @author Sean Curtis (sean@tri.global) */
 
-#ifndef FCL_BROADPHASE_DEFAULTBROADPHASECALLBACKS_H
-#define FCL_BROADPHASE_DEFAULTBROADPHASECALLBACKS_H
+#pragma once
 
-#include "fcl/narrowphase/collision.h"
-#include "fcl/narrowphase/collision_request.h"
-#include "fcl/narrowphase/collision_result.h"
-#include "fcl/narrowphase/continuous_collision.h"
-#include "fcl/narrowphase/continuous_collision_request.h"
-#include "fcl/narrowphase/continuous_collision_result.h"
-#include "fcl/narrowphase/distance.h"
-#include "fcl/narrowphase/distance_request.h"
-#include "fcl/narrowphase/distance_result.h"
+#include "dart/collision/hit/narrowphase/collision.h"
+#include "dart/collision/hit/narrowphase/collision_request.h"
+#include "dart/collision/hit/narrowphase/collision_result.h"
+#include "dart/collision/hit/narrowphase/continuous_collision.h"
+#include "dart/collision/hit/narrowphase/continuous_collision_request.h"
+#include "dart/collision/hit/narrowphase/continuous_collision_result.h"
+#include "dart/collision/hit/narrowphase/distance.h"
+#include "dart/collision/hit/narrowphase/distance_request.h"
+#include "dart/collision/hit/narrowphase/distance_result.h"
 
-namespace dart { namespace collision { namespace hit {
+namespace dart::collision::hit {
 
 /// @brief Collision data for use with the DefaultCollisionFunction. It stores
 /// the collision request and the result given by collision algorithm (and
 /// stores the conclusion of whether further evaluation of the broadphase
 /// collision manager has been deemed unnecessary).
 template <typename S>
-struct DefaultCollisionData {
+struct DefaultCollisionData
+{
   CollisionRequest<S> request;
   CollisionResult<S> result;
 
@@ -85,39 +85,40 @@ struct DefaultCollisionData {
 /// @return `true` if the broadphase evaluation should stop.
 /// @tparam S   The scalar type with which the computation will be performed.
 template <typename S>
-bool DefaultCollisionFunction(CollisionObject<S>* o1, CollisionObject<S>* o2,
-                              void* data) {
+bool DefaultCollisionFunction(
+    CollisionObject<S>* o1, CollisionObject<S>* o2, void* data)
+{
   assert(data != nullptr);
   auto* collision_data = static_cast<DefaultCollisionData<S>*>(data);
   const CollisionRequest<S>& request = collision_data->request;
   CollisionResult<S>& result = collision_data->result;
 
-  if(collision_data->done) return true;
+  if (collision_data->done)
+    return true;
 
   collide(o1, o2, request, result);
 
-  if (!request.enable_cost && result.isCollision() &&
-      result.numContacts() >= request.num_max_contacts) {
+  if (!request.enable_cost && result.isCollision()
+      && result.numContacts() >= request.num_max_contacts) {
     collision_data->done = true;
   }
 
   return collision_data->done;
 }
 
-
 /// @brief Collision data for use with the DefaultContinuousCollisionFunction.
 /// It stores the collision request and the result given by the collision
 /// algorithm (and stores the conclusion of whether further evaluation of the
 /// broadphase collision manager has been deemed unnecessary).
 template <typename S>
-struct DefaultContinuousCollisionData {
+struct DefaultContinuousCollisionData
+{
   ContinuousCollisionRequest<S> request;
   ContinuousCollisionResult<S> result;
 
   /// If `true`, requests that the broadphase evaluation stop.
   bool done{false};
 };
-
 
 /// @brief Provides a simple callback for the continuous collision query in the
 /// BroadPhaseCollisionManager. It assumes the `data` parameter is non-null and
@@ -142,13 +143,16 @@ struct DefaultContinuousCollisionData {
 /// @return True if the broadphase evaluation should stop.
 /// @tparam S   The scalar type with which the computation will be performed.
 template <typename S>
-bool DefaultContinuousCollisionFunction(ContinuousCollisionObject<S>* o1,
-                                        ContinuousCollisionObject<S>* o2,
-                                        void* data) {
+bool DefaultContinuousCollisionFunction(
+    ContinuousCollisionObject<S>* o1,
+    ContinuousCollisionObject<S>* o2,
+    void* data)
+{
   assert(data != nullptr);
   auto* cdata = static_cast<DefaultContinuousCollisionData<S>*>(data);
 
-  if (cdata->done) return true;
+  if (cdata->done)
+    return true;
 
   const ContinuousCollisionRequest<S>& request = cdata->request;
   ContinuousCollisionResult<S>& result = cdata->result;
@@ -162,7 +166,8 @@ bool DefaultContinuousCollisionFunction(ContinuousCollisionObject<S>* o1,
 /// stores the conclusion of whether further evaluation of the broadphase
 /// collision manager has been deemed unnecessary).
 template <typename S>
-struct DefaultDistanceData {
+struct DefaultDistanceData
+{
   DistanceRequest<S> request;
   DistanceResult<S> result;
 
@@ -193,8 +198,9 @@ struct DefaultDistanceData {
 /// @return `true` if the broadphase evaluation should stop.
 /// @tparam S   The scalar type with which the computation will be performed.
 template <typename S>
-bool DefaultDistanceFunction(CollisionObject<S>* o1, CollisionObject<S>* o2,
-                             void* data, S& dist) {
+bool DefaultDistanceFunction(
+    CollisionObject<S>* o1, CollisionObject<S>* o2, void* data, S& dist)
+{
   assert(data != nullptr);
   auto* cdata = static_cast<DefaultDistanceData<S>*>(data);
   const DistanceRequest<S>& request = cdata->request;
@@ -209,11 +215,10 @@ bool DefaultDistanceFunction(CollisionObject<S>* o1, CollisionObject<S>* o2,
 
   dist = result.min_distance;
 
-  if (dist <= 0) return true;  // in collision or in touch
+  if (dist <= 0)
+    return true; // in collision or in touch
 
   return cdata->done;
 }
 
-}  // namespace dart { namespace collision { namespace hit
-
-#endif  // FCL_BROADPHASE_DEFAULTBROADPHASECALLBACKS_H
+} // namespace dart::collision::hit

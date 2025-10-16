@@ -31,27 +31,24 @@
  *  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
- */ 
+ */
 
 /** @author Jia Pan */
 
-#ifndef FCL_BROAD_PHASE_SAP_H
-#define FCL_BROAD_PHASE_SAP_H
+#pragma once
 
-#include <map>
+#include "dart/collision/hit/broadphase/broadphase_collision_manager.h"
+
 #include <list>
+#include <map>
 
-#include "fcl/broadphase/broadphase_collision_manager.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Rigorous SAP collision manager
 template <typename S>
-class FCL_EXPORT SaPCollisionManager : public BroadPhaseCollisionManager<S>
+class SaPCollisionManager : public BroadPhaseCollisionManager<S>
 {
 public:
-
   SaPCollisionManager();
 
   ~SaPCollisionManager();
@@ -83,46 +80,61 @@ public:
   /// @brief return the objects managed by the manager
   void getObjects(std::vector<CollisionObject<S>*>& objs) const;
 
-  /// @brief perform collision test between one object and all the objects belonging to the manager
-  void collide(CollisionObject<S>* obj, void* cdata, CollisionCallBack<S> callback) const;
+  /// @brief perform collision test between one object and all the objects
+  /// belonging to the manager
+  void collide(
+      CollisionObject<S>* obj,
+      void* cdata,
+      CollisionCallBack<S> callback) const;
 
-  /// @brief perform distance computation between one object and all the objects belonging to the manager
-  void distance(CollisionObject<S>* obj, void* cdata, DistanceCallBack<S> callback) const;
+  /// @brief perform distance computation between one object and all the objects
+  /// belonging to the manager
+  void distance(
+      CollisionObject<S>* obj, void* cdata, DistanceCallBack<S> callback) const;
 
-  /// @brief perform collision test for the objects belonging to the manager (i.e., N^2 self collision)
+  /// @brief perform collision test for the objects belonging to the manager
+  /// (i.e., N^2 self collision)
   void collide(void* cdata, CollisionCallBack<S> callback) const;
 
-  /// @brief perform distance test for the objects belonging to the manager (i.e., N^2 self distance)
+  /// @brief perform distance test for the objects belonging to the manager
+  /// (i.e., N^2 self distance)
   void distance(void* cdata, DistanceCallBack<S> callback) const;
 
   /// @brief perform collision test with objects belonging to another manager
-  void collide(BroadPhaseCollisionManager<S>* other_manager, void* cdata, CollisionCallBack<S> callback) const;
+  void collide(
+      BroadPhaseCollisionManager<S>* other_manager,
+      void* cdata,
+      CollisionCallBack<S> callback) const;
 
   /// @brief perform distance test with objects belonging to another manager
-  void distance(BroadPhaseCollisionManager<S>* other_manager, void* cdata, DistanceCallBack<S> callback) const;
+  void distance(
+      BroadPhaseCollisionManager<S>* other_manager,
+      void* cdata,
+      DistanceCallBack<S> callback) const;
 
   /// @brief whether the manager is empty
   bool empty() const;
-  
+
   /// @brief the number of objects managed by the manager
   size_t size() const;
 
 protected:
-
   /// @brief SAP interval for one object
   struct SaPAABB;
 
   /// @brief End point for an interval
   struct EndPoint;
 
-  /// @brief A pair of objects that are not culling away and should further check collision
+  /// @brief A pair of objects that are not culling away and should further
+  /// check collision
   struct SaPPair;
 
   /// @brief Functor to help unregister one object
-  class FCL_EXPORT isUnregistered;
+  class isUnregistered;
 
-  /// @brief Functor to help remove collision pairs no longer valid (i.e., should be culled away)
-  class FCL_EXPORT isNotValidPair;
+  /// @brief Functor to help remove collision pairs no longer valid (i.e.,
+  /// should be culled away)
+  class isNotValidPair;
 
   void update_(SaPAABB* updated_aabb);
 
@@ -130,7 +142,7 @@ protected:
 
   /// @brief End point list for x, y, z coordinates
   EndPoint* elist[3];
-  
+
   /// @brief vector version of elist, for acceleration
   std::vector<EndPoint*> velist[3];
 
@@ -144,9 +156,16 @@ protected:
 
   std::map<CollisionObject<S>*, SaPAABB*> obj_aabb_map;
 
-  bool distance_(CollisionObject<S>* obj, void* cdata, DistanceCallBack<S> callback, S& min_dist) const;
+  bool distance_(
+      CollisionObject<S>* obj,
+      void* cdata,
+      DistanceCallBack<S> callback,
+      S& min_dist) const;
 
-  bool collide_(CollisionObject<S>* obj, void* cdata, CollisionCallBack<S> callback) const;
+  bool collide_(
+      CollisionObject<S>* obj,
+      void* cdata,
+      CollisionCallBack<S> callback) const;
 
   void addToOverlapPairs(const SaPPair& p);
 
@@ -177,7 +196,8 @@ struct SaPCollisionManager<S>::SaPAABB
 template <typename S>
 struct SaPCollisionManager<S>::EndPoint
 {
-  /// @brief tag for whether it is a lower bound or higher bound of an interval, 0 for lo, and 1 for hi
+  /// @brief tag for whether it is a lower bound or higher bound of an interval,
+  /// 0 for lo, and 1 for hi
   char minmax;
 
   /// @brief back pointer to SAP interval
@@ -198,10 +218,10 @@ struct SaPCollisionManager<S>::EndPoint
   S getVal(size_t i) const;
 
   S& getVal(size_t i);
-
 };
 
-/// @brief A pair of objects that are not culling away and should further check collision
+/// @brief A pair of objects that are not culling away and should further check
+/// collision
 template <typename S>
 struct SaPCollisionManager<S>::SaPPair
 {
@@ -210,24 +230,25 @@ struct SaPCollisionManager<S>::SaPPair
   CollisionObject<S>* obj1;
   CollisionObject<S>* obj2;
 
-  bool operator == (const SaPPair& other) const;
+  bool operator==(const SaPPair& other) const;
 };
 
 /// @brief Functor to help unregister one object
 template <typename S>
-class FCL_EXPORT SaPCollisionManager<S>::isUnregistered
+class SaPCollisionManager<S>::isUnregistered
 {
   CollisionObject<S>* obj;
 
 public:
   isUnregistered(CollisionObject<S>* obj_);
 
-  bool operator() (const SaPPair& pair) const;
+  bool operator()(const SaPPair& pair) const;
 };
 
-/// @brief Functor to help remove collision pairs no longer valid (i.e., should be culled away)
+/// @brief Functor to help remove collision pairs no longer valid (i.e., should
+/// be culled away)
 template <typename S>
-class FCL_EXPORT SaPCollisionManager<S>::isNotValidPair
+class SaPCollisionManager<S>::isNotValidPair
 {
   CollisionObject<S>* obj1;
   CollisionObject<S>* obj2;
@@ -235,11 +256,9 @@ class FCL_EXPORT SaPCollisionManager<S>::isNotValidPair
 public:
   isNotValidPair(CollisionObject<S>* obj1_, CollisionObject<S>* obj2_);
 
-  bool operator() (const SaPPair& pair);
+  bool operator()(const SaPPair& pair);
 };
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/broadphase/broadphase_SaP-inl.h"
-
-#endif
+#include "dart/collision/hit/broadphase/broadphase_SaP-inl.h"

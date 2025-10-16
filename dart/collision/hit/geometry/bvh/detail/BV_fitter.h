@@ -35,53 +35,51 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BV_FITTER_H
-#define FCL_BV_FITTER_H
+#pragma once
+
+#include "dart/collision/hit/geometry/bvh/BVH_internal.h"
+#include "dart/collision/hit/geometry/bvh/detail/BV_fitter_base.h"
+#include "dart/collision/hit/math/bv/OBBRSS.h"
+#include "dart/collision/hit/math/bv/kIOS.h"
+#include "dart/collision/hit/math/triangle.h"
 
 #include <iostream>
-#include "fcl/math/triangle.h"
-#include "fcl/math/bv/kIOS.h"
-#include "fcl/math/bv/OBBRSS.h"
-#include "fcl/geometry/bvh/BVH_internal.h"
-#include "fcl/geometry/bvh/detail/BV_fitter_base.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
-/// @brief The class for the default algorithm fitting a bounding volume to a set of points
+/// @brief The class for the default algorithm fitting a bounding volume to a
+/// set of points
 template <typename BV>
-class FCL_EXPORT BVFitter : public BVFitterBase<BV>
+class BVFitter : public BVFitterBase<BV>
 {
 public:
-
   using S = typename BVFitterBase<BV>::S;
 
   /// @brief default deconstructor
   virtual ~BVFitter();
 
   /// @brief Prepare the geometry primitive data for fitting
-  void set(
-      Vector3<S>* vertices_, Triangle* tri_indices_, BVHModelType type_);
+  void set(Vector3<S>* vertices_, Triangle* tri_indices_, BVHModelType type_);
 
-  /// @brief Prepare the geometry primitive data for fitting, for deformable mesh
+  /// @brief Prepare the geometry primitive data for fitting, for deformable
+  /// mesh
   void set(
       Vector3<S>* vertices_,
       Vector3<S>* prev_vertices_,
       Triangle* tri_indices_,
       BVHModelType type_);
 
-  /// @brief Compute a bounding volume that fits a set of primitives (points or triangles).
-  /// The primitive data was set by set function and primitive_indices is the primitive index relative to the data
+  /// @brief Compute a bounding volume that fits a set of primitives (points or
+  /// triangles). The primitive data was set by set function and
+  /// primitive_indices is the primitive index relative to the data
   BV fit(unsigned int* primitive_indices, int num_primitives);
 
   /// @brief Clear the geometry primitive data
   void clear();
 
 private:
-
   Vector3<S>* vertices;
   Vector3<S>* prev_vertices;
   Triangle* tri_indices;
@@ -95,8 +93,6 @@ private:
 };
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/geometry/bvh/detail/BV_fitter-inl.h"
-
-#endif
+#include "dart/collision/hit/geometry/bvh/detail/BV_fitter-inl.h"

@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/motion/triangle_motion_bound_visitor-inl.h"
+#include "dart/collision/hit/math/motion/triangle_motion_bound_visitor-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-class TriangleMotionBoundVisitor<double>;
+template class TriangleMotionBoundVisitor<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

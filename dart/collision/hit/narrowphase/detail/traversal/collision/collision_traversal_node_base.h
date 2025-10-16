@@ -35,21 +35,19 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_COLLISIONTRAVERSALNODEBASE_H
-#define FCL_TRAVERSAL_COLLISIONTRAVERSALNODEBASE_H
+#pragma once
 
-#include "fcl/narrowphase/detail/traversal/traversal_node_base.h"
-#include "fcl/narrowphase/collision_request.h"
+#include "dart/collision/hit/narrowphase/collision_request.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/traversal_node_base.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
-/// @brief Node structure encoding the information required for collision traversal.
+/// @brief Node structure encoding the information required for collision
+/// traversal.
 template <typename S>
-class FCL_EXPORT CollisionTraversalNodeBase : public TraversalNodeBase<S>
+class CollisionTraversalNodeBase : public TraversalNodeBase<S>
 {
 public:
   CollisionTraversalNodeBase();
@@ -74,7 +72,7 @@ public:
   /// @brief collision result kept during the traversal iteration
   CollisionResult<S>* result;
 
-  /// @brief Whether stores statistics 
+  /// @brief Whether stores statistics
   bool enable_statistics;
 };
 
@@ -82,8 +80,6 @@ using CollisionTraversalNodeBasef = CollisionTraversalNodeBase<float>;
 using CollisionTraversalNodeBased = CollisionTraversalNodeBase<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/traversal/collision/collision_traversal_node_base-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/traversal/collision/collision_traversal_node_base-inl.h"

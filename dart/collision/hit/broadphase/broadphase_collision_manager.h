@@ -31,39 +31,36 @@
  *  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
- */ 
+ */
 
 /** @author Jia Pan */
 
-#ifndef FCL_BROADPHASE_BROADPHASECOLLISIONMANAGER_H
-#define FCL_BROADPHASE_BROADPHASECOLLISIONMANAGER_H
+#pragma once
+
+#include "dart/collision/hit/narrowphase/collision_object.h"
 
 #include <set>
 #include <vector>
 
-#include "fcl/narrowphase/collision_object.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Callback for collision between two objects. Return value is whether
 /// can stop now.
 template <typename S>
-using CollisionCallBack = bool (*)(
-    CollisionObject<S>* o1, CollisionObject<S>* o2, void* cdata);
+using CollisionCallBack
+    = bool (*)(CollisionObject<S>* o1, CollisionObject<S>* o2, void* cdata);
 
 /// @brief Callback for distance between two objects, Return value is whether
 /// can stop now, also return the minimum distance till now.
 template <typename S>
 using DistanceCallBack = bool (*)(
-    CollisionObject<S>* o1,
-    CollisionObject<S>* o2, void* cdata, S& dist);
+    CollisionObject<S>* o1, CollisionObject<S>* o2, void* cdata, S& dist);
 
 /// @brief Base class for broad phase collision. It helps to accelerate the
 /// collision/distance between N objects. Also support self collision, self
 /// distance and collision/distance with another M objects.
 template <typename S>
-class FCL_EXPORT BroadPhaseCollisionManager
+class BroadPhaseCollisionManager
 {
 public:
   BroadPhaseCollisionManager();
@@ -71,7 +68,8 @@ public:
   virtual ~BroadPhaseCollisionManager();
 
   /// @brief add objects to the manager
-  virtual void registerObjects(const std::vector<CollisionObject<S>*>& other_objs);
+  virtual void registerObjects(
+      const std::vector<CollisionObject<S>*>& other_objs);
 
   /// @brief add one object to the manager
   virtual void registerObject(CollisionObject<S>* obj) = 0;
@@ -97,47 +95,62 @@ public:
   /// @brief return the objects managed by the manager
   virtual void getObjects(std::vector<CollisionObject<S>*>& objs) const = 0;
 
-  /// @brief perform collision test between one object and all the objects belonging to the manager
-  virtual void collide(CollisionObject<S>* obj, void* cdata, CollisionCallBack<S> callback) const = 0;
+  /// @brief perform collision test between one object and all the objects
+  /// belonging to the manager
+  virtual void collide(
+      CollisionObject<S>* obj,
+      void* cdata,
+      CollisionCallBack<S> callback) const = 0;
 
-  /// @brief perform distance computation between one object and all the objects belonging to the manager
-  virtual void distance(CollisionObject<S>* obj, void* cdata, DistanceCallBack<S> callback) const = 0;
+  /// @brief perform distance computation between one object and all the objects
+  /// belonging to the manager
+  virtual void distance(
+      CollisionObject<S>* obj,
+      void* cdata,
+      DistanceCallBack<S> callback) const = 0;
 
-  /// @brief perform collision test for the objects belonging to the manager (i.e., N^2 self collision)
+  /// @brief perform collision test for the objects belonging to the manager
+  /// (i.e., N^2 self collision)
   virtual void collide(void* cdata, CollisionCallBack<S> callback) const = 0;
 
-  /// @brief perform distance test for the objects belonging to the manager (i.e., N^2 self distance)
+  /// @brief perform distance test for the objects belonging to the manager
+  /// (i.e., N^2 self distance)
   virtual void distance(void* cdata, DistanceCallBack<S> callback) const = 0;
 
   /// @brief perform collision test with objects belonging to another manager
-  virtual void collide(BroadPhaseCollisionManager* other_manager, void* cdata, CollisionCallBack<S> callback) const = 0;
+  virtual void collide(
+      BroadPhaseCollisionManager* other_manager,
+      void* cdata,
+      CollisionCallBack<S> callback) const = 0;
 
   /// @brief perform distance test with objects belonging to another manager
-  virtual void distance(BroadPhaseCollisionManager* other_manager, void* cdata, DistanceCallBack<S> callback) const = 0;
+  virtual void distance(
+      BroadPhaseCollisionManager* other_manager,
+      void* cdata,
+      DistanceCallBack<S> callback) const = 0;
 
   /// @brief whether the manager is empty
   virtual bool empty() const = 0;
-  
+
   /// @brief the number of objects managed by the manager
   virtual size_t size() const = 0;
 
 protected:
-
-  /// @brief tools help to avoid repeating collision or distance callback for the pairs of objects tested before. It can be useful for some of the broadphase algorithms.
-  mutable std::set<std::pair<CollisionObject<S>*, CollisionObject<S>*> > tested_set;
+  /// @brief tools help to avoid repeating collision or distance callback for
+  /// the pairs of objects tested before. It can be useful for some of the
+  /// broadphase algorithms.
+  mutable std::set<std::pair<CollisionObject<S>*, CollisionObject<S>*>>
+      tested_set;
   mutable bool enable_tested_set_;
 
   bool inTestedSet(CollisionObject<S>* a, CollisionObject<S>* b) const;
 
   void insertTestedSet(CollisionObject<S>* a, CollisionObject<S>* b) const;
-
 };
 
 using BroadPhaseCollisionManagerf = BroadPhaseCollisionManager<float>;
 using BroadPhaseCollisionManagerd = BroadPhaseCollisionManager<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/broadphase/broadphase_collision_manager-inl.h"
-
-#endif
+#include "dart/collision/hit/broadphase/broadphase_collision_manager-inl.h"

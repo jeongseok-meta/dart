@@ -35,17 +35,15 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CONTACTPOINT_H
-#define FCL_CONTACTPOINT_H
+#pragma once
 
-#include "fcl/common/types.h"
+#include "dart/collision/hit/common/types.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Minimal contact information returned by collision
 template <typename S>
-struct FCL_EXPORT ContactPoint
+struct ContactPoint
 {
   /// @brief Contact normal, pointing from o1 to o2
   Vector3<S> normal;
@@ -68,16 +66,11 @@ using ContactPointd = ContactPoint<double>;
 
 /// @brief Return true if _cp1's penentration depth is less than _cp2's.
 template <typename S>
-FCL_EXPORT
-bool comparePenDepth(
-    const ContactPoint<S>& _cp1, const ContactPoint<S>& _cp2);
+bool comparePenDepth(const ContactPoint<S>& _cp1, const ContactPoint<S>& _cp2);
 
 template <typename S>
-FCL_EXPORT
 void flipNormal(std::vector<ContactPoint<S>>& contacts);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/contact_point-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/contact_point-inl.h"

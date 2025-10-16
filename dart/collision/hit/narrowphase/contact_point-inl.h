@@ -35,41 +35,33 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CONTACTPOINT_INL_H
-#define FCL_CONTACTPOINT_INL_H
+#pragma once
 
-#include "fcl/narrowphase/contact_point.h"
+#include "dart/collision/hit/narrowphase/contact_point.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-struct ContactPoint<double>;
+extern template struct ContactPoint<double>;
 
 //==============================================================================
-extern template
-bool comparePenDepth(
+extern template bool comparePenDepth(
     const ContactPoint<double>& _cp1, const ContactPoint<double>& _cp2);
 
 //==============================================================================
-extern template
-void flipNormal(std::vector<ContactPoint<double>>& contacts);
+extern template void flipNormal(std::vector<ContactPoint<double>>& contacts);
 
 //==============================================================================
 template <typename S>
 ContactPoint<S>::ContactPoint()
-  : normal(Vector3<S>::Zero()),
-    pos(Vector3<S>::Zero()),
-    penetration_depth(0.0)
+  : normal(Vector3<S>::Zero()), pos(Vector3<S>::Zero()), penetration_depth(0.0)
 {
   // Do nothing
 }
 
 //==============================================================================
 template <typename S>
-ContactPoint<S>::ContactPoint(
-    const Vector3<S>& n_, const Vector3<S>& p_, S d_)
+ContactPoint<S>::ContactPoint(const Vector3<S>& n_, const Vector3<S>& p_, S d_)
   : normal(n_), pos(p_), penetration_depth(d_)
 {
   // Do nothing
@@ -90,6 +82,4 @@ void flipNormal(std::vector<ContactPoint<S>>& contacts)
     contact.normal *= -1.0;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

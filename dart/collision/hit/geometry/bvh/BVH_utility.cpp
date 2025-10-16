@@ -35,19 +35,16 @@
 
 /** @author Jia Pan */
 
-#include "fcl/geometry/bvh/BVH_utility-inl.h"
+#include "dart/collision/hit/geometry/bvh/BVH_utility-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-template
-void BVHExpand(
+template void BVHExpand(
     BVHModel<OBB<double>>& model, const Variance3<double>* ucs, double r);
 
 //==============================================================================
-template
-void BVHExpand(
+template void BVHExpand(
     BVHModel<RSS<double>>& model, const Variance3<double>* ucs, double r);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

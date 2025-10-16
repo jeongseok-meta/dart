@@ -35,21 +35,22 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BV_BVNODE_H
-#define FCL_BV_BVNODE_H
+#pragma once
+
+#include "dart/collision/hit/geometry/bvh/BV_node_base.h"
+#include "dart/collision/hit/math/bv/OBB.h"
+#include "dart/collision/hit/math/bv/OBBRSS.h"
+#include "dart/collision/hit/math/bv/RSS.h"
 
 #include <iostream>
-#include "fcl/math/bv/OBB.h"
-#include "fcl/math/bv/RSS.h"
-#include "fcl/math/bv/OBBRSS.h"
-#include "fcl/geometry/bvh/BV_node_base.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-/// @brief A class describing a bounding volume node. It includes the tree structure providing in BVNodeBase and also the geometry data provided in BV template parameter.
+/// @brief A class describing a bounding volume node. It includes the tree
+/// structure providing in BVNodeBase and also the geometry data provided in BV
+/// template parameter.
 template <typename BV>
-struct FCL_EXPORT BVNode : public BVNodeBase
+struct BVNode : public BVNodeBase
 {
   using S = typename BV::S;
 
@@ -59,8 +60,8 @@ struct FCL_EXPORT BVNode : public BVNodeBase
   /// @brief Check whether two BVNode collide
   bool overlap(const BVNode& other) const;
 
-  /// @brief Compute the distance between two BVNode. P1 and P2, if not nullptr and
-  /// the underlying BV supports distance, return the nearest points.
+  /// @brief Compute the distance between two BVNode. P1 and P2, if not nullptr
+  /// and the underlying BV supports distance, return the nearest points.
   S distance(
       const BVNode& other,
       Vector3<S>* P1 = nullptr,
@@ -73,8 +74,6 @@ struct FCL_EXPORT BVNode : public BVNodeBase
   Matrix3<S> getOrientation() const;
 };
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/geometry/bvh/BV_node-inl.h"
-
-#endif
+#include "dart/collision/hit/geometry/bvh/BV_node-inl.h"

@@ -35,42 +35,47 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CCD_SCREWMOTION_H
-#define FCL_CCD_SCREWMOTION_H
+#pragma once
+
+#include "dart/collision/hit/math/geometry.h"
+#include "dart/collision/hit/math/motion/bv_motion_bound_visitor.h"
+#include "dart/collision/hit/math/motion/motion_base.h"
+#include "dart/collision/hit/math/motion/triangle_motion_bound_visitor.h"
 
 #include <iostream>
 #include <vector>
-#include "fcl/math/geometry.h"
-#include "fcl/math/motion/motion_base.h"
-#include "fcl/math/motion/bv_motion_bound_visitor.h"
-#include "fcl/math/motion/triangle_motion_bound_visitor.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 template <typename S>
-class FCL_EXPORT ScrewMotion : public MotionBase<S>
+class ScrewMotion : public MotionBase<S>
 {
 public:
   /// @brief Default transformations are all identities
   ScrewMotion();
 
-  /// @brief Construct motion from the initial rotation/translation and goal rotation/translation
-  ScrewMotion(const Matrix3<S>& R1, const Vector3<S>& T1,
-              const Matrix3<S>& R2, const Vector3<S>& T2);
+  /// @brief Construct motion from the initial rotation/translation and goal
+  /// rotation/translation
+  ScrewMotion(
+      const Matrix3<S>& R1,
+      const Vector3<S>& T1,
+      const Matrix3<S>& R2,
+      const Vector3<S>& T2);
 
   /// @brief Construct motion from the initial transform and goal transform
-  ScrewMotion(const Transform3<S>& tf1_,
-              const Transform3<S>& tf2_);
+  ScrewMotion(const Transform3<S>& tf1_, const Transform3<S>& tf2_);
 
   /// @brief Integrate the motion from 0 to dt
-  /// We compute the current transformation from zero point instead of from last integrate time, for precision.
+  /// We compute the current transformation from zero point instead of from last
+  /// integrate time, for precision.
   bool integrate(S dt) const;
 
-  /// @brief Compute the motion bound for a bounding volume along a given direction n, which is defined in the visitor
+  /// @brief Compute the motion bound for a bounding volume along a given
+  /// direction n, which is defined in the visitor
   S computeMotionBound(const BVMotionBoundVisitor<S>& mb_visitor) const;
 
-  /// @brief Compute the motion bound for a triangle along a given direction n, which is defined in the visitor
+  /// @brief Compute the motion bound for a triangle along a given direction n,
+  /// which is defined in the visitor
   S computeMotionBound(const TriangleMotionBoundVisitor<S>& mb_visitor) const;
 
   /// @brief Get the rotation and translation in current step
@@ -107,7 +112,6 @@ protected:
   S angular_vel;
 
 public:
-
   S getLinearVelocity() const;
 
   S getAngularVelocity() const;
@@ -119,8 +123,6 @@ public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/motion/screw_motion-inl.h"
-
-#endif
+#include "dart/collision/hit/math/motion/screw_motion-inl.h"

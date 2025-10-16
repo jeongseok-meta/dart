@@ -35,39 +35,37 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BV_KIOS_INL_H
-#define FCL_BV_KIOS_INL_H
+#pragma once
 
-#include "fcl/math/bv/kIOS.h"
+#include "dart/collision/hit/math/bv/kIOS.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT kIOS<double>;
+extern template class kIOS<double>;
 
 //==============================================================================
 template <typename S>
 typename kIOS<S>::kIOS_Sphere kIOS<S>::encloseSphere(
-    const typename kIOS<S>::kIOS_Sphere& s0, const typename kIOS<S>::kIOS_Sphere& s1)
+    const typename kIOS<S>::kIOS_Sphere& s0,
+    const typename kIOS<S>::kIOS_Sphere& s1)
 {
   Vector3<S> d = s1.o - s0.o;
   S dist2 = d.squaredNorm();
   S diff_r = s1.r - s0.r;
 
   /** The sphere with the larger radius encloses the other */
-  if(diff_r * diff_r >= dist2)
-  {
-    if(s1.r > s0.r) return s1;
-    else return s0;
-  }
-  else /** spheres partially overlapping or disjoint */
+  if (diff_r * diff_r >= dist2) {
+    if (s1.r > s0.r)
+      return s1;
+    else
+      return s0;
+  } else /** spheres partially overlapping or disjoint */
   {
     float dist = std::sqrt(dist2);
     kIOS_Sphere s;
     s.r = dist + s0.r + s1.r;
-    if(dist > 0)
+    if (dist > 0)
       s.o = s0.o + d * ((s.r - s0.r) / dist);
     else
       s.o = s0.o;
@@ -79,13 +77,11 @@ typename kIOS<S>::kIOS_Sphere kIOS<S>::encloseSphere(
 template <typename S>
 bool kIOS<S>::overlap(const kIOS<S>& other) const
 {
-  for(unsigned int i = 0; i < num_spheres; ++i)
-  {
-    for(unsigned int j = 0; j < other.num_spheres; ++j)
-    {
+  for (unsigned int i = 0; i < num_spheres; ++i) {
+    for (unsigned int j = 0; j < other.num_spheres; ++j) {
       S o_dist = (spheres[i].o - other.spheres[j].o).squaredNorm();
       S sum_r = spheres[i].r + other.spheres[j].r;
-      if(o_dist > sum_r * sum_r)
+      if (o_dist > sum_r * sum_r)
         return false;
     }
   }
@@ -97,8 +93,7 @@ bool kIOS<S>::overlap(const kIOS<S>& other) const
 
 //==============================================================================
 template <typename S>
-bool kIOS<S>::overlap(
-    const kIOS<S>& other, kIOS<S>& /*overlap_part*/) const
+bool kIOS<S>::overlap(const kIOS<S>& other, kIOS<S>& /*overlap_part*/) const
 {
   return overlap(other);
 }
@@ -107,10 +102,9 @@ bool kIOS<S>::overlap(
 template <typename S>
 bool kIOS<S>::contain(const Vector3<S>& p) const
 {
-  for(unsigned int i = 0; i < num_spheres; ++i)
-  {
+  for (unsigned int i = 0; i < num_spheres; ++i) {
     S r = spheres[i].r;
-    if((spheres[i].o - p).squaredNorm() > r * r)
+    if ((spheres[i].o - p).squaredNorm() > r * r)
       return false;
   }
 
@@ -119,14 +113,12 @@ bool kIOS<S>::contain(const Vector3<S>& p) const
 
 //==============================================================================
 template <typename S>
-kIOS<S>& kIOS<S>::operator += (const Vector3<S>& p)
+kIOS<S>& kIOS<S>::operator+=(const Vector3<S>& p)
 {
-  for(unsigned int i = 0; i < num_spheres; ++i)
-  {
+  for (unsigned int i = 0; i < num_spheres; ++i) {
     S r = spheres[i].r;
     S new_r_sqr = (p - spheres[i].o).squaredNorm();
-    if(new_r_sqr > r * r)
-    {
+    if (new_r_sqr > r * r) {
       spheres[i].r = sqrt(new_r_sqr);
     }
   }
@@ -137,7 +129,7 @@ kIOS<S>& kIOS<S>::operator += (const Vector3<S>& p)
 
 //==============================================================================
 template <typename S>
-kIOS<S>& kIOS<S>::operator +=(const kIOS<S>& other)
+kIOS<S>& kIOS<S>::operator+=(const kIOS<S>& other)
 {
   *this = *this + other;
   return *this;
@@ -145,12 +137,11 @@ kIOS<S>& kIOS<S>::operator +=(const kIOS<S>& other)
 
 //==============================================================================
 template <typename S>
-kIOS<S> kIOS<S>::operator + (const kIOS<S>& other) const
+kIOS<S> kIOS<S>::operator+(const kIOS<S>& other) const
 {
   kIOS<S> result;
   unsigned int new_num_spheres = std::min(num_spheres, other.num_spheres);
-  for(unsigned int i = 0; i < new_num_spheres; ++i)
-  {
+  for (unsigned int i = 0; i < new_num_spheres; ++i) {
     result.spheres[i] = encloseSphere(spheres[i], other.spheres[i]);
   }
 
@@ -205,33 +196,26 @@ S kIOS<S>::size() const
 
 //==============================================================================
 template <typename S>
-S kIOS<S>::distance(
-    const kIOS<S>& other,
-    Vector3<S>* P,
-    Vector3<S>* Q) const
+S kIOS<S>::distance(const kIOS<S>& other, Vector3<S>* P, Vector3<S>* Q) const
 {
   S d_max = 0;
   int id_a = -1, id_b = -1;
-  for(unsigned int i = 0; i < num_spheres; ++i)
-  {
-    for(unsigned int j = 0; j < other.num_spheres; ++j)
-    {
-      S d = (spheres[i].o - other.spheres[j].o).norm() - (spheres[i].r + other.spheres[j].r);
-      if(d_max < d)
-      {
+  for (unsigned int i = 0; i < num_spheres; ++i) {
+    for (unsigned int j = 0; j < other.num_spheres; ++j) {
+      S d = (spheres[i].o - other.spheres[j].o).norm()
+            - (spheres[i].r + other.spheres[j].r);
+      if (d_max < d) {
         d_max = d;
-        if(P && Q)
-        {
-          id_a = i; id_b = j;
+        if (P && Q) {
+          id_a = i;
+          id_b = j;
         }
       }
     }
   }
 
-  if(P && Q)
-  {
-    if(id_a != -1 && id_b != -1)
-    {
+  if (P && Q) {
+    if (id_a != -1 && id_b != -1) {
       Vector3<S> v = spheres[id_a].o - spheres[id_b].o;
       S len_v = v.norm();
       *P = spheres[id_a].o;
@@ -249,10 +233,11 @@ template <typename S, typename DerivedA, typename DerivedB>
 bool overlap(
     const Eigen::MatrixBase<DerivedA>& R0,
     const Eigen::MatrixBase<DerivedB>& T0,
-    const kIOS<S>& b1, const kIOS<S>& b2)
+    const kIOS<S>& b1,
+    const kIOS<S>& b2)
 {
   kIOS<S> b2_temp = b2;
-  for(unsigned int i = 0; i < b2_temp.num_spheres; ++i)
+  for (unsigned int i = 0; i < b2_temp.num_spheres; ++i)
     b2_temp.spheres[i].o = R0 * b2_temp.spheres[i].o + T0;
 
   b2_temp.obb.To = R0 * b2_temp.obb.To + T0;
@@ -266,11 +251,13 @@ template <typename S, typename DerivedA, typename DerivedB>
 S distance(
     const Eigen::MatrixBase<DerivedA>& R0,
     const Eigen::MatrixBase<DerivedB>& T0,
-    const kIOS<S>& b1, const kIOS<S>& b2,
-    Vector3<S>* P, Vector3<S>* Q)
+    const kIOS<S>& b1,
+    const kIOS<S>& b2,
+    Vector3<S>* P,
+    Vector3<S>* Q)
 {
   kIOS<S> b2_temp = b2;
-  for(unsigned int i = 0; i < b2_temp.num_spheres; ++i)
+  for (unsigned int i = 0; i < b2_temp.num_spheres; ++i)
     b2_temp.spheres[i].o = R0 * b2_temp.spheres[i].o + T0;
 
   return b1.distance(b2_temp, P, Q);
@@ -287,7 +274,7 @@ S distance(
 {
   kIOS<S> b2_temp = b2;
 
-  for(unsigned int i = 0; i < b2_temp.num_spheres; ++i)
+  for (unsigned int i = 0; i < b2_temp.num_spheres; ++i)
     b2_temp.spheres[i].o = tf * b2_temp.spheres[i].o;
 
   return b1.distance(b2_temp, P, Q);
@@ -295,17 +282,14 @@ S distance(
 
 //==============================================================================
 template <typename S, typename Derived>
-kIOS<S> translate(
-    const kIOS<S>& bv, const Eigen::MatrixBase<Derived>& t)
+kIOS<S> translate(const kIOS<S>& bv, const Eigen::MatrixBase<Derived>& t)
 {
   EIGEN_STATIC_ASSERT(
-          Derived::RowsAtCompileTime == 3
-          && Derived::ColsAtCompileTime == 1,
-          THIS_METHOD_IS_ONLY_FOR_MATRICES_OF_A_SPECIFIC_SIZE);
+      Derived::RowsAtCompileTime == 3 && Derived::ColsAtCompileTime == 1,
+      THIS_METHOD_IS_ONLY_FOR_MATRICES_OF_A_SPECIFIC_SIZE);
 
   kIOS<S> res(bv);
-  for(size_t i = 0; i < res.num_spheres; ++i)
-  {
+  for (size_t i = 0; i < res.num_spheres; ++i) {
     res.spheres[i].o += t;
   }
 
@@ -313,6 +297,4 @@ kIOS<S> translate(
   return res;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

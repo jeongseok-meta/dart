@@ -36,36 +36,33 @@
 
 /** @author Jia Pan */
 
-#include "fcl/broadphase/detail/morton-inl.h"
+#include "dart/collision/hit/broadphase/detail/morton-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @cond IGNORE
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
-template
-uint32 quantize(double x, uint32 n);
+template uint32 quantize(double x, uint32 n);
 
 //==============================================================================
 uint32 morton_code(uint32 x, uint32 y, uint32 z)
 {
   x = (x | (x << 16)) & 0x030000FF;
-  x = (x | (x <<  8)) & 0x0300F00F;
-  x = (x | (x <<  4)) & 0x030C30C3;
-  x = (x | (x <<  2)) & 0x09249249;
+  x = (x | (x << 8)) & 0x0300F00F;
+  x = (x | (x << 4)) & 0x030C30C3;
+  x = (x | (x << 2)) & 0x09249249;
 
   y = (y | (y << 16)) & 0x030000FF;
-  y = (y | (y <<  8)) & 0x0300F00F;
-  y = (y | (y <<  4)) & 0x030C30C3;
-  y = (y | (y <<  2)) & 0x09249249;
+  y = (y | (y << 8)) & 0x0300F00F;
+  y = (y | (y << 4)) & 0x030C30C3;
+  y = (y | (y << 2)) & 0x09249249;
 
   z = (z | (z << 16)) & 0x030000FF;
-  z = (z | (z <<  8)) & 0x0300F00F;
-  z = (z | (z <<  4)) & 0x030C30C3;
-  z = (z | (z <<  2)) & 0x09249249;
+  z = (z | (z << 8)) & 0x0300F00F;
+  z = (z | (z << 4)) & 0x030C30C3;
+  z = (z | (z << 2)) & 0x09249249;
 
   return x | (y << 1) | (z << 2);
 }
@@ -81,17 +78,15 @@ uint64 morton_code60(uint32 x, uint32 y, uint32 z)
   uint32 hi_z = z >> 10u;
 
   return (uint64(morton_code(hi_x, hi_y, hi_z)) << 30)
-      | uint64(morton_code(lo_x, lo_y, lo_z));
+         | uint64(morton_code(lo_x, lo_y, lo_z));
 }
 
 //==============================================================================
-template
-struct morton_functor<double, uint32>;
+template struct morton_functor<double, uint32>;
 
 //==============================================================================
-template
-struct morton_functor<double, uint64>;
+template struct morton_functor<double, uint64>;
 
 } // namespace detail
 /// @endcond
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

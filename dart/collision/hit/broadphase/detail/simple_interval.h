@@ -35,25 +35,20 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BROADPHASE_DETAIL_SIMPLEINTERVAL_H
-#define FCL_BROADPHASE_DETAIL_SIMPLEINTERVAL_H
+#pragma once
 
-#include "fcl/export.h"
+namespace dart::collision::hit {
 
-namespace dart { namespace collision { namespace hit
-{
-
-namespace detail
-{
+namespace detail {
 
 /// @brief Interval trees implemented using red-black-trees as described in
 /// the book Introduction_To_Algorithms_ by Cormen, Leisserson, and Rivest.
 template <typename S>
-struct FCL_EXPORT SimpleInterval
+struct SimpleInterval
 {
 public:
   virtual ~SimpleInterval();
-  
+
   virtual void print();
 
   /// @brief interval is defined as [low, high]
@@ -64,8 +59,6 @@ using SimpleIntervalf = SimpleInterval<float>;
 using SimpleIntervald = SimpleInterval<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/broadphase/detail/simple_interval-inl.h"
-
-#endif
+#include "dart/collision/hit/broadphase/detail/simple_interval-inl.h"

@@ -32,10 +32,10 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef FCL_COMMON_UNUSED_H
-#define FCL_COMMON_UNUSED_H
+#pragma once
 
 // Macro to suppress -Wunused-parameter and -Wunused-variable warnings.
-#define FCL_UNUSED(x) do { (void)(x); } while (0)
-
-#endif
+#define DART_COLLISION_HIT_UNUSED(x)                                           \
+  do {                                                                         \
+    (void)(x);                                                                 \
+  } while (0)

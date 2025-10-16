@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/motion/screw_motion-inl.h"
+#include "dart/collision/hit/math/motion/screw_motion-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-class ScrewMotion<double>;
+template class ScrewMotion<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

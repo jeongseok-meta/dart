@@ -35,17 +35,14 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CONTINUOUSCOLLISIONRESULT_INL_H
-#define FCL_CONTINUOUSCOLLISIONRESULT_INL_H
+#pragma once
 
-#include "fcl/narrowphase/continuous_collision_result.h"
+#include "dart/collision/hit/narrowphase/continuous_collision_result.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-struct ContinuousCollisionResult<double>;
+extern template struct ContinuousCollisionResult<double>;
 
 //==============================================================================
 template <typename S>
@@ -55,6 +52,4 @@ ContinuousCollisionResult<S>::ContinuousCollisionResult()
   // Do nothing
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

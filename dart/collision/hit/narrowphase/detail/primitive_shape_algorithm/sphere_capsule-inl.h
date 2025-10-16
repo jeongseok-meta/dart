@@ -35,40 +35,47 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_NARROWPHASE_DETAIL_SPHERECAPSULE_INL_H
-#define FCL_NARROWPHASE_DETAIL_SPHERECAPSULE_INL_H
+#pragma once
 
-#include "fcl/narrowphase/detail/primitive_shape_algorithm/sphere_capsule.h"
+#include "dart/collision/hit/narrowphase/detail/primitive_shape_algorithm/sphere_capsule.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
-extern template
-void lineSegmentPointClosestToPoint(
-    const Vector3<double> &p,
-    const Vector3<double> &s1,
-    const Vector3<double> &s2,
-    Vector3<double> &sp);
+extern template void lineSegmentPointClosestToPoint(
+    const Vector3<double>& p,
+    const Vector3<double>& s1,
+    const Vector3<double>& s2,
+    Vector3<double>& sp);
 
 //==============================================================================
-extern template
-bool sphereCapsuleIntersect(const Sphere<double>& s1, const Transform3<double>& tf1,
-                            const Capsule<double>& s2, const Transform3<double>& tf2,
-                            std::vector<ContactPoint<double>>* contacts);
+extern template bool sphereCapsuleIntersect(
+    const Sphere<double>& s1,
+    const Transform3<double>& tf1,
+    const Capsule<double>& s2,
+    const Transform3<double>& tf2,
+    std::vector<ContactPoint<double>>* contacts);
 
 //==============================================================================
-extern template
-bool sphereCapsuleDistance(const Sphere<double>& s1, const Transform3<double>& tf1,
-                           const Capsule<double>& s2, const Transform3<double>& tf2,
-                           double* dist, Vector3<double>* p1, Vector3<double>* p2);
+extern template bool sphereCapsuleDistance(
+    const Sphere<double>& s1,
+    const Transform3<double>& tf1,
+    const Capsule<double>& s2,
+    const Transform3<double>& tf2,
+    double* dist,
+    Vector3<double>* p1,
+    Vector3<double>* p2);
 
 //==============================================================================
 template <typename S>
-void lineSegmentPointClosestToPoint (const Vector3<S> &p, const Vector3<S> &s1, const Vector3<S> &s2, Vector3<S> &sp) {
+void lineSegmentPointClosestToPoint(
+    const Vector3<S>& p,
+    const Vector3<S>& s1,
+    const Vector3<S>& s2,
+    Vector3<S>& sp)
+{
   Vector3<S> v = s2 - s1;
   Vector3<S> w = p - s1;
 
@@ -80,7 +87,7 @@ void lineSegmentPointClosestToPoint (const Vector3<S> &p, const Vector3<S> &s1, 
   } else if (c2 <= c1) {
     sp = s2;
   } else {
-    S b = c1/c2;
+    S b = c1 / c2;
     Vector3<S> Pb = s1 + v * b;
     sp = Pb;
   }
@@ -88,9 +95,12 @@ void lineSegmentPointClosestToPoint (const Vector3<S> &p, const Vector3<S> &s1, 
 
 //==============================================================================
 template <typename S>
-bool sphereCapsuleIntersect(const Sphere<S>& s1, const Transform3<S>& tf1,
-                            const Capsule<S>& s2, const Transform3<S>& tf2,
-                            std::vector<ContactPoint<S>>* contacts)
+bool sphereCapsuleIntersect(
+    const Sphere<S>& s1,
+    const Transform3<S>& tf1,
+    const Capsule<S>& s2,
+    const Transform3<S>& tf2,
+    std::vector<ContactPoint<S>>* contacts)
 {
   const Vector3<S> pos1(0., 0., 0.5 * s2.lz);
   const Vector3<S> pos2(0., 0., -0.5 * s2.lz);
@@ -98,7 +108,7 @@ bool sphereCapsuleIntersect(const Sphere<S>& s1, const Transform3<S>& tf1,
 
   Vector3<S> segment_point;
 
-  lineSegmentPointClosestToPoint (s_c, pos1, pos2, segment_point);
+  lineSegmentPointClosestToPoint(s_c, pos1, pos2, segment_point);
   Vector3<S> diff = s_c - segment_point;
 
   const S distance = diff.norm() - s1.radius - s2.radius;
@@ -108,8 +118,7 @@ bool sphereCapsuleIntersect(const Sphere<S>& s1, const Transform3<S>& tf1,
 
   const Vector3<S> local_normal = -diff.normalized();
 
-  if (contacts)
-  {
+  if (contacts) {
     const Vector3<S> normal = tf2.linear() * local_normal;
     const Vector3<S> point = tf2 * (segment_point + local_normal * distance);
     const S penetration_depth = -distance;
@@ -122,9 +131,14 @@ bool sphereCapsuleIntersect(const Sphere<S>& s1, const Transform3<S>& tf1,
 
 //==============================================================================
 template <typename S>
-bool sphereCapsuleDistance(const Sphere<S>& s1, const Transform3<S>& tf1,
-                           const Capsule<S>& s2, const Transform3<S>& tf2,
-                           S* dist, Vector3<S>* p1, Vector3<S>* p2)
+bool sphereCapsuleDistance(
+    const Sphere<S>& s1,
+    const Transform3<S>& tf1,
+    const Capsule<S>& s2,
+    const Transform3<S>& tf2,
+    S* dist,
+    Vector3<S>* p1,
+    Vector3<S>* p2)
 {
   Vector3<S> pos1(0., 0., 0.5 * s2.lz);
   Vector3<S> pos2(0., 0., -0.5 * s2.lz);
@@ -132,33 +146,34 @@ bool sphereCapsuleDistance(const Sphere<S>& s1, const Transform3<S>& tf1,
 
   Vector3<S> segment_point;
 
-  lineSegmentPointClosestToPoint (s_c, pos1, pos2, segment_point);
+  lineSegmentPointClosestToPoint(s_c, pos1, pos2, segment_point);
   Vector3<S> diff = s_c - segment_point;
 
   S distance = diff.norm() - s1.radius - s2.radius;
 
-  if(distance <= 0) {
+  if (distance <= 0) {
     // NOTE: By assigning this a negative value, it allows the ultimately
     // calling code in distance-inl.h (distance() method) to use collision to
     // determine penetration depth and contact points. NOTE: This is a
     // *horrible* thing.
     // TODO(SeanCurtis-TRI): Create a *signed* distance variant of this and use
     // it to determined signed distance, penetration, and distance.
-    if (dist) *dist = -1;
+    if (dist)
+      *dist = -1;
     return false;
   }
 
-  if(dist) *dist = distance;
+  if (dist)
+    *dist = distance;
 
-  if(p1 || p2) diff.normalize();
-  if(p1)
-  {
+  if (p1 || p2)
+    diff.normalize();
+  if (p1) {
     *p1 = s_c - diff * s1.radius;
     *p1 = tf2 * (*p1);
   }
 
-  if(p2)
-  {
+  if (p2) {
     *p2 = segment_point + diff * s2.radius;
     *p2 = tf2 * (*p2);
   }
@@ -167,6 +182,4 @@ bool sphereCapsuleDistance(const Sphere<S>& s1, const Transform3<S>& tf1,
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

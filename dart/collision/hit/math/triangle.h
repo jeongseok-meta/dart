@@ -35,17 +35,14 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_MATH_TRIANGLE_H
-#define FCL_MATH_TRIANGLE_H
+#pragma once
 
 #include <cstddef>
-#include "fcl/export.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Triangle with 3 indices for points
-class FCL_EXPORT Triangle
+class Triangle
 {
   /// @brief indices for each vertex of triangle
   std::size_t vids[3];
@@ -66,6 +63,4 @@ public:
   std::size_t& operator[](int i);
 };
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

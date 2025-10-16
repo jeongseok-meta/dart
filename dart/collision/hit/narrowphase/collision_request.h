@@ -35,21 +35,19 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_COLLISIONREQUEST_H
-#define FCL_COLLISIONREQUEST_H
+#pragma once
 
-#include "fcl/common/types.h"
-#include "fcl/narrowphase/gjk_solver_type.h"
+#include "dart/collision/hit/common/types.h"
+#include "dart/collision/hit/narrowphase/gjk_solver_type.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 template <typename S>
 struct CollisionResult;
 
 /// @brief Parameters for performing collision request.
 template <typename S>
-struct FCL_EXPORT CollisionRequest
+struct CollisionRequest
 {
   /// The underlying numerical representation of the request's scalar (e.g.,
   /// float or double).
@@ -81,7 +79,7 @@ struct FCL_EXPORT CollisionRequest
   // single std::optional<Vector3<S>>.
   /// @brief If true, uses the provided initial guess for the GJK algorithm.
   bool enable_cached_gjk_guess;
-  
+
   /// @brief The initial guess to use in the GJK algorithm.
   Vector3<S> cached_gjk_guess;
 
@@ -94,13 +92,14 @@ struct FCL_EXPORT CollisionRequest
   Real gjk_tolerance{1e-6};
 
   /// @brief Default constructor
-  CollisionRequest(size_t num_max_contacts_ = 1,
-                   bool enable_contact_ = false,
-                   size_t num_max_cost_sources_ = 1,
-                   bool enable_cost_ = false,
-                   bool use_approximate_cost_ = true,
-                   GJKSolverType gjk_solver_type_ = GST_LIBCCD,
-                   Real gjk_tolerance_ = 1e-6);
+  CollisionRequest(
+      size_t num_max_contacts_ = 1,
+      bool enable_contact_ = false,
+      size_t num_max_cost_sources_ = 1,
+      bool enable_cost_ = false,
+      bool use_approximate_cost_ = true,
+      GJKSolverType gjk_solver_type_ = GST_LIBCCD,
+      Real gjk_tolerance_ = 1e-6);
 
   bool isSatisfied(const CollisionResult<S>& result) const;
 };
@@ -108,8 +107,6 @@ struct FCL_EXPORT CollisionRequest
 using CollisionRequestf = CollisionRequest<float>;
 using CollisionRequestd = CollisionRequest<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/collision_request-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/collision_request-inl.h"

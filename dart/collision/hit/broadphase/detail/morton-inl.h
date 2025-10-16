@@ -36,47 +36,43 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_MORTON_INL_H
-#define FCL_MORTON_INL_H
+#pragma once
 
-#include "fcl/broadphase/detail/morton.h"
+#include "dart/collision/hit/broadphase/detail/morton.h"
 
-namespace dart { namespace collision { namespace hit {
+namespace dart::collision::hit {
 /// @cond IGNORE
 namespace detail {
 
 //==============================================================================
-extern template
-uint32 quantize(double x, uint32 n);
+extern template uint32 quantize(double x, uint32 n);
 
 //==============================================================================
-extern template
-struct morton_functor<double, uint32>;
+extern template struct morton_functor<double, uint32>;
 
 //==============================================================================
-extern template
-struct morton_functor<double, uint64>;
+extern template struct morton_functor<double, uint64>;
 
 //==============================================================================
 template <typename S>
 uint32 quantize(S x, uint32 n)
 {
-  return std::max(std::min((uint32)(x * (S)n), uint32(n-1)), uint32(0));
+  return std::max(std::min((uint32)(x * (S)n), uint32(n - 1)), uint32(0));
 }
 
 //==============================================================================
-template<typename S>
+template <typename S>
 morton_functor<S, uint32>::morton_functor(const AABB<S>& bbox)
   : base(bbox.min_),
     inv(1.0 / (bbox.max_[0] - bbox.min_[0]),
-    1.0 / (bbox.max_[1] - bbox.min_[1]),
-    1.0 / (bbox.max_[2] - bbox.min_[2]))
+        1.0 / (bbox.max_[1] - bbox.min_[1]),
+        1.0 / (bbox.max_[2] - bbox.min_[2]))
 {
   // Do nothing
 }
 
 //==============================================================================
-template<typename S>
+template <typename S>
 uint32 morton_functor<S, uint32>::operator()(const Vector3<S>& point) const
 {
   uint32 x = detail::quantize((point[0] - base[0]) * inv[0], 1024u);
@@ -87,18 +83,18 @@ uint32 morton_functor<S, uint32>::operator()(const Vector3<S>& point) const
 }
 
 //==============================================================================
-template<typename S>
+template <typename S>
 morton_functor<S, uint64>::morton_functor(const AABB<S>& bbox)
   : base(bbox.min_),
     inv(1.0 / (bbox.max_[0] - bbox.min_[0]),
-    1.0 / (bbox.max_[1] - bbox.min_[1]),
-    1.0 / (bbox.max_[2] - bbox.min_[2]))
+        1.0 / (bbox.max_[1] - bbox.min_[1]),
+        1.0 / (bbox.max_[2] - bbox.min_[2]))
 {
   // Do nothing
 }
 
 //==============================================================================
-template<typename S>
+template <typename S>
 uint64 morton_functor<S, uint64>::operator()(const Vector3<S>& point) const
 {
   uint32 x = detail::quantize((point[0] - base[0]) * inv[0], 1u << 20);
@@ -109,21 +105,21 @@ uint64 morton_functor<S, uint64>::operator()(const Vector3<S>& point) const
 }
 
 //==============================================================================
-template<typename S>
+template <typename S>
 constexpr size_t morton_functor<S, uint64>::bits()
 {
   return 60;
 }
 
 //==============================================================================
-template<typename S>
+template <typename S>
 constexpr size_t morton_functor<S, uint32>::bits()
 {
   return 30;
 }
 
 //==============================================================================
-template<typename S, size_t N>
+template <typename S, size_t N>
 morton_functor<S, std::bitset<N>>::morton_functor(const AABB<S>& bbox)
   : base(bbox.min_),
     inv(1.0 / (bbox.max_[0] - bbox.min_[0]),
@@ -134,7 +130,7 @@ morton_functor<S, std::bitset<N>>::morton_functor(const AABB<S>& bbox)
 }
 
 //==============================================================================
-template<typename S, size_t N>
+template <typename S, size_t N>
 std::bitset<N> morton_functor<S, std::bitset<N>>::operator()(
     const Vector3<S>& point) const
 {
@@ -148,21 +144,20 @@ std::bitset<N> morton_functor<S, std::bitset<N>>::operator()(
   y *= 2;
   z *= 2;
 
-  for(size_t i = 0; i < bits()/3; ++i)
-  {
+  for (size_t i = 0; i < bits() / 3; ++i) {
     bset[start_bit--] = ((z < 1) ? 0 : 1);
     bset[start_bit--] = ((y < 1) ? 0 : 1);
     bset[start_bit--] = ((x < 1) ? 0 : 1);
-    x = ((x >= 1) ? 2*(x-1) : 2*x);
-    y = ((y >= 1) ? 2*(y-1) : 2*y);
-    z = ((z >= 1) ? 2*(z-1) : 2*z);
+    x = ((x >= 1) ? 2 * (x - 1) : 2 * x);
+    y = ((y >= 1) ? 2 * (y - 1) : 2 * y);
+    z = ((z >= 1) ? 2 * (z - 1) : 2 * z);
   }
 
   return bset;
 }
 
 //==============================================================================
-template<typename S, size_t N>
+template <typename S, size_t N>
 constexpr size_t morton_functor<S, std::bitset<N>>::bits()
 {
   return N;
@@ -170,6 +165,4 @@ constexpr size_t morton_functor<S, std::bitset<N>>::bits()
 
 } // namespace detail
 /// @endcond
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

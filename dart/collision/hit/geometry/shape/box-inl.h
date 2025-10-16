@@ -35,42 +35,36 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_SHAPE_BOX_INL_H
-#define FCL_SHAPE_BOX_INL_H
+#pragma once
+
+#include "dart/collision/hit/geometry/shape/box.h"
+#include "dart/collision/hit/geometry/shape/representation.h"
 
 #include <iomanip>
 #include <sstream>
 
-#include "fcl/geometry/shape/box.h"
-#include "fcl/geometry/shape/representation.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT Box<double>;
+extern template class Box<double>;
 
 //==============================================================================
 template <typename S>
-Box<S>::Box(S x, S y, S z)
-  : ShapeBase<S>(), side(x, y, z)
+Box<S>::Box(S x, S y, S z) : ShapeBase<S>(), side(x, y, z)
 {
   // Do nothing
 }
 
 //==============================================================================
 template <typename S>
-Box<S>::Box(const Vector3<S>& side_)
-  : ShapeBase<S>(), side(side_)
+Box<S>::Box(const Vector3<S>& side_) : ShapeBase<S>(), side(side_)
 {
   // Do nothing
 }
 
 //==============================================================================
 template <typename S>
-Box<S>::Box()
-  : ShapeBase<S>(), side(Vector3<S>::Zero())
+Box<S>::Box() : ShapeBase<S>(), side(Vector3<S>::Zero())
 {
   // Do nothing
 }
@@ -118,8 +112,7 @@ Matrix3<S> Box<S>::computeMomentofInertia() const
 
 //==============================================================================
 template <typename S>
-std::vector<Vector3<S>> Box<S>::getBoundVertices(
-    const Transform3<S>& tf) const
+std::vector<Vector3<S>> Box<S>::getBoundVertices(const Transform3<S>& tf) const
 {
   std::vector<Vector3<S>> result(8);
   auto a = side[0] / 2;
@@ -139,7 +132,8 @@ std::vector<Vector3<S>> Box<S>::getBoundVertices(
 
 //==============================================================================
 template <typename S>
-std::string Box<S>::representation(int precision) const {
+std::string Box<S>::representation(int precision) const
+{
   const char* S_str = detail::ScalarRepr<S>::value();
   std::stringstream ss;
   ss << std::setprecision(precision);
@@ -148,6 +142,4 @@ std::string Box<S>::representation(int precision) const {
   return ss.str();
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

@@ -35,31 +35,29 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_NARROWPHASE_GJKSOLVERINDEP_H
-#define FCL_NARROWPHASE_GJKSOLVERINDEP_H
+#pragma once
+
+#include "dart/collision/hit/common/types.h"
+#include "dart/collision/hit/narrowphase/contact_point.h"
 
 #include <iostream>
 
-#include "fcl/common/types.h"
-#include "fcl/narrowphase/contact_point.h"
+namespace dart::collision::hit {
 
-namespace dart { namespace collision { namespace hit
-{
+namespace detail {
 
-namespace detail
-{
-
-/// @brief collision and distance solver based on GJK algorithm implemented in fcl (rewritten the code from the GJK in bullet)
+/// @brief collision and distance solver based on GJK algorithm implemented in
+/// fcl (rewritten the code from the GJK in bullet)
 template <typename S_>
-struct FCL_EXPORT GJKSolver_indep
+struct GJKSolver_indep
 {
   using S = S_;
 
   /// @brief intersection checking between two shapes
-  /// @deprecated use shapeIntersect(const Shape1&, const Transform3<S>&, const Shape2&, const Transform3<S>&, std::vector<ContactPoint<S>>*) const
-  template<typename Shape1, typename Shape2>
-  FCL_DEPRECATED
-  bool shapeIntersect(
+  /// @deprecated use shapeIntersect(const Shape1&, const Transform3<S>&, const
+  /// Shape2&, const Transform3<S>&, std::vector<ContactPoint<S>>*) const
+  template <typename Shape1, typename Shape2>
+  DART_COLLISION_HIT_DEPRECATED bool shapeIntersect(
       const Shape1& s1,
       const Transform3<S>& tf1,
       const Shape2& s2,
@@ -69,7 +67,7 @@ struct FCL_EXPORT GJKSolver_indep
       Vector3<S>* normal) const;
 
   /// @brief intersection checking between two shapes
-  template<typename Shape1, typename Shape2>
+  template <typename Shape1, typename Shape2>
   bool shapeIntersect(
       const Shape1& s1,
       const Transform3<S>& tf1,
@@ -78,7 +76,7 @@ struct FCL_EXPORT GJKSolver_indep
       std::vector<ContactPoint<S>>* contacts = nullptr) const;
 
   /// @brief intersection checking between one shape and a triangle
-  template<typename Shape>
+  template <typename Shape>
   bool shapeTriangleIntersect(
       const Shape& s,
       const Transform3<S>& tf,
@@ -89,8 +87,9 @@ struct FCL_EXPORT GJKSolver_indep
       S* penetration_depth = nullptr,
       Vector3<S>* normal = nullptr) const;
 
-  //// @brief intersection checking between one shape and a triangle with transformation
-  template<typename Shape>
+  //// @brief intersection checking between one shape and a triangle with
+  /// transformation
+  template <typename Shape>
   bool shapeTriangleIntersect(
       const Shape& s,
       const Transform3<S>& tf1,
@@ -103,7 +102,7 @@ struct FCL_EXPORT GJKSolver_indep
       Vector3<S>* normal = nullptr) const;
 
   /// @brief distance computation between two shapes
-  template<typename Shape1, typename Shape2>
+  template <typename Shape1, typename Shape2>
   bool shapeDistance(
       const Shape1& s1,
       const Transform3<S>& tf1,
@@ -114,7 +113,7 @@ struct FCL_EXPORT GJKSolver_indep
       Vector3<S>* p2 = nullptr) const;
 
   /// @brief distance computation between two shapes
-  template<typename Shape1, typename Shape2>
+  template <typename Shape1, typename Shape2>
   bool shapeSignedDistance(
       const Shape1& s1,
       const Transform3<S>& tf1,
@@ -125,7 +124,7 @@ struct FCL_EXPORT GJKSolver_indep
       Vector3<S>* p2 = nullptr) const;
 
   /// @brief distance computation between one shape and a triangle
-  template<typename Shape>
+  template <typename Shape>
   bool shapeTriangleDistance(
       const Shape& s,
       const Transform3<S>& tf,
@@ -136,8 +135,9 @@ struct FCL_EXPORT GJKSolver_indep
       Vector3<S>* p1 = nullptr,
       Vector3<S>* p2 = nullptr) const;
 
-  /// @brief distance computation between one shape and a triangle with transformation
-  template<typename Shape>
+  /// @brief distance computation between one shape and a triangle with
+  /// transformation
+  template <typename Shape>
   bool shapeTriangleDistance(
       const Shape& s,
       const Transform3<S>& tf1,
@@ -182,8 +182,9 @@ struct FCL_EXPORT GJKSolver_indep
   /// @brief smart guess
   mutable Vector3<S> cached_guess;
 
-  friend
-  std::ostream& operator<<(std::ostream& out, const GJKSolver_indep& solver) {
+  friend std::ostream& operator<<(
+      std::ostream& out, const GJKSolver_indep& solver)
+  {
     out << "GjkSolver_indep"
         << "\n    gjk tolerance:       " << solver.gjk_tolerance
         << "\n    gjk max iterations:  " << solver.gjk_max_iterations
@@ -192,7 +193,8 @@ struct FCL_EXPORT GJKSolver_indep
         << "\n    epa max vertex num:  " << solver.epa_max_vertex_num
         << "\n    epa max iterations:  " << solver.epa_max_iterations
         << "\n    enable cached guess: " << solver.enable_cached_guess;
-    if (solver.enable_cached_guess) out << solver.cached_guess.transpose();
+    if (solver.enable_cached_guess)
+      out << solver.cached_guess.transpose();
     return out;
   }
 };
@@ -201,8 +203,6 @@ using GJKSolver_indepf = GJKSolver_indep<float>;
 using GJKSolver_indepd = GJKSolver_indep<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/gjk_solver_indep-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/gjk_solver_indep-inl.h"

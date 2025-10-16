@@ -35,21 +35,31 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CONTINUOUSCOLLISIONREQUEST_H
-#define FCL_CONTINUOUSCOLLISIONREQUEST_H
+#pragma once
+
+#include "dart/collision/hit/narrowphase/gjk_solver_type.h"
 
 #include <cstddef>
-#include "fcl/narrowphase/gjk_solver_type.h"
-#include "fcl/export.h"
 
-namespace dart { namespace collision { namespace hit
+namespace dart::collision::hit {
+
+enum CCDMotionType
 {
-
-enum CCDMotionType {CCDM_TRANS, CCDM_LINEAR, CCDM_SCREW, CCDM_SPLINE};
-enum CCDSolverType {CCDC_NAIVE, CCDC_CONSERVATIVE_ADVANCEMENT, CCDC_RAY_SHOOTING, CCDC_POLYNOMIAL_SOLVER};
+  CCDM_TRANS,
+  CCDM_LINEAR,
+  CCDM_SCREW,
+  CCDM_SPLINE
+};
+enum CCDSolverType
+{
+  CCDC_NAIVE,
+  CCDC_CONSERVATIVE_ADVANCEMENT,
+  CCDC_RAY_SHOOTING,
+  CCDC_POLYNOMIAL_SOLVER
+};
 
 template <typename S>
-struct FCL_EXPORT ContinuousCollisionRequest
+struct ContinuousCollisionRequest
 {
   /// @brief maximum num of iterations
   std::size_t num_max_iterations;
@@ -65,20 +75,18 @@ struct FCL_EXPORT ContinuousCollisionRequest
 
   /// @brief ccd solver type
   CCDSolverType ccd_solver_type;
-  
-  ContinuousCollisionRequest(std::size_t num_max_iterations_ = 10,
-                             S toc_err_ = 0.0001,
-                             CCDMotionType ccd_motion_type_ = CCDM_TRANS,
-                             GJKSolverType gjk_solver_type_ = GST_LIBCCD,
-                             CCDSolverType ccd_solver_type_ = CCDC_NAIVE);
-  
+
+  ContinuousCollisionRequest(
+      std::size_t num_max_iterations_ = 10,
+      S toc_err_ = 0.0001,
+      CCDMotionType ccd_motion_type_ = CCDM_TRANS,
+      GJKSolverType gjk_solver_type_ = GST_LIBCCD,
+      CCDSolverType ccd_solver_type_ = CCDC_NAIVE);
 };
 
 using ContinuousCollisionRequestf = ContinuousCollisionRequest<float>;
 using ContinuousCollisionRequestd = ContinuousCollisionRequest<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/continuous_collision_request-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/continuous_collision_request-inl.h"

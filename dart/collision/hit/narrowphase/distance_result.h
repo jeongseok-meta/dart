@@ -35,23 +35,20 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_DISTANCERESULT_H
-#define FCL_DISTANCERESULT_H
+#pragma once
 
-#include "fcl/common/types.h"
+#include "dart/collision/hit/common/types.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 template <typename>
 class CollisionGeometry;
 
 /// @brief distance result
 template <typename S>
-struct FCL_EXPORT DistanceResult
+struct DistanceResult
 {
 public:
-
   /// @brief Minimum distance between two objects.
   ///
   /// The distance is correct as a positive value when the two objects are not
@@ -90,14 +87,26 @@ public:
 
   /// @brief invalid contact primitive information
   static const int NONE = -1;
-  
+
   DistanceResult(S min_distance_ = std::numeric_limits<S>::max());
 
   /// @brief add distance information into the result
-  void update(S distance, const CollisionGeometry<S>* o1_, const CollisionGeometry<S>* o2_, int b1_, int b2_);
+  void update(
+      S distance,
+      const CollisionGeometry<S>* o1_,
+      const CollisionGeometry<S>* o2_,
+      int b1_,
+      int b2_);
 
   /// @brief add distance information into the result
-  void update(S distance, const CollisionGeometry<S>* o1_, const CollisionGeometry<S>* o2_, int b1_, int b2_, const Vector3<S>& p1, const Vector3<S>& p2);
+  void update(
+      S distance,
+      const CollisionGeometry<S>* o1_,
+      const CollisionGeometry<S>* o2_,
+      int b1_,
+      int b2_,
+      const Vector3<S>& p1,
+      const Vector3<S>& p2);
 
   /// @brief add distance information into the result
   void update(const DistanceResult& other_result);
@@ -109,8 +118,6 @@ public:
 using DistanceResultf = DistanceResult<float>;
 using DistanceResultd = DistanceResult<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/distance_result-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/distance_result-inl.h"

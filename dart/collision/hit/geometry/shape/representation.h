@@ -34,28 +34,39 @@
 
 /** @author Sean Curtis */
 
-#ifndef FCL_SHAPE_REPRESENTATION_H
-#define FCL_SHAPE_REPRESENTATION_H
+#pragma once
 
-namespace dart { namespace collision { namespace hit {
+namespace dart::collision::hit {
 namespace detail {
 
 /* A type-traits-like struct for turning scalar types into shape representation
  strings. By default, it is printed with the FCL-generic scalar template "S". */
 template <typename S>
-struct ScalarRepr {
-  static const char* value() { return "S"; };
+struct ScalarRepr
+{
+  static const char* value()
+  {
+    return "S";
+  };
 };
 
-template <> struct ScalarRepr<double> {
-  static const char* value() { return "double"; };
+template <>
+struct ScalarRepr<double>
+{
+  static const char* value()
+  {
+    return "double";
+  };
 };
 
-template <> struct ScalarRepr<float> {
-  static const char* value() { return "float"; };
+template <>
+struct ScalarRepr<float>
+{
+  static const char* value()
+  {
+    return "float";
+  };
 };
 
-}  // namespace detail
-}  // namespace dart { namespace collision { namespace hit
-
-#endif  // FCL_SHAPE_REPRESENTATION_H
+} // namespace detail
+} // namespace dart::collision::hit

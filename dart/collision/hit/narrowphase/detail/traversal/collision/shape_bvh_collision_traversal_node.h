@@ -35,25 +35,21 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_SHAPEBVHCOLLISIONTRAVERSALNODE_H
-#define FCL_TRAVERSAL_SHAPEBVHCOLLISIONTRAVERSALNODE_H
+#pragma once
 
-#include "fcl/narrowphase/detail/traversal/traversal_node_base.h"
-#include "fcl/geometry/bvh/BVH_model.h"
+#include "dart/collision/hit/geometry/bvh/BVH_model.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/traversal_node_base.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /// @brief Traversal node for collision between shape and BVH
 template <typename Shape, typename BV>
-class FCL_EXPORT ShapeBVHCollisionTraversalNode
-    : public CollisionTraversalNodeBase<typename BV::S>
+class ShapeBVHCollisionTraversalNode
+  : public CollisionTraversalNodeBase<typename BV::S>
 {
 public:
-
   using S = typename BV::S;
 
   ShapeBVHCollisionTraversalNode();
@@ -83,8 +79,6 @@ public:
 };
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/traversal/collision/shape_bvh_collision_traversal_node-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/traversal/collision/shape_bvh_collision_traversal_node-inl.h"

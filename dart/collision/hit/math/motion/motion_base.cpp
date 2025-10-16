@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/motion/motion_base-inl.h"
+#include "dart/collision/hit/math/motion/motion_base-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-class MotionBase<double>;
+template class MotionBase<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

@@ -35,21 +35,18 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_OCTREE_OCTREESHAPECOLLISIONTRAVERSALNODE_INL_H
-#define FCL_TRAVERSAL_OCTREE_OCTREESHAPECOLLISIONTRAVERSALNODE_INL_H
+#pragma once
 
-#include "fcl/narrowphase/detail/traversal/octree/collision/octree_shape_collision_traversal_node.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/octree/collision/octree_shape_collision_traversal_node.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
 template <typename Shape, typename NarrowPhaseSolver>
 OcTreeShapeCollisionTraversalNode<Shape, NarrowPhaseSolver>::
-OcTreeShapeCollisionTraversalNode()
+    OcTreeShapeCollisionTraversalNode()
 {
   model1 = nullptr;
   model2 = nullptr;
@@ -59,19 +56,19 @@ OcTreeShapeCollisionTraversalNode()
 
 //==============================================================================
 template <typename Shape, typename NarrowPhaseSolver>
-bool OcTreeShapeCollisionTraversalNode<Shape, NarrowPhaseSolver>::
-BVTesting(int, int) const
+bool OcTreeShapeCollisionTraversalNode<Shape, NarrowPhaseSolver>::BVTesting(
+    int, int) const
 {
   return false;
 }
 
 //==============================================================================
 template <typename Shape, typename NarrowPhaseSolver>
-void OcTreeShapeCollisionTraversalNode<Shape, NarrowPhaseSolver>::
-leafTesting(int, int) const
+void OcTreeShapeCollisionTraversalNode<Shape, NarrowPhaseSolver>::leafTesting(
+    int, int) const
 {
   otsolver->OcTreeShapeIntersect(
-        model1, *model2, tf1, tf2, this->request, *this->result);
+      model1, *model2, tf1, tf2, this->request, *this->result);
 }
 
 //==============================================================================
@@ -101,6 +98,4 @@ bool initialize(
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

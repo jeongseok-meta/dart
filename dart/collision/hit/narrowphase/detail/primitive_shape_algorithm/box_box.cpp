@@ -35,31 +35,29 @@
 
 /** @author Jia Pan */
 
-#include "fcl/narrowphase/detail/primitive_shape_algorithm/box_box-inl.h"
+#include "dart/collision/hit/narrowphase/detail/primitive_shape_algorithm/box_box-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
-template
-void lineClosestApproach(const Vector3<double>& pa, const Vector3<double>& ua,
-                         const Vector3<double>& pb, const Vector3<double>& ub,
-                         double* alpha, double* beta);
+template void lineClosestApproach(
+    const Vector3<double>& pa,
+    const Vector3<double>& ua,
+    const Vector3<double>& pb,
+    const Vector3<double>& ub,
+    double* alpha,
+    double* beta);
 
 //==============================================================================
-template
-int intersectRectQuad2(double h[2], double p[8], double ret[16]);
+template int intersectRectQuad2(double h[2], double p[8], double ret[16]);
 
 //==============================================================================
-template
-void cullPoints2(int n, double p[], int m, int i0, int iret[]);
+template void cullPoints2(int n, double p[], int m, int i0, int iret[]);
 
 //==============================================================================
-template
-int boxBox2(
+template int boxBox2(
     const Vector3<double>& side1,
     const Transform3<double>& tf1,
     const Vector3<double>& side2,
@@ -71,10 +69,12 @@ int boxBox2(
     std::vector<ContactPoint<double>>& contacts);
 
 //==============================================================================
-template
-bool boxBoxIntersect(const Box<double>& s1, const Transform3<double>& tf1,
-                     const Box<double>& s2, const Transform3<double>& tf2,
-                     std::vector<ContactPoint<double>>* contacts_);
+template bool boxBoxIntersect(
+    const Box<double>& s1,
+    const Transform3<double>& tf1,
+    const Box<double>& s2,
+    const Transform3<double>& tf2,
+    std::vector<ContactPoint<double>>* contacts_);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

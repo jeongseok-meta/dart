@@ -35,22 +35,17 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_MESHCONTINUOUSCOLLISIONTRAVERSALNODE_INL_H
-#define FCL_TRAVERSAL_MESHCONTINUOUSCOLLISIONTRAVERSALNODE_INL_H
+#pragma once
 
-#include "fcl/narrowphase/detail/traversal/collision/mesh_continuous_collision_traversal_node.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/collision/intersect.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/collision/mesh_continuous_collision_traversal_node.h"
 
-#include "fcl/narrowphase/detail/traversal/collision/intersect.h"
+namespace dart::collision::hit {
 
-namespace dart { namespace collision { namespace hit
-{
-
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
-extern template
-struct BVHContinuousCollisionPair<double>;
+extern template struct BVHContinuousCollisionPair<double>;
 
 //==============================================================================
 template <typename S>
@@ -89,7 +84,8 @@ MeshContinuousCollisionTraversalNode<BV>::MeshContinuousCollisionTraversalNode()
 template <typename BV>
 void MeshContinuousCollisionTraversalNode<BV>::leafTesting(int b1, int b2) const
 {
-  if(this->enable_statistics) this->num_leaf_tests++;
+  if (this->enable_statistics)
+    this->num_leaf_tests++;
 
   const BVNode<BV>& node1 = this->model1->getBV(b1);
   const BVNode<BV>& node2 = this->model2->getBV(b2);
@@ -108,8 +104,7 @@ void MeshContinuousCollisionTraversalNode<BV>::leafTesting(int b1, int b2) const
   Vector3<S>* T0[3];
   Vector3<S>* T1[3];
 
-  for(int i = 0; i < 3; ++i)
-  {
+  for (int i = 0; i < 3; ++i) {
     S0[i] = prev_vertices1 + tri_id1[i];
     S1[i] = vertices1 + tri_id1[i];
     T0[i] = prev_vertices2 + tri_id2[i];
@@ -120,51 +115,79 @@ void MeshContinuousCollisionTraversalNode<BV>::leafTesting(int b1, int b2) const
   Vector3<S> tmpv;
 
   // 6 VF checks
-  for(int i = 0; i < 3; ++i)
-  {
-    if(this->enable_statistics) num_vf_tests++;
-    if(Intersect<S>::intersect_VF(*(S0[0]), *(S0[1]), *(S0[2]), *(T0[i]), *(S1[0]), *(S1[1]), *(S1[2]), *(T1[i]), &tmp, &tmpv))
-    {
-      if(collision_time > tmp)
-      {
-        collision_time = tmp; collision_pos = tmpv;
+  for (int i = 0; i < 3; ++i) {
+    if (this->enable_statistics)
+      num_vf_tests++;
+    if (Intersect<S>::intersect_VF(
+            *(S0[0]),
+            *(S0[1]),
+            *(S0[2]),
+            *(T0[i]),
+            *(S1[0]),
+            *(S1[1]),
+            *(S1[2]),
+            *(T1[i]),
+            &tmp,
+            &tmpv)) {
+      if (collision_time > tmp) {
+        collision_time = tmp;
+        collision_pos = tmpv;
       }
     }
 
-    if(this->enable_statistics) num_vf_tests++;
-    if(Intersect<S>::intersect_VF(*(T0[0]), *(T0[1]), *(T0[2]), *(S0[i]), *(T1[0]), *(T1[1]), *(T1[2]), *(S1[i]), &tmp, &tmpv))
-    {
-      if(collision_time > tmp)
-      {
-        collision_time = tmp; collision_pos = tmpv;
+    if (this->enable_statistics)
+      num_vf_tests++;
+    if (Intersect<S>::intersect_VF(
+            *(T0[0]),
+            *(T0[1]),
+            *(T0[2]),
+            *(S0[i]),
+            *(T1[0]),
+            *(T1[1]),
+            *(T1[2]),
+            *(S1[i]),
+            &tmp,
+            &tmpv)) {
+      if (collision_time > tmp) {
+        collision_time = tmp;
+        collision_pos = tmpv;
       }
     }
   }
 
   // 9 EE checks
-  for(int i = 0; i < 3; ++i)
-  {
+  for (int i = 0; i < 3; ++i) {
     int S_id1 = i;
     int S_id2 = i + 1;
-    if(S_id2 == 3) S_id2 = 0;
-    for(int j = 0; j < 3; ++j)
-    {
+    if (S_id2 == 3)
+      S_id2 = 0;
+    for (int j = 0; j < 3; ++j) {
       int T_id1 = j;
       int T_id2 = j + 1;
-      if(T_id2 == 3) T_id2 = 0;
+      if (T_id2 == 3)
+        T_id2 = 0;
 
       num_ee_tests++;
-      if(Intersect<S>::intersect_EE(*(S0[S_id1]), *(S0[S_id2]), *(T0[T_id1]), *(T0[T_id2]), *(S1[S_id1]), *(S1[S_id2]), *(T1[T_id1]), *(T1[T_id2]), &tmp, &tmpv))
-      {
-        if(collision_time > tmp)
-        {
-          collision_time = tmp; collision_pos = tmpv;
+      if (Intersect<S>::intersect_EE(
+              *(S0[S_id1]),
+              *(S0[S_id2]),
+              *(T0[T_id1]),
+              *(T0[T_id2]),
+              *(S1[S_id1]),
+              *(S1[S_id2]),
+              *(T1[T_id1]),
+              *(T1[T_id2]),
+              &tmp,
+              &tmpv)) {
+        if (collision_time > tmp) {
+          collision_time = tmp;
+          collision_pos = tmpv;
         }
       }
     }
   }
 
-  if(!(collision_time > 1)) // collision happens
+  if (!(collision_time > 1)) // collision happens
   {
     pairs.emplace_back(primitive_id1, primitive_id2, collision_time);
     time_of_contact = std::min(time_of_contact, collision_time);
@@ -208,6 +231,4 @@ bool initialize(
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

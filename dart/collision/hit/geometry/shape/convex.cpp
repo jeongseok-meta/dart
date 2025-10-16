@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/geometry/shape/convex-inl.h"
+#include "dart/collision/hit/geometry/shape/convex-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-class Convex<double>;
+template class Convex<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

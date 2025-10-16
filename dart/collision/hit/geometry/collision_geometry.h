@@ -35,27 +35,56 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_COLLISION_GEOMETRY_H
-#define FCL_COLLISION_GEOMETRY_H
+#pragma once
+
+#include "dart/collision/hit/math/bv/AABB.h"
+#include "dart/collision/hit/math/motion/motion_base.h"
 
 #include <memory>
 
-#include "fcl/math/bv/AABB.h"
-#include "fcl/math/motion/motion_base.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief object type: BVH (mesh, points), basic geometry, octree
-enum OBJECT_TYPE {OT_UNKNOWN, OT_BVH, OT_GEOM, OT_OCTREE, OT_COUNT};
+enum OBJECT_TYPE
+{
+  OT_UNKNOWN,
+  OT_BVH,
+  OT_GEOM,
+  OT_OCTREE,
+  OT_COUNT
+};
 
-/// @brief traversal node type: bounding volume (AABB, OBB, RSS, kIOS, OBBRSS, KDOP16, KDOP18, kDOP24), basic shape (box, sphere, ellipsoid, capsule, cone, cylinder, convex, plane, halfspace, triangle), and octree
-enum NODE_TYPE {BV_UNKNOWN, BV_AABB, BV_OBB, BV_RSS, BV_kIOS, BV_OBBRSS, BV_KDOP16, BV_KDOP18, BV_KDOP24,
-                GEOM_BOX, GEOM_SPHERE, GEOM_ELLIPSOID, GEOM_CAPSULE, GEOM_CONE, GEOM_CYLINDER, GEOM_CONVEX, GEOM_PLANE, GEOM_HALFSPACE, GEOM_TRIANGLE, GEOM_OCTREE, NODE_COUNT};
+/// @brief traversal node type: bounding volume (AABB, OBB, RSS, kIOS, OBBRSS,
+/// KDOP16, KDOP18, kDOP24), basic shape (box, sphere, ellipsoid, capsule, cone,
+/// cylinder, convex, plane, halfspace, triangle), and octree
+enum NODE_TYPE
+{
+  BV_UNKNOWN,
+  BV_AABB,
+  BV_OBB,
+  BV_RSS,
+  BV_kIOS,
+  BV_OBBRSS,
+  BV_KDOP16,
+  BV_KDOP18,
+  BV_KDOP24,
+  GEOM_BOX,
+  GEOM_SPHERE,
+  GEOM_ELLIPSOID,
+  GEOM_CAPSULE,
+  GEOM_CONE,
+  GEOM_CYLINDER,
+  GEOM_CONVEX,
+  GEOM_PLANE,
+  GEOM_HALFSPACE,
+  GEOM_TRIANGLE,
+  GEOM_OCTREE,
+  NODE_COUNT
+};
 
 /// @brief The geometry for the object for collision or distance computation
 template <typename S>
-class FCL_EXPORT CollisionGeometry
+class CollisionGeometry
 {
 public:
   CollisionGeometry();
@@ -75,7 +104,7 @@ public:
   void* getUserData() const;
 
   /// @brief set user data in geometry
-  void setUserData(void *data);
+  void setUserData(void* data);
 
   /// @brief whether the object is completely occupied
   bool isOccupied() const;
@@ -92,7 +121,8 @@ public:
   /// @brief AABB radius
   S aabb_radius;
 
-  /// @brief AABB in local coordinate, used for tight AABB when only translation transform
+  /// @brief AABB in local coordinate, used for tight AABB when only translation
+  /// transform
   AABB<S> aabb_local;
 
   /// @brief pointer to user defined data specific to this object
@@ -118,14 +148,11 @@ public:
 
   /// @brief compute the inertia matrix, related to the com
   virtual Matrix3<S> computeMomentofInertiaRelatedToCOM() const;
-
 };
 
 using CollisionGeometryf = CollisionGeometry<float>;
 using CollisionGeometryd = CollisionGeometry<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/geometry/collision_geometry-inl.h"
-
-#endif
+#include "dart/collision/hit/geometry/collision_geometry-inl.h"

@@ -35,37 +35,28 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BVH_UTILITY_H
-#define FCL_BVH_UTILITY_H
+#pragma once
 
-#include "fcl/math/variance3.h"
-#include "fcl/geometry/bvh/BVH_model.h"
+#include "dart/collision/hit/geometry/bvh/BVH_model.h"
+#include "dart/collision/hit/math/variance3.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Expand the BVH bounding boxes according to the variance matrix
 /// corresponding to the data stored within each BV node
 template <typename S, typename BV>
-FCL_EXPORT
 void BVHExpand(BVHModel<BV>& model, const Variance3<S>* ucs, S r);
 
 /// @brief Expand the BVH bounding boxes according to the corresponding variance
 /// information, for OBB
 template <typename S>
-FCL_EXPORT
-void BVHExpand(
-    BVHModel<OBB<S>>& model, const Variance3<S>* ucs, S r = 1.0);
+void BVHExpand(BVHModel<OBB<S>>& model, const Variance3<S>* ucs, S r = 1.0);
 
 /// @brief Expand the BVH bounding boxes according to the corresponding variance
 /// information, for RSS
 template <typename S>
-FCL_EXPORT
-void BVHExpand(
-    BVHModel<RSS<S>>& model, const Variance3<S>* ucs, S r = 1.0);
+void BVHExpand(BVHModel<RSS<S>>& model, const Variance3<S>* ucs, S r = 1.0);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/geometry/bvh/BVH_utility-inl.h"
-
-#endif
+#include "dart/collision/hit/geometry/bvh/BVH_utility-inl.h"

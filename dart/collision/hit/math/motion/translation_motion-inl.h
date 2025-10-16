@@ -35,19 +35,15 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CCD_TRANSLATIONMOTION_INL_H
-#define FCL_CCD_TRANSLATIONMOTION_INL_H
+#pragma once
 
-#include "fcl/math/motion/translation_motion.h"
+#include "dart/collision/hit/common/unused.h"
+#include "dart/collision/hit/math/motion/translation_motion.h"
 
-#include "fcl/common/unused.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT TranslationMotion<double>;
+extern template class TranslationMotion<double>;
 
 //==============================================================================
 template <typename S>
@@ -79,7 +75,7 @@ TranslationMotion<S>::TranslationMotion(
 template <typename S>
 bool TranslationMotion<S>::integrate(S dt) const
 {
-  if(dt > 1)
+  if (dt > 1)
     dt = 1;
 
   tf.linear() = rot.toRotationMatrix(); // TODO(JS): necessary?
@@ -113,10 +109,11 @@ void TranslationMotion<S>::getCurrentTransform(Transform3<S>& tf_) const
 
 //==============================================================================
 template <typename S>
-void TranslationMotion<S>::getTaylorModel(TMatrix3<S>& tm, TVector3<S>& tv) const
+void TranslationMotion<S>::getTaylorModel(
+    TMatrix3<S>& tm, TVector3<S>& tv) const
 {
-  FCL_UNUSED(tm);
-  FCL_UNUSED(tv);
+  DART_COLLISION_HIT_UNUSED(tm);
+  DART_COLLISION_HIT_UNUSED(tv);
 
   // Do nothing
   // TODO(JS): Not implemented?
@@ -129,6 +126,4 @@ Vector3<S> TranslationMotion<S>::getVelocity() const
   return trans_range;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

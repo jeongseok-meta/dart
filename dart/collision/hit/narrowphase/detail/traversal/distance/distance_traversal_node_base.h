@@ -35,22 +35,20 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_DISTANCERAVERSALNODEBASE_H
-#define FCL_TRAVERSAL_DISTANCERAVERSALNODEBASE_H
+#pragma once
 
-#include "fcl/narrowphase/detail/traversal/traversal_node_base.h"
-#include "fcl/narrowphase/distance_request.h"
-#include "fcl/narrowphase/distance_result.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/traversal_node_base.h"
+#include "dart/collision/hit/narrowphase/distance_request.h"
+#include "dart/collision/hit/narrowphase/distance_result.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
-/// @brief Node structure encoding the information required for distance traversal.
+/// @brief Node structure encoding the information required for distance
+/// traversal.
 template <typename S>
-class FCL_EXPORT DistanceTraversalNodeBase : public TraversalNodeBase<S>
+class DistanceTraversalNodeBase : public TraversalNodeBase<S>
 {
 public:
   DistanceTraversalNodeBase();
@@ -80,8 +78,6 @@ public:
 };
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/traversal/distance/distance_traversal_node_base-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/distance_traversal_node_base-inl.h"

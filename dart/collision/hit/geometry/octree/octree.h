@@ -35,33 +35,32 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_OCTREE_H
-#define FCL_OCTREE_H
+#pragma once
 
-#include "fcl/config.h"
+#include "dart/collision/hit/config.h"
 
-#if FCL_HAVE_OCTOMAP
+#if DART_COLLISION_HIT_HAVE_OCTOMAP
 
-#include <memory>
-#include <array>
+  #include "dart/collision/hit/geometry/shape/box.h"
+  #include "dart/collision/hit/math/bv/AABB.h"
+  #include "dart/collision/hit/narrowphase/collision_object.h"
 
-#include <octomap/octomap.h>
-#include "fcl/math/bv/AABB.h"
-#include "fcl/geometry/shape/box.h"
-#include "fcl/narrowphase/collision_object.h"
+  #include <octomap/octomap.h>
 
-namespace dart { namespace collision { namespace hit
-{
+  #include <array>
+  #include <memory>
+
+namespace dart::collision::hit {
 
 /// @brief Octree is one type of collision geometry which can encode uncertainty
 /// information in the sensor data.
 ///
 /// @note OcTree will only be declared if octomap was found when FCL was built.
-/// For any particular FCL install, FCL_HAVE_OCTOMAP will be set to 1 in
-/// fcl/config.h if and only if octomap was found. Doxygen documentation will
-/// be generated whether or not octomap was found.
+/// For any particular FCL install, DART_COLLISION_HIT_HAVE_OCTOMAP will be set
+/// to 1 in fcl/config.h if and only if octomap was found. Doxygen documentation
+/// will be generated whether or not octomap was found.
 template <typename S>
-class FCL_EXPORT OcTree : public CollisionGeometry<S>
+class OcTree : public CollisionGeometry<S>
 {
 private:
   std::shared_ptr<const octomap::OcTree> tree;
@@ -72,7 +71,6 @@ private:
   S free_threshold_log_odds;
 
 public:
-
   typedef octomap::OcTreeNode OcTreeNode;
 
   /// @brief construct octree with a given resolution
@@ -102,7 +100,7 @@ public:
   /// @brief transform the octree into a bunch of boxes; uncertainty information
   /// is kept in the boxes. However, we only keep the occupied boxes (i.e., the
   /// boxes whose occupied probability is higher enough).
-  std::vector<std::array<S, 6> > toBoxes() const;
+  std::vector<std::array<S, 6>> toBoxes() const;
 
   /// @brief the threshold used to decide whether one node is occupied, this is
   /// NOT the octree occupied_thresold
@@ -124,8 +122,9 @@ public:
   OcTreeNode* getNodeChild(OcTreeNode* node, unsigned int childIdx);
 
   /// @return const ptr to child number childIdx of node
-  const OcTreeNode* getNodeChild(const OcTreeNode* node, unsigned int childIdx) const;
-      
+  const OcTreeNode* getNodeChild(
+      const OcTreeNode* node, unsigned int childIdx) const;
+
   /// @brief return true if the child at childIdx exists
   bool nodeChildExists(const OcTreeNode* node, unsigned int childIdx) const;
 
@@ -190,13 +189,10 @@ using OcTreed = OcTree<double>;
 
 /// @brief compute the bounding volume of an octree node's i-th child
 template <typename S>
-FCL_EXPORT
 void computeChildBV(const AABB<S>& root_bv, unsigned int i, AABB<S>& child_bv);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/geometry/octree/octree-inl.h"
+  #include "dart/collision/hit/geometry/octree/octree-inl.h"
 
-#endif // #if FCL_HAVE_OCTOMAP
-
-#endif
+#endif // #if DART_COLLISION_HIT_HAVE_OCTOMAP

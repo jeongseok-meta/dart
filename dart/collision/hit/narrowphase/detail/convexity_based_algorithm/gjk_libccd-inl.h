@@ -35,8 +35,12 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_NARROWPHASE_DETAIL_GJKLIBCCD_INL_H
-#define FCL_NARROWPHASE_DETAIL_GJKLIBCCD_INL_H
+#pragma once
+
+#include "dart/collision/hit/common/unused.h"
+#include "dart/collision/hit/common/warning.h"
+#include "dart/collision/hit/narrowphase/detail/convexity_based_algorithm/gjk_libccd.h"
+#include "dart/collision/hit/narrowphase/detail/failed_at_this_configuration.h"
 
 #include <array>
 #include <iostream>
@@ -45,61 +49,44 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "fcl/common/unused.h"
-#include "fcl/common/warning.h"
-#include "fcl/narrowphase/detail/convexity_based_algorithm/gjk_libccd.h"
-#include "fcl/narrowphase/detail/failed_at_this_configuration.h"
+namespace dart::collision::hit {
 
-namespace dart { namespace collision { namespace hit
-{
-
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
-extern template
-class FCL_EXPORT GJKInitializer<double, Cylinder<double>>;
+extern template class GJKInitializer<double, Cylinder<double>>;
 
 //==============================================================================
-extern template
-class FCL_EXPORT GJKInitializer<double, Sphere<double>>;
+extern template class GJKInitializer<double, Sphere<double>>;
 
 //==============================================================================
-extern template
-class FCL_EXPORT GJKInitializer<double, Ellipsoid<double>>;
+extern template class GJKInitializer<double, Ellipsoid<double>>;
 
 //==============================================================================
-extern template
-class FCL_EXPORT GJKInitializer<double, Box<double>>;
+extern template class GJKInitializer<double, Box<double>>;
 
 //==============================================================================
-extern template
-class FCL_EXPORT GJKInitializer<double, Capsule<double>>;
+extern template class GJKInitializer<double, Capsule<double>>;
 
 //==============================================================================
-extern template
-class FCL_EXPORT GJKInitializer<double, Cone<double>>;
+extern template class GJKInitializer<double, Cone<double>>;
 
 //==============================================================================
-extern template
-class FCL_EXPORT GJKInitializer<double, Convex<double>>;
+extern template class GJKInitializer<double, Convex<double>>;
 
 //==============================================================================
-extern template
-void* triCreateGJKObject(
+extern template void* triCreateGJKObject(
     const Vector3d& P1, const Vector3d& P2, const Vector3d& P3);
 
 //==============================================================================
-extern template
-void* triCreateGJKObject(
+extern template void* triCreateGJKObject(
     const Vector3d& P1,
     const Vector3d& P2,
     const Vector3d& P3,
     const Transform3d& tf);
 
 //==============================================================================
-extern template
-bool GJKCollide(
+extern template bool GJKCollide(
     void* obj1,
     ccd_support_fn supp1,
     ccd_center_fn cen1,
@@ -113,8 +100,7 @@ bool GJKCollide(
     Vector3d* normal);
 
 //==============================================================================
-extern template
-bool GJKDistance(
+extern template bool GJKDistance(
     void* obj1,
     ccd_support_fn supp1,
     void* obj2,
@@ -125,8 +111,7 @@ bool GJKDistance(
     Vector3d* p1,
     Vector3d* p2);
 
-extern template
-bool GJKSignedDistance(
+extern template bool GJKSignedDistance(
     void* obj1,
     ccd_support_fn supp1,
     void* obj2,
@@ -185,8 +170,7 @@ struct ccd_triangle_t : public ccd_obj_t
   ccd_vec3_t c;
 };
 
-namespace libccd_extension
-{
+namespace libccd_extension {
 
 // These two functions contain the only "valid" invocations of
 // ccdVec3PointTriDist2(). Any other invocations should be considered a defect.
@@ -197,10 +181,12 @@ namespace libccd_extension
 // `ccdVec3PointTriDist2()` directly. It has some precision quirks. For those
 // invocations that want the squared distance without a witness point, call
 // *this* function.
-static ccd_real_t ccdVec3PointTriDist2NoWitness(const ccd_vec3_t* P,
-                                                const ccd_vec3_t* a,
-                                                const ccd_vec3_t* b,
-                                                const ccd_vec3_t* c) {
+static ccd_real_t ccdVec3PointTriDist2NoWitness(
+    const ccd_vec3_t* P,
+    const ccd_vec3_t* a,
+    const ccd_vec3_t* b,
+    const ccd_vec3_t* c)
+{
   // When called, ccdVec3PointTriDist2 can optionally compute the value of the
   // "witness" point. When we don't need the witness point, we skip it. However,
   // the libccd implementation takes two different code paths based on whether
@@ -220,17 +206,18 @@ static ccd_real_t ccdVec3PointTriDist2NoWitness(const ccd_vec3_t* P,
 // `ccdVec3PointTriDist2()` directly. It has some precision quirks. For those
 // invocations that want the squared distance *with* a witness point, call
 // *this* function.
-static ccd_real_t ccdVec3PointTriDist2WithWitness(const ccd_vec3_t* P,
-                                                  const ccd_vec3_t* a,
-                                                  const ccd_vec3_t* b,
-                                                  const ccd_vec3_t* c,
-                                                  ccd_vec3_t* w) {
+static ccd_real_t ccdVec3PointTriDist2WithWitness(
+    const ccd_vec3_t* P,
+    const ccd_vec3_t* a,
+    const ccd_vec3_t* b,
+    const ccd_vec3_t* c,
+    ccd_vec3_t* w)
+{
   return ccdVec3PointTriDist2(P, a, b, c, w);
 }
 
-static ccd_real_t simplexReduceToTriangle(ccd_simplex_t *simplex,
-                                          ccd_real_t dist,
-                                          ccd_vec3_t *best_witness)
+static ccd_real_t simplexReduceToTriangle(
+    ccd_simplex_t* simplex, ccd_real_t dist, ccd_vec3_t* best_witness)
 {
   ccd_real_t newdist;
   ccd_vec3_t witness;
@@ -238,22 +225,24 @@ static ccd_real_t simplexReduceToTriangle(ccd_simplex_t *simplex,
   int i;
 
   // try the fourth point in all three positions
-  for (i = 0; i < 3; i++){
+  for (i = 0; i < 3; i++) {
     newdist = ccdVec3PointTriDist2WithWitness(
-        ccd_vec3_origin, &ccdSimplexPoint(simplex, (i == 0 ? 3 : 0))->v,
+        ccd_vec3_origin,
+        &ccdSimplexPoint(simplex, (i == 0 ? 3 : 0))->v,
         &ccdSimplexPoint(simplex, (i == 1 ? 3 : 1))->v,
-        &ccdSimplexPoint(simplex, (i == 2 ? 3 : 2))->v, &witness);
+        &ccdSimplexPoint(simplex, (i == 2 ? 3 : 2))->v,
+        &witness);
     newdist = CCD_SQRT(newdist);
 
     // record the best triangle
-    if (newdist < dist){
+    if (newdist < dist) {
       dist = newdist;
       best = i;
       ccdVec3Copy(best_witness, &witness);
     }
   }
 
-  if (best >= 0){
+  if (best >= 0) {
     ccdSimplexSet(simplex, best, ccdSimplexPoint(simplex, 3));
   }
   ccdSimplexSetSize(simplex, 3);
@@ -261,8 +250,11 @@ static ccd_real_t simplexReduceToTriangle(ccd_simplex_t *simplex,
   return dist;
 }
 
-_ccd_inline void tripleCross(const ccd_vec3_t *a, const ccd_vec3_t *b,
-                             const ccd_vec3_t *c, ccd_vec3_t *d)
+inline void tripleCross(
+    const ccd_vec3_t* a,
+    const ccd_vec3_t* b,
+    const ccd_vec3_t* c,
+    ccd_vec3_t* d)
 {
   ccd_vec3_t e;
   ccdVec3Cross(&e, a, b);
@@ -304,11 +296,8 @@ _ccd_inline void tripleCross(const ccd_vec3_t *a, const ccd_vec3_t *b,
                      │░░░░░░░░░░┆▒▒▒▒▒
                      │░░░░░░░░░░┆▒▒▒▒▒
                      │░░░░░░░░░░┆▒▒▒▒▒
-          ───────────O──────────B────⯈  î
-                     │░░░░░░░░░░┆▒▒▒▒▒
-                     │░░░░░░░░░░┆▒▒▒▒▒
-                     │░░░░░░░░░░┆▒▒▒▒▒
-                     │░░░░░░░░░░┆▒▒▒▒▒
+          ───────────O──────────B────⯈
+ î │░░░░░░░░░░┆▒▒▒▒▒ │░░░░░░░░░░┆▒▒▒▒▒ │░░░░░░░░░░┆▒▒▒▒▒ │░░░░░░░░░░┆▒▒▒▒▒
                      │░░░░░░░░░░┆▒▒▒▒▒
 
  The point A cannot lie in region 3.
@@ -351,7 +340,8 @@ _ccd_inline void tripleCross(const ccd_vec3_t *a, const ccd_vec3_t *b,
  doSimplex2() is only called from doSimplex() its region 1 assumption _should_
  remain valid.
 */
-static int doSimplex2(ccd_simplex_t *simplex, ccd_vec3_t *dir) {
+static int doSimplex2(ccd_simplex_t* simplex, ccd_vec3_t* dir)
+{
   // Used to define numerical thresholds near zero; typically scaled to the size
   // of the quantities being tested.
   constexpr ccd_real_t eps = constants<ccd_real_t>::eps();
@@ -393,8 +383,8 @@ static int doSimplex2(ccd_simplex_t *simplex, ccd_vec3_t *dir) {
   // use later to compute a new support direction, as necessary).
   const Vector3<ccd_real_t> p_AB = p_OB - p_OA;
   const Vector3<ccd_real_t> plane_normal = p_OB.cross(p_AB);
-  if (plane_normal.squaredNorm() <
-      p_AB.squaredNorm() * p_OB.squaredNorm() * eps * eps) {
+  if (plane_normal.squaredNorm()
+      < p_AB.squaredNorm() * p_OB.squaredNorm() * eps * eps) {
     return 1;
   }
 
@@ -417,16 +407,17 @@ static int doSimplex2(ccd_simplex_t *simplex, ccd_vec3_t *dir) {
 // _squared distance_ directly against epsilon is equivalent to comparing
 // distance to sqrt(epsilon) -- we classify the distance as zero or not using
 // only half the available precision.
-static bool isAbsValueLessThanEpsSquared(ccd_real_t val) {
-    return std::abs(val) < std::numeric_limits<ccd_real_t>::epsilon() *
-                           std::numeric_limits<ccd_real_t>::epsilon();
+static bool isAbsValueLessThanEpsSquared(ccd_real_t val)
+{
+  return std::abs(val) < std::numeric_limits<ccd_real_t>::epsilon()
+                             * std::numeric_limits<ccd_real_t>::epsilon();
 }
 
 // TODO(SeanCurtis-TRI): Define the return value:
 //   1: (like doSimplex2) --> origin is "in" the simplex.
 //   0:
 //  -1: If the 3-simplex is degenerate. How is this intepreted?
-static int doSimplex3(ccd_simplex_t *simplex, ccd_vec3_t *dir)
+static int doSimplex3(ccd_simplex_t* simplex, ccd_vec3_t* dir)
 {
   const ccd_support_t *A, *B, *C;
   ccd_vec3_t AO, AB, AC, ABC, tmp;
@@ -439,8 +430,8 @@ static int doSimplex3(ccd_simplex_t *simplex, ccd_vec3_t *dir)
   C = ccdSimplexPoint(simplex, 0);
 
   // check touching contact
-  const ccd_real_t dist_squared = ccdVec3PointTriDist2NoWitness(
-      ccd_vec3_origin, &A->v, &B->v, &C->v);
+  const ccd_real_t dist_squared
+      = ccdVec3PointTriDist2NoWitness(ccd_vec3_origin, &A->v, &B->v, &C->v);
   if (isAbsValueLessThanEpsSquared(dist_squared)) {
     return 1;
   }
@@ -451,7 +442,7 @@ static int doSimplex3(ccd_simplex_t *simplex, ccd_vec3_t *dir)
   // for a zero-area triangle. What about co-linearity? Can we guarantee that
   // co-linearity can't happen?  See the `triangle_area_is_zero()` method in
   // this same file.
-  if (ccdVec3Eq(&A->v, &B->v) || ccdVec3Eq(&A->v, &C->v)){
+  if (ccdVec3Eq(&A->v, &B->v) || ccdVec3Eq(&A->v, &C->v)) {
     // TODO(SeanCurtis-TRI): Why do we simply quit if the simplex is degenerate?
     return -1;
   }
@@ -467,37 +458,37 @@ static int doSimplex3(ccd_simplex_t *simplex, ccd_vec3_t *dir)
 
   ccdVec3Cross(&tmp, &ABC, &AC);
   dot = ccdVec3Dot(&tmp, &AO);
-  if (ccdIsZero(dot) || dot > CCD_ZERO){
+  if (ccdIsZero(dot) || dot > CCD_ZERO) {
     dot = ccdVec3Dot(&AC, &AO);
-    if (ccdIsZero(dot) || dot > CCD_ZERO){
+    if (ccdIsZero(dot) || dot > CCD_ZERO) {
       // C is already in place
       ccdSimplexSet(simplex, 1, A);
       ccdSimplexSetSize(simplex, 2);
       tripleCross(&AC, &AO, &AC, dir);
-    }else{
+    } else {
     ccd_do_simplex3_45:
       dot = ccdVec3Dot(&AB, &AO);
-      if (ccdIsZero(dot) || dot > CCD_ZERO){
+      if (ccdIsZero(dot) || dot > CCD_ZERO) {
         ccdSimplexSet(simplex, 0, B);
         ccdSimplexSet(simplex, 1, A);
         ccdSimplexSetSize(simplex, 2);
         tripleCross(&AB, &AO, &AB, dir);
-      }else{
+      } else {
         ccdSimplexSet(simplex, 0, A);
         ccdSimplexSetSize(simplex, 1);
         ccdVec3Copy(dir, &AO);
       }
     }
-  }else{
+  } else {
     ccdVec3Cross(&tmp, &AB, &ABC);
     dot = ccdVec3Dot(&tmp, &AO);
-    if (ccdIsZero(dot) || dot > CCD_ZERO){
+    if (ccdIsZero(dot) || dot > CCD_ZERO) {
       goto ccd_do_simplex3_45;
-    }else{
+    } else {
       dot = ccdVec3Dot(&ABC, &AO);
-      if (ccdIsZero(dot) || dot > CCD_ZERO){
+      if (ccdIsZero(dot) || dot > CCD_ZERO) {
         ccdVec3Copy(dir, &ABC);
-      }else{
+      } else {
         ccd_support_t Ctmp;
         ccdSupportCopy(&Ctmp, C);
         ccdSimplexSet(simplex, 0, B);
@@ -512,7 +503,7 @@ static int doSimplex3(ccd_simplex_t *simplex, ccd_vec3_t *dir)
   return 0;
 }
 
-static int doSimplex4(ccd_simplex_t *simplex, ccd_vec3_t *dir)
+static int doSimplex4(ccd_simplex_t* simplex, ccd_vec3_t* dir)
 {
   const ccd_support_t *A, *B, *C, *D;
   ccd_vec3_t AO, AB, AC, AD, ABC, ACD, ADB;
@@ -529,26 +520,30 @@ static int doSimplex4(ccd_simplex_t *simplex, ccd_vec3_t *dir)
   // check if tetrahedron is really tetrahedron (has volume > 0)
   // if it is not simplex can't be expanded and thus no intersection is
   // found.
-  ccd_real_t dist_squared = ccdVec3PointTriDist2NoWitness(
-      &A->v, &B->v, &C->v, &D->v);
+  ccd_real_t dist_squared
+      = ccdVec3PointTriDist2NoWitness(&A->v, &B->v, &C->v, &D->v);
   if (isAbsValueLessThanEpsSquared(dist_squared)) {
     return -1;
   }
 
   // check if origin lies on some of tetrahedron's face - if so objects
   // intersect
-  dist_squared =
-      ccdVec3PointTriDist2NoWitness(ccd_vec3_origin, &A->v, &B->v, &C->v);
-  if (isAbsValueLessThanEpsSquared((dist_squared))) return 1;
-  dist_squared =
-      ccdVec3PointTriDist2NoWitness(ccd_vec3_origin, &A->v, &C->v, &D->v);
-  if (isAbsValueLessThanEpsSquared((dist_squared))) return 1;
-  dist_squared =
-      ccdVec3PointTriDist2NoWitness(ccd_vec3_origin, &A->v, &B->v, &D->v);
-  if (isAbsValueLessThanEpsSquared(dist_squared)) return 1;
-  dist_squared =
-      ccdVec3PointTriDist2NoWitness(ccd_vec3_origin, &B->v, &C->v, &D->v);
-  if (isAbsValueLessThanEpsSquared(dist_squared)) return 1;
+  dist_squared
+      = ccdVec3PointTriDist2NoWitness(ccd_vec3_origin, &A->v, &B->v, &C->v);
+  if (isAbsValueLessThanEpsSquared((dist_squared)))
+    return 1;
+  dist_squared
+      = ccdVec3PointTriDist2NoWitness(ccd_vec3_origin, &A->v, &C->v, &D->v);
+  if (isAbsValueLessThanEpsSquared((dist_squared)))
+    return 1;
+  dist_squared
+      = ccdVec3PointTriDist2NoWitness(ccd_vec3_origin, &A->v, &B->v, &D->v);
+  if (isAbsValueLessThanEpsSquared(dist_squared))
+    return 1;
+  dist_squared
+      = ccdVec3PointTriDist2NoWitness(ccd_vec3_origin, &B->v, &C->v, &D->v);
+  if (isAbsValueLessThanEpsSquared(dist_squared))
+    return 1;
 
   // compute AO, AB, AC, AD segments and ABC, ACD, ADB normal vectors
   ccdVec3Copy(&AO, &A->v);
@@ -572,12 +567,12 @@ static int doSimplex4(ccd_simplex_t *simplex, ccd_vec3_t *dir)
   AC_O = ccdSign(ccdVec3Dot(&ADB, &AO)) == C_on_ADB;
   AD_O = ccdSign(ccdVec3Dot(&ABC, &AO)) == D_on_ABC;
 
-  if (AB_O && AC_O && AD_O){
+  if (AB_O && AC_O && AD_O) {
     // origin is in tetrahedron
     return 1;
 
     // rearrange simplex to triangle and call doSimplex3()
-  }else if (!AB_O){
+  } else if (!AB_O) {
     // B is farthest from the origin among all of the tetrahedron's
     // points, so remove it from the list and go on with the triangle
     // case
@@ -585,13 +580,13 @@ static int doSimplex4(ccd_simplex_t *simplex, ccd_vec3_t *dir)
     // D and C are in place
     ccdSimplexSet(simplex, 2, A);
     ccdSimplexSetSize(simplex, 3);
-  }else if (!AC_O){
+  } else if (!AC_O) {
     // C is farthest
     ccdSimplexSet(simplex, 1, D);
     ccdSimplexSet(simplex, 0, B);
     ccdSimplexSet(simplex, 2, A);
     ccdSimplexSetSize(simplex, 3);
-  }else{ // (!AD_O)
+  } else { // (!AD_O)
     ccdSimplexSet(simplex, 0, C);
     ccdSimplexSet(simplex, 1, B);
     ccdSimplexSet(simplex, 2, A);
@@ -601,15 +596,15 @@ static int doSimplex4(ccd_simplex_t *simplex, ccd_vec3_t *dir)
   return doSimplex3(simplex, dir);
 }
 
-static int doSimplex(ccd_simplex_t *simplex, ccd_vec3_t *dir)
+static int doSimplex(ccd_simplex_t* simplex, ccd_vec3_t* dir)
 {
-  if (ccdSimplexSize(simplex) == 2){
+  if (ccdSimplexSize(simplex) == 2) {
     // simplex contains segment only one segment
     return doSimplex2(simplex, dir);
-  }else if (ccdSimplexSize(simplex) == 3){
+  } else if (ccdSimplexSize(simplex) == 3) {
     // simplex contains triangle
     return doSimplex3(simplex, dir);
-  }else{ // ccdSimplexSize(simplex) == 4
+  } else { // ccdSimplexSize(simplex) == 4
     // tetrahedron - this is the only shape which can encapsule origin
     // so doSimplex4() also contains test on it
     return doSimplex4(simplex, dir);
@@ -617,127 +612,134 @@ static int doSimplex(ccd_simplex_t *simplex, ccd_vec3_t *dir)
 }
 
 /** Transforms simplex to polytope, two vertices required */
-static int simplexToPolytope2(const void *obj1, const void *obj2,
-                              const ccd_t *ccd,
-                              const ccd_simplex_t *simplex,
-                              ccd_pt_t *pt, ccd_pt_el_t **nearest)
+static int simplexToPolytope2(
+    const void* obj1,
+    const void* obj2,
+    const ccd_t* ccd,
+    const ccd_simplex_t* simplex,
+    ccd_pt_t* pt,
+    ccd_pt_el_t** nearest)
 {
-    const ccd_support_t *a, *b;
-    ccd_vec3_t ab, ac, dir;
-    ccd_support_t supp[4];
-    ccd_pt_vertex_t *v[6];
-    ccd_pt_edge_t *e[12];
-    size_t i;
-    int found;
+  const ccd_support_t *a, *b;
+  ccd_vec3_t ab, ac, dir;
+  ccd_support_t supp[4];
+  ccd_pt_vertex_t* v[6];
+  ccd_pt_edge_t* e[12];
+  size_t i;
+  int found;
 
-    a = ccdSimplexPoint(simplex, 0);
-    b = ccdSimplexPoint(simplex, 1);
+  a = ccdSimplexPoint(simplex, 0);
+  b = ccdSimplexPoint(simplex, 1);
 
-    // This situation is a bit tricky. If only one segment comes from
-    // previous run of GJK - it means that either this segment is on
-    // minkowski edge (and thus we have touch contact) or it it isn't and
-    // therefore segment is somewhere *inside* minkowski sum and it *must*
-    // be possible to fully enclose this segment with polyhedron formed by
-    // at least 8 triangle faces.
+  // This situation is a bit tricky. If only one segment comes from
+  // previous run of GJK - it means that either this segment is on
+  // minkowski edge (and thus we have touch contact) or it it isn't and
+  // therefore segment is somewhere *inside* minkowski sum and it *must*
+  // be possible to fully enclose this segment with polyhedron formed by
+  // at least 8 triangle faces.
 
-    // get first support point (any)
-    found = 0;
-    for (i = 0; i < ccd_points_on_sphere_len; i++){
-        __ccdSupport(obj1, obj2, &ccd_points_on_sphere[i], ccd, &supp[0]);
-        if (!ccdVec3Eq(&a->v, &supp[0].v) && !ccdVec3Eq(&b->v, &supp[0].v)){
-            found = 1;
-            break;
-        }
+  // get first support point (any)
+  found = 0;
+  for (i = 0; i < ccd_points_on_sphere_len; i++) {
+    __ccdSupport(obj1, obj2, &ccd_points_on_sphere[i], ccd, &supp[0]);
+    if (!ccdVec3Eq(&a->v, &supp[0].v) && !ccdVec3Eq(&b->v, &supp[0].v)) {
+      found = 1;
+      break;
     }
-    if (!found)
-        goto simplexToPolytope2_touching_contact;
+  }
+  if (!found)
+    goto simplexToPolytope2_touching_contact;
 
-    // get second support point in opposite direction than supp[0]
-    ccdVec3Copy(&dir, &supp[0].v);
-    ccdVec3Scale(&dir, -CCD_ONE);
-    __ccdSupport(obj1, obj2, &dir, ccd, &supp[1]);
-    if (ccdVec3Eq(&a->v, &supp[1].v) || ccdVec3Eq(&b->v, &supp[1].v))
-        goto simplexToPolytope2_touching_contact;
+  // get second support point in opposite direction than supp[0]
+  ccdVec3Copy(&dir, &supp[0].v);
+  ccdVec3Scale(&dir, -CCD_ONE);
+  __ccdSupport(obj1, obj2, &dir, ccd, &supp[1]);
+  if (ccdVec3Eq(&a->v, &supp[1].v) || ccdVec3Eq(&b->v, &supp[1].v))
+    goto simplexToPolytope2_touching_contact;
 
-    // next will be in direction of normal of triangle a,supp[0],supp[1]
-    ccdVec3Sub2(&ab, &supp[0].v, &a->v);
-    ccdVec3Sub2(&ac, &supp[1].v, &a->v);
-    ccdVec3Cross(&dir, &ab, &ac);
-    __ccdSupport(obj1, obj2, &dir, ccd, &supp[2]);
-    if (ccdVec3Eq(&a->v, &supp[2].v) || ccdVec3Eq(&b->v, &supp[2].v))
-        goto simplexToPolytope2_touching_contact;
+  // next will be in direction of normal of triangle a,supp[0],supp[1]
+  ccdVec3Sub2(&ab, &supp[0].v, &a->v);
+  ccdVec3Sub2(&ac, &supp[1].v, &a->v);
+  ccdVec3Cross(&dir, &ab, &ac);
+  __ccdSupport(obj1, obj2, &dir, ccd, &supp[2]);
+  if (ccdVec3Eq(&a->v, &supp[2].v) || ccdVec3Eq(&b->v, &supp[2].v))
+    goto simplexToPolytope2_touching_contact;
 
-    // and last one will be in opposite direction
-    ccdVec3Scale(&dir, -CCD_ONE);
-    __ccdSupport(obj1, obj2, &dir, ccd, &supp[3]);
-    if (ccdVec3Eq(&a->v, &supp[3].v) || ccdVec3Eq(&b->v, &supp[3].v))
-        goto simplexToPolytope2_touching_contact;
+  // and last one will be in opposite direction
+  ccdVec3Scale(&dir, -CCD_ONE);
+  __ccdSupport(obj1, obj2, &dir, ccd, &supp[3]);
+  if (ccdVec3Eq(&a->v, &supp[3].v) || ccdVec3Eq(&b->v, &supp[3].v))
+    goto simplexToPolytope2_touching_contact;
 
-    goto simplexToPolytope2_not_touching_contact;
+  goto simplexToPolytope2_not_touching_contact;
 simplexToPolytope2_touching_contact:
-    v[0] = ccdPtAddVertex(pt, a);
-    v[1] = ccdPtAddVertex(pt, b);
-    *nearest = (ccd_pt_el_t *)ccdPtAddEdge(pt, v[0], v[1]);
-    if (*nearest == NULL)
-        return -2;
+  v[0] = ccdPtAddVertex(pt, a);
+  v[1] = ccdPtAddVertex(pt, b);
+  *nearest = (ccd_pt_el_t*)ccdPtAddEdge(pt, v[0], v[1]);
+  if (*nearest == NULL)
+    return -2;
 
-    return -1;
+  return -1;
 
 simplexToPolytope2_not_touching_contact:
-    // form polyhedron
-    v[0] = ccdPtAddVertex(pt, a);
-    v[1] = ccdPtAddVertex(pt, &supp[0]);
-    v[2] = ccdPtAddVertex(pt, b);
-    v[3] = ccdPtAddVertex(pt, &supp[1]);
-    v[4] = ccdPtAddVertex(pt, &supp[2]);
-    v[5] = ccdPtAddVertex(pt, &supp[3]);
+  // form polyhedron
+  v[0] = ccdPtAddVertex(pt, a);
+  v[1] = ccdPtAddVertex(pt, &supp[0]);
+  v[2] = ccdPtAddVertex(pt, b);
+  v[3] = ccdPtAddVertex(pt, &supp[1]);
+  v[4] = ccdPtAddVertex(pt, &supp[2]);
+  v[5] = ccdPtAddVertex(pt, &supp[3]);
 
-    e[0] = ccdPtAddEdge(pt, v[0], v[1]);
-    e[1] = ccdPtAddEdge(pt, v[1], v[2]);
-    e[2] = ccdPtAddEdge(pt, v[2], v[3]);
-    e[3] = ccdPtAddEdge(pt, v[3], v[0]);
+  e[0] = ccdPtAddEdge(pt, v[0], v[1]);
+  e[1] = ccdPtAddEdge(pt, v[1], v[2]);
+  e[2] = ccdPtAddEdge(pt, v[2], v[3]);
+  e[3] = ccdPtAddEdge(pt, v[3], v[0]);
 
-    e[4] = ccdPtAddEdge(pt, v[4], v[0]);
-    e[5] = ccdPtAddEdge(pt, v[4], v[1]);
-    e[6] = ccdPtAddEdge(pt, v[4], v[2]);
-    e[7] = ccdPtAddEdge(pt, v[4], v[3]);
+  e[4] = ccdPtAddEdge(pt, v[4], v[0]);
+  e[5] = ccdPtAddEdge(pt, v[4], v[1]);
+  e[6] = ccdPtAddEdge(pt, v[4], v[2]);
+  e[7] = ccdPtAddEdge(pt, v[4], v[3]);
 
-    e[8]  = ccdPtAddEdge(pt, v[5], v[0]);
-    e[9]  = ccdPtAddEdge(pt, v[5], v[1]);
-    e[10] = ccdPtAddEdge(pt, v[5], v[2]);
-    e[11] = ccdPtAddEdge(pt, v[5], v[3]);
+  e[8] = ccdPtAddEdge(pt, v[5], v[0]);
+  e[9] = ccdPtAddEdge(pt, v[5], v[1]);
+  e[10] = ccdPtAddEdge(pt, v[5], v[2]);
+  e[11] = ccdPtAddEdge(pt, v[5], v[3]);
 
-    if (ccdPtAddFace(pt, e[4], e[5], e[0]) == NULL
-            || ccdPtAddFace(pt, e[5], e[6], e[1]) == NULL
-            || ccdPtAddFace(pt, e[6], e[7], e[2]) == NULL
-            || ccdPtAddFace(pt, e[7], e[4], e[3]) == NULL
+  if (ccdPtAddFace(pt, e[4], e[5], e[0]) == NULL
+      || ccdPtAddFace(pt, e[5], e[6], e[1]) == NULL
+      || ccdPtAddFace(pt, e[6], e[7], e[2]) == NULL
+      || ccdPtAddFace(pt, e[7], e[4], e[3]) == NULL
 
-            || ccdPtAddFace(pt, e[8],  e[9],  e[0]) == NULL
-            || ccdPtAddFace(pt, e[9],  e[10], e[1]) == NULL
-            || ccdPtAddFace(pt, e[10], e[11], e[2]) == NULL
-            || ccdPtAddFace(pt, e[11], e[8],  e[3]) == NULL){
-        return -2;
-    }
+      || ccdPtAddFace(pt, e[8], e[9], e[0]) == NULL
+      || ccdPtAddFace(pt, e[9], e[10], e[1]) == NULL
+      || ccdPtAddFace(pt, e[10], e[11], e[2]) == NULL
+      || ccdPtAddFace(pt, e[11], e[8], e[3]) == NULL) {
+    return -2;
+  }
 
-    return 0;
+  return 0;
 }
 
 #ifndef NDEBUG
-static bool isPolytopeEmpty(const ccd_pt_t& polytope) {
+static bool isPolytopeEmpty(const ccd_pt_t& polytope)
+{
   ccd_pt_vertex_t* v = nullptr;
-  ccdListForEachEntry(&polytope.vertices, v, ccd_pt_vertex_t, list) {
+  ccdListForEachEntry(&polytope.vertices, v, ccd_pt_vertex_t, list)
+  {
     if (v) {
       return false;
     }
   }
   ccd_pt_edge_t* e = nullptr;
-  ccdListForEachEntry(&polytope.edges, e, ccd_pt_edge_t, list) {
+  ccdListForEachEntry(&polytope.edges, e, ccd_pt_edge_t, list)
+  {
     if (e) {
       return false;
     }
   }
   ccd_pt_face_t* f = nullptr;
-  ccdListForEachEntry(&polytope.faces, f, ccd_pt_face_t, list) {
+  ccdListForEachEntry(&polytope.faces, f, ccd_pt_face_t, list)
+  {
     if (f) {
       return false;
     }
@@ -763,9 +765,14 @@ static bool isPolytopeEmpty(const ccd_pt_t& polytope) {
  * @retval status return 0 on success, -1 if touching contact is detected, and
  * -2 on non-recoverable failure (mostly due to memory allocation bug).
  */
-static int convert2SimplexToTetrahedron(const void* obj1, const void* obj2,
-                              const ccd_t* ccd, const ccd_simplex_t* simplex,
-                              ccd_pt_t* polytope, ccd_pt_el_t** nearest) {
+static int convert2SimplexToTetrahedron(
+    const void* obj1,
+    const void* obj2,
+    const ccd_t* ccd,
+    const ccd_simplex_t* simplex,
+    ccd_pt_t* polytope,
+    ccd_pt_el_t** nearest)
+{
   assert(nearest);
   assert(isPolytopeEmpty(*polytope));
   assert(simplex->last == 2); // a 2-simplex.
@@ -788,14 +795,14 @@ static int convert2SimplexToTetrahedron(const void* obj1, const void* obj2,
   ccdVec3Sub2(&ac, &c->v, &a->v);
   ccdVec3Cross(&dir, &ab, &ac);
   __ccdSupport(obj1, obj2, &dir, ccd, &d);
-  const ccd_real_t dist_squared =
-      ccdVec3PointTriDist2NoWitness(&d.v, &a->v, &b->v, &c->v);
+  const ccd_real_t dist_squared
+      = ccdVec3PointTriDist2NoWitness(&d.v, &a->v, &b->v, &c->v);
 
   // and second one take in opposite direction
   ccdVec3Scale(&dir, -CCD_ONE);
   __ccdSupport(obj1, obj2, &dir, ccd, &d2);
-  const ccd_real_t dist_squared_opposite =
-      ccdVec3PointTriDist2NoWitness(&d2.v, &a->v, &b->v, &c->v);
+  const ccd_real_t dist_squared_opposite
+      = ccdVec3PointTriDist2NoWitness(&d2.v, &a->v, &b->v, &c->v);
 
   // check if face isn't already on edge of minkowski sum and thus we
   // have touching contact
@@ -807,7 +814,8 @@ static int convert2SimplexToTetrahedron(const void* obj1, const void* obj2,
     e[1] = ccdPtAddEdge(polytope, v[1], v[2]);
     e[2] = ccdPtAddEdge(polytope, v[2], v[0]);
     *nearest = (ccd_pt_el_t*)ccdPtAddFace(polytope, e[0], e[1], e[2]);
-    if (*nearest == NULL) return -2;
+    if (*nearest == NULL)
+      return -2;
 
     return -1;
   }
@@ -815,8 +823,8 @@ static int convert2SimplexToTetrahedron(const void* obj1, const void* obj2,
   // on which one has larger distance to the face abc. We pick the larger
   // distance because it gives a tetrahedron with larger volume, so potentially
   // more "expanded" than the one with the smaller volume.
-  auto FormTetrahedron = [polytope, a, b, c, &v,
-                          &e](const ccd_support_t& new_support) -> int {
+  auto FormTetrahedron
+      = [polytope, a, b, c, &v, &e](const ccd_support_t& new_support) -> int {
     v[0] = ccdPtAddVertex(polytope, a);
     v[1] = ccdPtAddVertex(polytope, b);
     v[2] = ccdPtAddVertex(polytope, c);
@@ -836,10 +844,10 @@ static int convert2SimplexToTetrahedron(const void* obj1, const void* obj2,
     // Note, there is no requirement on the winding of the face, namely we do
     // not guarantee if all f.e(0).cross(f.e(1)) points outward (or inward) for
     // all the faces added below.
-    if (ccdPtAddFace(polytope, e[0], e[1], e[2]) == NULL ||
-        ccdPtAddFace(polytope, e[3], e[4], e[0]) == NULL ||
-        ccdPtAddFace(polytope, e[4], e[5], e[1]) == NULL ||
-        ccdPtAddFace(polytope, e[5], e[3], e[2]) == NULL) {
+    if (ccdPtAddFace(polytope, e[0], e[1], e[2]) == NULL
+        || ccdPtAddFace(polytope, e[3], e[4], e[0]) == NULL
+        || ccdPtAddFace(polytope, e[4], e[5], e[1]) == NULL
+        || ccdPtAddFace(polytope, e[5], e[3], e[2]) == NULL) {
       return -2;
     }
     return 0;
@@ -854,9 +862,14 @@ static int convert2SimplexToTetrahedron(const void* obj1, const void* obj2,
 
 /** Transforms simplex to polytope. It is assumed that simplex has 4
  *  vertices! */
-static int simplexToPolytope4(const void* obj1, const void* obj2,
-                              const ccd_t* ccd, ccd_simplex_t* simplex,
-                              ccd_pt_t* pt, ccd_pt_el_t** nearest) {
+static int simplexToPolytope4(
+    const void* obj1,
+    const void* obj2,
+    const ccd_t* ccd,
+    ccd_simplex_t* simplex,
+    ccd_pt_t* pt,
+    ccd_pt_el_t** nearest)
+{
   const ccd_support_t *a, *b, *c, *d;
   bool use_polytope3{false};
   ccd_pt_vertex_t* v[4];
@@ -875,14 +888,14 @@ static int simplexToPolytope4(const void* obj1, const void* obj2,
   // the resulting face. We simply take the first face which exhibited the
   // trait.
 
-  ccd_real_t dist_squared =
-      ccdVec3PointTriDist2NoWitness(ccd_vec3_origin, &a->v, &b->v, &c->v);
+  ccd_real_t dist_squared
+      = ccdVec3PointTriDist2NoWitness(ccd_vec3_origin, &a->v, &b->v, &c->v);
   if (isAbsValueLessThanEpsSquared(dist_squared)) {
     use_polytope3 = true;
   }
   if (!use_polytope3) {
-    dist_squared =
-        ccdVec3PointTriDist2NoWitness(ccd_vec3_origin, &a->v, &c->v, &d->v);
+    dist_squared
+        = ccdVec3PointTriDist2NoWitness(ccd_vec3_origin, &a->v, &c->v, &d->v);
     if (isAbsValueLessThanEpsSquared(dist_squared)) {
       use_polytope3 = true;
       ccdSimplexSet(simplex, 1, c);
@@ -890,16 +903,16 @@ static int simplexToPolytope4(const void* obj1, const void* obj2,
     }
   }
   if (!use_polytope3) {
-    dist_squared =
-        ccdVec3PointTriDist2NoWitness(ccd_vec3_origin, &a->v, &b->v, &d->v);
+    dist_squared
+        = ccdVec3PointTriDist2NoWitness(ccd_vec3_origin, &a->v, &b->v, &d->v);
     if (isAbsValueLessThanEpsSquared(dist_squared)) {
       use_polytope3 = true;
       ccdSimplexSet(simplex, 2, d);
     }
   }
   if (!use_polytope3) {
-    dist_squared =
-        ccdVec3PointTriDist2NoWitness(ccd_vec3_origin, &b->v, &c->v, &d->v);
+    dist_squared
+        = ccdVec3PointTriDist2NoWitness(ccd_vec3_origin, &b->v, &c->v, &d->v);
     if (isAbsValueLessThanEpsSquared(dist_squared)) {
       use_polytope3 = true;
       ccdSimplexSet(simplex, 0, b);
@@ -929,10 +942,10 @@ static int simplexToPolytope4(const void* obj1, const void* obj2,
   // failed of if any of the input pointers are NULL, so the bad
   // allocation can be checked by the last calls of ccdPtAddFace()
   // because the rest of the bad allocations eventually "bubble up" here
-  if (ccdPtAddFace(pt, e[0], e[1], e[2]) == NULL ||
-      ccdPtAddFace(pt, e[3], e[4], e[0]) == NULL ||
-      ccdPtAddFace(pt, e[4], e[5], e[1]) == NULL ||
-      ccdPtAddFace(pt, e[5], e[3], e[2]) == NULL) {
+  if (ccdPtAddFace(pt, e[0], e[1], e[2]) == NULL
+      || ccdPtAddFace(pt, e[3], e[4], e[0]) == NULL
+      || ccdPtAddFace(pt, e[4], e[5], e[1]) == NULL
+      || ccdPtAddFace(pt, e[5], e[3], e[2]) == NULL) {
     return -2;
   }
 
@@ -940,7 +953,8 @@ static int simplexToPolytope4(const void* obj1, const void* obj2,
 }
 
 /** Reports true if p and q are coincident. */
-static bool are_coincident(const ccd_vec3_t& p, const ccd_vec3_t& q) {
+static bool are_coincident(const ccd_vec3_t& p, const ccd_vec3_t& q)
+{
   // This uses a scale-dependent basis for determining coincidence. It examines
   // each axis independently, and only, if all three axes are sufficiently
   // close (relative to its own scale), are the two points considered
@@ -957,10 +971,11 @@ static bool are_coincident(const ccd_vec3_t& p, const ccd_vec3_t& q) {
   // NOTE: Wrapping "1.0" with ccd_real_t accounts for mac problems where ccd
   // is actually float based.
   for (int i = 0; i < 3; ++i) {
-    const ccd_real_t tolerance =
-        max({ccd_real_t{1}, abs(p.v[i]), abs(q.v[i])}) * eps;
+    const ccd_real_t tolerance
+        = max({ccd_real_t{1}, abs(p.v[i]), abs(q.v[i])}) * eps;
     const ccd_real_t delta = abs(p.v[i] - q.v[i]);
-    if (delta > tolerance) return false;
+    if (delta > tolerance)
+      return false;
   }
   return true;
 }
@@ -971,8 +986,9 @@ static bool are_coincident(const ccd_vec3_t& p, const ccd_vec3_t& q) {
    - the vertices are co-linear.
  Both conditions are computed with respect to machine precision.
  @returns true if the area is zero.  */
-static bool triangle_area_is_zero(const ccd_vec3_t& a, const ccd_vec3_t& b,
-                                  const ccd_vec3_t& c) {
+static bool triangle_area_is_zero(
+    const ccd_vec3_t& a, const ccd_vec3_t& b, const ccd_vec3_t& c)
+{
   // First coincidence condition. This doesn't *explicitly* test for b and c
   // being coincident. That will be captured in the subsequent co-linearity
   // test. If b and c *were* coincident, it would be cheaper to perform the
@@ -980,7 +996,8 @@ static bool triangle_area_is_zero(const ccd_vec3_t& a, const ccd_vec3_t& b,
   // However, the expectation is that typically the triangle will not have zero
   // area. In that case, we want to minimize the number of tests performed on
   // the average, so we prefer to eliminate one coincidence test.
-  if (are_coincident(a, b) || are_coincident(a, c)) return true;
+  if (are_coincident(a, b) || are_coincident(a, c))
+    return true;
 
   // We're going to compute the *sine* of the angle θ between edges (given that
   // the vertices are *not* coincident). If the sin(θ) < ε, the edges are
@@ -993,7 +1010,8 @@ static bool triangle_area_is_zero(const ccd_vec3_t& a, const ccd_vec3_t& b,
   ccdVec3Cross(&n, &AB, &AC);
   constexpr ccd_real_t eps = constants<ccd_real_t>::eps();
   // Second co-linearity condition.
-  if (ccdVec3Len2(&n) < eps * eps) return true;
+  if (ccdVec3Len2(&n) < eps * eps)
+    return true;
   return false;
 }
 
@@ -1010,8 +1028,9 @@ static bool triangle_area_is_zero(const ccd_vec3_t& a, const ccd_vec3_t& b,
  * @throws UnexpectedConfigurationException if built in debug mode _and_ the
  * triangle has zero area (either by being too small, or being co-linear).
  */
-static ccd_vec3_t faceNormalPointingOutward(const ccd_pt_t* polytope,
-                                            const ccd_pt_face_t* face) {
+static ccd_vec3_t faceNormalPointingOutward(
+    const ccd_pt_t* polytope, const ccd_pt_face_t* face)
+{
   // This doesn't necessarily define a triangle; I don't know that the third
   // vertex added here is unique from the other two.
 #ifndef NDEBUG
@@ -1019,20 +1038,21 @@ static ccd_vec3_t faceNormalPointingOutward(const ccd_pt_t* polytope,
   const ccd_vec3_t& a = face->edge[0]->vertex[1]->v.v;
   const ccd_vec3_t& b = face->edge[0]->vertex[0]->v.v;
   const ccd_vec3_t& test_v = face->edge[1]->vertex[0]->v.v;
-  const ccd_vec3_t& c = are_coincident(test_v, a) || are_coincident(test_v, b) ?
-                        face->edge[1]->vertex[1]->v.v : test_v;
+  const ccd_vec3_t& c = are_coincident(test_v, a) || are_coincident(test_v, b)
+                            ? face->edge[1]->vertex[1]->v.v
+                            : test_v;
   if (triangle_area_is_zero(a, b, c)) {
-    FCL_THROW_FAILED_AT_THIS_CONFIGURATION(
+    DART_COLLISION_HIT_THROW_FAILED_AT_THIS_CONFIGURATION(
         "Cannot compute face normal for a degenerate (zero-area) triangle");
   }
 #endif
   // We find two edges of the triangle as e1 and e2, and the normal vector
   // of the face is e1.cross(e2).
   ccd_vec3_t e1, e2;
-  ccdVec3Sub2(&e1, &(face->edge[0]->vertex[1]->v.v),
-              &(face->edge[0]->vertex[0]->v.v));
-  ccdVec3Sub2(&e2, &(face->edge[1]->vertex[1]->v.v),
-              &(face->edge[1]->vertex[0]->v.v));
+  ccdVec3Sub2(
+      &e1, &(face->edge[0]->vertex[1]->v.v), &(face->edge[0]->vertex[0]->v.v));
+  ccdVec3Sub2(
+      &e2, &(face->edge[1]->vertex[1]->v.v), &(face->edge[1]->vertex[0]->v.v));
   ccd_vec3_t dir;
   // TODO(hongkai.dai): we ignore the degeneracy here, namely we assume e1 and
   // e2 are not colinear. We should check if e1 and e2 are colinear, and handle
@@ -1063,15 +1083,16 @@ static ccd_vec3_t faceNormalPointingOutward(const ccd_pt_t* polytope,
   // origin_distance_to_plane computes the signed distance from the origin to
   // the plane nᵀ * (x - v) = 0 coinciding with the triangle,  where v is a
   // point on the triangle.
-  const ccd_real_t origin_distance_to_plane =
-      ccdVec3Dot(&unit_dir, &(face->edge[0]->vertex[0]->v.v));
+  const ccd_real_t origin_distance_to_plane
+      = ccdVec3Dot(&unit_dir, &(face->edge[0]->vertex[0]->v.v));
   if (origin_distance_to_plane < -dist_tol) {
     // Origin is more than `dist_tol` away from the plane, but the negative
     // value implies that the normal vector is pointing in the wrong direction;
     // flip it.
     ccdVec3Scale(&dir, ccd_real_t(-1));
-  } else if (-dist_tol <= origin_distance_to_plane &&
-             origin_distance_to_plane <= dist_tol) {
+  } else if (
+      -dist_tol <= origin_distance_to_plane
+      && origin_distance_to_plane <= dist_tol) {
     // The origin is close to the plane of the face. Pick another vertex to test
     // the normal direction.
     ccd_real_t max_distance_to_plane = -CCD_REAL_MAX;
@@ -1080,13 +1101,14 @@ static ccd_vec3_t faceNormalPointingOutward(const ccd_pt_t* polytope,
     // If the magnitude of the distance_to_plane is larger than dist_tol,
     // then it means one of the vertices is at least `dist_tol` away from the
     // plane coinciding with the face.
-    ccdListForEachEntry(&polytope->vertices, v, ccd_pt_vertex_t, list) {
+    ccdListForEachEntry(&polytope->vertices, v, ccd_pt_vertex_t, list)
+    {
       // distance_to_plane is the signed distance from the
       // vertex v->v.v to the face, i.e., distance_to_plane = nᵀ *
       // (v->v.v - face_point). Note that origin_distance_to_plane = nᵀ *
       // face_point.
-      const ccd_real_t distance_to_plane =
-          ccdVec3Dot(&unit_dir, &(v->v.v)) - origin_distance_to_plane;
+      const ccd_real_t distance_to_plane
+          = ccdVec3Dot(&unit_dir, &(v->v.v)) - origin_distance_to_plane;
       if (distance_to_plane > dist_tol) {
         // The vertex is at least dist_tol away from the face plane, on the same
         // direction of `dir`. So we flip dir to point it outward from the
@@ -1098,10 +1120,10 @@ static ccd_vec3_t faceNormalPointingOutward(const ccd_pt_t* polytope,
         // opposite direction of `dir`. So `dir` points outward already.
         return dir;
       } else {
-        max_distance_to_plane =
-            std::max(max_distance_to_plane, distance_to_plane);
-        min_distance_to_plane =
-            std::min(min_distance_to_plane, distance_to_plane);
+        max_distance_to_plane
+            = std::max(max_distance_to_plane, distance_to_plane);
+        min_distance_to_plane
+            = std::min(min_distance_to_plane, distance_to_plane);
       }
     }
     // If max_distance_to_plane > |min_distance_to_plane|, it means that the
@@ -1120,8 +1142,9 @@ static ccd_vec3_t faceNormalPointingOutward(const ccd_pt_t* polytope,
 // half-plane, the return is false.
 // @param f A triangle on a polytope.
 // @param pt A point.
-static bool isOutsidePolytopeFace(const ccd_pt_t* polytope,
-                                const ccd_pt_face_t* f, const ccd_vec3_t* pt) {
+static bool isOutsidePolytopeFace(
+    const ccd_pt_t* polytope, const ccd_pt_face_t* f, const ccd_vec3_t* pt)
+{
   ccd_vec3_t n = faceNormalPointingOutward(polytope, f);
   // r_VP is the vector from a vertex V on the face `f`, to the point P `pt`.
   ccd_vec3_t r_VP;
@@ -1147,11 +1170,13 @@ static bool ComputeVisiblePatchRecursiveSanityCheck(
     const ccd_pt_t& polytope,
     const std::unordered_set<ccd_pt_edge_t*>& border_edges,
     const std::unordered_set<ccd_pt_face_t*>& visible_faces,
-    const std::unordered_set<ccd_pt_edge_t*>& internal_edges) {
+    const std::unordered_set<ccd_pt_edge_t*>& internal_edges)
+{
   ccd_pt_face_t* f;
   // TODO(SeanCurtis-TRI): Instead of returning false, have this throw the
   //  exception itself so that it can provide additional information.
-  ccdListForEachEntry(&polytope.faces, f, ccd_pt_face_t, list) {
+  ccdListForEachEntry(&polytope.faces, f, ccd_pt_face_t, list)
+  {
     bool has_edge_internal = false;
     for (int i = 0; i < 3; ++i) {
       // Since internal_edges is a set, internal_edges.count(e) means that e
@@ -1168,15 +1193,16 @@ static bool ComputeVisiblePatchRecursiveSanityCheck(
     }
   }
   ccd_pt_edge_t* e;
-  ccdListForEachEntry(&polytope.edges, e, ccd_pt_edge_t, list) {
-    if (visible_faces.count(e->faces[0]) > 0 &&
-        visible_faces.count(e->faces[1]) > 0) {
+  ccdListForEachEntry(&polytope.edges, e, ccd_pt_edge_t, list)
+  {
+    if (visible_faces.count(e->faces[0]) > 0
+        && visible_faces.count(e->faces[1]) > 0) {
       if (internal_edges.count(e) == 0) {
         return false;
       }
-    } else if (visible_faces.count(e->faces[0]) +
-                   visible_faces.count(e->faces[1]) ==
-               1) {
+    } else if (
+        visible_faces.count(e->faces[0]) + visible_faces.count(e->faces[1])
+        == 1) {
       if (border_edges.count(e) == 0) {
         return false;
       }
@@ -1198,12 +1224,14 @@ static bool ComputeVisiblePatchRecursiveSanityCheck(
  @param internal_edges    The set of edges already classified as internal.
  @throws ThrowFailedAtThisConfiguration if the edge is being re-classified.
  */
-static void ClassifyBorderEdge(ccd_pt_edge_t* edge,
-                        std::unordered_set<ccd_pt_edge_t*>* border_edges,
-                        std::unordered_set<ccd_pt_edge_t*>* internal_edges) {
+static void ClassifyBorderEdge(
+    ccd_pt_edge_t* edge,
+    std::unordered_set<ccd_pt_edge_t*>* border_edges,
+    std::unordered_set<ccd_pt_edge_t*>* internal_edges)
+{
   border_edges->insert(edge);
   if (internal_edges->count(edge) > 0) {
-    FCL_THROW_FAILED_AT_THIS_CONFIGURATION(
+    DART_COLLISION_HIT_THROW_FAILED_AT_THIS_CONFIGURATION(
         "An edge is being classified as border that has already been "
         "classifed as internal");
   }
@@ -1216,12 +1244,14 @@ static void ClassifyBorderEdge(ccd_pt_edge_t* edge,
  @param internal_edges    The set of edges already classified as internal.
  @throws ThrowFailedAtThisConfiguration if the edge is being re-classified.
  */
-static void ClassifyInternalEdge(ccd_pt_edge_t* edge,
-                          std::unordered_set<ccd_pt_edge_t*>* border_edges,
-                          std::unordered_set<ccd_pt_edge_t*>* internal_edges) {
+static void ClassifyInternalEdge(
+    ccd_pt_edge_t* edge,
+    std::unordered_set<ccd_pt_edge_t*>* border_edges,
+    std::unordered_set<ccd_pt_edge_t*>* internal_edges)
+{
   internal_edges->insert(edge);
   if (border_edges->count(edge) > 0) {
-    FCL_THROW_FAILED_AT_THIS_CONFIGURATION(
+    DART_COLLISION_HIT_THROW_FAILED_AT_THIS_CONFIGURATION(
         "An edge is being classified as internal that has already been "
         "classified as border");
   }
@@ -1241,12 +1271,15 @@ static void ClassifyInternalEdge(ccd_pt_edge_t* edge,
  * multiple ways.
  */
 static void ComputeVisiblePatchRecursive(
-    const ccd_pt_t& polytope, ccd_pt_face_t& f, int edge_index,
+    const ccd_pt_t& polytope,
+    ccd_pt_face_t& f,
+    int edge_index,
     const ccd_vec3_t& query_point,
     std::unordered_set<ccd_pt_edge_t*>* border_edges,
     std::unordered_set<ccd_pt_face_t*>* visible_faces,
     std::unordered_set<ccd_pt_face_t*>* hidden_faces,
-    std::unordered_set<ccd_pt_edge_t*>* internal_edges) {
+    std::unordered_set<ccd_pt_edge_t*>* internal_edges)
+{
   ccd_pt_edge_t* edge = f.edge[edge_index];
 
   ccd_pt_face_t* g = edge->faces[0] == &f ? edge->faces[1] : edge->faces[0];
@@ -1286,8 +1319,8 @@ static void ComputeVisiblePatchRecursive(
     // mistake and now face `g` is inheriting that visible status. This is a
     // conservative resolution that will prevent us from creating co-planar
     // faces (at the cost of a longer border).
-    is_visible = triangle_area_is_zero(query_point, edge->vertex[0]->v.v,
-                                       edge->vertex[1]->v.v);
+    is_visible = triangle_area_is_zero(
+        query_point, edge->vertex[0]->v.v, edge->vertex[1]->v.v);
   }
 
   if (is_visible) {
@@ -1296,9 +1329,15 @@ static void ComputeVisiblePatchRecursive(
     for (int i = 0; i < 3; ++i) {
       if (g->edge[i] != edge) {
         // One of the neighbouring face is `f`, so do not need to visit again.
-        ComputeVisiblePatchRecursive(polytope, *g, i, query_point, border_edges,
-                                     visible_faces, hidden_faces,
-                                     internal_edges);
+        ComputeVisiblePatchRecursive(
+            polytope,
+            *g,
+            i,
+            query_point,
+            border_edges,
+            visible_faces,
+            hidden_faces,
+            internal_edges);
       }
     }
   } else {
@@ -1344,11 +1383,13 @@ static void ComputeVisiblePatchRecursive(
  * normal with the face.
  */
 static void ComputeVisiblePatch(
-    const ccd_pt_t& polytope, ccd_pt_face_t& f,
+    const ccd_pt_t& polytope,
+    ccd_pt_face_t& f,
     const ccd_vec3_t& query_point,
     std::unordered_set<ccd_pt_edge_t*>* border_edges,
     std::unordered_set<ccd_pt_face_t*>* visible_faces,
-    std::unordered_set<ccd_pt_edge_t*>* internal_edges) {
+    std::unordered_set<ccd_pt_edge_t*>* internal_edges)
+{
   assert(border_edges);
   assert(visible_faces);
   assert(internal_edges);
@@ -1359,15 +1400,21 @@ static void ComputeVisiblePatch(
   std::unordered_set<ccd_pt_face_t*> hidden_faces;
   visible_faces->insert(&f);
   for (int edge_index = 0; edge_index < 3; ++edge_index) {
-    ComputeVisiblePatchRecursive(polytope, f, edge_index, query_point,
-                                 border_edges, visible_faces, &hidden_faces,
-                                 internal_edges);
+    ComputeVisiblePatchRecursive(
+        polytope,
+        f,
+        edge_index,
+        query_point,
+        border_edges,
+        visible_faces,
+        &hidden_faces,
+        internal_edges);
   }
 #ifndef NDEBUG
   // TODO(SeanCurtis-TRI): Extend the sanity check to include hidden_faces.
   if (!ComputeVisiblePatchRecursiveSanityCheck(
           polytope, *border_edges, *visible_faces, *internal_edges)) {
-    FCL_THROW_FAILED_AT_THIS_CONFIGURATION(
+    DART_COLLISION_HIT_THROW_FAILED_AT_THIS_CONFIGURATION(
         "The visible patch failed its sanity check");
   }
 #endif
@@ -1399,8 +1446,8 @@ static void ComputeVisiblePatch(
  * an edge of the current polytope, or 3) the visible feature is an edge with
  * one or more adjacent faces with no area.
  */
-static int expandPolytope(ccd_pt_t *polytope, ccd_pt_el_t *el,
-                          const ccd_support_t *newv)
+static int expandPolytope(
+    ccd_pt_t* polytope, ccd_pt_el_t* el, const ccd_support_t* newv)
 {
   // The outline of the algorithm is as follows:
   //  1. Compute the visible patch relative to the new vertex (See
@@ -1422,7 +1469,7 @@ static int expandPolytope(ccd_pt_t *polytope, ccd_pt_el_t *el,
   ccd_pt_face_t* start_face = NULL;
 
   if (el->type == CCD_PT_VERTEX) {
-    FCL_THROW_FAILED_AT_THIS_CONFIGURATION(
+    DART_COLLISION_HIT_THROW_FAILED_AT_THIS_CONFIGURATION(
         "The visible feature is a vertex. This should already have been "
         "identified as a touching contact");
   }
@@ -1438,7 +1485,7 @@ static int expandPolytope(ccd_pt_t *polytope, ccd_pt_el_t *el,
     } else if (isOutsidePolytopeFace(polytope, f[1], &newv->v)) {
       start_face = f[1];
     } else {
-      FCL_THROW_FAILED_AT_THIS_CONFIGURATION(
+      DART_COLLISION_HIT_THROW_FAILED_AT_THIS_CONFIGURATION(
           "Both the nearest point and the new vertex are on an edge, thus the "
           "nearest distance should be 0. This is touching contact, and should "
           "already have been identified");
@@ -1448,8 +1495,13 @@ static int expandPolytope(ccd_pt_t *polytope, ccd_pt_el_t *el,
   std::unordered_set<ccd_pt_face_t*> visible_faces;
   std::unordered_set<ccd_pt_edge_t*> internal_edges;
   std::unordered_set<ccd_pt_edge_t*> border_edges;
-  ComputeVisiblePatch(*polytope, *start_face, newv->v, &border_edges,
-                      &visible_faces, &internal_edges);
+  ComputeVisiblePatch(
+      *polytope,
+      *start_face,
+      newv->v,
+      &border_edges,
+      &visible_faces,
+      &internal_edges);
 
   // Now remove all the obsolete faces.
   // TODO(hongkai.dai@tri.global): currently we need to loop through each face
@@ -1486,15 +1538,14 @@ static int expandPolytope(ccd_pt_t *polytope, ccd_pt_el_t *el,
   // being that vertex on the silhouette edges.
   std::unordered_map<ccd_pt_vertex_t*, ccd_pt_edge_t*> map_vertex_to_new_edge;
   for (const auto& border_edge : border_edges) {
-    ccd_pt_edge_t* e[2];  // The two new edges added by connecting new_vertex
-                          // to the two vertices on border_edge.
+    ccd_pt_edge_t* e[2]; // The two new edges added by connecting new_vertex
+                         // to the two vertices on border_edge.
     for (int i = 0; i < 2; ++i) {
       auto it = map_vertex_to_new_edge.find(border_edge->vertex[i]);
       if (it == map_vertex_to_new_edge.end()) {
         // This edge has not been added yet.
         e[i] = ccdPtAddEdge(polytope, new_vertex, border_edge->vertex[i]);
-        map_vertex_to_new_edge.emplace_hint(it, border_edge->vertex[i],
-                                            e[i]);
+        map_vertex_to_new_edge.emplace_hint(it, border_edge->vertex[i], e[i]);
       } else {
         e[i] = it->second;
       }
@@ -1517,8 +1568,9 @@ static int expandPolytope(ccd_pt_t *polytope, ccd_pt_el_t *el,
  * that dir is a normalized vector.
  * @throws UnexpectedConfigurationException if the nearest feature is a vertex.
  */
-static ccd_vec3_t supportEPADirection(const ccd_pt_t* polytope,
-                                      const ccd_pt_el_t* nearest_feature) {
+static ccd_vec3_t supportEPADirection(
+    const ccd_pt_t* polytope, const ccd_pt_el_t* nearest_feature)
+{
   /*
   If we denote the nearest point as v, when v is not the origin, then the
   support direction is v. If v is the origin, then v should be an interior
@@ -1530,7 +1582,7 @@ static ccd_vec3_t supportEPADirection(const ccd_pt_t* polytope,
     // nearest point is the origin.
     switch (nearest_feature->type) {
       case CCD_PT_VERTEX: {
-        FCL_THROW_FAILED_AT_THIS_CONFIGURATION(
+        DART_COLLISION_HIT_THROW_FAILED_AT_THIS_CONFIGURATION(
             "The nearest point to the origin is a vertex of the polytope. This "
             "should be identified as a touching contact");
         break;
@@ -1541,16 +1593,16 @@ static ccd_vec3_t supportEPADirection(const ccd_pt_t* polytope,
         // edge.faces[0].normal and edge.faces[1].normal, where the face normals
         // point outward from the polytope. In this implementation, we
         // arbitrarily choose faces[0] normal.
-        const ccd_pt_edge_t* edge =
-            reinterpret_cast<const ccd_pt_edge_t*>(nearest_feature);
+        const ccd_pt_edge_t* edge
+            = reinterpret_cast<const ccd_pt_edge_t*>(nearest_feature);
         dir = faceNormalPointingOutward(polytope, edge->faces[0]);
         break;
       }
       case CCD_PT_FACE: {
         // If origin is an interior point of a face, then choose the normal of
         // that face as the sample direction.
-        const ccd_pt_face_t* face =
-            reinterpret_cast<const ccd_pt_face_t*>(nearest_feature);
+        const ccd_pt_face_t* face
+            = reinterpret_cast<const ccd_pt_face_t*>(nearest_feature);
         dir = faceNormalPointingOutward(polytope, face);
         break;
       }
@@ -1581,12 +1633,18 @@ static ccd_vec3_t supportEPADirection(const ccd_pt_t* polytope,
  * is below ccd->epa_tolerance, then we converge to a distance whose
  * difference from the real distance is less than ccd->epa_tolerance.
  */
-static int nextSupport(const ccd_pt_t* polytope, const void* obj1,
-                       const void* obj2, const ccd_t* ccd,
-                       const ccd_pt_el_t* el, ccd_support_t* out) {
+static int nextSupport(
+    const ccd_pt_t* polytope,
+    const void* obj1,
+    const void* obj2,
+    const ccd_t* ccd,
+    const ccd_pt_el_t* el,
+    ccd_support_t* out)
+{
   ccd_vec3_t *a, *b, *c;
 
-  if (el->type == CCD_PT_VERTEX) return -1;
+  if (el->type == CCD_PT_VERTEX)
+    return -1;
 
   const ccd_vec3_t dir = supportEPADirection(polytope, el);
 
@@ -1600,7 +1658,8 @@ static int nextSupport(const ccd_pt_t* polytope, const void* obj1,
   // dist is an upper bound on the distance from the boundary of the Minkowski
   // difference to the origin, and sqrt(el->dist) is a lower bound of that
   // distance.
-  if (dist - std::sqrt(el->dist) < ccd->epa_tolerance) return -1;
+  if (dist - std::sqrt(el->dist) < ccd->epa_tolerance)
+    return -1;
 
   ccd_real_t dist_squared{};
   if (el->type == CCD_PT_EDGE) {
@@ -1609,7 +1668,7 @@ static int nextSupport(const ccd_pt_t* polytope, const void* obj1,
 
     // get distance from segment
     dist_squared = ccdVec3PointSegmentDist2(&out->v, a, b, NULL);
-  } else {  // el->type == CCD_PT_FACE
+  } else { // el->type == CCD_PT_FACE
     // fetch vertices of triangle face
     ccdPtFaceVec3(reinterpret_cast<const ccd_pt_face_t*>(el), &a, &b, &c);
 
@@ -1617,17 +1676,20 @@ static int nextSupport(const ccd_pt_t* polytope, const void* obj1,
     dist_squared = ccdVec3PointTriDist2NoWitness(&out->v, a, b, c);
   }
 
-  if (std::sqrt(dist_squared) < ccd->epa_tolerance) return -1;
+  if (std::sqrt(dist_squared) < ccd->epa_tolerance)
+    return -1;
 
   return 0;
 }
 
-
-static int __ccdGJK(const void *obj1, const void *obj2,
-                    const ccd_t *ccd, ccd_simplex_t *simplex)
+static int __ccdGJK(
+    const void* obj1,
+    const void* obj2,
+    const ccd_t* ccd,
+    ccd_simplex_t* simplex)
 {
   unsigned long iterations;
-  ccd_vec3_t dir; // direction vector
+  ccd_vec3_t dir;     // direction vector
   ccd_support_t last; // last support point
   int do_simplex_res;
 
@@ -1653,7 +1715,7 @@ static int __ccdGJK(const void *obj1, const void *obj2,
     // check if farthest point in Minkowski difference in direction dir
     // isn't somewhere before origin (the test on negative dot product)
     // - because if it is, objects are not intersecting at all.
-    if (ccdVec3Dot(&last.v, &dir) < CCD_ZERO){
+    if (ccdVec3Dot(&last.v, &dir) < CCD_ZERO) {
       return -1; // intersection not found
     }
 
@@ -1663,13 +1725,13 @@ static int __ccdGJK(const void *obj1, const void *obj2,
     // if doSimplex returns 1 if objects intersect, -1 if objects don't
     // intersect and 0 if algorithm should continue
     do_simplex_res = doSimplex(simplex, &dir);
-    if (do_simplex_res == 1){
+    if (do_simplex_res == 1) {
       return 0; // intersection found
-    }else if (do_simplex_res == -1){
+    } else if (do_simplex_res == -1) {
       return -1; // intersection not found
     }
 
-    if (ccdIsZero(ccdVec3Len2(&dir))){
+    if (ccdIsZero(ccdVec3Len2(&dir))) {
       return -1; // intersection not found
     }
   }
@@ -1696,7 +1758,8 @@ static int __ccdGJK(const void *obj1, const void *obj2,
  * @note Only call this function in the EPA functions, where the origin should
  * be inside the polytope.
  */
-static void validateNearestFeatureOfPolytopeBeingEdge(ccd_pt_t* polytope) {
+static void validateNearestFeatureOfPolytopeBeingEdge(ccd_pt_t* polytope)
+{
   assert(polytope->nearest_type == CCD_PT_EDGE);
 
   // We define epsilon to include an additional bit of noise. The goal is to
@@ -1708,8 +1771,8 @@ static void validateNearestFeatureOfPolytopeBeingEdge(ccd_pt_t* polytope) {
 
   // Only verify the feature if the nearest feature is an edge.
 
-  const ccd_pt_edge_t* const nearest_edge =
-      reinterpret_cast<ccd_pt_edge_t*>(polytope->nearest);
+  const ccd_pt_edge_t* const nearest_edge
+      = reinterpret_cast<ccd_pt_edge_t*>(polytope->nearest);
   // Find the outward normals on the two neighbouring faces of the edge, if
   // the origin is on the "inner" side of these two faces, then we regard the
   // origin to be inside the polytope. Note that these face_normals are
@@ -1720,19 +1783,19 @@ static void validateNearestFeatureOfPolytopeBeingEdge(ccd_pt_t* polytope) {
   // We define the plane equation using vertex[0]. If vertex[0] is far away
   // from the origin, it can magnify rounding error. We scale epsilon to account
   // for this possibility.
-  const ccd_real_t v0_dist =
-      std::sqrt(ccdVec3Len2(&nearest_edge->vertex[0]->v.v));
-  const ccd_real_t plane_threshold =
-      kEps * std::max(static_cast<ccd_real_t>(1.0), v0_dist);
+  const ccd_real_t v0_dist
+      = std::sqrt(ccdVec3Len2(&nearest_edge->vertex[0]->v.v));
+  const ccd_real_t plane_threshold
+      = kEps * std::max(static_cast<ccd_real_t>(1.0), v0_dist);
 
   for (int i = 0; i < 2; ++i) {
-    face_normals[i] =
-        faceNormalPointingOutward(polytope, nearest_edge->faces[i]);
+    face_normals[i]
+        = faceNormalPointingOutward(polytope, nearest_edge->faces[i]);
     ccdVec3Normalize(&face_normals[i]);
     // If the origin o is on the "inner" side of the face, then
     // n̂ ⋅ (o - vₑ) ≤ 0 or, with simplification, -n̂ ⋅ vₑ ≤ 0 (since n̂ ⋅ o = 0).
-    origin_to_face_distance[i] =
-        -ccdVec3Dot(&face_normals[i], &nearest_edge->vertex[0]->v.v);
+    origin_to_face_distance[i]
+        = -ccdVec3Dot(&face_normals[i], &nearest_edge->vertex[0]->v.v);
     // If the origin lies *on* the edge, then it also lies on the two adjacent
     // faces. Rather than failing on strictly *positive* signed distance, we
     // introduce an epsilon threshold. This usage of epsilon is to account for a
@@ -1750,7 +1813,7 @@ static void validateNearestFeatureOfPolytopeBeingEdge(ccd_pt_t* polytope) {
           << origin_to_face_distance[i] << ", exceeding the threshold "
           << plane_threshold
           << ". This should already have been identified as separating.";
-      FCL_THROW_FAILED_AT_THIS_CONFIGURATION(oss.str());
+      DART_COLLISION_HIT_THROW_FAILED_AT_THIS_CONFIGURATION(oss.str());
     }
   }
 
@@ -1767,89 +1830,98 @@ static void validateNearestFeatureOfPolytopeBeingEdge(ccd_pt_t* polytope) {
     // Note origin_to_face_distance is the *signed* distance and it is
     // guaranteed to be negative if we are here, hence sense of this
     // comparison is reversed.
-    const int closest_face =
-        origin_to_face_distance[0] < origin_to_face_distance[1] ? 1 : 0;
-    polytope->nearest =
-        reinterpret_cast<ccd_pt_el_t*>(nearest_edge->faces[closest_face]);
+    const int closest_face
+        = origin_to_face_distance[0] < origin_to_face_distance[1] ? 1 : 0;
+    polytope->nearest
+        = reinterpret_cast<ccd_pt_el_t*>(nearest_edge->faces[closest_face]);
     // polytope->nearest_dist stores the SQUARED distance.
     polytope->nearest_dist = pow(origin_to_face_distance[closest_face], 2);
   }
 }
 
-static int __ccdEPA(const void *obj1, const void *obj2,
-                    const ccd_t *ccd,
-                    ccd_simplex_t* simplex,
-                    ccd_pt_t *polytope, ccd_pt_el_t **nearest)
+static int __ccdEPA(
+    const void* obj1,
+    const void* obj2,
+    const ccd_t* ccd,
+    ccd_simplex_t* simplex,
+    ccd_pt_t* polytope,
+    ccd_pt_el_t** nearest)
 {
-    ccd_support_t supp; // support point
-    int ret, size;
+  ccd_support_t supp; // support point
+  int ret, size;
 
+  ret = 0;
+  *nearest = NULL;
 
-    ret = 0;
-    *nearest = NULL;
+  // transform simplex to polytope - simplex won't be used anymore
+  size = ccdSimplexSize(simplex);
+  if (size == 4) {
+    ret = simplexToPolytope4(obj1, obj2, ccd, simplex, polytope, nearest);
+  } else if (size == 3) {
+    ret = convert2SimplexToTetrahedron(
+        obj1, obj2, ccd, simplex, polytope, nearest);
+  } else { // size == 2
+    ret = simplexToPolytope2(obj1, obj2, ccd, simplex, polytope, nearest);
+  }
 
-    // transform simplex to polytope - simplex won't be used anymore
-    size = ccdSimplexSize(simplex);
-    if (size == 4){
-        ret = simplexToPolytope4(obj1, obj2, ccd, simplex, polytope, nearest);
-    } else if (size == 3) {
-      ret = convert2SimplexToTetrahedron(obj1, obj2, ccd, simplex, polytope,
-                                         nearest);
-    }else{ // size == 2
-        ret = simplexToPolytope2(obj1, obj2, ccd, simplex, polytope, nearest);
-    }
-
-
-    if (ret == -1){
-        // touching contact
-        return 0;
-    }else if (ret == -2){
-        // failed memory allocation
-        return -2;
-    }
-
-    while (1) {
-      // get triangle nearest to origin
-      *nearest = ccdPtNearest(polytope);
-      if (polytope->nearest_type == CCD_PT_EDGE) {
-        // When libccd thinks the nearest feature is an edge, that is often
-        // wrong, hence we validate the nearest feature by ourselves.
-        // TODO remove this validation step when we can reliably compute the
-        // nearest feature of a polytope.
-        validateNearestFeatureOfPolytopeBeingEdge(polytope);
-        *nearest = ccdPtNearest(polytope);
-      }
-
-      // get next support point
-      if (nextSupport(polytope, obj1, obj2, ccd, *nearest, &supp) != 0) {
-        break;
-      }
-
-      // expand nearest triangle using new point - supp
-      if (expandPolytope(polytope, *nearest, &supp) != 0) return -2;
-    }
-
+  if (ret == -1) {
+    // touching contact
     return 0;
+  } else if (ret == -2) {
+    // failed memory allocation
+    return -2;
+  }
+
+  while (1) {
+    // get triangle nearest to origin
+    *nearest = ccdPtNearest(polytope);
+    if (polytope->nearest_type == CCD_PT_EDGE) {
+      // When libccd thinks the nearest feature is an edge, that is often
+      // wrong, hence we validate the nearest feature by ourselves.
+      // TODO remove this validation step when we can reliably compute the
+      // nearest feature of a polytope.
+      validateNearestFeatureOfPolytopeBeingEdge(polytope);
+      *nearest = ccdPtNearest(polytope);
+    }
+
+    // get next support point
+    if (nextSupport(polytope, obj1, obj2, ccd, *nearest, &supp) != 0) {
+      break;
+    }
+
+    // expand nearest triangle using new point - supp
+    if (expandPolytope(polytope, *nearest, &supp) != 0)
+      return -2;
+  }
+
+  return 0;
 }
 
 /** Given a single support point, `q`, extract the point `p1` and `p2`, the
  points on object 1 and 2, respectively, in the support data of `q`.  */
-static void extractObjectPointsFromPoint(ccd_support_t *q, ccd_vec3_t *p1,
-                                         ccd_vec3_t *p2) {
+static void extractObjectPointsFromPoint(
+    ccd_support_t* q, ccd_vec3_t* p1, ccd_vec3_t* p2)
+{
   // TODO(SeanCurtis-TRI): Determine if I should be demanding that p1 and p2
   // are defined.
   // Closest points are the ones stored in the simplex
-  if (p1) *p1 = q->v1;
-  if (p2) *p2 = q->v2;
+  if (p1)
+    *p1 = q->v1;
+  if (p2)
+    *p2 = q->v2;
 }
 
 /** Given two support points which define a line segment (`a` and `b`), and a
  point on that line segment `p`, computes the points `p1` and `p2`, the points
  on object 1 and 2, respectively, in the support data which correspond to `p`.
  @pre `p = a + s(b - a), 0 <= s <= 1`  */
-static void extractObjectPointsFromSegment(ccd_support_t *a, ccd_support_t *b,
-                                           ccd_vec3_t *p1, ccd_vec3_t *p2,
-                                           ccd_vec3_t *p) {
+static void extractObjectPointsFromSegment(
+    ccd_support_t* a,
+    ccd_support_t* b,
+    ccd_vec3_t* p1,
+    ccd_vec3_t* p2,
+    ccd_vec3_t* p)
+{
   // Closest points lie on the segment defined by the points in the simplex
   // Let the segment be defined by points A and B. We can write p as
   //
@@ -1894,14 +1966,14 @@ static void extractObjectPointsFromSegment(ccd_support_t *a, ccd_support_t *b,
     return;
   }
 
-  auto calc_p = [](ccd_vec3_t *p_a, ccd_vec3_t *p_b, ccd_vec3_t *p,
-                   ccd_real_t s) {
-    ccd_vec3_t sAB;
-    ccdVec3Sub2(&sAB, p_b, p_a);
-    ccdVec3Scale(&sAB, s);
-    ccdVec3Copy(p, p_a);
-    ccdVec3Add(p, &sAB);
-  };
+  auto calc_p
+      = [](ccd_vec3_t* p_a, ccd_vec3_t* p_b, ccd_vec3_t* p, ccd_real_t s) {
+          ccd_vec3_t sAB;
+          ccdVec3Sub2(&sAB, p_b, p_a);
+          ccdVec3Scale(&sAB, s);
+          ccdVec3Copy(p, p_a);
+          ccdVec3Add(p, &sAB);
+        };
 
   // TODO(SeanCurtis-TRI): If p1 or p2 is null, there seems little point in
   // calling this method. It seems that both of these being non-null should be
@@ -1923,22 +1995,19 @@ static void extractObjectPointsFromSegment(ccd_support_t *a, ccd_support_t *b,
  @pre simplex size <= 3.
  @pre p lies _on_ the simplex (i.e., within the triangle, line segment, or is
       coincident with the point).  */
-static void extractClosestPoints(ccd_simplex_t *simplex, ccd_vec3_t *p1,
-                                 ccd_vec3_t *p2, ccd_vec3_t *p) {
+static void extractClosestPoints(
+    ccd_simplex_t* simplex, ccd_vec3_t* p1, ccd_vec3_t* p2, ccd_vec3_t* p)
+{
   const int simplex_size = ccdSimplexSize(simplex);
   assert(simplex_size <= 3);
-  if (simplex_size == 1)
-  {
+  if (simplex_size == 1) {
     extractObjectPointsFromPoint(&simplex->ps[0], p1, p2);
-  }
-  else if (simplex_size == 2)
-  {
+  } else if (simplex_size == 2) {
     extractObjectPointsFromSegment(&simplex->ps[0], &simplex->ps[1], p1, p2, p);
-  }
-  else // simplex_size == 3
+  } else // simplex_size == 3
   {
-    if (triangle_area_is_zero(simplex->ps[0].v, simplex->ps[1].v,
-                              simplex->ps[2].v)) {
+    if (triangle_area_is_zero(
+            simplex->ps[0].v, simplex->ps[1].v, simplex->ps[2].v)) {
       // The triangle is degenerate; compute the nearest point to a line
       // segment. The segment is defined by the most-distant vertex pair.
       int a_index, b_index;
@@ -1959,8 +2028,8 @@ static void extractClosestPoints(ccd_simplex_t *simplex, ccd_vec3_t *p1,
         a_index = 1;
         b_index = 2;
       }
-      extractObjectPointsFromSegment(&simplex->ps[a_index],
-                                     &simplex->ps[b_index], p1, p2, p);
+      extractObjectPointsFromSegment(
+          &simplex->ps[a_index], &simplex->ps[b_index], p1, p2, p);
       return;
     }
 
@@ -2012,8 +2081,8 @@ static void extractClosestPoints(ccd_simplex_t *simplex, ccd_vec3_t *p1,
 
     // Compute the cross products in the numerators.
     ccd_vec3_t r_Ap_cross_r_AC, r_AB_cross_r_Ap;
-    ccdVec3Cross(&r_Ap_cross_r_AC, &r_Ap, &r_AC);  // r_Ap × r_AC
-    ccdVec3Cross(&r_AB_cross_r_Ap, &r_AB, &r_Ap);  // r_AB × r_Ap
+    ccdVec3Cross(&r_Ap_cross_r_AC, &r_Ap, &r_AC); // r_Ap × r_AC
+    ccdVec3Cross(&r_AB_cross_r_Ap, &r_AB, &r_Ap); // r_AB × r_Ap
 
     // Compute beta and gamma.
     ccd_real_t beta{ccdVec3Dot(&n, &r_Ap_cross_r_AC) / norm_squared_n};
@@ -2021,10 +2090,11 @@ static void extractClosestPoints(ccd_simplex_t *simplex, ccd_vec3_t *p1,
 
     // Evaluate barycentric interpolation (with the locally defined barycentric
     // coordinates).
-    auto interpolate = [&beta, &gamma](const ccd_vec3_t& r_WA,
-                                       const ccd_vec3_t& r_WB,
-                                       const ccd_vec3_t& r_WC,
-                                       ccd_vec3_t* r_WP) {
+    auto interpolate = [&beta, &gamma](
+                           const ccd_vec3_t& r_WA,
+                           const ccd_vec3_t& r_WB,
+                           const ccd_vec3_t& r_WC,
+                           ccd_vec3_t* r_WP) {
       // r_WP = r_WA + β * r_AB + γ * r_AC
       ccdVec3Copy(r_WP, &r_WA);
 
@@ -2033,7 +2103,7 @@ static void extractClosestPoints(ccd_simplex_t *simplex, ccd_vec3_t *p1,
       ccdVec3Scale(&beta_r_AB, beta);
       ccdVec3Add(r_WP, &beta_r_AB);
 
-      ccd_vec3_t  gamma_r_AC;
+      ccd_vec3_t gamma_r_AC;
       ccdVec3Sub2(&gamma_r_AC, &r_WC, &r_WA);
       ccdVec3Scale(&gamma_r_AC, gamma);
       ccdVec3Add(r_WP, &gamma_r_AC);
@@ -2064,10 +2134,13 @@ static void extractClosestPoints(ccd_simplex_t *simplex, ccd_vec3_t *p1,
 // obj2 closest to obj1 (expressed in the world frame).
 // @returns The minimum distance between the two objects. If they are
 // penetrating, -1 is returned.
-static inline ccd_real_t _ccdDist(const void *obj1, const void *obj2,
-                                  const ccd_t *ccd,
-                                  ccd_simplex_t* simplex,
-                                  ccd_vec3_t* p1, ccd_vec3_t* p2)
+static inline ccd_real_t _ccdDist(
+    const void* obj1,
+    const void* obj2,
+    const ccd_t* ccd,
+    ccd_simplex_t* simplex,
+    ccd_vec3_t* p1,
+    ccd_vec3_t* p2)
 {
   ccd_real_t last_dist = CCD_REAL_MAX;
 
@@ -2081,36 +2154,31 @@ static inline ccd_real_t _ccdDist(const void *obj1, const void *obj2,
     // that is nearest to the origin, so we obtain a point on the
     // simplex that is nearest and try to exapand the simplex towards
     // the origin
-    if (ccdSimplexSize(simplex) == 1)
-    {
+    if (ccdSimplexSize(simplex) == 1) {
       ccdVec3Copy(&closest_p, &ccdSimplexPoint(simplex, 0)->v);
       dist = ccdVec3Len2(&ccdSimplexPoint(simplex, 0)->v);
       dist = CCD_SQRT(dist);
-    }
-    else if (ccdSimplexSize(simplex) == 2)
-    {
-      dist = ccdVec3PointSegmentDist2(ccd_vec3_origin,
-                                      &ccdSimplexPoint(simplex, 0)->v,
-                                      &ccdSimplexPoint(simplex, 1)->v,
-                                      &closest_p);
-      dist = CCD_SQRT(dist);
-    }
-    else if (ccdSimplexSize(simplex) == 3)
-    {
-      dist = ccdVec3PointTriDist2WithWitness(
-          ccd_vec3_origin, &ccdSimplexPoint(simplex, 0)->v,
-          &ccdSimplexPoint(simplex, 1)->v, &ccdSimplexPoint(simplex, 2)->v,
+    } else if (ccdSimplexSize(simplex) == 2) {
+      dist = ccdVec3PointSegmentDist2(
+          ccd_vec3_origin,
+          &ccdSimplexPoint(simplex, 0)->v,
+          &ccdSimplexPoint(simplex, 1)->v,
           &closest_p);
       dist = CCD_SQRT(dist);
-    }
-    else
-    { // ccdSimplexSize(&simplex) == 4
+    } else if (ccdSimplexSize(simplex) == 3) {
+      dist = ccdVec3PointTriDist2WithWitness(
+          ccd_vec3_origin,
+          &ccdSimplexPoint(simplex, 0)->v,
+          &ccdSimplexPoint(simplex, 1)->v,
+          &ccdSimplexPoint(simplex, 2)->v,
+          &closest_p);
+      dist = CCD_SQRT(dist);
+    } else { // ccdSimplexSize(&simplex) == 4
       dist = simplexReduceToTriangle(simplex, last_dist, &closest_p);
     }
 
     // check whether we improved for at least a minimum tolerance
-    if ((last_dist - dist) < ccd->dist_tolerance)
-    {
+    if ((last_dist - dist) < ccd->dist_tolerance) {
       extractClosestPoints(simplex, p1, p2, &closest_p);
       return dist;
     }
@@ -2133,8 +2201,7 @@ static inline ccd_real_t _ccdDist(const void *obj1, const void *obj2,
     // point that is already in the simplex
     dist = ccdVec3Len2(&last.v);
     dist = CCD_SQRT(dist);
-    if (CCD_FABS(last_dist - dist) < ccd->dist_tolerance)
-    {
+    if (CCD_FABS(last_dist - dist) < ccd->dist_tolerance) {
       extractClosestPoints(simplex, p1, p2, &closest_p);
       return last_dist;
     }
@@ -2159,8 +2226,9 @@ static inline ccd_real_t _ccdDist(const void *obj1, const void *obj2,
  * the world frame.
  * @retval status Return 0 on success, and -1 on failure.
  */
-static int penEPAPosClosest(const ccd_pt_el_t* nearest, ccd_vec3_t* p1,
-                            ccd_vec3_t* p2) {
+static int penEPAPosClosest(
+    const ccd_pt_el_t* nearest, ccd_vec3_t* p1, ccd_vec3_t* p2)
+{
   // We reconstruct the simplex on which the nearest point lives, and then
   // compute the deepest penetration point on each geometric objects. Note that
   // the reconstructed simplex has size up to 3 (at most 3 vertices).
@@ -2190,8 +2258,8 @@ static int penEPAPosClosest(const ccd_pt_el_t* nearest, ccd_vec3_t* p1,
       // simplex.
       for (int i = 0; i < 2; ++i) {
         ccd_pt_vertex_t* third_vertex = f->edge[1]->vertex[i];
-        if (third_vertex != f->edge[0]->vertex[0] &&
-            third_vertex != f->edge[0]->vertex[1]) {
+        if (third_vertex != f->edge[0]->vertex[0]
+            && third_vertex != f->edge[0]->vertex[1]) {
           ccdSimplexAdd(&s, &(third_vertex->v));
           break;
         }
@@ -2214,54 +2282,55 @@ static int penEPAPosClosest(const ccd_pt_el_t* nearest, ccd_vec3_t* p1,
   }
 }
 
-static inline ccd_real_t ccdGJKSignedDist(const void* obj1, const void* obj2,
-                                          const ccd_t* ccd, ccd_vec3_t* p1,
-                                          ccd_vec3_t* p2)
+static inline ccd_real_t ccdGJKSignedDist(
+    const void* obj1,
+    const void* obj2,
+    const ccd_t* ccd,
+    ccd_vec3_t* p1,
+    ccd_vec3_t* p2)
 {
   ccd_simplex_t simplex;
 
-  if (__ccdGJK(obj1, obj2, ccd, &simplex) == 0) // in collision, then using the EPA
+  if (__ccdGJK(obj1, obj2, ccd, &simplex)
+      == 0) // in collision, then using the EPA
   {
     ccd_pt_t polytope;
-    ccd_pt_el_t *nearest;
+    ccd_pt_el_t* nearest;
     ccd_real_t depth;
 
     ccdPtInit(&polytope);
     int ret = __ccdEPA(obj1, obj2, ccd, &simplex, &polytope, &nearest);
-    if (ret == 0 && nearest)
-    {
+    if (ret == 0 && nearest) {
       depth = -CCD_SQRT(nearest->dist);
 
       ccd_vec3_t pos1, pos2;
       penEPAPosClosest(nearest, &pos1, &pos2);
 
-      if (p1) *p1 = pos1;
-      if (p2) *p2 = pos2;
+      if (p1)
+        *p1 = pos1;
+      if (p2)
+        *p2 = pos2;
 
-      //ccd_vec3_t dir; // direction vector
-      //ccdVec3Copy(&dir, &nearest->witness);
-      //std::cout << dir.v[0] << " " << dir.v[1] << " " << dir.v[2] << std::endl;
-      //ccd_support_t last;
+      // ccd_vec3_t dir; // direction vector
+      // ccdVec3Copy(&dir, &nearest->witness);
+      // std::cout << dir.v[0] << " " << dir.v[1] << " " << dir.v[2] <<
+      // std::endl; ccd_support_t last;
       //__ccdSupport(obj1, obj2, &dir, ccd, &last);
 
-      //if (p1) *p1 = last.v1;
-      //if (p2) *p2 = last.v2;
-    }
-    else
-    {
+      // if (p1) *p1 = last.v1;
+      // if (p2) *p2 = last.v2;
+    } else {
       depth = -CCD_ONE;
     }
 
     ccdPtDestroy(&polytope);
 
     return depth;
-  }
-  else // not in collision
+  } else // not in collision
   {
     return _ccdDist(obj1, obj2, ccd, &simplex, p1, p2);
   }
 }
-
 
 // Computes the distance between two non-penetrating convex objects, `obj1` and
 // `obj2`, returning the distance and
@@ -2277,9 +2346,12 @@ static inline ccd_real_t ccdGJKSignedDist(const void* obj1, const void* obj2,
 // penetrating, -1 is returned.
 // @note Unlike _ccdDist function, this function does not need a warm-started
 // simplex as the input argument.
-static inline ccd_real_t ccdGJKDist2(const void *obj1, const void *obj2,
-                                     const ccd_t *ccd, ccd_vec3_t* p1,
-                                     ccd_vec3_t* p2)
+static inline ccd_real_t ccdGJKDist2(
+    const void* obj1,
+    const void* obj2,
+    const ccd_t* ccd,
+    ccd_vec3_t* p1,
+    ccd_vec3_t* p2)
 {
   ccd_simplex_t simplex;
   // first find an intersection
@@ -2293,10 +2365,10 @@ static inline ccd_real_t ccdGJKDist2(const void *obj1, const void *obj2,
 
 /** Basic shape to ccd shape */
 template <typename S>
-static void shapeToGJK(const ShapeBase<S>& s, const Transform3<S>& tf,
-                       ccd_obj_t* o)
+static void shapeToGJK(
+    const ShapeBase<S>& s, const Transform3<S>& tf, ccd_obj_t* o)
 {
-  FCL_UNUSED(s);
+  DART_COLLISION_HIT_UNUSED(s);
 
   const Quaternion<S> q(tf.linear());
   const Vector3<S>& T = tf.translation();
@@ -2315,8 +2387,8 @@ static void boxToGJK(const Box<S>& s, const Transform3<S>& tf, ccd_box_t* box)
 }
 
 template <typename S>
-static void capToGJK(const Capsule<S>& s, const Transform3<S>& tf,
-                     ccd_cap_t* cap)
+static void capToGJK(
+    const Capsule<S>& s, const Transform3<S>& tf, ccd_cap_t* cap)
 {
   shapeToGJK(s, tf, cap);
   cap->radius = s.radius;
@@ -2324,8 +2396,8 @@ static void capToGJK(const Capsule<S>& s, const Transform3<S>& tf,
 }
 
 template <typename S>
-static void cylToGJK(const Cylinder<S>& s, const Transform3<S>& tf,
-                     ccd_cyl_t* cyl)
+static void cylToGJK(
+    const Cylinder<S>& s, const Transform3<S>& tf, ccd_cyl_t* cyl)
 {
   shapeToGJK(s, tf, cyl);
   cyl->radius = s.radius;
@@ -2333,8 +2405,8 @@ static void cylToGJK(const Cylinder<S>& s, const Transform3<S>& tf,
 }
 
 template <typename S>
-static void coneToGJK(const Cone<S>& s, const Transform3<S>& tf,
-                      ccd_cone_t* cone)
+static void coneToGJK(
+    const Cone<S>& s, const Transform3<S>& tf, ccd_cone_t* cone)
 {
   shapeToGJK(s, tf, cone);
   cone->radius = s.radius;
@@ -2342,16 +2414,16 @@ static void coneToGJK(const Cone<S>& s, const Transform3<S>& tf,
 }
 
 template <typename S>
-static void sphereToGJK(const Sphere<S>& s, const Transform3<S>& tf,
-                        ccd_sphere_t* sph)
+static void sphereToGJK(
+    const Sphere<S>& s, const Transform3<S>& tf, ccd_sphere_t* sph)
 {
   shapeToGJK(s, tf, sph);
   sph->radius = s.radius;
 }
 
 template <typename S>
-static void ellipsoidToGJK(const Ellipsoid<S>& s, const Transform3<S>& tf,
-                           ccd_ellipsoid_t* ellipsoid)
+static void ellipsoidToGJK(
+    const Ellipsoid<S>& s, const Transform3<S>& tf, ccd_ellipsoid_t* ellipsoid)
 {
   shapeToGJK(s, tf, ellipsoid);
   ellipsoid->radii[0] = s.radii[0];
@@ -2360,16 +2432,16 @@ static void ellipsoidToGJK(const Ellipsoid<S>& s, const Transform3<S>& tf,
 }
 
 template <typename S>
-static void convexToGJK(const Convex<S>& s, const Transform3<S>& tf,
-                        ccd_convex_t<S>* conv)
+static void convexToGJK(
+    const Convex<S>& s, const Transform3<S>& tf, ccd_convex_t<S>* conv)
 {
   shapeToGJK(s, tf, conv);
   conv->convex = &s;
 }
 
 /** Support functions */
-static inline void supportBox(const void* obj, const ccd_vec3_t* dir_,
-                              ccd_vec3_t* v)
+static inline void supportBox(
+    const void* obj, const ccd_vec3_t* dir_, ccd_vec3_t* v)
 {
   // Use a customized sign function, so that the support of the box always
   // appears in one of the box vertices.
@@ -2383,15 +2455,17 @@ static inline void supportBox(const void* obj, const ccd_vec3_t* dir_,
   ccd_vec3_t dir;
   ccdVec3Copy(&dir, dir_);
   ccdQuatRotVec(&dir, &o->rot_inv);
-  ccdVec3Set(v, sign(ccdVec3X(&dir)) * o->dim[0],
-             sign(ccdVec3Y(&dir)) * o->dim[1],
-             sign(ccdVec3Z(&dir)) * o->dim[2]);
+  ccdVec3Set(
+      v,
+      sign(ccdVec3X(&dir)) * o->dim[0],
+      sign(ccdVec3Y(&dir)) * o->dim[1],
+      sign(ccdVec3Z(&dir)) * o->dim[2]);
   ccdQuatRotVec(v, &o->rot);
   ccdVec3Add(v, &o->pos);
 }
 
-static inline void supportCap(const void* obj, const ccd_vec3_t* dir_,
-                              ccd_vec3_t* v)
+static inline void supportCap(
+    const void* obj, const ccd_vec3_t* dir_, ccd_vec3_t* v)
 {
   const ccd_cap_t* o = static_cast<const ccd_cap_t*>(obj);
   ccd_vec3_t dir, pos1, pos2;
@@ -2403,12 +2477,12 @@ static inline void supportCap(const void* obj, const ccd_vec3_t* dir_,
   ccdVec3Set(&pos2, CCD_ZERO, CCD_ZERO, -o->height);
 
   ccdVec3Copy(v, &dir);
-  ccdVec3Normalize (v);
+  ccdVec3Normalize(v);
   ccdVec3Scale(v, o->radius);
   ccdVec3Add(&pos1, v);
   ccdVec3Add(&pos2, v);
 
-  if (ccdVec3Z (&dir) > 0)
+  if (ccdVec3Z(&dir) > 0)
     ccdVec3Copy(v, &pos1);
   else
     ccdVec3Copy(v, &pos2);
@@ -2418,8 +2492,8 @@ static inline void supportCap(const void* obj, const ccd_vec3_t* dir_,
   ccdVec3Add(v, &o->pos);
 }
 
-static inline void supportCyl(const void* obj, const ccd_vec3_t* dir_,
-                              ccd_vec3_t* v)
+static inline void supportCyl(
+    const void* obj, const ccd_vec3_t* dir_, ccd_vec3_t* v)
 {
   const ccd_cyl_t* cyl = static_cast<const ccd_cyl_t*>(obj);
   ccd_vec3_t dir;
@@ -2432,13 +2506,14 @@ static inline void supportCyl(const void* obj, const ccd_vec3_t* dir_,
   zdist = sqrt(zdist);
   if (ccdIsZero(zdist))
     ccdVec3Set(v, 0., 0., ccdSign(ccdVec3Z(&dir)) * cyl->height);
-  else
-  {
+  else {
     rad = cyl->radius / zdist;
 
-    ccdVec3Set(v, rad * ccdVec3X(&dir),
-               rad * ccdVec3Y(&dir),
-               ccdSign(ccdVec3Z(&dir)) * cyl->height);
+    ccdVec3Set(
+        v,
+        rad * ccdVec3X(&dir),
+        rad * ccdVec3Y(&dir),
+        ccdSign(ccdVec3Z(&dir)) * cyl->height);
   }
 
   // transform support vertex
@@ -2446,8 +2521,8 @@ static inline void supportCyl(const void* obj, const ccd_vec3_t* dir_,
   ccdVec3Add(v, &cyl->pos);
 }
 
-static inline void supportCone(const void* obj, const ccd_vec3_t* dir_,
-                               ccd_vec3_t* v)
+static inline void supportCone(
+    const void* obj, const ccd_vec3_t* dir_, ccd_vec3_t* v)
 {
   const ccd_cone_t* cone = static_cast<const ccd_cone_t*>(obj);
   ccd_vec3_t dir;
@@ -2461,16 +2536,16 @@ static inline void supportCone(const void* obj, const ccd_vec3_t* dir_,
   zdist = sqrt(zdist);
   len = sqrt(len);
 
-  double sin_a = cone->radius / sqrt(cone->radius * cone->radius + 4 * cone->height * cone->height);
+  double sin_a
+      = cone->radius
+        / sqrt(cone->radius * cone->radius + 4 * cone->height * cone->height);
 
   if (dir.v[2] > len * sin_a)
     ccdVec3Set(v, 0., 0., cone->height);
-  else if (zdist > 0)
-  {
+  else if (zdist > 0) {
     rad = cone->radius / zdist;
     ccdVec3Set(v, rad * ccdVec3X(&dir), rad * ccdVec3Y(&dir), -cone->height);
-  }
-  else
+  } else
     ccdVec3Set(v, 0, 0, -cone->height);
 
   // transform support vertex
@@ -2478,8 +2553,8 @@ static inline void supportCone(const void* obj, const ccd_vec3_t* dir_,
   ccdVec3Add(v, &cone->pos);
 }
 
-static inline void supportSphere(const void* obj, const ccd_vec3_t* dir_,
-                                 ccd_vec3_t* v)
+static inline void supportSphere(
+    const void* obj, const ccd_vec3_t* dir_, ccd_vec3_t* v)
 {
   const ccd_sphere_t* s = static_cast<const ccd_sphere_t*>(obj);
   ccd_vec3_t dir;
@@ -2496,8 +2571,8 @@ static inline void supportSphere(const void* obj, const ccd_vec3_t* dir_,
   ccdVec3Add(v, &s->pos);
 }
 
-static inline void supportEllipsoid(const void* obj, const ccd_vec3_t* dir_,
-                                    ccd_vec3_t* v)
+static inline void supportEllipsoid(
+    const void* obj, const ccd_vec3_t* dir_, ccd_vec3_t* v)
 {
   const ccd_ellipsoid_t* s = static_cast<const ccd_ellipsoid_t*>(obj);
   ccd_vec3_t dir;
@@ -2522,8 +2597,8 @@ static inline void supportEllipsoid(const void* obj, const ccd_vec3_t* dir_,
 }
 
 template <typename S>
-static void supportConvex(const void* obj, const ccd_vec3_t* dir_,
-                          ccd_vec3_t* v)
+static void supportConvex(
+    const void* obj, const ccd_vec3_t* dir_, ccd_vec3_t* v)
 {
   const auto* c = (const ccd_convex_t<S>*)obj;
 
@@ -2548,8 +2623,8 @@ static void supportConvex(const void* obj, const ccd_vec3_t* dir_,
   ccdVec3Add(v, &c->pos);
 }
 
-static void supportTriangle(const void* obj, const ccd_vec3_t* dir_,
-                            ccd_vec3_t* v)
+static void supportTriangle(
+    const void* obj, const ccd_vec3_t* dir_, ccd_vec3_t* v)
 {
   const ccd_triangle_t* tri = static_cast<const ccd_triangle_t*>(obj);
   ccd_vec3_t dir, p;
@@ -2561,13 +2636,14 @@ static void supportTriangle(const void* obj, const ccd_vec3_t* dir_,
 
   maxdot = -CCD_REAL_MAX;
 
-  for (i = 0; i < 3; ++i)
-  {
-    ccdVec3Set(&p, tri->p[i].v[0] - tri->c.v[0], tri->p[i].v[1] - tri->c.v[1],
+  for (i = 0; i < 3; ++i) {
+    ccdVec3Set(
+        &p,
+        tri->p[i].v[0] - tri->c.v[0],
+        tri->p[i].v[1] - tri->c.v[1],
         tri->p[i].v[2] - tri->c.v[2]);
     dot = ccdVec3Dot(&dir, &p);
-    if (dot > maxdot)
-    {
+    if (dot > maxdot) {
       ccdVec3Copy(v, &tri->p[i]);
       maxdot = dot;
     }
@@ -2580,14 +2656,14 @@ static void supportTriangle(const void* obj, const ccd_vec3_t* dir_,
 
 static inline void centerShape(const void* obj, ccd_vec3_t* c)
 {
-  const ccd_obj_t *o = static_cast<const ccd_obj_t*>(obj);
+  const ccd_obj_t* o = static_cast<const ccd_obj_t*>(obj);
   ccdVec3Copy(c, &o->pos);
 }
 
 template <typename S>
 static void centerConvex(const void* obj, ccd_vec3_t* c)
 {
-  const auto *o = static_cast<const ccd_convex_t<S>*>(obj);
+  const auto* o = static_cast<const ccd_convex_t<S>*>(obj);
   const Vector3<S>& p = o->convex->getInteriorPoint();
   ccdVec3Set(c, p[0], p[1], p[2]);
   ccdQuatRotVec(c, &o->rot);
@@ -2596,24 +2672,30 @@ static void centerConvex(const void* obj, ccd_vec3_t* c)
 
 static void centerTriangle(const void* obj, ccd_vec3_t* c)
 {
-  const ccd_triangle_t *o = static_cast<const ccd_triangle_t*>(obj);
+  const ccd_triangle_t* o = static_cast<const ccd_triangle_t*>(obj);
   ccdVec3Copy(c, &o->c);
   ccdQuatRotVec(c, &o->rot);
   ccdVec3Add(c, &o->pos);
 }
 
 template <typename S>
-bool GJKCollide(void* obj1, ccd_support_fn supp1, ccd_center_fn cen1,
-                void* obj2, ccd_support_fn supp2, ccd_center_fn cen2,
-                unsigned int max_iterations, S tolerance,
-                Vector3<S>* contact_points, S* penetration_depth,
-                Vector3<S>* normal)
+bool GJKCollide(
+    void* obj1,
+    ccd_support_fn supp1,
+    ccd_center_fn cen1,
+    void* obj2,
+    ccd_support_fn supp2,
+    ccd_center_fn cen2,
+    unsigned int max_iterations,
+    S tolerance,
+    Vector3<S>* contact_points,
+    S* penetration_depth,
+    Vector3<S>* normal)
 {
   ccd_t ccd;
   int res;
   ccd_real_t depth;
   ccd_vec3_t dir, pos;
-
 
   CCD_INIT(&ccd);
   ccd.support1 = supp1;
@@ -2623,17 +2705,14 @@ bool GJKCollide(void* obj1, ccd_support_fn supp1, ccd_center_fn cen1,
   ccd.max_iterations = max_iterations;
   ccd.mpr_tolerance = tolerance;
 
-  if (!contact_points)
-  {
+  if (!contact_points) {
     return ccdMPRIntersect(obj1, obj2, &ccd);
   }
-
 
   /// libccd returns dir and pos in world space and dir is pointing from
   /// object 1 to object 2
   res = ccdMPRPenetration(obj1, obj2, &ccd, &depth, &dir, &pos);
-  if (res == 0)
-  {
+  if (res == 0) {
     *contact_points << ccdVec3X(&pos), ccdVec3Y(&pos), ccdVec3Z(&pos);
     *penetration_depth = depth;
     *normal << ccdVec3X(&dir), ccdVec3Y(&dir), ccdVec3Z(&dir);
@@ -2649,7 +2728,7 @@ bool GJKCollide(void* obj1, ccd_support_fn supp1, ccd_center_fn cen1,
 // objects are not colliding, thus a non-negative number; it is a negative
 // number when the object is colliding, though the meaning of that negative
 // number depends on the implementation.
-using DistanceFn = std::function<ccd_real_t (
+using DistanceFn = std::function<ccd_real_t(
     const void*, const void*, const ccd_t*, ccd_vec3_t*, ccd_vec3_t*)>;
 
 /** Compute the distance between two objects using GJK algorithm.
@@ -2675,10 +2754,18 @@ using DistanceFn = std::function<ccd_real_t (
  * @retval is_separated True if the objects are separated, false otherwise.
  */
 template <typename S>
-bool GJKDistanceImpl(void* obj1, ccd_support_fn supp1, void* obj2,
-                     ccd_support_fn supp2, unsigned int max_iterations,
-                     S tolerance, detail::DistanceFn distance_func, S* res,
-                     Vector3<S>* p1, Vector3<S>* p2) {
+bool GJKDistanceImpl(
+    void* obj1,
+    ccd_support_fn supp1,
+    void* obj2,
+    ccd_support_fn supp2,
+    unsigned int max_iterations,
+    S tolerance,
+    detail::DistanceFn distance_func,
+    S* res,
+    Vector3<S>* p1,
+    Vector3<S>* p2)
+{
   ccd_t ccd;
   ccd_real_t dist;
   CCD_INIT(&ccd);
@@ -2698,9 +2785,12 @@ bool GJKDistanceImpl(void* obj1, ccd_support_fn supp1, void* obj2,
   ccdVec3Set(&p1_, 0.0, 0.0, 0.0);
   ccdVec3Set(&p2_, 0.0, 0.0, 0.0);
   dist = distance_func(obj1, obj2, &ccd, &p1_, &p2_);
-  if (p1) *p1 << ccdVec3X(&p1_), ccdVec3Y(&p1_), ccdVec3Z(&p1_);
-  if (p2) *p2 << ccdVec3X(&p2_), ccdVec3Y(&p2_), ccdVec3Z(&p2_);
-  if (res) *res = dist;
+  if (p1)
+    *p1 << ccdVec3X(&p1_), ccdVec3Y(&p1_), ccdVec3Z(&p1_);
+  if (p2)
+    *p2 << ccdVec3X(&p2_), ccdVec3Y(&p2_), ccdVec3Z(&p2_);
+  if (res)
+    *res = dist;
   if (dist < 0)
     return false;
   else
@@ -2708,13 +2798,28 @@ bool GJKDistanceImpl(void* obj1, ccd_support_fn supp1, void* obj2,
 }
 
 template <typename S>
-bool GJKDistance(void* obj1, ccd_support_fn supp1,
-                 void* obj2, ccd_support_fn supp2,
-                 unsigned int max_iterations, S tolerance,
-                 S* res, Vector3<S>* p1, Vector3<S>* p2) {
-  return detail::GJKDistanceImpl(obj1, supp1, obj2, supp2, max_iterations,
-                                 tolerance, libccd_extension::ccdGJKDist2, res,
-                                 p1, p2);
+bool GJKDistance(
+    void* obj1,
+    ccd_support_fn supp1,
+    void* obj2,
+    ccd_support_fn supp2,
+    unsigned int max_iterations,
+    S tolerance,
+    S* res,
+    Vector3<S>* p1,
+    Vector3<S>* p2)
+{
+  return detail::GJKDistanceImpl(
+      obj1,
+      supp1,
+      obj2,
+      supp2,
+      max_iterations,
+      tolerance,
+      libccd_extension::ccdGJKDist2,
+      res,
+      p1,
+      p2);
 }
 
 /**
@@ -2731,13 +2836,28 @@ bool GJKDistance(void* obj1, ccd_support_fn supp1,
  * within @p tolerance to the true depth.
  */
 template <typename S>
-bool GJKSignedDistance(void* obj1, ccd_support_fn supp1,
-                       void* obj2, ccd_support_fn supp2,
-                       unsigned int max_iterations,
-                       S tolerance, S* res, Vector3<S>* p1, Vector3<S>* p2) {
+bool GJKSignedDistance(
+    void* obj1,
+    ccd_support_fn supp1,
+    void* obj2,
+    ccd_support_fn supp2,
+    unsigned int max_iterations,
+    S tolerance,
+    S* res,
+    Vector3<S>* p1,
+    Vector3<S>* p2)
+{
   return detail::GJKDistanceImpl(
-      obj1, supp1, obj2, supp2, max_iterations, tolerance,
-      libccd_extension::ccdGJKSignedDist, res, p1, p2);
+      obj1,
+      supp1,
+      obj2,
+      supp2,
+      max_iterations,
+      tolerance,
+      libccd_extension::ccdGJKSignedDist,
+      res,
+      p1,
+      p2);
 }
 
 template <typename S>
@@ -2753,8 +2873,8 @@ GJKCenterFunction GJKInitializer<S, Cylinder<S>>::getCenterFunction()
 }
 
 template <typename S>
-void* GJKInitializer<S, Cylinder<S>>::createGJKObject(const Cylinder<S>& s,
-                                                      const Transform3<S>& tf)
+void* GJKInitializer<S, Cylinder<S>>::createGJKObject(
+    const Cylinder<S>& s, const Transform3<S>& tf)
 {
   ccd_cyl_t* o = new ccd_cyl_t;
   cylToGJK(s, tf, o);
@@ -2781,8 +2901,8 @@ GJKCenterFunction GJKInitializer<S, Sphere<S>>::getCenterFunction()
 }
 
 template <typename S>
-void* GJKInitializer<S, Sphere<S>>::createGJKObject(const Sphere<S>& s,
-                                                    const Transform3<S>& tf)
+void* GJKInitializer<S, Sphere<S>>::createGJKObject(
+    const Sphere<S>& s, const Transform3<S>& tf)
 {
   ccd_sphere_t* o = new ccd_sphere_t;
   sphereToGJK(s, tf, o);
@@ -2809,8 +2929,8 @@ GJKCenterFunction GJKInitializer<S, Ellipsoid<S>>::getCenterFunction()
 }
 
 template <typename S>
-void* GJKInitializer<S, Ellipsoid<S>>::createGJKObject(const Ellipsoid<S>& s,
-                                                       const Transform3<S>& tf)
+void* GJKInitializer<S, Ellipsoid<S>>::createGJKObject(
+    const Ellipsoid<S>& s, const Transform3<S>& tf)
 {
   ccd_ellipsoid_t* o = new ccd_ellipsoid_t;
   ellipsoidToGJK(s, tf, o);
@@ -2837,8 +2957,8 @@ GJKCenterFunction GJKInitializer<S, Box<S>>::getCenterFunction()
 }
 
 template <typename S>
-void* GJKInitializer<S, Box<S>>::createGJKObject(const Box<S>& s,
-                                                 const Transform3<S>& tf)
+void* GJKInitializer<S, Box<S>>::createGJKObject(
+    const Box<S>& s, const Transform3<S>& tf)
 {
   ccd_box_t* o = new ccd_box_t;
   boxToGJK(s, tf, o);
@@ -2865,8 +2985,8 @@ GJKCenterFunction GJKInitializer<S, Capsule<S>>::getCenterFunction()
 }
 
 template <typename S>
-void* GJKInitializer<S, Capsule<S>>::createGJKObject(const Capsule<S>& s,
-                                                     const Transform3<S>& tf)
+void* GJKInitializer<S, Capsule<S>>::createGJKObject(
+    const Capsule<S>& s, const Transform3<S>& tf)
 {
   ccd_cap_t* o = new ccd_cap_t;
   capToGJK(s, tf, o);
@@ -2893,8 +3013,8 @@ GJKCenterFunction GJKInitializer<S, Cone<S>>::getCenterFunction()
 }
 
 template <typename S>
-void* GJKInitializer<S, Cone<S>>::createGJKObject(const Cone<S>& s,
-                                                  const Transform3<S>& tf)
+void* GJKInitializer<S, Cone<S>>::createGJKObject(
+    const Cone<S>& s, const Transform3<S>& tf)
 {
   ccd_cone_t* o = new ccd_cone_t;
   coneToGJK(s, tf, o);
@@ -2921,8 +3041,8 @@ GJKCenterFunction GJKInitializer<S, Convex<S>>::getCenterFunction()
 }
 
 template <typename S>
-void* GJKInitializer<S, Convex<S>>::createGJKObject(const Convex<S>& s,
-                                                    const Transform3<S>& tf)
+void* GJKInitializer<S, Convex<S>>::createGJKObject(
+    const Convex<S>& s, const Transform3<S>& tf)
 {
   auto* o = new ccd_convex_t<S>;
   convexToGJK(s, tf, o);
@@ -2947,11 +3067,13 @@ inline GJKCenterFunction triGetCenterFunction()
 }
 
 template <typename S>
-void* triCreateGJKObject(const Vector3<S>& P1, const Vector3<S>& P2,
-                         const Vector3<S>& P3)
+void* triCreateGJKObject(
+    const Vector3<S>& P1, const Vector3<S>& P2, const Vector3<S>& P3)
 {
   ccd_triangle_t* o = new ccd_triangle_t;
-  Vector3<S> center((P1[0] + P2[0] + P3[0]) / 3, (P1[1] + P2[1] + P3[1]) / 3,
+  Vector3<S> center(
+      (P1[0] + P2[0] + P3[0]) / 3,
+      (P1[1] + P2[1] + P3[1]) / 3,
       (P1[2] + P2[2] + P3[2]) / 3);
 
   ccdVec3Set(&o->p[0], P1[0], P1[1], P1[2]);
@@ -2966,11 +3088,16 @@ void* triCreateGJKObject(const Vector3<S>& P1, const Vector3<S>& P2,
 }
 
 template <typename S>
-void* triCreateGJKObject(const Vector3<S>& P1, const Vector3<S>& P2,
-                         const Vector3<S>& P3, const Transform3<S>& tf)
+void* triCreateGJKObject(
+    const Vector3<S>& P1,
+    const Vector3<S>& P2,
+    const Vector3<S>& P3,
+    const Transform3<S>& tf)
 {
   ccd_triangle_t* o = new ccd_triangle_t;
-  Vector3<S> center((P1[0] + P2[0] + P3[0]) / 3, (P1[1] + P2[1] + P3[1]) / 3,
+  Vector3<S> center(
+      (P1[0] + P2[0] + P3[0]) / 3,
+      (P1[1] + P2[1] + P3[1]) / 3,
       (P1[2] + P2[2] + P3[2]) / 3);
 
   ccdVec3Set(&o->p[0], P1[0], P1[1], P1[2]);
@@ -2993,6 +3120,4 @@ inline void triDeleteGJKObject(void* o_)
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

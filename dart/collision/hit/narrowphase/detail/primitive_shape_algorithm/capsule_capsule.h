@@ -35,21 +35,17 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_NARROWPHASE_DETAIL_CAPSULECAPSULE_H
-#define FCL_NARROWPHASE_DETAIL_CAPSULECAPSULE_H
+#pragma once
 
-#include "fcl/common/types.h"
-#include "fcl/geometry/shape/capsule.h"
+#include "dart/collision/hit/common/types.h"
+#include "dart/collision/hit/geometry/shape/capsule.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 // Clamp n to lie within the range [min, max]
 template <typename S>
-FCL_EXPORT
 S clamp(S n, S min, S max);
 
 /** Computes the pair of closest points `(p_FC1, p_FC2)` between two line
@@ -73,11 +69,15 @@ S clamp(S n, S min, S max);
  @tparam S  The scalar type for computation.
  */
 template <typename S>
-FCL_EXPORT S closestPtSegmentSegment(const Vector3<S>& p_FP1,
-                                     const Vector3<S>& p_FQ1,
-                                     const Vector3<S>& p_FP2,
-                                     const Vector3<S>& p_FQ2, S* s, S* t,
-                                     Vector3<S>* p_FC1, Vector3<S>* p_FC2);
+S closestPtSegmentSegment(
+    const Vector3<S>& p_FP1,
+    const Vector3<S>& p_FQ1,
+    const Vector3<S>& p_FP2,
+    const Vector3<S>& p_FQ2,
+    S* s,
+    S* t,
+    Vector3<S>* p_FC1,
+    Vector3<S>* p_FC2);
 
 /** Computes the signed distance between two capsules `s1` and `s2` (with
  given poses `X_FC1` and `X_FC2` of the two capsules in a common frame `F`).
@@ -104,14 +104,16 @@ FCL_EXPORT S closestPtSegmentSegment(const Vector3<S>& p_FP1,
  @tparam S  The scalar type for computation.
  */
 template <typename S>
-FCL_EXPORT
-bool capsuleCapsuleDistance(const Capsule<S>& s1, const Transform3<S>& X_FC1,
-          const Capsule<S>& s2, const Transform3<S>& X_FC2,
-          S* dist, Vector3<S>* p_FW1, Vector3<S>* p_FW2);
+bool capsuleCapsuleDistance(
+    const Capsule<S>& s1,
+    const Transform3<S>& X_FC1,
+    const Capsule<S>& s2,
+    const Transform3<S>& X_FC2,
+    S* dist,
+    Vector3<S>* p_FW1,
+    Vector3<S>* p_FW2);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/primitive_shape_algorithm/capsule_capsule-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/primitive_shape_algorithm/capsule_capsule-inl.h"

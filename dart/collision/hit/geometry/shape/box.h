@@ -35,23 +35,20 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_SHAPE_BOX_H
-#define FCL_SHAPE_BOX_H
+#pragma once
 
-#include "fcl/geometry/shape/shape_base.h"
+#include "dart/collision/hit/geometry/shape/shape_base.h"
 
 #include <ostream>
 #include <string>
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Center at zero point, axis aligned box
 template <typename S_>
-class FCL_EXPORT Box : public ShapeBase<S_>
+class Box : public ShapeBase<S_>
 {
 public:
-
   using S = S_;
 
   /// @brief Constructor
@@ -89,8 +86,8 @@ public:
   /// @return The string representation of this instance.
   std::string representation(int precision = 20) const;
 
-  friend
-  std::ostream& operator<<(std::ostream& out, const Box& box) {
+  friend std::ostream& operator<<(std::ostream& out, const Box& box)
+  {
     out << "Box" << box.side.transpose();
     return out;
   }
@@ -99,8 +96,6 @@ public:
 using Boxf = Box<float>;
 using Boxd = Box<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/geometry/shape/box-inl.h"
-
-#endif
+#include "dart/collision/hit/geometry/shape/box-inl.h"

@@ -35,32 +35,23 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_COSTSOURCE_INL_H
-#define FCL_COSTSOURCE_INL_H
+#pragma once
 
-#include "fcl/narrowphase/cost_source.h"
+#include "dart/collision/hit/narrowphase/cost_source.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-struct CostSource<double>;
+extern template struct CostSource<double>;
 
 //==============================================================================
 template <typename S>
 CostSource<S>::CostSource(
-    const Vector3<S>& aabb_min_,
-    const Vector3<S>& aabb_max_,
-    S cost_density_)
-  : aabb_min(aabb_min_),
-    aabb_max(aabb_max_),
-    cost_density(cost_density_)
+    const Vector3<S>& aabb_min_, const Vector3<S>& aabb_max_, S cost_density_)
+  : aabb_min(aabb_min_), aabb_max(aabb_max_), cost_density(cost_density_)
 {
-  total_cost = cost_density
-      * (aabb_max[0] - aabb_min[0])
-      * (aabb_max[1] - aabb_min[1])
-      * (aabb_max[2] - aabb_min[2]);
+  total_cost = cost_density * (aabb_max[0] - aabb_min[0])
+               * (aabb_max[1] - aabb_min[1]) * (aabb_max[2] - aabb_min[2]);
 }
 
 //==============================================================================
@@ -68,10 +59,8 @@ template <typename S>
 CostSource<S>::CostSource(const AABB<S>& aabb, S cost_density_)
   : aabb_min(aabb.min_), aabb_max(aabb.max_), cost_density(cost_density_)
 {
-  total_cost = cost_density
-      * (aabb_max[0] - aabb_min[0])
-      * (aabb_max[1] - aabb_min[1])
-      * (aabb_max[2] - aabb_min[2]);
+  total_cost = cost_density * (aabb_max[0] - aabb_min[0])
+               * (aabb_max[1] - aabb_min[1]) * (aabb_max[2] - aabb_min[2]);
 }
 
 //==============================================================================
@@ -83,25 +72,23 @@ CostSource<S>::CostSource()
 
 //==============================================================================
 template <typename S>
-bool CostSource<S>::operator <(const CostSource& other) const
+bool CostSource<S>::operator<(const CostSource& other) const
 {
-  if(total_cost < other.total_cost)
+  if (total_cost < other.total_cost)
     return false;
-  if(total_cost > other.total_cost)
+  if (total_cost > other.total_cost)
     return true;
 
-  if(cost_density < other.cost_density)
+  if (cost_density < other.cost_density)
     return false;
-  if(cost_density > other.cost_density)
+  if (cost_density > other.cost_density)
     return true;
 
-  for(size_t i = 0; i < 3; ++i)
-    if(aabb_min[i] != other.aabb_min[i])
+  for (size_t i = 0; i < 3; ++i)
+    if (aabb_min[i] != other.aabb_min[i])
       return aabb_min[i] < other.aabb_min[i];
 
   return false;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

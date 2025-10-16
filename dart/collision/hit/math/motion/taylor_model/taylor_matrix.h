@@ -32,58 +32,59 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
-// This code is based on code developed by Stephane Redon at UNC and Inria for the CATCH library: http://graphics.ewha.ac.kr/CATCH/
+// This code is based on code developed by Stephane Redon at UNC and Inria for
+// the CATCH library: http://graphics.ewha.ac.kr/CATCH/
 /** @author Jia Pan */
 
-#ifndef FCL_CCD_TAYLOR_MATRIX_H
-#define FCL_CCD_TAYLOR_MATRIX_H
+#pragma once
 
-#include "fcl/math/motion/taylor_model/taylor_vector.h"
-#include "fcl/math/motion/taylor_model/interval_matrix.h"
+#include "dart/collision/hit/math/motion/taylor_model/interval_matrix.h"
+#include "dart/collision/hit/math/motion/taylor_model/taylor_vector.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 template <typename S>
-class FCL_EXPORT TMatrix3
+class TMatrix3
 {
   TVector3<S> v_[3];
-  
+
 public:
   TMatrix3();
   TMatrix3(const std::shared_ptr<TimeInterval<S>>& time_interval);
   TMatrix3(TaylorModel<S> m[3][3]);
   TMatrix3(const TVector3<S>& v1, const TVector3<S>& v2, const TVector3<S>& v3);
-  TMatrix3(const Matrix3<S>& m, const std::shared_ptr<TimeInterval<S>>& time_interval);
+  TMatrix3(
+      const Matrix3<S>& m,
+      const std::shared_ptr<TimeInterval<S>>& time_interval);
 
   TVector3<S> getColumn(size_t i) const;
   const TVector3<S>& getRow(size_t i) const;
 
-  const TaylorModel<S>& operator () (size_t i, size_t j) const;
-  TaylorModel<S>& operator () (size_t i, size_t j);
+  const TaylorModel<S>& operator()(size_t i, size_t j) const;
+  TaylorModel<S>& operator()(size_t i, size_t j);
 
-  TVector3<S> operator * (const Vector3<S>& v) const;
-  TVector3<S> operator * (const TVector3<S>& v) const;
-  TMatrix3 operator * (const Matrix3<S>& m) const;
-  TMatrix3 operator * (const TMatrix3& m) const;
-  TMatrix3 operator * (const TaylorModel<S>& d) const;
-  TMatrix3 operator * (S d) const;
+  TVector3<S> operator*(const Vector3<S>& v) const;
+  TVector3<S> operator*(const TVector3<S>& v) const;
+  TMatrix3 operator*(const Matrix3<S>& m) const;
+  TMatrix3 operator*(const TMatrix3& m) const;
+  TMatrix3 operator*(const TaylorModel<S>& d) const;
+  TMatrix3 operator*(S d) const;
 
-  TMatrix3& operator *= (const Matrix3<S>& m);
-  TMatrix3& operator *= (const TMatrix3& m);
-  TMatrix3& operator *= (const TaylorModel<S>& d);
-  TMatrix3& operator *= (S d);
+  TMatrix3& operator*=(const Matrix3<S>& m);
+  TMatrix3& operator*=(const TMatrix3& m);
+  TMatrix3& operator*=(const TaylorModel<S>& d);
+  TMatrix3& operator*=(S d);
 
-  TMatrix3 operator + (const TMatrix3& m) const;
-  TMatrix3& operator += (const TMatrix3& m);
-  TMatrix3 operator + (const Matrix3<S>& m) const;
-  TMatrix3& operator += (const Matrix3<S>& m);
+  TMatrix3 operator+(const TMatrix3& m) const;
+  TMatrix3& operator+=(const TMatrix3& m);
+  TMatrix3 operator+(const Matrix3<S>& m) const;
+  TMatrix3& operator+=(const Matrix3<S>& m);
 
-  TMatrix3 operator - (const TMatrix3& m) const;
-  TMatrix3& operator -= (const TMatrix3& m);
-  TMatrix3 operator - (const Matrix3<S>& m) const;
-  TMatrix3& operator -= (const Matrix3<S>& m);
-  TMatrix3 operator - () const;
+  TMatrix3 operator-(const TMatrix3& m) const;
+  TMatrix3& operator-=(const TMatrix3& m);
+  TMatrix3 operator-(const Matrix3<S>& m) const;
+  TMatrix3& operator-=(const Matrix3<S>& m);
+  TMatrix3 operator-() const;
 
   IMatrix3<S> getBound() const;
   IMatrix3<S> getBound(S l, S r) const;
@@ -106,35 +107,26 @@ public:
 };
 
 template <typename S>
-FCL_EXPORT
 TMatrix3<S> rotationConstrain(const TMatrix3<S>& m);
 
 template <typename S>
-FCL_EXPORT
-TMatrix3<S> operator * (const Matrix3<S>& m, const TaylorModel<S>& a);
+TMatrix3<S> operator*(const Matrix3<S>& m, const TaylorModel<S>& a);
 
 template <typename S>
-FCL_EXPORT
-TMatrix3<S> operator * (const TaylorModel<S>& a, const Matrix3<S>& m);
+TMatrix3<S> operator*(const TaylorModel<S>& a, const Matrix3<S>& m);
 
 template <typename S>
-FCL_EXPORT
-TMatrix3<S> operator * (const TaylorModel<S>& a, const TMatrix3<S>& m);
+TMatrix3<S> operator*(const TaylorModel<S>& a, const TMatrix3<S>& m);
 
 template <typename S>
-FCL_EXPORT
-TMatrix3<S> operator * (S d, const TMatrix3<S>& m);
+TMatrix3<S> operator*(S d, const TMatrix3<S>& m);
 
 template <typename S>
-FCL_EXPORT
-TMatrix3<S> operator + (const Matrix3<S>& m1, const TMatrix3<S>& m2);
+TMatrix3<S> operator+(const Matrix3<S>& m1, const TMatrix3<S>& m2);
 
 template <typename S>
-FCL_EXPORT
-TMatrix3<S> operator - (const Matrix3<S>& m1, const TMatrix3<S>& m2);
+TMatrix3<S> operator-(const Matrix3<S>& m1, const TMatrix3<S>& m2);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/motion/taylor_model/taylor_matrix-inl.h"
-
-#endif
+#include "dart/collision/hit/math/motion/taylor_model/taylor_matrix-inl.h"

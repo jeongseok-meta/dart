@@ -35,22 +35,18 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CCD_SCREWMOTION_INL_H
-#define FCL_CCD_SCREWMOTION_INL_H
+#pragma once
 
-#include "fcl/math/motion/screw_motion.h"
+#include "dart/collision/hit/math/motion/screw_motion.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-class FCL_EXPORT ScrewMotion<double>;
+extern template class ScrewMotion<double>;
 
 //==============================================================================
 template <typename S>
-ScrewMotion<S>::ScrewMotion()
-  : MotionBase<S>(), axis(Vector3<S>::UnitX())
+ScrewMotion<S>::ScrewMotion() : MotionBase<S>(), axis(Vector3<S>::UnitX())
 {
   // Default angular velocity is zero
   angular_vel = 0;
@@ -64,8 +60,10 @@ ScrewMotion<S>::ScrewMotion()
 //==============================================================================
 template <typename S>
 ScrewMotion<S>::ScrewMotion(
-    const Matrix3<S>& R1, const Vector3<S>& T1,
-    const Matrix3<S>& R2, const Vector3<S>& T2)
+    const Matrix3<S>& R1,
+    const Vector3<S>& T1,
+    const Matrix3<S>& R2,
+    const Vector3<S>& T2)
   : MotionBase<S>(),
     tf1(Transform3<S>::Identity()),
     tf2(Transform3<S>::Identity())
@@ -94,12 +92,14 @@ ScrewMotion<S>::ScrewMotion(
 template <typename S>
 bool ScrewMotion<S>::integrate(S dt) const
 {
-  if(dt > 1) dt = 1;
+  if (dt > 1)
+    dt = 1;
 
   tf.linear() = absoluteRotation(dt).toRotationMatrix();
 
   Quaternion<S> delta_rot = deltaRotation(dt);
-  tf.translation() = p + axis * (dt * linear_vel) + delta_rot * (tf1.translation() - p);
+  tf.translation()
+      = p + axis * (dt * linear_vel) + delta_rot * (tf1.translation() - p);
 
   return true;
 }
@@ -141,10 +141,11 @@ void ScrewMotion<S>::getTaylorModel(TMatrix3<S>& tm, TVector3<S>& tv) const
   generateTaylorModelForSinFunc(sin_model, angular_vel, (S)0);
 
   TMatrix3<S> delta_R = hat_axis * sin_model
-      - (hat_axis * hat_axis).eval() * (cos_model - 1)
-      + Matrix3<S>::Identity();
+                        - (hat_axis * hat_axis).eval() * (cos_model - 1)
+                        + Matrix3<S>::Identity();
 
-  TaylorModel<S> a(this->getTimeInterval()), b(this->getTimeInterval()), c(this->getTimeInterval());
+  TaylorModel<S> a(this->getTimeInterval()), b(this->getTimeInterval()),
+      c(this->getTimeInterval());
   generateTaylorModelForLinearFunc(a, (S)0, linear_vel * axis[0]);
   generateTaylorModelForLinearFunc(b, (S)0, linear_vel * axis[1]);
   generateTaylorModelForLinearFunc(c, (S)0, linear_vel * axis[2]);
@@ -163,23 +164,21 @@ void ScrewMotion<S>::computeScrewParameter()
   axis = aa.axis();
   angular_vel = aa.angle();
 
-  if(angular_vel < 0)
-  {
+  if (angular_vel < 0) {
     angular_vel = -angular_vel;
     axis = -axis;
   }
 
-  if(angular_vel < 1e-10)
-  {
+  if (angular_vel < 1e-10) {
     angular_vel = 0;
     axis = tf2.translation() - tf1.translation();
     linear_vel = axis.norm();
     p = tf1.translation();
-  }
-  else
-  {
+  } else {
     Vector3<S> o = tf2.translation() - tf1.translation();
-    p = (tf1.translation() + tf2.translation() + axis.cross(o) * (1.0 / tan(angular_vel / 2.0))) * 0.5;
+    p = (tf1.translation() + tf2.translation()
+         + axis.cross(o) * (1.0 / tan(angular_vel / 2.0)))
+        * 0.5;
     linear_vel = o.dot(axis);
   }
 }
@@ -216,18 +215,16 @@ S ScrewMotion<S>::getAngularVelocity() const
 
 //==============================================================================
 template <typename S>
-const Vector3<S>&ScrewMotion<S>::getAxis() const
+const Vector3<S>& ScrewMotion<S>::getAxis() const
 {
   return axis;
 }
 
 //==============================================================================
 template <typename S>
-const Vector3<S>&ScrewMotion<S>::getAxisOrigin() const
+const Vector3<S>& ScrewMotion<S>::getAxisOrigin() const
 {
   return p;
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

@@ -35,22 +35,19 @@
 
 /** \author Jia Pan */
 
-#ifndef FCL_MATH_BV_UTILITY_INL_H
-#define FCL_MATH_BV_UTILITY_INL_H
+#pragma once
 
-#include "fcl/math/bv/utility.h"
-
-#include "fcl/common/unused.h"
-
-#include "fcl/math/bv/AABB.h"
-#include "fcl/math/bv/kDOP.h"
-#include "fcl/math/bv/kIOS.h"
-#include "fcl/math/bv/OBB.h"
-#include "fcl/math/bv/OBBRSS.h"
-#include "fcl/math/bv/RSS.h"
+#include "dart/collision/hit/common/unused.h"
+#include "dart/collision/hit/math/bv/AABB.h"
+#include "dart/collision/hit/math/bv/OBB.h"
+#include "dart/collision/hit/math/bv/OBBRSS.h"
+#include "dart/collision/hit/math/bv/RSS.h"
+#include "dart/collision/hit/math/bv/kDOP.h"
+#include "dart/collision/hit/math/bv/kIOS.h"
+#include "dart/collision/hit/math/bv/utility.h"
 
 /** \brief Main namespace */
-namespace dart { namespace collision { namespace hit {
+namespace dart::collision::hit {
 
 //==============================================================================
 namespace detail {
@@ -62,7 +59,6 @@ namespace OBB_fit_functions {
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void fit1(const Vector3<S>* const ps, OBB<S>& bv)
 {
   bv.To = ps[0];
@@ -72,7 +68,6 @@ void fit1(const Vector3<S>* const ps, OBB<S>& bv)
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void fit2(const Vector3<S>* const ps, OBB<S>& bv)
 {
   const Vector3<S>& p1 = ps[0];
@@ -88,7 +83,6 @@ void fit2(const Vector3<S>* const ps, OBB<S>& bv)
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void fit3(const Vector3<S>* const ps, OBB<S>& bv)
 {
   const Vector3<S>& p1 = ps[0];
@@ -104,8 +98,10 @@ void fit3(const Vector3<S>* const ps, OBB<S>& bv)
   len[2] = e[2].squaredNorm();
 
   int imax = 0;
-  if(len[1] > len[0]) imax = 1;
-  if(len[2] > len[imax]) imax = 2;
+  if (len[1] > len[0])
+    imax = 1;
+  if (len[2] > len[imax])
+    imax = 2;
 
   bv.axis.col(2).noalias() = e[0].cross(e[1]);
   bv.axis.col(2).normalize();
@@ -113,12 +109,12 @@ void fit3(const Vector3<S>* const ps, OBB<S>& bv)
   bv.axis.col(0).normalize();
   bv.axis.col(1).noalias() = bv.axis.col(2).cross(bv.axis.col(0));
 
-  getExtentAndCenter<S>(ps, nullptr, nullptr, nullptr, 3, bv.axis, bv.To, bv.extent);
+  getExtentAndCenter<S>(
+      ps, nullptr, nullptr, nullptr, 3, bv.axis, bv.To, bv.extent);
 }
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void fit6(const Vector3<S>* const ps, OBB<S>& bv)
 {
   OBB<S> bv1, bv2;
@@ -129,7 +125,6 @@ void fit6(const Vector3<S>* const ps, OBB<S>& bv)
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void fitn(const Vector3<S>* const ps, int n, OBB<S>& bv)
 {
   Matrix3<S> M;
@@ -141,28 +136,24 @@ void fitn(const Vector3<S>* const ps, int n, OBB<S>& bv)
   axisFromEigen(E, s, bv.axis);
 
   // set obb centers and extensions
-  getExtentAndCenter<S>(ps, nullptr, nullptr, nullptr, n, bv.axis, bv.To, bv.extent);
+  getExtentAndCenter<S>(
+      ps, nullptr, nullptr, nullptr, n, bv.axis, bv.To, bv.extent);
 }
 
 //==============================================================================
-extern template
-void fit1(const Vector3d* const ps, OBB<double>& bv);
+extern template void fit1(const Vector3d* const ps, OBB<double>& bv);
 
 //==============================================================================
-extern template
-void fit2(const Vector3d* const ps, OBB<double>& bv);
+extern template void fit2(const Vector3d* const ps, OBB<double>& bv);
 
 //==============================================================================
-extern template
-void fit3(const Vector3d* const ps, OBB<double>& bv);
+extern template void fit3(const Vector3d* const ps, OBB<double>& bv);
 
 //==============================================================================
-extern template
-void fit6(const Vector3d* const ps, OBB<double>& bv);
+extern template void fit6(const Vector3d* const ps, OBB<double>& bv);
 
 //==============================================================================
-extern template
-void fitn(const Vector3d* const ps, int n, OBB<double>& bv);
+extern template void fitn(const Vector3d* const ps, int n, OBB<double>& bv);
 
 //==============================================================================
 } // namespace OBB_fit_functions
@@ -174,7 +165,6 @@ namespace RSS_fit_functions {
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void fit1(const Vector3<S>* const ps, RSS<S>& bv)
 {
   bv.To = ps[0];
@@ -186,7 +176,6 @@ void fit1(const Vector3<S>* const ps, RSS<S>& bv)
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void fit2(const Vector3<S>* const ps, RSS<S>& bv)
 {
   const Vector3<S>& p1 = ps[0];
@@ -204,7 +193,6 @@ void fit2(const Vector3<S>* const ps, RSS<S>& bv)
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void fit3(const Vector3<S>* const ps, RSS<S>& bv)
 {
   const Vector3<S>& p1 = ps[0];
@@ -220,19 +208,21 @@ void fit3(const Vector3<S>* const ps, RSS<S>& bv)
   len[2] = e[2].squaredNorm();
 
   int imax = 0;
-  if(len[1] > len[0]) imax = 1;
-  if(len[2] > len[imax]) imax = 2;
+  if (len[1] > len[0])
+    imax = 1;
+  if (len[2] > len[imax])
+    imax = 2;
 
   bv.axis.col(2).noalias() = e[0].cross(e[1]).normalized();
   bv.axis.col(0).noalias() = e[imax].normalized();
   bv.axis.col(1).noalias() = bv.axis.col(2).cross(bv.axis.col(0));
 
-  getRadiusAndOriginAndRectangleSize<S>(ps, nullptr, nullptr, nullptr, 3, bv.axis, bv.To, bv.l, bv.r);
+  getRadiusAndOriginAndRectangleSize<S>(
+      ps, nullptr, nullptr, nullptr, 3, bv.axis, bv.To, bv.l, bv.r);
 }
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void fit6(const Vector3<S>* const ps, RSS<S>& bv)
 {
   RSS<S> bv1, bv2;
@@ -243,7 +233,6 @@ void fit6(const Vector3<S>* const ps, RSS<S>& bv)
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void fitn(const Vector3<S>* const ps, int n, RSS<S>& bv)
 {
   Matrix3<S> M; // row first matrix
@@ -255,33 +244,24 @@ void fitn(const Vector3<S>* const ps, int n, RSS<S>& bv)
   axisFromEigen(E, s, bv.axis);
 
   // set rss origin, rectangle size and radius
-  getRadiusAndOriginAndRectangleSize<S>(ps, nullptr, nullptr, nullptr, n, bv.axis, bv.To, bv.l, bv.r);
+  getRadiusAndOriginAndRectangleSize<S>(
+      ps, nullptr, nullptr, nullptr, n, bv.axis, bv.To, bv.l, bv.r);
 }
 
 //==============================================================================
-extern template
-FCL_EXPORT
-void fit1(const Vector3d* const ps, RSS<double>& bv);
+extern template void fit1(const Vector3d* const ps, RSS<double>& bv);
 
 //==============================================================================
-extern template
-FCL_EXPORT
-void fit2(const Vector3d* const ps, RSS<double>& bv);
+extern template void fit2(const Vector3d* const ps, RSS<double>& bv);
 
 //==============================================================================
-extern template
-FCL_EXPORT
-void fit3(const Vector3d* const ps, RSS<double>& bv);
+extern template void fit3(const Vector3d* const ps, RSS<double>& bv);
 
 //==============================================================================
-extern template
-FCL_EXPORT
-void fit6(const Vector3d* const ps, RSS<double>& bv);
+extern template void fit6(const Vector3d* const ps, RSS<double>& bv);
 
 //==============================================================================
-extern template
-FCL_EXPORT
-void fitn(const Vector3d* const ps, int n, RSS<double>& bv);
+extern template void fitn(const Vector3d* const ps, int n, RSS<double>& bv);
 
 //==============================================================================
 } // namespace RSS_fit_functions
@@ -293,7 +273,6 @@ namespace kIOS_fit_functions {
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void fit1(const Vector3<S>* const ps, kIOS<S>& bv)
 {
   bv.num_spheres = 1;
@@ -307,7 +286,6 @@ void fit1(const Vector3<S>* const ps, kIOS<S>& bv)
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void fit2(const Vector3<S>* const ps, kIOS<S>& bv)
 {
   bv.num_spheres = 5;
@@ -343,7 +321,6 @@ void fit2(const Vector3<S>* const ps, kIOS<S>& bv)
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void fit3(const Vector3<S>* const ps, kIOS<S>& bv)
 {
   bv.num_spheres = 3;
@@ -361,14 +338,17 @@ void fit3(const Vector3<S>* const ps, kIOS<S>& bv)
   len[2] = e[2].squaredNorm();
 
   int imax = 0;
-  if(len[1] > len[0]) imax = 1;
-  if(len[2] > len[imax]) imax = 2;
+  if (len[1] > len[0])
+    imax = 1;
+  if (len[2] > len[imax])
+    imax = 2;
 
   bv.obb.axis.col(2).noalias() = e[0].cross(e[1]).normalized();
   bv.obb.axis.col(0) = e[imax].normalized();
   bv.obb.axis.col(1).noalias() = bv.obb.axis.col(2).cross(bv.obb.axis.col(0));
 
-  getExtentAndCenter<S>(ps, nullptr, nullptr, nullptr, 3, bv.obb.axis, bv.obb.To, bv.obb.extent);
+  getExtentAndCenter<S>(
+      ps, nullptr, nullptr, nullptr, 3, bv.obb.axis, bv.obb.To, bv.obb.extent);
 
   // compute radius and center
   S r0;
@@ -389,7 +369,6 @@ void fit3(const Vector3<S>* const ps, kIOS<S>& bv)
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void fitn(const Vector3<S>* const ps, int n, kIOS<S>& bv)
 {
   Matrix3<S> M;
@@ -400,7 +379,8 @@ void fitn(const Vector3<S>* const ps, int n, kIOS<S>& bv)
   eigen_old(M, s, E);
   axisFromEigen(E, s, bv.obb.axis);
 
-  getExtentAndCenter<S>(ps, nullptr, nullptr, nullptr, n, bv.obb.axis, bv.obb.To, bv.obb.extent);
+  getExtentAndCenter<S>(
+      ps, nullptr, nullptr, nullptr, n, bv.obb.axis, bv.obb.To, bv.obb.extent);
 
   // get center and extension
   const Vector3<S>& center = bv.obb.To;
@@ -408,19 +388,18 @@ void fitn(const Vector3<S>* const ps, int n, kIOS<S>& bv)
   S r0 = maximumDistance<S>(ps, nullptr, nullptr, nullptr, n, center);
 
   // decide the k in kIOS<S>
-  if(extent[0] > kIOS<S>::ratio() * extent[2])
-  {
-    if(extent[0] > kIOS<S>::ratio() * extent[1]) bv.num_spheres = 5;
-    else bv.num_spheres = 3;
-  }
-  else bv.num_spheres = 1;
-
+  if (extent[0] > kIOS<S>::ratio() * extent[2]) {
+    if (extent[0] > kIOS<S>::ratio() * extent[1])
+      bv.num_spheres = 5;
+    else
+      bv.num_spheres = 3;
+  } else
+    bv.num_spheres = 1;
 
   bv.spheres[0].o = center;
   bv.spheres[0].r = r0;
 
-  if(bv.num_spheres >= 3)
-  {
+  if (bv.num_spheres >= 3) {
     S r10 = sqrt(r0 * r0 - extent[2] * extent[2]) * kIOS<S>::invSinA();
     Vector3<S> delta = bv.obb.axis.col(2) * (r10 * kIOS<S>::cosA() - extent[2]);
     bv.spheres[1].o = center - delta;
@@ -436,10 +415,12 @@ void fitn(const Vector3<S>* const ps, int n, kIOS<S>& bv)
     bv.spheres[2].r = r10;
   }
 
-  if(bv.num_spheres >= 5)
-  {
+  if (bv.num_spheres >= 5) {
     S r10 = bv.spheres[1].r;
-    Vector3<S> delta = bv.obb.axis.col(1) * (sqrt(r10 * r10 - extent[0] * extent[0] - extent[2] * extent[2]) - extent[1]);
+    Vector3<S> delta
+        = bv.obb.axis.col(1)
+          * (sqrt(r10 * r10 - extent[0] * extent[0] - extent[2] * extent[2])
+             - extent[1]);
     bv.spheres[3].o = bv.spheres[0].o - delta;
     bv.spheres[4].o = bv.spheres[0].o + delta;
 
@@ -456,24 +437,16 @@ void fitn(const Vector3<S>* const ps, int n, kIOS<S>& bv)
 }
 
 //==============================================================================
-extern template
-FCL_EXPORT
-void fit1(const Vector3d* const ps, kIOS<double>& bv);
+extern template void fit1(const Vector3d* const ps, kIOS<double>& bv);
 
 //==============================================================================
-extern template
-FCL_EXPORT
-void fit2(const Vector3d* const ps, kIOS<double>& bv);
+extern template void fit2(const Vector3d* const ps, kIOS<double>& bv);
 
 //==============================================================================
-extern template
-FCL_EXPORT
-void fit3(const Vector3d* const ps, kIOS<double>& bv);
+extern template void fit3(const Vector3d* const ps, kIOS<double>& bv);
 
 //==============================================================================
-extern template
-FCL_EXPORT
-void fitn(const Vector3d* const ps, int n, kIOS<double>& bv);
+extern template void fitn(const Vector3d* const ps, int n, kIOS<double>& bv);
 
 //==============================================================================
 } // namespace kIOS_fit_functions
@@ -485,7 +458,6 @@ namespace OBBRSS_fit_functions {
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void fit1(const Vector3<S>* const ps, OBBRSS<S>& bv)
 {
   OBB_fit_functions::fit1(ps, bv.obb);
@@ -494,7 +466,6 @@ void fit1(const Vector3<S>* const ps, OBBRSS<S>& bv)
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void fit2(const Vector3<S>* const ps, OBBRSS<S>& bv)
 {
   OBB_fit_functions::fit2(ps, bv.obb);
@@ -503,7 +474,6 @@ void fit2(const Vector3<S>* const ps, OBBRSS<S>& bv)
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void fit3(const Vector3<S>* const ps, OBBRSS<S>& bv)
 {
   OBB_fit_functions::fit3(ps, bv.obb);
@@ -512,7 +482,6 @@ void fit3(const Vector3<S>* const ps, OBBRSS<S>& bv)
 
 //==============================================================================
 template <typename S>
-FCL_EXPORT
 void fitn(const Vector3<S>* const ps, int n, OBBRSS<S>& bv)
 {
   OBB_fit_functions::fitn(ps, n, bv.obb);
@@ -520,20 +489,16 @@ void fitn(const Vector3<S>* const ps, int n, OBBRSS<S>& bv)
 }
 
 //==============================================================================
-extern template
-void fit1(const Vector3d* const ps, OBBRSS<double>& bv);
+extern template void fit1(const Vector3d* const ps, OBBRSS<double>& bv);
 
 //==============================================================================
-extern template
-void fit2(const Vector3d* const ps, OBBRSS<double>& bv);
+extern template void fit2(const Vector3d* const ps, OBBRSS<double>& bv);
 
 //==============================================================================
-extern template
-void fit3(const Vector3d* const ps, OBBRSS<double>& bv);
+extern template void fit3(const Vector3d* const ps, OBBRSS<double>& bv);
 
 //==============================================================================
-extern template
-void fitn(const Vector3d* const ps, int n, OBBRSS<double>& bv);
+extern template void fitn(const Vector3d* const ps, int n, OBBRSS<double>& bv);
 
 //==============================================================================
 } // namespace OBBRSS_fit_functions
@@ -541,125 +506,117 @@ void fitn(const Vector3d* const ps, int n, OBBRSS<double>& bv);
 
 //==============================================================================
 template <typename S, typename BV>
-struct FCL_EXPORT Fitter
+struct Fitter
 {
   static void fit(const Vector3<S>* const ps, int n, BV& bv)
   {
-    for(int i = 0; i < n; ++i)
+    for (int i = 0; i < n; ++i)
       bv += ps[i];
   }
 };
 
 //==============================================================================
 template <typename S>
-struct FCL_EXPORT Fitter<S, OBB<S>>
+struct Fitter<S, OBB<S>>
 {
   static void fit(const Vector3<S>* const ps, int n, OBB<S>& bv)
   {
-    switch(n)
-    {
-    case 1:
-      OBB_fit_functions::fit1(ps, bv);
-      break;
-    case 2:
-      OBB_fit_functions::fit2(ps, bv);
-      break;
-    case 3:
-      OBB_fit_functions::fit3(ps, bv);
-      break;
-    case 6:
-      OBB_fit_functions::fit6(ps, bv);
-      break;
-    default:
-      OBB_fit_functions::fitn(ps, n, bv);
+    switch (n) {
+      case 1:
+        OBB_fit_functions::fit1(ps, bv);
+        break;
+      case 2:
+        OBB_fit_functions::fit2(ps, bv);
+        break;
+      case 3:
+        OBB_fit_functions::fit3(ps, bv);
+        break;
+      case 6:
+        OBB_fit_functions::fit6(ps, bv);
+        break;
+      default:
+        OBB_fit_functions::fitn(ps, n, bv);
     }
   }
 };
 
 //==============================================================================
 template <typename S>
-struct FCL_EXPORT Fitter<S, RSS<S>>
+struct Fitter<S, RSS<S>>
 {
   static void fit(const Vector3<S>* const ps, int n, RSS<S>& bv)
   {
-    switch(n)
-    {
-    case 1:
-      RSS_fit_functions::fit1(ps, bv);
-      break;
-    case 2:
-      RSS_fit_functions::fit2(ps, bv);
-      break;
-    case 3:
-      RSS_fit_functions::fit3(ps, bv);
-      break;
-    default:
-      RSS_fit_functions::fitn(ps, n, bv);
+    switch (n) {
+      case 1:
+        RSS_fit_functions::fit1(ps, bv);
+        break;
+      case 2:
+        RSS_fit_functions::fit2(ps, bv);
+        break;
+      case 3:
+        RSS_fit_functions::fit3(ps, bv);
+        break;
+      default:
+        RSS_fit_functions::fitn(ps, n, bv);
     }
   }
 };
 
 //==============================================================================
 template <typename S>
-struct FCL_EXPORT Fitter<S, kIOS<S>>
+struct Fitter<S, kIOS<S>>
 {
   static void fit(const Vector3<S>* const ps, int n, kIOS<S>& bv)
   {
-    switch(n)
-    {
-    case 1:
-      kIOS_fit_functions::fit1(ps, bv);
-      break;
-    case 2:
-      kIOS_fit_functions::fit2(ps, bv);
-      break;
-    case 3:
-      kIOS_fit_functions::fit3(ps, bv);
-      break;
-    default:
-      kIOS_fit_functions::fitn(ps, n, bv);
+    switch (n) {
+      case 1:
+        kIOS_fit_functions::fit1(ps, bv);
+        break;
+      case 2:
+        kIOS_fit_functions::fit2(ps, bv);
+        break;
+      case 3:
+        kIOS_fit_functions::fit3(ps, bv);
+        break;
+      default:
+        kIOS_fit_functions::fitn(ps, n, bv);
     }
   }
 };
 
 //==============================================================================
 template <typename S>
-struct FCL_EXPORT Fitter<S, OBBRSS<S>>
+struct Fitter<S, OBBRSS<S>>
 {
   static void fit(const Vector3<S>* const ps, int n, OBBRSS<S>& bv)
   {
-    switch(n)
-    {
-    case 1:
-      OBBRSS_fit_functions::fit1(ps, bv);
-      break;
-    case 2:
-      OBBRSS_fit_functions::fit2(ps, bv);
-      break;
-    case 3:
-      OBBRSS_fit_functions::fit3(ps, bv);
-      break;
-    default:
-      OBBRSS_fit_functions::fitn(ps, n, bv);
+    switch (n) {
+      case 1:
+        OBBRSS_fit_functions::fit1(ps, bv);
+        break;
+      case 2:
+        OBBRSS_fit_functions::fit2(ps, bv);
+        break;
+      case 3:
+        OBBRSS_fit_functions::fit3(ps, bv);
+        break;
+      default:
+        OBBRSS_fit_functions::fitn(ps, n, bv);
     }
   }
 };
 
 //==============================================================================
-extern template
-struct Fitter<double, OBB<double>>;
+extern template struct Fitter<double, OBB<double>>;
 
 //==============================================================================
-extern template
-struct Fitter<double, RSS<double>>;
+extern template struct Fitter<double, RSS<double>>;
 
 //==============================================================================
-extern template
-struct Fitter<double, kIOS<double>>;
+extern template struct Fitter<double, kIOS<double>>;
 
 //==============================================================================
-extern template
-struct Fitter<double, OBBRSS<double>>;
+extern template struct Fitter<double, OBBRSS<double>>;
 
 //==============================================================================
 } // namespace detail
@@ -667,7 +624,6 @@ struct Fitter<double, OBBRSS<double>>;
 
 //==============================================================================
 template <typename BV>
-FCL_EXPORT
 void fit(const Vector3<typename BV::S>* const ps, int n, BV& bv)
 {
   detail::Fitter<typename BV::S, BV>::fit(ps, n, bv);
@@ -680,14 +636,14 @@ namespace detail {
 /// @brief Convert a bounding volume of type BV1 in configuration tf1 to a
 /// bounding volume of type BV2 in I configuration.
 template <typename S, typename BV1, typename BV2>
-class FCL_EXPORT ConvertBVImpl
+class ConvertBVImpl
 {
 private:
   static void run(const BV1& bv1, const Transform3<S>& tf1, BV2& bv2)
   {
-    FCL_UNUSED(bv1);
-    FCL_UNUSED(tf1);
-    FCL_UNUSED(bv2);
+    DART_COLLISION_HIT_UNUSED(bv1);
+    DART_COLLISION_HIT_UNUSED(tf1);
+    DART_COLLISION_HIT_UNUSED(bv2);
 
     // should only use the specialized version, so it is private.
   }
@@ -696,7 +652,7 @@ private:
 //==============================================================================
 /// @brief Convert from AABB to AABB, not very tight but is fast.
 template <typename S>
-class FCL_EXPORT ConvertBVImpl<S, AABB<S>, AABB<S>>
+class ConvertBVImpl<S, AABB<S>, AABB<S>>
 {
 public:
   static void run(const AABB<S>& bv1, const Transform3<S>& tf1, AABB<S>& bv2)
@@ -712,7 +668,7 @@ public:
 
 //==============================================================================
 template <typename S>
-class FCL_EXPORT ConvertBVImpl<S, AABB<S>, OBB<S>>
+class ConvertBVImpl<S, AABB<S>, OBB<S>>
 {
 public:
   static void run(const AABB<S>& bv1, const Transform3<S>& tf1, OBB<S>& bv2)
@@ -761,7 +717,7 @@ public:
 
 //==============================================================================
 template <typename S>
-class FCL_EXPORT ConvertBVImpl<S, OBB<S>, OBB<S>>
+class ConvertBVImpl<S, OBB<S>, OBB<S>>
 {
 public:
   static void run(const OBB<S>& bv1, const Transform3<S>& tf1, OBB<S>& bv2)
@@ -774,7 +730,7 @@ public:
 
 //==============================================================================
 template <typename S>
-class FCL_EXPORT ConvertBVImpl<S, OBBRSS<S>, OBB<S>>
+class ConvertBVImpl<S, OBBRSS<S>, OBB<S>>
 {
 public:
   static void run(const OBBRSS<S>& bv1, const Transform3<S>& tf1, OBB<S>& bv2)
@@ -785,7 +741,7 @@ public:
 
 //==============================================================================
 template <typename S>
-class FCL_EXPORT ConvertBVImpl<S, RSS<S>, OBB<S>>
+class ConvertBVImpl<S, RSS<S>, OBB<S>>
 {
 public:
   static void run(const RSS<S>& bv1, const Transform3<S>& tf1, OBB<S>& bv2)
@@ -798,7 +754,7 @@ public:
 
 //==============================================================================
 template <typename S, typename BV1>
-class FCL_EXPORT ConvertBVImpl<S, BV1, AABB<S>>
+class ConvertBVImpl<S, BV1, AABB<S>>
 {
 public:
   static void run(const BV1& bv1, const Transform3<S>& tf1, AABB<S>& bv2)
@@ -814,7 +770,7 @@ public:
 
 //==============================================================================
 template <typename S, typename BV1>
-class FCL_EXPORT ConvertBVImpl<S, BV1, OBB<S>>
+class ConvertBVImpl<S, BV1, OBB<S>>
 {
 public:
   static void run(const BV1& bv1, const Transform3<S>& tf1, OBB<S>& bv2)
@@ -827,7 +783,7 @@ public:
 
 //==============================================================================
 template <typename S>
-class FCL_EXPORT ConvertBVImpl<S, OBB<S>, RSS<S>>
+class ConvertBVImpl<S, OBB<S>, RSS<S>>
 {
 public:
   static void run(const OBB<S>& bv1, const Transform3<S>& tf1, RSS<S>& bv2)
@@ -854,7 +810,7 @@ public:
 
 //==============================================================================
 template <typename S>
-class FCL_EXPORT ConvertBVImpl<S, RSS<S>, RSS<S>>
+class ConvertBVImpl<S, RSS<S>, RSS<S>>
 {
 public:
   static void run(const RSS<S>& bv1, const Transform3<S>& tf1, RSS<S>& bv2)
@@ -870,7 +826,7 @@ public:
 
 //==============================================================================
 template <typename S>
-class FCL_EXPORT ConvertBVImpl<S, OBBRSS<S>, RSS<S>>
+class ConvertBVImpl<S, OBBRSS<S>, RSS<S>>
 {
 public:
   static void run(const OBBRSS<S>& bv1, const Transform3<S>& tf1, RSS<S>& bv2)
@@ -881,30 +837,27 @@ public:
 
 //==============================================================================
 template <typename S>
-class FCL_EXPORT ConvertBVImpl<S, AABB<S>, RSS<S>>
+class ConvertBVImpl<S, AABB<S>, RSS<S>>
 {
 public:
   static void run(const AABB<S>& bv1, const Transform3<S>& tf1, RSS<S>& bv2)
   {
     /// Sort the AABB edges so that AABB extents are ordered.
-    S d[3] = {bv1.width(), bv1.height(), bv1.depth() };
+    S d[3] = {bv1.width(), bv1.height(), bv1.depth()};
     std::size_t id[3] = {0, 1, 2};
 
-    for(std::size_t i = 1; i < 3; ++i)
-    {
-      for(std::size_t j = i; j > 0; --j)
-      {
-        if(d[j] > d[j-1])
-        {
+    for (std::size_t i = 1; i < 3; ++i) {
+      for (std::size_t j = i; j > 0; --j) {
+        if (d[j] > d[j - 1]) {
           {
             S tmp = d[j];
-            d[j] = d[j-1];
-            d[j-1] = tmp;
+            d[j] = d[j - 1];
+            d[j - 1] = tmp;
           }
           {
             std::size_t tmp = id[j];
-            id[j] = id[j-1];
-            id[j-1] = tmp;
+            id[j] = id[j - 1];
+            id[j - 1] = tmp;
           }
         }
       }
@@ -928,40 +881,31 @@ public:
 };
 
 //==============================================================================
-extern template
-class FCL_EXPORT ConvertBVImpl<double, AABB<double>, AABB<double>>;
+extern template class ConvertBVImpl<double, AABB<double>, AABB<double>>;
 
 //==============================================================================
-extern template
-class FCL_EXPORT ConvertBVImpl<double, AABB<double>, OBB<double>>;
+extern template class ConvertBVImpl<double, AABB<double>, OBB<double>>;
 
 //==============================================================================
-extern template
-class FCL_EXPORT ConvertBVImpl<double, OBB<double>, OBB<double>>;
+extern template class ConvertBVImpl<double, OBB<double>, OBB<double>>;
 
 //==============================================================================
-extern template
-class FCL_EXPORT ConvertBVImpl<double, OBBRSS<double>, OBB<double>>;
+extern template class ConvertBVImpl<double, OBBRSS<double>, OBB<double>>;
 
 //==============================================================================
-extern template
-class FCL_EXPORT ConvertBVImpl<double, RSS<double>, OBB<double>>;
+extern template class ConvertBVImpl<double, RSS<double>, OBB<double>>;
 
 //==============================================================================
-extern template
-class FCL_EXPORT ConvertBVImpl<double, OBB<double>, RSS<double>>;
+extern template class ConvertBVImpl<double, OBB<double>, RSS<double>>;
 
 //==============================================================================
-extern template
-class FCL_EXPORT ConvertBVImpl<double, RSS<double>, RSS<double>>;
+extern template class ConvertBVImpl<double, RSS<double>, RSS<double>>;
 
 //==============================================================================
-extern template
-class FCL_EXPORT ConvertBVImpl<double, OBBRSS<double>, RSS<double>>;
+extern template class ConvertBVImpl<double, OBBRSS<double>, RSS<double>>;
 
 //==============================================================================
-extern template
-class FCL_EXPORT ConvertBVImpl<double, AABB<double>, RSS<double>>;
+extern template class ConvertBVImpl<double, AABB<double>, RSS<double>>;
 
 //==============================================================================
 } // namespace detail
@@ -969,16 +913,13 @@ class FCL_EXPORT ConvertBVImpl<double, AABB<double>, RSS<double>>;
 
 //==============================================================================
 template <typename BV1, typename BV2>
-FCL_EXPORT
-void convertBV(
-    const BV1& bv1, const Transform3<typename BV1::S>& tf1, BV2& bv2)
+void convertBV(const BV1& bv1, const Transform3<typename BV1::S>& tf1, BV2& bv2)
 {
-  static_assert(std::is_same<typename BV1::S, typename BV2::S>::value,
-                "The scalar type of BV1 and BV2 should be the same");
+  static_assert(
+      std::is_same<typename BV1::S, typename BV2::S>::value,
+      "The scalar type of BV1 and BV2 should be the same");
 
   detail::ConvertBVImpl<typename BV1::S, BV1, BV2>::run(bv1, tf1, bv2);
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

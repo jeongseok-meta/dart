@@ -35,17 +35,15 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/bv/OBBRSS-inl.h"
+#include "dart/collision/hit/math/bv/OBBRSS-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
-
-//==============================================================================
-template
-class OBBRSS<double>;
+namespace dart::collision::hit {
 
 //==============================================================================
-template
-OBBRSS<double> translate(const OBBRSS<double>& bv, const Vector3<double>& t);
+template class OBBRSS<double>;
 
-} // namespace dart { namespace collision { namespace hit
+//==============================================================================
+template OBBRSS<double> translate(
+    const OBBRSS<double>& bv, const Vector3<double>& t);
+
+} // namespace dart::collision::hit

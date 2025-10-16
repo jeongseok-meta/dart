@@ -35,18 +35,17 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CCD_INTERPMOTION_H
-#define FCL_CCD_INTERPMOTION_H
+#pragma once
+
+#include "dart/collision/hit/math/geometry.h"
+#include "dart/collision/hit/math/motion/bv_motion_bound_visitor.h"
+#include "dart/collision/hit/math/motion/motion_base.h"
+#include "dart/collision/hit/math/motion/triangle_motion_bound_visitor.h"
 
 #include <iostream>
 #include <vector>
-#include "fcl/math/geometry.h"
-#include "fcl/math/motion/motion_base.h"
-#include "fcl/math/motion/bv_motion_bound_visitor.h"
-#include "fcl/math/motion/triangle_motion_bound_visitor.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief Linear interpolation motion
 /// Each Motion is assumed to have constant linear velocity and angular velocity
@@ -55,33 +54,47 @@ namespace dart { namespace collision { namespace hit
 ///            T(0) = T0 + R0 p_ref - p_ref
 ///            T(1) = T1 + R1 p_ref - p_ref
 template <typename S>
-class FCL_EXPORT InterpMotion : public MotionBase<S>
+class InterpMotion : public MotionBase<S>
 {
 public:
   /// @brief Default transformations are all identities
   InterpMotion();
 
-  /// @brief Construct motion from the initial rotation/translation and goal rotation/translation
-  InterpMotion(const Matrix3<S>& R1, const Vector3<S>& T1,
-               const Matrix3<S>& R2, const Vector3<S>& T2);
+  /// @brief Construct motion from the initial rotation/translation and goal
+  /// rotation/translation
+  InterpMotion(
+      const Matrix3<S>& R1,
+      const Vector3<S>& T1,
+      const Matrix3<S>& R2,
+      const Vector3<S>& T2);
 
   InterpMotion(const Transform3<S>& tf1_, const Transform3<S>& tf2_);
 
-  /// @brief Construct motion from the initial rotation/translation and goal rotation/translation related to some rotation center
-  InterpMotion(const Matrix3<S>& R1, const Vector3<S>& T1,
-               const Matrix3<S>& R2, const Vector3<S>& T2,
-               const Vector3<S>& O);
+  /// @brief Construct motion from the initial rotation/translation and goal
+  /// rotation/translation related to some rotation center
+  InterpMotion(
+      const Matrix3<S>& R1,
+      const Vector3<S>& T1,
+      const Matrix3<S>& R2,
+      const Vector3<S>& T2,
+      const Vector3<S>& O);
 
-  InterpMotion(const Transform3<S>& tf1_, const Transform3<S>& tf2_, const Vector3<S>& O);
+  InterpMotion(
+      const Transform3<S>& tf1_,
+      const Transform3<S>& tf2_,
+      const Vector3<S>& O);
 
   /// @brief Integrate the motion from 0 to dt
-  /// We compute the current transformation from zero point instead of from last integrate time, for precision.
+  /// We compute the current transformation from zero point instead of from last
+  /// integrate time, for precision.
   bool integrate(S dt) const;
 
-  /// @brief Compute the motion bound for a bounding volume along a given direction n, which is defined in the visitor
+  /// @brief Compute the motion bound for a bounding volume along a given
+  /// direction n, which is defined in the visitor
   S computeMotionBound(const BVMotionBoundVisitor<S>& mb_visitor) const;
 
-  /// @brief Compute the motion bound for a triangle along a given direction n, which is defined in the visitor 
+  /// @brief Compute the motion bound for a triangle along a given direction n,
+  /// which is defined in the visitor
   S computeMotionBound(const TriangleMotionBoundVisitor<S>& mb_visitor) const;
 
   /// @brief Get the rotation and translation in current step
@@ -90,13 +103,12 @@ public:
   void getTaylorModel(TMatrix3<S>& tm, TVector3<S>& tv) const;
 
 protected:
-
   void computeVelocity();
 
   Quaternion<S> deltaRotation(S dt) const;
-  
+
   Quaternion<S> absoluteRotation(S dt) const;
-  
+
   /// @brief The transformation at time 0
   Transform3<S> tf1;
 
@@ -130,8 +142,6 @@ public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/motion/interp_motion-inl.h"
-
-#endif
+#include "dart/collision/hit/math/motion/interp_motion-inl.h"

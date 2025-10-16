@@ -35,21 +35,17 @@
 
 /** @author Jia Pan  */
 
-#ifndef FCL_BROADPHASE_DETAIL_NODEBASEARRAY_H
-#define FCL_BROADPHASE_DETAIL_NODEBASEARRAY_H
+#pragma once
 
-#include "fcl/common/types.h"
+#include "dart/collision/hit/common/types.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
-namespace implementation_array
-{
+namespace implementation_array {
 
-template<typename BV>
+template <typename BV>
 struct NodeBase
 {
   BV bv;
@@ -59,7 +55,7 @@ struct NodeBase
     size_t parent;
     size_t next;
   };
-  
+
   union
   {
     size_t children[2];
@@ -67,15 +63,13 @@ struct NodeBase
   };
 
   uint32 code;
-  
+
   bool isLeaf() const;
   bool isInternal() const;
 };
 
 } // namespace implementation_array
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/broadphase/detail/node_base_array-inl.h"
-
-#endif
+#include "dart/collision/hit/broadphase/detail/node_base_array-inl.h"

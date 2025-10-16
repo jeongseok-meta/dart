@@ -35,22 +35,17 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_COLLISIONTRAVERSALNODEBASE_INL_H
-#define FCL_TRAVERSAL_COLLISIONTRAVERSALNODEBASE_INL_H
+#pragma once
 
-#include "fcl/narrowphase/detail/traversal/collision/collision_traversal_node_base.h"
+#include "dart/collision/hit/common/unused.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/collision/collision_traversal_node_base.h"
 
-#include "fcl/common/unused.h"
+namespace dart::collision::hit {
 
-namespace dart { namespace collision { namespace hit
-{
-
-namespace detail
-{
+namespace detail {
 
 //==============================================================================
-extern template
-class FCL_EXPORT CollisionTraversalNodeBase<double>;
+extern template class CollisionTraversalNodeBase<double>;
 
 //==============================================================================
 template <typename S>
@@ -71,8 +66,8 @@ CollisionTraversalNodeBase<S>::~CollisionTraversalNodeBase()
 template <typename S>
 bool CollisionTraversalNodeBase<S>::BVTesting(int b1, int b2) const
 {
-  FCL_UNUSED(b1);
-  FCL_UNUSED(b2);
+  DART_COLLISION_HIT_UNUSED(b1);
+  DART_COLLISION_HIT_UNUSED(b2);
 
   return true;
 }
@@ -81,8 +76,8 @@ bool CollisionTraversalNodeBase<S>::BVTesting(int b1, int b2) const
 template <typename S>
 void CollisionTraversalNodeBase<S>::leafTesting(int b1, int b2) const
 {
-  FCL_UNUSED(b1);
-  FCL_UNUSED(b2);
+  DART_COLLISION_HIT_UNUSED(b1);
+  DART_COLLISION_HIT_UNUSED(b2);
 
   // Do nothing
 }
@@ -102,6 +97,4 @@ void CollisionTraversalNodeBase<S>::enableStatistics(bool enable)
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

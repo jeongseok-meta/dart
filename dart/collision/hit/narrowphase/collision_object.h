@@ -35,30 +35,30 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_COLLISION_OBJECT_H
-#define FCL_COLLISION_OBJECT_H
+#pragma once
+
+#include "dart/collision/hit/geometry/collision_geometry.h"
 
 #include <memory>
 
-#include "fcl/geometry/collision_geometry.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief the object for collision or distance computation, contains the
 /// geometry and the transform information
 template <typename S>
-class FCL_EXPORT CollisionObject
+class CollisionObject
 {
 public:
   CollisionObject(const std::shared_ptr<CollisionGeometry<S>>& cgeom);
 
-  CollisionObject(const std::shared_ptr<CollisionGeometry<S>>& cgeom,
-                  const Transform3<S>& tf);
+  CollisionObject(
+      const std::shared_ptr<CollisionGeometry<S>>& cgeom,
+      const Transform3<S>& tf);
 
-  CollisionObject(const std::shared_ptr<CollisionGeometry<S>>& cgeom,
-                  const Matrix3<S>& R,
-                  const Vector3<S>& T);
+  CollisionObject(
+      const std::shared_ptr<CollisionGeometry<S>>& cgeom,
+      const Matrix3<S>& R,
+      const Vector3<S>& T);
 
   ~CollisionObject();
 
@@ -78,7 +78,7 @@ public:
   void* getUserData() const;
 
   /// @brief set user data in object
-  void setUserData(void *data);
+  void setUserData(void* data);
 
   /// @brief get translation of the object
   const Vector3<S> getTranslation() const;
@@ -117,7 +117,7 @@ public:
   void setIdentityTransform();
 
   /// @brief get geometry from the object instance
-  FCL_DEPRECATED
+  DART_COLLISION_HIT_DEPRECATED
   const CollisionGeometry<S>* getCollisionGeometry() const;
 
   /// @brief get geometry from the object instance
@@ -139,7 +139,6 @@ public:
   bool isUncertain() const;
 
 protected:
-
   std::shared_ptr<CollisionGeometry<S>> cgeom;
   std::shared_ptr<const CollisionGeometry<S>> cgeom_const;
 
@@ -149,18 +148,15 @@ protected:
   mutable AABB<S> aabb;
 
   /// @brief pointer to user defined data specific to this object
-  void *user_data;
+  void* user_data;
 
 public:
-
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
 
 using CollisionObjectf = CollisionObject<float>;
 using CollisionObjectd = CollisionObject<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/collision_object-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/collision_object-inl.h"

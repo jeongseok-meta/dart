@@ -35,12 +35,10 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/motion/spline_motion-inl.h"
+#include "dart/collision/hit/math/motion/spline_motion-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-class SplineMotion<double>;
+template class SplineMotion<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

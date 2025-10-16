@@ -35,14 +35,12 @@
 
 /** @author Jia Pan */
 
-#include "fcl/narrowphase/continuous_collision-inl.h"
+#include "dart/collision/hit/narrowphase/continuous_collision-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-template
-double continuousCollide(
+template double continuousCollide(
     const CollisionGeometry<double>* o1,
     const MotionBase<double>* motion1,
     const CollisionGeometry<double>* o2,
@@ -51,8 +49,7 @@ double continuousCollide(
     ContinuousCollisionResult<double>& result);
 
 //==============================================================================
-template
-double continuousCollide(
+template double continuousCollide(
     const CollisionGeometry<double>* o1,
     const Transform3<double>& tf1_beg,
     const Transform3<double>& tf1_end,
@@ -63,8 +60,7 @@ double continuousCollide(
     ContinuousCollisionResult<double>& result);
 
 //==============================================================================
-template
-double continuousCollide(
+template double continuousCollide(
     const CollisionObject<double>* o1,
     const Transform3<double>& tf1_end,
     const CollisionObject<double>* o2,
@@ -73,11 +69,10 @@ double continuousCollide(
     ContinuousCollisionResult<double>& result);
 
 //==============================================================================
-template
-double collide(
+template double collide(
     const ContinuousCollisionObject<double>* o1,
     const ContinuousCollisionObject<double>* o2,
     const ContinuousCollisionRequest<double>& request,
     ContinuousCollisionResult<double>& result);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

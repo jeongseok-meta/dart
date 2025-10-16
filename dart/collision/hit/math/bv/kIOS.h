@@ -35,17 +35,16 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BV_KIOS_H
-#define FCL_BV_KIOS_H
+#pragma once
 
-#include "fcl/math/bv/OBB.h"
+#include "dart/collision/hit/math/bv/OBB.h"
 
-namespace dart { namespace collision { namespace hit
-{
- 
-/// @brief A class describing the kIOS collision structure, which is a set of spheres.
+namespace dart::collision::hit {
+
+/// @brief A class describing the kIOS collision structure, which is a set of
+/// spheres.
 template <typename S_>
-class FCL_EXPORT kIOS
+class kIOS
 {
   /// @brief One sphere in kIOS
   struct kIOS_Sphere
@@ -59,7 +58,6 @@ class FCL_EXPORT kIOS
       const kIOS_Sphere& s0, const kIOS_Sphere& s1);
 
 public:
-
   using S = S_;
 
   /// @brief The (at most) five spheres for intersection
@@ -85,13 +83,13 @@ public:
   bool contain(const Vector3<S>& p) const;
 
   /// @brief A simple way to merge the kIOS and a point
-  kIOS<S>& operator += (const Vector3<S>& p);
+  kIOS<S>& operator+=(const Vector3<S>& p);
 
   /// @brief Merge the kIOS and another kIOS
-  kIOS<S>& operator += (const kIOS<S>& other);
+  kIOS<S>& operator+=(const kIOS<S>& other);
 
   /// @brief Return the merged kIOS of current kIOS and the other one
-  kIOS<S> operator + (const kIOS<S>& other) const;
+  kIOS<S> operator+(const kIOS<S>& other) const;
 
   /// @brief Center of the kIOS
   const Vector3<S>& center() const;
@@ -114,11 +112,21 @@ public:
   /// @brief The distance between two kIOS
   S distance(
       const kIOS<S>& other,
-      Vector3<S>* P = nullptr, Vector3<S>* Q = nullptr) const;
+      Vector3<S>* P = nullptr,
+      Vector3<S>* Q = nullptr) const;
 
-  static constexpr S ratio() { return 1.5; }
-  static constexpr S invSinA() { return 2; }
-  static S cosA() { return std::sqrt(3.0) / 2.0; }
+  static constexpr S ratio()
+  {
+    return 1.5;
+  }
+  static constexpr S invSinA()
+  {
+    return 2;
+  }
+  static S cosA()
+  {
+    return std::sqrt(3.0) / 2.0;
+  }
 };
 
 using kIOSf = kIOS<float>;
@@ -126,34 +134,27 @@ using kIOSd = kIOS<double>;
 
 /// @brief Translate the kIOS BV
 template <typename S, typename Derived>
-FCL_EXPORT
-kIOS<S> translate(
-    const kIOS<S>& bv, const Eigen::MatrixBase<Derived>& t);
+kIOS<S> translate(const kIOS<S>& bv, const Eigen::MatrixBase<Derived>& t);
 
 /// @brief Check collision between two kIOSs, b1 is in configuration (R0, T0)
 /// and b2 is in identity.
 /// @todo Not efficient
 template <typename S, typename DerivedA, typename DerivedB>
-FCL_EXPORT
 bool overlap(
     const Eigen::MatrixBase<DerivedA>& R0,
     const Eigen::MatrixBase<DerivedB>& T0,
-    const kIOS<S>& b1, const kIOS<S>& b2);
-
-/// @brief Check collision between two kIOSs, b1 is in configuration (R0, T0)
-/// and b2 is in identity.
-/// @todo Not efficient
-template <typename S>
-FCL_EXPORT
-bool overlap(
-    const Transform3<S>& tf,
     const kIOS<S>& b1,
     const kIOS<S>& b2);
 
+/// @brief Check collision between two kIOSs, b1 is in configuration (R0, T0)
+/// and b2 is in identity.
+/// @todo Not efficient
+template <typename S>
+bool overlap(const Transform3<S>& tf, const kIOS<S>& b1, const kIOS<S>& b2);
+
 /// @brief Approximate distance between two kIOS bounding volumes
 /// @todo P and Q is not returned, need implementation
 template <typename S, typename DerivedA, typename DerivedB>
-FCL_EXPORT
 S distance(
     const Eigen::MatrixBase<DerivedA>& R0,
     const Eigen::MatrixBase<DerivedB>& T0,
@@ -165,7 +166,6 @@ S distance(
 /// @brief Approximate distance between two kIOS bounding volumes
 /// @todo P and Q is not returned, need implementation
 template <typename S>
-FCL_EXPORT
 S distance(
     const Transform3<S>& tf,
     const kIOS<S>& b1,
@@ -173,8 +173,6 @@ S distance(
     Vector3<S>* P = nullptr,
     Vector3<S>* Q = nullptr);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/bv/kIOS-inl.h"
-
-#endif
+#include "dart/collision/hit/math/bv/kIOS-inl.h"

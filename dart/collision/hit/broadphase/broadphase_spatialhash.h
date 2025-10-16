@@ -31,29 +31,29 @@
  *  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
- */ 
+ */
 
 /** @author Jia Pan */
 
-#ifndef FCL_BROADPHASE_BROADPAHSESPATIALHASH_H
-#define FCL_BROADPHASE_BROADPAHSESPATIALHASH_H
+#pragma once
+
+#include "dart/collision/hit/broadphase/broadphase_collision_manager.h"
+#include "dart/collision/hit/broadphase/detail/simple_hash_table.h"
+#include "dart/collision/hit/broadphase/detail/sparse_hash_table.h"
+#include "dart/collision/hit/broadphase/detail/spatial_hash.h"
+#include "dart/collision/hit/math/bv/AABB.h"
 
 #include <list>
 #include <map>
-#include "fcl/math/bv/AABB.h"
-#include "fcl/broadphase/broadphase_collision_manager.h"
-#include "fcl/broadphase/detail/simple_hash_table.h"
-#include "fcl/broadphase/detail/sparse_hash_table.h"
-#include "fcl/broadphase/detail/spatial_hash.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief spatial hashing collision mananger
-template<typename S,
-         typename HashTable
-             = detail::SimpleHashTable<AABB<S>, CollisionObject<S>*, detail::SpatialHash<S>> >
-class FCL_EXPORT SpatialHashingCollisionManager : public BroadPhaseCollisionManager<S>
+template <
+    typename S,
+    typename HashTable = detail::
+        SimpleHashTable<AABB<S>, CollisionObject<S>*, detail::SpatialHash<S>>>
+class SpatialHashingCollisionManager : public BroadPhaseCollisionManager<S>
 {
 public:
   SpatialHashingCollisionManager(
@@ -88,23 +88,37 @@ public:
   /// @brief return the objects managed by the manager
   void getObjects(std::vector<CollisionObject<S>*>& objs) const;
 
-  /// @brief perform collision test between one object and all the objects belonging to the manager
-  void collide(CollisionObject<S>* obj, void* cdata, CollisionCallBack<S> callback) const;
+  /// @brief perform collision test between one object and all the objects
+  /// belonging to the manager
+  void collide(
+      CollisionObject<S>* obj,
+      void* cdata,
+      CollisionCallBack<S> callback) const;
 
-  /// @brief perform distance computation between one object and all the objects belonging ot the manager
-  void distance(CollisionObject<S>* obj, void* cdata, DistanceCallBack<S> callback) const;
+  /// @brief perform distance computation between one object and all the objects
+  /// belonging ot the manager
+  void distance(
+      CollisionObject<S>* obj, void* cdata, DistanceCallBack<S> callback) const;
 
-  /// @brief perform collision test for the objects belonging to the manager (i.e, N^2 self collision)
+  /// @brief perform collision test for the objects belonging to the manager
+  /// (i.e, N^2 self collision)
   void collide(void* cdata, CollisionCallBack<S> callback) const;
 
-  /// @brief perform distance test for the objects belonging to the manager (i.e., N^2 self distance)
+  /// @brief perform distance test for the objects belonging to the manager
+  /// (i.e., N^2 self distance)
   void distance(void* cdata, DistanceCallBack<S> callback) const;
 
   /// @brief perform collision test with objects belonging to another manager
-  void collide(BroadPhaseCollisionManager<S>* other_manager, void* cdata, CollisionCallBack<S> callback) const;
+  void collide(
+      BroadPhaseCollisionManager<S>* other_manager,
+      void* cdata,
+      CollisionCallBack<S> callback) const;
 
   /// @brief perform distance test with objects belonging to another manager
-  void distance(BroadPhaseCollisionManager<S>* other_manager, void* cdata, DistanceCallBack<S> callback) const;
+  void distance(
+      BroadPhaseCollisionManager<S>* other_manager,
+      void* cdata,
+      DistanceCallBack<S> callback) const;
 
   /// @brief whether the manager is empty
   bool empty() const;
@@ -113,15 +127,24 @@ public:
   size_t size() const;
 
   /// @brief compute the bound for the environent
-  static void computeBound(std::vector<CollisionObject<S>*>& objs, Vector3<S>& l, Vector3<S>& u);
+  static void computeBound(
+      std::vector<CollisionObject<S>*>& objs, Vector3<S>& l, Vector3<S>& u);
 
 protected:
+  /// @brief perform collision test between one object and all the objects
+  /// belonging to the manager
+  bool collide_(
+      CollisionObject<S>* obj,
+      void* cdata,
+      CollisionCallBack<S> callback) const;
 
-  /// @brief perform collision test between one object and all the objects belonging to the manager
-  bool collide_(CollisionObject<S>* obj, void* cdata, CollisionCallBack<S> callback) const;
-
-  /// @brief perform distance computation between one object and all the objects belonging ot the manager
-  bool distance_(CollisionObject<S>* obj, void* cdata, DistanceCallBack<S> callback, S& min_dist) const;
+  /// @brief perform distance computation between one object and all the objects
+  /// belonging ot the manager
+  bool distance_(
+      CollisionObject<S>* obj,
+      void* cdata,
+      DistanceCallBack<S> callback,
+      S& min_dist) const;
 
   /// @brief all objects in the scene
   std::list<CollisionObject<S>*> objs;
@@ -136,14 +159,15 @@ protected:
   /// @brief the size of the scene
   AABB<S> scene_limit;
 
-  /// @brief store the map between objects and their aabbs. will make update more convenient
+  /// @brief store the map between objects and their aabbs. will make update
+  /// more convenient
   std::map<CollisionObject<S>*, AABB<S>> obj_aabb_map;
 
-  /// @brief objects in the scene limit (given by scene_min and scene_max) are in the spatial hash table
+  /// @brief objects in the scene limit (given by scene_min and scene_max) are
+  /// in the spatial hash table
   HashTable* hash_table;
 
 private:
-
   enum ObjectStatus
   {
     Inside,
@@ -158,17 +182,24 @@ private:
       void* cdata,
       DistanceCallBack<S> callback,
       S& min_dist) const;
-
 };
 
-template<typename HashTable = detail::SimpleHashTable<AABB<float>, CollisionObject<float>*, detail::SpatialHash<float>>>
-using SpatialHashingCollisionManagerf = SpatialHashingCollisionManager<float, HashTable>;
+template <
+    typename HashTable = detail::SimpleHashTable<
+        AABB<float>,
+        CollisionObject<float>*,
+        detail::SpatialHash<float>>>
+using SpatialHashingCollisionManagerf
+    = SpatialHashingCollisionManager<float, HashTable>;
 
-template<typename HashTable = detail::SimpleHashTable<AABB<double>, CollisionObject<double>*, detail::SpatialHash<double>>>
-using SpatialHashingCollisionManagerd = SpatialHashingCollisionManager<double, HashTable>;
+template <
+    typename HashTable = detail::SimpleHashTable<
+        AABB<double>,
+        CollisionObject<double>*,
+        detail::SpatialHash<double>>>
+using SpatialHashingCollisionManagerd
+    = SpatialHashingCollisionManager<double, HashTable>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/broadphase/broadphase_spatialhash-inl.h"
-
-#endif
+#include "dart/collision/hit/broadphase/broadphase_spatialhash-inl.h"

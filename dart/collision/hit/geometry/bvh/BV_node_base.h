@@ -35,19 +35,18 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BV_BVNODEBASE_H
-#define FCL_BV_BVNODEBASE_H
+#pragma once
+
+#include "dart/collision/hit/math/bv/OBB.h"
+#include "dart/collision/hit/math/bv/OBBRSS.h"
+#include "dart/collision/hit/math/bv/RSS.h"
 
 #include <iostream>
-#include "fcl/math/bv/OBB.h"
-#include "fcl/math/bv/RSS.h"
-#include "fcl/math/bv/OBBRSS.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief BVNodeBase encodes the tree structure for BVH
-struct FCL_EXPORT BVNodeBase
+struct BVNodeBase
 {
   /// @brief An index for first child node or primitive
   /// If the value is positive, it is the index of the first child bv node
@@ -55,26 +54,29 @@ struct FCL_EXPORT BVNodeBase
   /// Zero is not used.
   int first_child;
 
-  /// @brief The start id the primitive belonging to the current node. The index is referred to the primitive_indices in BVHModel and from that
-  /// we can obtain the primitive's index in original data indirectly.
+  /// @brief The start id the primitive belonging to the current node. The index
+  /// is referred to the primitive_indices in BVHModel and from that we can
+  /// obtain the primitive's index in original data indirectly.
   int first_primitive;
 
-  /// @brief The number of primitives belonging to the current node 
+  /// @brief The number of primitives belonging to the current node
   int num_primitives;
 
-  /// @brief Whether current node is a leaf node (i.e. contains a primitive index
+  /// @brief Whether current node is a leaf node (i.e. contains a primitive
+  /// index
   bool isLeaf() const;
 
-  /// @brief Return the primitive index. The index is referred to the original data (i.e. vertices or tri_indices) in BVHModel
+  /// @brief Return the primitive index. The index is referred to the original
+  /// data (i.e. vertices or tri_indices) in BVHModel
   int primitiveId() const;
 
-  /// @brief Return the index of the first child. The index is referred to the bounding volume array (i.e. bvs) in BVHModel
+  /// @brief Return the index of the first child. The index is referred to the
+  /// bounding volume array (i.e. bvs) in BVHModel
   int leftChild() const;
 
-  /// @brief Return the index of the second child. The index is referred to the bounding volume array (i.e. bvs) in BVHModel
+  /// @brief Return the index of the second child. The index is referred to the
+  /// bounding volume array (i.e. bvs) in BVHModel
   int rightChild() const;
 };
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

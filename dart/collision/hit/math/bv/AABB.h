@@ -35,21 +35,18 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BV_AABB_H
-#define FCL_BV_AABB_H
+#pragma once
 
-#include "fcl/common/types.h"
+#include "dart/collision/hit/common/types.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief A class describing the AABB collision structure, which is a box in 3D
 /// space determined by two diagonal points
 template <typename S_>
-class FCL_EXPORT AABB
+class AABB
 {
 public:
-
   using S = S_;
 
   /// @brief The min point in the AABB
@@ -65,7 +62,7 @@ public:
   AABB(const Vector3<S>& v);
 
   /// @brief Creating an AABB with two endpoints a and b
-  AABB(const Vector3<S>& a, const Vector3<S>&b);
+  AABB(const Vector3<S>& a, const Vector3<S>& b);
 
   /// @brief Creating an AABB centered as core and is of half-dimension delta
   AABB(const AABB<S>& core, const Vector3<S>& delta);
@@ -89,13 +86,13 @@ public:
   bool contain(const Vector3<S>& p) const;
 
   /// @brief Merge the AABB and a point
-  AABB<S>& operator += (const Vector3<S>& p);
+  AABB<S>& operator+=(const Vector3<S>& p);
 
   /// @brief Merge the AABB and another AABB
-  AABB<S>& operator += (const AABB<S>& other);
+  AABB<S>& operator+=(const AABB<S>& other);
 
   /// @brief Return the merged AABB of current AABB and the other one
-  AABB<S> operator + (const AABB<S>& other) const;
+  AABB<S> operator+(const AABB<S>& other) const;
 
   /// @brief Width of the AABB
   S width() const;
@@ -141,11 +138,8 @@ using AABBd = AABB<double>;
 
 /// @brief translate the center of AABB by t
 template <typename S, typename Derived>
-AABB<S> translate(
-    const AABB<S>& aabb, const Eigen::MatrixBase<Derived>& t);
+AABB<S> translate(const AABB<S>& aabb, const Eigen::MatrixBase<Derived>& t);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/bv/AABB-inl.h"
-
-#endif
+#include "dart/collision/hit/math/bv/AABB-inl.h"

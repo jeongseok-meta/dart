@@ -35,13 +35,11 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/rng-inl.h"
+#include "dart/collision/hit/math/rng-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-template
-class RNG<double>;
+template class RNG<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

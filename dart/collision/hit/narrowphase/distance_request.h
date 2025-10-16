@@ -35,21 +35,19 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_DISTANCEREQUEST_H
-#define FCL_DISTANCEREQUEST_H
+#pragma once
 
-#include "fcl/common/types.h"
-#include "fcl/narrowphase/gjk_solver_type.h"
+#include "dart/collision/hit/common/types.h"
+#include "dart/collision/hit/narrowphase/gjk_solver_type.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 template <typename S>
 struct DistanceResult;
 
 /// @brief request to the distance computation
 template <typename S>
-struct FCL_EXPORT DistanceRequest
+struct DistanceRequest
 {
   /// @brief whether to return the nearest points
   bool enable_nearest_points;
@@ -115,8 +113,6 @@ struct FCL_EXPORT DistanceRequest
 using DistanceRequestf = DistanceRequest<float>;
 using DistanceRequestd = DistanceRequest<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/distance_request-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/distance_request-inl.h"

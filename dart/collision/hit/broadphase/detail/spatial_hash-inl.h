@@ -31,21 +31,19 @@
  *  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
- */ 
+ */
 
 /** @author Jia Pan */
 
-#ifndef FCL_BROADPHASE_SPATIALHASH_INL_H
-#define FCL_BROADPHASE_SPATIALHASH_INL_H
+#pragma once
 
-#include "fcl/broadphase/detail/spatial_hash.h"
+#include "dart/collision/hit/broadphase/detail/spatial_hash.h"
 
-namespace dart { namespace collision { namespace hit {
+namespace dart::collision::hit {
 namespace detail {
 
 //==============================================================================
-extern template
-struct SpatialHash<double>;
+extern template struct SpatialHash<double>;
 
 //==============================================================================
 template <typename S>
@@ -68,14 +66,12 @@ std::vector<unsigned int> SpatialHash<S>::operator()(const AABB<S>& aabb) const
   int min_z = std::floor((aabb.min_[2] - scene_limit.min_[2]) / cell_size);
   int max_z = std::ceil((aabb.max_[2] - scene_limit.min_[2]) / cell_size);
 
-  std::vector<unsigned int> keys((max_x - min_x) * (max_y - min_y) * (max_z - min_z));
+  std::vector<unsigned int> keys(
+      (max_x - min_x) * (max_y - min_y) * (max_z - min_z));
   int id = 0;
-  for(int x = min_x; x < max_x; ++x)
-  {
-    for(int y = min_y; y < max_y; ++y)
-    {
-      for(int z = min_z; z < max_z; ++z)
-      {
+  for (int x = min_x; x < max_x; ++x) {
+    for (int y = min_y; y < max_y; ++y) {
+      for (int z = min_z; z < max_z; ++z) {
         keys[id++] = x + y * width[0] + z * width[0] * width[1];
       }
     }
@@ -84,6 +80,4 @@ std::vector<unsigned int> SpatialHash<S>::operator()(const AABB<S>& aabb) const
 }
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

@@ -35,21 +35,16 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_MATH_DETAIL_SEED_H
-#define FCL_MATH_DETAIL_SEED_H
+#pragma once
 
 #include <cstdint>
-#include "fcl/export.h"
 
-namespace dart { namespace collision { namespace hit
-{
-namespace detail
-{
+namespace dart::collision::hit {
+namespace detail {
 
-class FCL_EXPORT Seed
+class Seed
 {
 public:
-
   static bool isFirstSeedGenerated();
 
   static std::uint_fast32_t getUserSetSeed();
@@ -64,7 +59,6 @@ public:
   static std::uint_fast32_t getNextSeed();
 
 protected:
-
   Seed();
 
   static Seed& getInstance();
@@ -80,6 +74,4 @@ protected:
 };
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

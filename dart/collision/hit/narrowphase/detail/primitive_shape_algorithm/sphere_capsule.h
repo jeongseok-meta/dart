@@ -35,46 +35,46 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_NARROWPHASE_DETAIL_SPHERECAPSULE_H
-#define FCL_NARROWPHASE_DETAIL_SPHERECAPSULE_H
+#pragma once
 
-#include "fcl/geometry/shape/sphere.h"
-#include "fcl/geometry/shape/capsule.h"
-#include "fcl/narrowphase/contact_point.h"
+#include "dart/collision/hit/geometry/shape/capsule.h"
+#include "dart/collision/hit/geometry/shape/sphere.h"
+#include "dart/collision/hit/narrowphase/contact_point.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 // Compute the point on a line segment that is the closest point on the
 // segment to to another point. The code is inspired by the explanation
 // given by Dan Sunday's page:
 //   http://geomalgorithms.com/a02-_lines.html
 template <typename S>
-FCL_EXPORT
 void lineSegmentPointClosestToPoint(
-    const Vector3<S> &p,
-    const Vector3<S> &s1,
-    const Vector3<S> &s2,
-    Vector3<S> &sp);
+    const Vector3<S>& p,
+    const Vector3<S>& s1,
+    const Vector3<S>& s2,
+    Vector3<S>& sp);
 
 template <typename S>
-FCL_EXPORT
-bool sphereCapsuleIntersect(const Sphere<S>& s1, const Transform3<S>& tf1,
-                            const Capsule<S>& s2, const Transform3<S>& tf2,
-                            std::vector<ContactPoint<S>>* contacts);
+bool sphereCapsuleIntersect(
+    const Sphere<S>& s1,
+    const Transform3<S>& tf1,
+    const Capsule<S>& s2,
+    const Transform3<S>& tf2,
+    std::vector<ContactPoint<S>>* contacts);
 
 template <typename S>
-FCL_EXPORT
-bool sphereCapsuleDistance(const Sphere<S>& s1, const Transform3<S>& tf1,
-                           const Capsule<S>& s2, const Transform3<S>& tf2,
-                           S* dist, Vector3<S>* p1, Vector3<S>* p2);
+bool sphereCapsuleDistance(
+    const Sphere<S>& s1,
+    const Transform3<S>& tf1,
+    const Capsule<S>& s2,
+    const Transform3<S>& tf2,
+    S* dist,
+    Vector3<S>* p1,
+    Vector3<S>* p2);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/primitive_shape_algorithm/sphere_capsule-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/primitive_shape_algorithm/sphere_capsule-inl.h"

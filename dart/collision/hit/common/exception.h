@@ -35,21 +35,16 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_EXCEPTION_H
-#define FCL_EXCEPTION_H
+#pragma once
 
 #include <stdexcept>
 #include <string>
 
-#include "fcl/export.h"
+namespace dart::collision::hit {
 
-namespace dart { namespace collision { namespace hit
-{
-
-class FCL_EXPORT Exception : public std::runtime_error
+class Exception : public std::runtime_error
 {
 public:
-
   /** @brief This is just a wrapper on std::runtime_error */
   explicit Exception(const std::string& what);
 
@@ -58,9 +53,6 @@ public:
   Exception(const std::string& prefix, const std::string& what);
 
   virtual ~Exception(void) throw();
-
 };
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

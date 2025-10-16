@@ -35,34 +35,39 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_BV_FITTERBASE_H
-#define FCL_BV_FITTERBASE_H
+#pragma once
 
-#include "fcl/math/triangle.h"
-#include "fcl/geometry/bvh/BVH_internal.h"
-#include "fcl/math/bv/kIOS.h"
-#include "fcl/math/bv/OBBRSS.h"
+#include "dart/collision/hit/geometry/bvh/BVH_internal.h"
+#include "dart/collision/hit/math/bv/OBBRSS.h"
+#include "dart/collision/hit/math/bv/kIOS.h"
+#include "dart/collision/hit/math/triangle.h"
+
 #include <iostream>
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /// @brief Interface for fitting a bv given the triangles or points inside it.
 template <typename BV>
-class FCL_EXPORT BVFitterBase
+class BVFitterBase
 {
 public:
-
   using S = typename BV::S;
 
   /// @brief Set the primitives to be processed by the fitter
-  virtual void set(Vector3<S>* vertices_, Triangle* tri_indices_, BVHModelType type_) = 0;
+  virtual void set(
+      Vector3<S>* vertices_, Triangle* tri_indices_, BVHModelType type_)
+      = 0;
 
-  /// @brief Set the primitives to be processed by the fitter, for deformable mesh.
-  virtual void set(Vector3<S>* vertices_, Vector3<S>* prev_vertices_, Triangle* tri_indices_, BVHModelType type_) = 0;
+  /// @brief Set the primitives to be processed by the fitter, for deformable
+  /// mesh.
+  virtual void set(
+      Vector3<S>* vertices_,
+      Vector3<S>* prev_vertices_,
+      Triangle* tri_indices_,
+      BVHModelType type_)
+      = 0;
 
   /// @brief Compute the fitting BV
   virtual BV fit(unsigned int* primitive_indices, int num_primitives) = 0;
@@ -72,6 +77,4 @@ public:
 };
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit

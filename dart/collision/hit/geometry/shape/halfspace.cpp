@@ -35,15 +35,13 @@
 
 /** @author Jia Pan */
 
-#include "fcl/geometry/shape/halfspace-inl.h"
+#include "dart/collision/hit/geometry/shape/halfspace-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-template
-class Halfspace<double>;
+template class Halfspace<double>;
 
-template
-Halfspace<double> transform(const Halfspace<double>& a, const Transform3<double>& tf);
+template Halfspace<double> transform(
+    const Halfspace<double>& a, const Transform3<double>& tf);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

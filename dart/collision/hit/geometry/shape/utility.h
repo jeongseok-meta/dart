@@ -35,98 +35,108 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_GEOMETRY_SHAPE_UTILITY_H
-#define FCL_GEOMETRY_SHAPE_UTILITY_H
+#pragma once
 
 // This header shouldn't be included by any bounding volumen class (e.g.,
 // AABB and OBB) nor geometric shapes (e.g., Box and Sphere).
 
-#include "fcl/common/types.h"
+#include "dart/collision/hit/common/types.h"
+#include "dart/collision/hit/geometry/shape/box.h"
+#include "dart/collision/hit/math/bv/AABB.h"
+#include "dart/collision/hit/math/bv/OBB.h"
+#include "dart/collision/hit/math/bv/OBBRSS.h"
+#include "dart/collision/hit/math/bv/RSS.h"
+#include "dart/collision/hit/math/bv/kDOP.h"
+#include "dart/collision/hit/math/bv/kIOS.h"
 
-#include "fcl/math/bv/AABB.h"
-#include "fcl/math/bv/kDOP.h"
-#include "fcl/math/bv/kIOS.h"
-#include "fcl/math/bv/OBB.h"
-#include "fcl/math/bv/OBBRSS.h"
-#include "fcl/math/bv/RSS.h"
-
-#include "fcl/geometry/shape/box.h"
-
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief calculate a bounding volume for a shape in a specific configuration
 template <typename BV, typename Shape>
-FCL_EXPORT
 void computeBV(const Shape& s, const Transform3<typename BV::S>& tf, BV& bv);
 
-/// @brief construct a box shape (with a configuration) from a given bounding volume
+/// @brief construct a box shape (with a configuration) from a given bounding
+/// volume
 template <typename S>
-FCL_EXPORT
 void constructBox(const AABB<S>& bv, Box<S>& box, Transform3<S>& tf);
 
 template <typename S>
-FCL_EXPORT
 void constructBox(const OBB<S>& bv, Box<S>& box, Transform3<S>& tf);
 
 template <typename S>
-FCL_EXPORT
 void constructBox(const OBBRSS<S>& bv, Box<S>& box, Transform3<S>& tf);
 
 template <typename S>
-FCL_EXPORT
 void constructBox(const kIOS<S>& bv, Box<S>& box, Transform3<S>& tf);
 
 template <typename S>
-FCL_EXPORT
 void constructBox(const RSS<S>& bv, Box<S>& box, Transform3<S>& tf);
 
 template <typename S>
-FCL_EXPORT
 void constructBox(const KDOP<S, 16>& bv, Box<S>& box, Transform3<S>& tf);
 
 template <typename S>
-FCL_EXPORT
 void constructBox(const KDOP<S, 18>& bv, Box<S>& box, Transform3<S>& tf);
 
 template <typename S>
-FCL_EXPORT
 void constructBox(const KDOP<S, 24>& bv, Box<S>& box, Transform3<S>& tf);
 
 template <typename S>
-FCL_EXPORT
-void constructBox(const AABB<S>& bv, const Transform3<S>& tf_bv, Box<S>& box, Transform3<S>& tf);
+void constructBox(
+    const AABB<S>& bv,
+    const Transform3<S>& tf_bv,
+    Box<S>& box,
+    Transform3<S>& tf);
 
 template <typename S>
-FCL_EXPORT
-void constructBox(const OBB<S>& bv, const Transform3<S>& tf_bv, Box<S>& box, Transform3<S>& tf);
+void constructBox(
+    const OBB<S>& bv,
+    const Transform3<S>& tf_bv,
+    Box<S>& box,
+    Transform3<S>& tf);
 
 template <typename S>
-FCL_EXPORT
-void constructBox(const OBBRSS<S>& bv, const Transform3<S>& tf_bv, Box<S>& box, Transform3<S>& tf);
+void constructBox(
+    const OBBRSS<S>& bv,
+    const Transform3<S>& tf_bv,
+    Box<S>& box,
+    Transform3<S>& tf);
 
 template <typename S>
-FCL_EXPORT
-void constructBox(const kIOS<S>& bv, const Transform3<S>& tf_bv, Box<S>& box, Transform3<S>& tf);
+void constructBox(
+    const kIOS<S>& bv,
+    const Transform3<S>& tf_bv,
+    Box<S>& box,
+    Transform3<S>& tf);
 
 template <typename S>
-FCL_EXPORT
-void constructBox(const RSS<S>& bv, const Transform3<S>& tf_bv, Box<S>& box, Transform3<S>& tf);
+void constructBox(
+    const RSS<S>& bv,
+    const Transform3<S>& tf_bv,
+    Box<S>& box,
+    Transform3<S>& tf);
 
 template <typename S>
-FCL_EXPORT
-void constructBox(const KDOP<S, 16>& bv, const Transform3<S>& tf_bv, Box<S>& box, Transform3<S>& tf);
+void constructBox(
+    const KDOP<S, 16>& bv,
+    const Transform3<S>& tf_bv,
+    Box<S>& box,
+    Transform3<S>& tf);
 
 template <typename S>
-FCL_EXPORT
-void constructBox(const KDOP<S, 18>& bv, const Transform3<S>& tf_bv, Box<S>& box, Transform3<S>& tf);
+void constructBox(
+    const KDOP<S, 18>& bv,
+    const Transform3<S>& tf_bv,
+    Box<S>& box,
+    Transform3<S>& tf);
 
 template <typename S>
-FCL_EXPORT
-void constructBox(const KDOP<S, 24>& bv, const Transform3<S>& tf_bv, Box<S>& box, Transform3<S>& tf);
+void constructBox(
+    const KDOP<S, 24>& bv,
+    const Transform3<S>& tf_bv,
+    Box<S>& box,
+    Transform3<S>& tf);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/geometry/shape/utility-inl.h"
-
-#endif
+#include "dart/collision/hit/geometry/shape/utility-inl.h"

@@ -35,37 +35,34 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_SHAPE_CONE_H
-#define FCL_SHAPE_CONE_H
+#pragma once
+
+#include "dart/collision/hit/geometry/shape/shape_base.h"
 
 #include <ostream>
 #include <string>
 
-#include "fcl/geometry/shape/shape_base.h"
+namespace dart::collision::hit {
 
-namespace dart { namespace collision { namespace hit
-{
-
-/// @brief Center at zero cone 
+/// @brief Center at zero cone
 template <typename S_>
-class FCL_EXPORT Cone : public ShapeBase<S_>
+class Cone : public ShapeBase<S_>
 {
 public:
-
   using S = S_;
 
   Cone(S radius, S lz);
 
-  /// @brief Radius of the cone 
+  /// @brief Radius of the cone
   S radius;
 
-  /// @brief Length along z axis 
+  /// @brief Length along z axis
   S lz;
 
   /// @brief Compute AABB
   void computeLocalAABB() override;
 
-  /// @brief Get node type: a cone 
+  /// @brief Get node type: a cone
   NODE_TYPE getNodeType() const override;
 
   // Documentation inherited
@@ -88,8 +85,8 @@ public:
   /// @return The string representation of this instance.
   std::string representation(int precision = 20) const;
 
-  friend
-  std::ostream& operator<<(std::ostream& out, const Cone& cone) {
+  friend std::ostream& operator<<(std::ostream& out, const Cone& cone)
+  {
     out << "Cone(r: " << cone.radius << ", lz: " << cone.lz << ")";
     return out;
   }
@@ -98,8 +95,6 @@ public:
 using Conef = Cone<float>;
 using Coned = Cone<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/geometry/shape/cone-inl.h"
-
-#endif
+#include "dart/collision/hit/geometry/shape/cone-inl.h"

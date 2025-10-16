@@ -35,15 +35,13 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CCD_MOTION_BASE_H
-#define FCL_CCD_MOTION_BASE_H
+#pragma once
 
-#include "fcl/math/motion/taylor_model/taylor_matrix.h"
-#include "fcl/math/motion/taylor_model/taylor_vector.h"
-#include "fcl/math/bv/RSS.h"
+#include "dart/collision/hit/math/bv/RSS.h"
+#include "dart/collision/hit/math/motion/taylor_model/taylor_matrix.h"
+#include "dart/collision/hit/math/motion/taylor_model/taylor_vector.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 template <typename S>
 class BVMotionBoundVisitor;
@@ -56,17 +54,21 @@ class MotionBase
 {
 public:
   MotionBase();
-  
+
   virtual ~MotionBase();
 
   /** @brief Integrate the motion from 0 to dt */
   virtual bool integrate(S dt) const = 0;
 
-  /** @brief Compute the motion bound for a bounding volume, given the closest direction n between two query objects */
-  virtual S computeMotionBound(const BVMotionBoundVisitor<S>& mb_visitor) const = 0;
+  /** @brief Compute the motion bound for a bounding volume, given the closest
+   * direction n between two query objects */
+  virtual S computeMotionBound(
+      const BVMotionBoundVisitor<S>& mb_visitor) const = 0;
 
-  /** @brief Compute the motion bound for a triangle, given the closest direction n between two query objects */
-  virtual S computeMotionBound(const TriangleMotionBoundVisitor<S>& mb_visitor) const = 0;
+  /** @brief Compute the motion bound for a triangle, given the closest
+   * direction n between two query objects */
+  virtual S computeMotionBound(
+      const TriangleMotionBoundVisitor<S>& mb_visitor) const = 0;
 
   /** @brief Get the rotation and translation in current step */
   void getCurrentTransform(Matrix3<S>& R, Vector3<S>& T) const;
@@ -84,10 +86,9 @@ public:
   virtual void getTaylorModel(TMatrix3<S>& tm, TVector3<S>& tv) const = 0;
 
   const std::shared_ptr<TimeInterval<S>>& getTimeInterval() const;
-protected:
 
+protected:
   std::shared_ptr<TimeInterval<S>> time_interval_;
-  
 };
 
 using MotionBasef = MotionBase<float>;
@@ -96,8 +97,6 @@ using MotionBased = MotionBase<double>;
 template <typename S>
 using MotionBasePtr = std::shared_ptr<MotionBase<S>>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/math/motion/motion_base-inl.h"
-
-#endif
+#include "dart/collision/hit/math/motion/motion_base-inl.h"

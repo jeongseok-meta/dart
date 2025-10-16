@@ -35,28 +35,26 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_CONTINUOUSCOLLISIONRESULT_H
-#define FCL_CONTINUOUSCOLLISIONRESULT_H
+#pragma once
 
-#include "fcl/common/types.h"
+#include "dart/collision/hit/common/types.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 /// @brief continuous collision result
 template <typename S>
-struct FCL_EXPORT ContinuousCollisionResult
+struct ContinuousCollisionResult
 {
   /// @brief collision or not
   bool is_collide;
-  
+
   /// @brief time of contact in [0, 1]
   S time_of_contact;
 
   Transform3<S> contact_tf1;
 
   Transform3<S> contact_tf2;
-  
+
   ContinuousCollisionResult();
 
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -65,8 +63,6 @@ struct FCL_EXPORT ContinuousCollisionResult
 using ContinuousCollisionResultf = ContinuousCollisionResult<float>;
 using ContinuousCollisionResultd = ContinuousCollisionResult<double>;
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/continuous_collision_result-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/continuous_collision_result-inl.h"

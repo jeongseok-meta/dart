@@ -35,22 +35,18 @@
 
 /** @author Jia Pan */
 
-#include "fcl/narrowphase/contact_point-inl.h"
+#include "dart/collision/hit/narrowphase/contact_point-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
-
-//==============================================================================
-template
-struct ContactPoint<double>;
+namespace dart::collision::hit {
 
 //==============================================================================
-template
-bool comparePenDepth(
+template struct ContactPoint<double>;
+
+//==============================================================================
+template bool comparePenDepth(
     const ContactPoint<double>& _cp1, const ContactPoint<double>& _cp2);
 
 //==============================================================================
-template
-void flipNormal(std::vector<ContactPoint<double>>& contacts);
+template void flipNormal(std::vector<ContactPoint<double>>& contacts);
 
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

@@ -35,15 +35,13 @@
 
 /** @author Jia Pan */
 
-#include "fcl/math/detail/polysolver-inl.h"
+#include "dart/collision/hit/math/detail/polysolver-inl.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 namespace detail {
 
-template
-class PolySolver<double>;
+template class PolySolver<double>;
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit

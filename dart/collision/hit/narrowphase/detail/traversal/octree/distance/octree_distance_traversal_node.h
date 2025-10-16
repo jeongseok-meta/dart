@@ -35,31 +35,27 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_TRAVERSAL_OCTREE_OCTREEDISTANCETRAVERSALNODE_H
-#define FCL_TRAVERSAL_OCTREE_OCTREEDISTANCETRAVERSALNODE_H
+#pragma once
 
-#include "fcl/config.h"
-#if !(FCL_HAVE_OCTOMAP)
-#error "This header requires fcl to be compiled with octomap support"
+#include "dart/collision/hit/config.h"
+#if !(DART_COLLISION_HIT_HAVE_OCTOMAP)
+  #error "This header requires fcl to be compiled with octomap support"
 #endif
 
-#include "fcl/geometry/octree/octree.h"
-#include "fcl/narrowphase/detail/traversal/distance/distance_traversal_node_base.h"
-#include "fcl/narrowphase/detail/traversal/octree/octree_solver.h"
+#include "dart/collision/hit/geometry/octree/octree.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/distance/distance_traversal_node_base.h"
+#include "dart/collision/hit/narrowphase/detail/traversal/octree/octree_solver.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
-namespace detail
-{
+namespace detail {
 
 /// @brief Traversal node for octree distance
 template <typename NarrowPhaseSolver>
-class FCL_EXPORT OcTreeDistanceTraversalNode
-    : public DistanceTraversalNodeBase<typename NarrowPhaseSolver::S>
+class OcTreeDistanceTraversalNode
+  : public DistanceTraversalNodeBase<typename NarrowPhaseSolver::S>
 {
 public:
-
   using S = typename NarrowPhaseSolver::S;
 
   OcTreeDistanceTraversalNode();
@@ -88,8 +84,6 @@ bool initialize(
     DistanceResult<typename NarrowPhaseSolver::S>& result);
 
 } // namespace detail
-} // namespace dart { namespace collision { namespace hit
+} // namespace dart::collision::hit
 
-#include "fcl/narrowphase/detail/traversal/octree/distance/octree_distance_traversal_node-inl.h"
-
-#endif
+#include "dart/collision/hit/narrowphase/detail/traversal/octree/distance/octree_distance_traversal_node-inl.h"

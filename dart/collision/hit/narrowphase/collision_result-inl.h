@@ -35,17 +35,14 @@
 
 /** @author Jia Pan */
 
-#ifndef FCL_COLLISIONRESULT_INL_H
-#define FCL_COLLISIONRESULT_INL_H
+#pragma once
 
-#include "fcl/narrowphase/collision_result.h"
+#include "dart/collision/hit/narrowphase/collision_result.h"
 
-namespace dart { namespace collision { namespace hit
-{
+namespace dart::collision::hit {
 
 //==============================================================================
-extern template
-struct CollisionResult<double>;
+extern template struct CollisionResult<double>;
 
 //==============================================================================
 template <typename S>
@@ -96,7 +93,7 @@ size_t CollisionResult<S>::numCostSources() const
 template <typename S>
 const Contact<S>& CollisionResult<S>::getContact(size_t i) const
 {
-  if(i < contacts.size())
+  if (i < contacts.size())
     return contacts[i];
   else
     return contacts.back();
@@ -104,8 +101,7 @@ const Contact<S>& CollisionResult<S>::getContact(size_t i) const
 
 //==============================================================================
 template <typename S>
-void CollisionResult<S>::getContacts(
-    std::vector<Contact<S>>& contacts_)
+void CollisionResult<S>::getContacts(std::vector<Contact<S>>& contacts_)
 {
   contacts_.resize(contacts.size());
   std::copy(contacts.begin(), contacts.end(), contacts_.begin());
@@ -128,6 +124,4 @@ void CollisionResult<S>::clear()
   cost_sources.clear();
 }
 
-} // namespace dart { namespace collision { namespace hit
-
-#endif
+} // namespace dart::collision::hit
