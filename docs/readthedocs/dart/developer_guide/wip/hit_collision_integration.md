@@ -113,6 +113,26 @@
    - 5 penetration depth test cases comparing against upstream libccd
    - All tests pass and match upstream libccd behavior
 
+### Phase 4: EPA Algorithm ⏸️ DEFERRED
+EPA (Expanding Polytope Algorithm) provides more accurate penetration depth calculation but is not essential since MPR already provides sufficient penetration depth for most collision detection scenarios. This phase can be implemented later if more accurate penetration depth is needed.
+
+### Phase 5: Integration with DART Shapes ✅ COMPLETE
+1. ✅ Create shape support functions (`shape_support.hpp`)
+   - Implemented `sphereSupport<S>()` - support function for sphere shapes
+   - Implemented `boxSupport<S>()` - support function for box shapes
+   - Implemented `capsuleSupport<S>()` - support function for capsule shapes
+   - Implemented `shapeCenter<S>()` - generic center function for all shapes
+   - Implemented `configureCcdForShape<S>()` - helper to configure CCD for any DART shape
+2. ✅ Create comprehensive test suite (`test_shape_support.cpp`)
+   - 11 tests validating collision detection with actual DART shapes
+   - Tests cover Sphere-Sphere, Box-Box, Sphere-Box, Capsule-Capsule collisions
+   - Tests cover both GJK intersection and MPR penetration depth
+   - All tests pass successfully
+3. ✅ End-to-end validation
+   - All collision integration tests pass (test_Collision, test_CollisionGroups, test_Distance, test_Raycast)
+   - Modern C++ CCD algorithms successfully work with DART shapes
+   - Full collision detection pipeline functional
+
 ### Phase 4: EPA Algorithm (for penetration depth)
 1. ⏳ Create EPA header (`epa.hpp`)
 2. ⏳ Convert polytope structure to C++ class
