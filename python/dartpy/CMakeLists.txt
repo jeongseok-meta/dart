@@ -138,13 +138,16 @@ endif()
 # Install the pybind module to the wheel
 # For scikit-build-core, we use SKBUILD_PLATLIB_DIR if available,
 # otherwise fall back to PYTHON_SITE_PACKAGES for traditional builds
+# Only install if dartpy is in the build targets (not EXCLUDE_FROM_ALL or explicitly built)
 if(DEFINED SKBUILD_PLATLIB_DIR)
   install(TARGETS ${pybind_module}
     LIBRARY DESTINATION "${SKBUILD_PLATLIB_DIR}"
+    OPTIONAL
   )
 else()
   install(TARGETS ${pybind_module}
     LIBRARY DESTINATION "${PYTHON_SITE_PACKAGES}"
+    OPTIONAL
   )
 endif()
 

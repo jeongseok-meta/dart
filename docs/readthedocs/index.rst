@@ -91,18 +91,17 @@ If you use DART in an academic publication, please consider citing this
 .. toctree::
    :maxdepth: 1
    :hidden:
-   :caption: dartpy (Python)
+   :caption: dartpy (Python API)
 
    dartpy/user_guide/installation
    dartpy/user_guide/examples
    dartpy/user_guide/tutorials
    dartpy/python_api_reference
-   dartpy/api_docs
 
 .. toctree::
    :maxdepth: 1
    :hidden:
-   :caption: DART (C++)
+   :caption: DART (C++ API)
 
    dart/user_guide/installation
    dart/user_guide/tutorials

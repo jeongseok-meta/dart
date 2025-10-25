@@ -158,6 +158,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/mumps-seq-5.8.1-h4374b6a_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mypy_extensions-1.1.0-pyha770c72_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/myst-parser-4.0.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/nanobind-2.9.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/ncurses-6.5-h2d0b736_3.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/ninja-1.13.1-h171cf75_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/nlopt-2.10.0-py314h411e966_1.conda
@@ -201,7 +202,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/sdl3-3.2.26-h68140b3_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-80.9.0-pyhff2d567_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/snowballstemmer-3.0.1-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-8.2.3-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-copybutton-0.5.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-intl-2.3.2-pyhba6062f_0.conda
@@ -373,6 +373,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/mumps-seq-5.8.1-h28c60b8_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mypy_extensions-1.1.0-pyha770c72_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/myst-parser-4.0.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/nanobind-2.9.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/ncurses-6.5-h0622a9a_3.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/ninja-1.13.1-h0ba0a54_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/nlopt-2.10.0-py313hae0a84d_1.conda
@@ -415,7 +416,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/sdl3-3.2.26-h53c92ef_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-80.9.0-pyhff2d567_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/snowballstemmer-3.0.1-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-64/spdlog-1.16.0-h5d4ac9d_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-8.2.3-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-copybutton-0.5.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-intl-2.3.2-pyhba6062f_0.conda
@@ -569,6 +569,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/mumps-seq-5.8.1-he6ca4b8_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mypy_extensions-1.1.0-pyha770c72_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/myst-parser-4.0.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/nanobind-2.9.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/ncurses-6.5-h5e97a16_3.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/ninja-1.13.1-h4f10f1e_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/nlopt-2.10.0-py314h22e909e_1.conda
@@ -611,7 +612,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/sdl3-3.2.26-h919df07_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-80.9.0-pyhff2d567_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/snowballstemmer-3.0.1-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/spdlog-1.16.0-h06f2c6e_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-8.2.3-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-copybutton-0.5.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-intl-2.3.2-pyhba6062f_0.conda
@@ -748,6 +748,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/mumps-seq-5.8.1-hd297af6_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mypy_extensions-1.1.0-pyha770c72_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/myst-parser-4.0.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/nanobind-2.9.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/ninja-1.13.1-h477610d_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/nlopt-2.10.0-py314h6ce1258_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/nodejs-24.9.0-he453025_0.conda
@@ -785,7 +786,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/sdl3-3.2.26-h5112557_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-80.9.0-pyhff2d567_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/snowballstemmer-3.0.1-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/spdlog-1.16.0-hb1706eb_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-8.2.3-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-copybutton-0.5.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-intl-2.3.2-pyhba6062f_0.conda
@@ -1110,6 +1110,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/muparser-2.3.5-h5888daf_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mypy_extensions-1.1.0-pyha770c72_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/myst-parser-4.0.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/nanobind-2.9.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/ncurses-6.5-h2d0b736_3.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/nettle-3.10.1-h4a9d5aa_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/ninja-1.13.1-h171cf75_0.conda
@@ -1476,6 +1477,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/muparser-2.3.5-hb996559_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mypy_extensions-1.1.0-pyha770c72_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/myst-parser-4.0.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/nanobind-2.9.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/ncurses-6.5-h0622a9a_3.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/ninja-1.13.1-h0ba0a54_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/nlopt-2.10.0-py314h805d0f6_1.conda
@@ -1816,6 +1818,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/muparser-2.3.5-h11e0b38_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mypy_extensions-1.1.0-pyha770c72_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/myst-parser-4.0.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/nanobind-2.9.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/ncurses-6.5-h5e97a16_3.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/ninja-1.13.1-h4f10f1e_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/nlopt-2.10.0-py314h22e909e_1.conda
@@ -2117,6 +2120,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/muparser-2.3.5-he0c23c2_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mypy_extensions-1.1.0-pyha770c72_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/myst-parser-4.0.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/nanobind-2.9.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/ninja-1.13.1-h477610d_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/nlopt-2.10.0-py314h6ce1258_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/nodejs-24.9.0-he453025_0.conda
@@ -2387,6 +2391,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/mumps-seq-5.8.1-h4374b6a_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mypy_extensions-1.1.0-pyha770c72_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/myst-parser-4.0.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/nanobind-2.9.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/ncurses-6.5-h2d0b736_3.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/nh3-0.3.2-py310h1570de5_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/ninja-1.13.1-h171cf75_0.conda
@@ -2439,7 +2444,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/secretstorage-3.4.0-py312h7900ff3_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-80.9.0-pyhff2d567_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/snowballstemmer-3.0.1-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-8.2.3-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-copybutton-0.5.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-intl-2.3.2-pyhba6062f_0.conda
@@ -2629,6 +2633,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/mumps-seq-5.8.1-h28c60b8_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mypy_extensions-1.1.0-pyha770c72_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/myst-parser-4.0.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/nanobind-2.9.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/ncurses-6.5-h0622a9a_3.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/nh3-0.3.2-py310h6cf5e2e_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/ninja-1.13.1-h0ba0a54_0.conda
@@ -2677,7 +2682,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/sdl3-3.2.26-h53c92ef_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-80.9.0-pyhff2d567_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/snowballstemmer-3.0.1-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-64/spdlog-1.16.0-h5d4ac9d_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-8.2.3-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-copybutton-0.5.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-intl-2.3.2-pyhba6062f_0.conda
@@ -2847,6 +2851,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/mumps-seq-5.8.1-he6ca4b8_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mypy_extensions-1.1.0-pyha770c72_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/myst-parser-4.0.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/nanobind-2.9.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/ncurses-6.5-h5e97a16_3.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/nh3-0.3.2-py310h06fc29a_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/ninja-1.13.1-h4f10f1e_0.conda
@@ -2895,7 +2900,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/sdl3-3.2.26-h919df07_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-80.9.0-pyhff2d567_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/snowballstemmer-3.0.1-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/spdlog-1.16.0-h06f2c6e_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-8.2.3-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-copybutton-0.5.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-intl-2.3.2-pyhba6062f_0.conda
@@ -3046,6 +3050,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/mumps-seq-5.8.1-hd297af6_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mypy_extensions-1.1.0-pyha770c72_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/myst-parser-4.0.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/nanobind-2.9.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/nh3-0.3.2-py310hdba2031_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/ninja-1.13.1-h477610d_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/nlopt-2.10.0-py312h9b5b5e9_1.conda
@@ -3091,7 +3096,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/sdl3-3.2.26-h5112557_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-80.9.0-pyhff2d567_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/snowballstemmer-3.0.1-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/spdlog-1.16.0-hb1706eb_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-8.2.3-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-copybutton-0.5.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-intl-2.3.2-pyhba6062f_0.conda
@@ -3307,6 +3311,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/mumps-seq-5.8.1-h4374b6a_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mypy_extensions-1.1.0-pyha770c72_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/myst-parser-4.0.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/nanobind-2.9.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/ncurses-6.5-h2d0b736_3.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/nh3-0.3.2-py310h1570de5_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/ninja-1.13.1-h171cf75_0.conda
@@ -3359,7 +3364,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/secretstorage-3.4.0-py313h78bf25f_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-80.9.0-pyhff2d567_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/snowballstemmer-3.0.1-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-8.2.3-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-copybutton-0.5.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-intl-2.3.2-pyhba6062f_0.conda
@@ -3549,6 +3553,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/mumps-seq-5.8.1-h28c60b8_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mypy_extensions-1.1.0-pyha770c72_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/myst-parser-4.0.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/nanobind-2.9.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/ncurses-6.5-h0622a9a_3.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/nh3-0.3.2-py310h6cf5e2e_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/ninja-1.13.1-h0ba0a54_0.conda
@@ -3597,7 +3602,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/sdl3-3.2.26-h53c92ef_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-80.9.0-pyhff2d567_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/snowballstemmer-3.0.1-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-64/spdlog-1.16.0-h5d4ac9d_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-8.2.3-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-copybutton-0.5.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-intl-2.3.2-pyhba6062f_0.conda
@@ -3767,6 +3771,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/mumps-seq-5.8.1-he6ca4b8_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mypy_extensions-1.1.0-pyha770c72_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/myst-parser-4.0.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/nanobind-2.9.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/ncurses-6.5-h5e97a16_3.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/nh3-0.3.2-py310h06fc29a_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/ninja-1.13.1-h4f10f1e_0.conda
@@ -3815,7 +3820,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/sdl3-3.2.26-h919df07_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-80.9.0-pyhff2d567_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/snowballstemmer-3.0.1-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/spdlog-1.16.0-h06f2c6e_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-8.2.3-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-copybutton-0.5.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-intl-2.3.2-pyhba6062f_0.conda
@@ -3966,6 +3970,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/mumps-seq-5.8.1-hd297af6_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mypy_extensions-1.1.0-pyha770c72_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/myst-parser-4.0.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/nanobind-2.9.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/nh3-0.3.2-py310hdba2031_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/ninja-1.13.1-h477610d_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/nlopt-2.10.0-py313h434f71c_1.conda
@@ -4011,7 +4016,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/sdl3-3.2.26-h5112557_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-80.9.0-pyhff2d567_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/snowballstemmer-3.0.1-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/spdlog-1.16.0-hb1706eb_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-8.2.3-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-copybutton-0.5.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-intl-2.3.2-pyhba6062f_0.conda
@@ -4226,6 +4230,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/mumps-seq-5.8.1-h4374b6a_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mypy_extensions-1.1.0-pyha770c72_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/myst-parser-4.0.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/nanobind-2.9.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/ncurses-6.5-h2d0b736_3.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/nh3-0.3.2-py310h1570de5_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/ninja-1.13.1-h171cf75_0.conda
@@ -4278,7 +4283,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/secretstorage-3.4.0-py314hdafbbf9_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-80.9.0-pyhff2d567_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/snowballstemmer-3.0.1-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-8.2.3-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-copybutton-0.5.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-intl-2.3.2-pyhba6062f_0.conda
@@ -4468,6 +4472,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/mumps-seq-5.8.1-h28c60b8_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mypy_extensions-1.1.0-pyha770c72_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/myst-parser-4.0.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/nanobind-2.9.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/ncurses-6.5-h0622a9a_3.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/nh3-0.3.2-py310h6cf5e2e_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/ninja-1.13.1-h0ba0a54_0.conda
@@ -4516,7 +4521,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/sdl3-3.2.26-h53c92ef_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-80.9.0-pyhff2d567_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/snowballstemmer-3.0.1-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-64/spdlog-1.16.0-h5d4ac9d_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-8.2.3-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-copybutton-0.5.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-intl-2.3.2-pyhba6062f_0.conda
@@ -4686,6 +4690,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/mumps-seq-5.8.1-he6ca4b8_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mypy_extensions-1.1.0-pyha770c72_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/myst-parser-4.0.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/nanobind-2.9.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/ncurses-6.5-h5e97a16_3.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/nh3-0.3.2-py310h06fc29a_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/ninja-1.13.1-h4f10f1e_0.conda
@@ -4734,7 +4739,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/sdl3-3.2.26-h919df07_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-80.9.0-pyhff2d567_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/snowballstemmer-3.0.1-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/spdlog-1.16.0-h06f2c6e_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-8.2.3-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-copybutton-0.5.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-intl-2.3.2-pyhba6062f_0.conda
@@ -4885,6 +4889,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/mumps-seq-5.8.1-hd297af6_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mypy_extensions-1.1.0-pyha770c72_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/myst-parser-4.0.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/nanobind-2.9.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/nh3-0.3.2-py310hdba2031_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/ninja-1.13.1-h477610d_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/nlopt-2.10.0-py314h6ce1258_1.conda
@@ -4930,7 +4935,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/sdl3-3.2.26-h5112557_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-80.9.0-pyhff2d567_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/snowballstemmer-3.0.1-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/spdlog-1.16.0-hb1706eb_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-8.2.3-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-copybutton-0.5.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-intl-2.3.2-pyhba6062f_0.conda
@@ -16994,6 +16998,17 @@ packages:
   license_family: MIT
   size: 73074
   timestamp: 1739381945342
+- conda: https://conda.anaconda.org/conda-forge/noarch/nanobind-2.9.2-pyhd8ed1ab_1.conda
+  sha256: db84194a5834a895c6fea72332f1d28131f58a8352040f80555ed0d4c70c0dc0
+  md5: e26f4cac8bd3f062b23939b72b648b8b
+  depends:
+  - python >=3.10
+  constrains:
+  - nanobind-abi ==16
+  license: BSD-3-Clause
+  license_family: BSD
+  size: 179361
+  timestamp: 1759386961224
 - conda: https://conda.anaconda.org/conda-forge/linux-64/ncurses-6.5-h2d0b736_3.conda
   sha256: 3fde293232fa3fca98635e1167de6b7c7fda83caf24b9d6c91ec9eefb4f4d586
   md5: 47e340acb35de30501a76c7c799c41d7
@@ -20115,18 +20130,6 @@ packages:
   license_family: MIT
   size: 195618
   timestamp: 1751348678073
-- conda: https://conda.anaconda.org/conda-forge/linux-64/spdlog-1.16.0-ha91398d_0.conda
-  sha256: b186180e4ad6d00aa58b6890a31d45bee5b96202d636fe35a97bc5a621f65220
-  md5: 57711002d722e1067e33c0bce84c2207
-  depends:
-  - __glibc >=2.17,<3.0.a0
-  - fmt >=11.2.0,<11.3.0a0
-  - libgcc >=14
-  - libstdcxx >=14
-  license: MIT
-  license_family: MIT
-  size: 197730
-  timestamp: 1760191982588
 - conda: https://conda.anaconda.org/conda-forge/osx-64/spdlog-1.15.3-hcdbecca_1.conda
   sha256: 9f06f687695cf119e85e0d68d337a94d4691fd58427a9fed764a97c1d87ccf69
   md5: 1bbfab208c5597f3f15e6bb0bb9381c2
@@ -20138,17 +20141,6 @@ packages:
   license_family: MIT
   size: 172909
   timestamp: 1751349142758
-- conda: https://conda.anaconda.org/conda-forge/osx-64/spdlog-1.16.0-h5d4ac9d_0.conda
-  sha256: 1c2986eee912b1f88b532eaf90a65cdab3eae610402799eb5e83cee962d4325a
-  md5: 0d8f2379772cae2ab6bc44018926596b
-  depends:
-  - __osx >=10.13
-  - fmt >=11.2.0,<11.3.0a0
-  - libcxx >=19
-  license: MIT
-  license_family: MIT
-  size: 172924
-  timestamp: 1760192268116
 - conda: https://conda.anaconda.org/conda-forge/osx-arm64/spdlog-1.15.3-h217a1f9_1.conda
   sha256: 673e4475bc9ca8e321bc98c8f6e48bf0efd530b5978d6a675de03c77b0a41227
   md5: bd3f40ea227bed3b00b13a574a9dd9ee
@@ -20160,17 +20152,6 @@ packages:
   license_family: MIT
   size: 166201
   timestamp: 1751348813679
-- conda: https://conda.anaconda.org/conda-forge/osx-arm64/spdlog-1.16.0-h06f2c6e_0.conda
-  sha256: 6cfe6eba97204dc1d4165f903a9247a34d1cac6e06c29307db7150226452b118
-  md5: f429110bb3c4139f94a2c5c3aecd4af5
-  depends:
-  - __osx >=11.0
-  - fmt >=11.2.0,<11.3.0a0
-  - libcxx >=19
-  license: MIT
-  license_family: MIT
-  size: 166909
-  timestamp: 1760192476430
 - conda: https://conda.anaconda.org/conda-forge/win-64/spdlog-1.15.3-h430ee68_1.conda
   sha256: dab3103c03a2d26e40a5c4e83e192d99cf6de806280fe4c1298943970503e56c
   md5: d195ba9419c5704fc42cfacb88f4c3f0
@@ -20183,18 +20164,6 @@ packages:
   license_family: MIT
   size: 173572
   timestamp: 1751348807537
-- conda: https://conda.anaconda.org/conda-forge/win-64/spdlog-1.16.0-hb1706eb_0.conda
-  sha256: 76b093cd335b011376bf591341026f4569cf5943986e9546a8146e95557d9492
-  md5: f0fedd71001bf8ac6552865d5fb315b5
-  depends:
-  - fmt >=11.2.0,<11.3.0a0
-  - ucrt >=10.0.20348.0
-  - vc >=14.3,<15
-  - vc14_runtime >=14.44.35208
-  license: MIT
-  license_family: MIT
-  size: 174853
-  timestamp: 1760192198913
 - conda: https://conda.anaconda.org/conda-forge/noarch/sphinx-8.2.3-pyhd8ed1ab_0.conda
   sha256: 995f58c662db0197d681fa345522fd9e7ac5f05330d3dff095ab2f102e260ab0
   md5: f7af826063ed569bb13f7207d6f949b0

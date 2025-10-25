@@ -51,6 +51,12 @@ jobs:
           $env:BUILD_TYPE = "${{ matrix.build_type }}"; `
           pixi run test-all
 
+      - name: Build dartpy2
+        run: |
+          $env:DART_VERBOSE = "ON"; `
+          $env:BUILD_TYPE = "${{ matrix.build_type }}"; `
+          pixi run build-py2
+
       - name: Install
         run: |
           $env:DART_VERBOSE = "ON"; `

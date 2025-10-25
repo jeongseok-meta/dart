@@ -54,7 +54,14 @@ set(dartpy_test_utils
   util.py
 )
 
-file(GLOB_RECURSE dartpy_test_files "test_*.py")
+file(GLOB_RECURSE dartpy_test_files_all "test_*.py")
+# Exclude dartpy2 tests from dartpy tests
+set(dartpy_test_files)
+foreach(test_file ${dartpy_test_files_all})
+  if(NOT test_file MATCHES "dartpy2")
+    list(APPEND dartpy_test_files ${test_file})
+  endif()
+endforeach()
 
 # Add custom target to run the tests
 if(DARTPY_PYTEST_FOUND)
@@ -75,6 +82,26 @@ if(DARTPY_PYTEST_FOUND)
 else()
   add_custom_target(pytest
     COMMAND ${CMAKE_COMMAND} -E echo "Warning: Failed to run pytest because pytest is not found!"
+  )
+endif()
+
+# Set dartpy2 build directory (where the .so file is)
+get_target_property(DARTPY2_LIBRARY_OUTPUT_DIRECTORY dartpy2 LIBRARY_OUTPUT_DIRECTORY)
+set(DART_DARTPY2_BUILD_DIR "${DARTPY2_LIBRARY_OUTPUT_DIRECTORY}")
+
+# Add custom target to run dartpy2 tests
+file(GLOB_RECURSE dartpy2_test_files "../tests_dartpy2/*/test_*.py")
+if(DARTPY_PYTEST_FOUND AND TARGET dartpy2)
+  add_custom_target(pytest-dartpy2
+    COMMAND ${CMAKE_COMMAND} -E echo "Running pytest for dartpy2 by: PYTHONPATH=${DART_DARTPY2_BUILD_DIR} ${Python3_EXECUTABLE} -m pytest ../tests_dartpy2/"
+    COMMAND ${CMAKE_COMMAND} -E env PYTHONPATH="${DART_DARTPY2_BUILD_DIR}" "${Python3_EXECUTABLE}" -m pytest ../tests_dartpy2/ -v
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    SOURCES ${dartpy2_test_files}
+    DEPENDS dartpy2
+  )
+else()
+  add_custom_target(pytest-dartpy2
+    COMMAND ${CMAKE_COMMAND} -E echo "Warning: Failed to run pytest-dartpy2 because pytest is not found or dartpy2 is not built!"
   )
 endif()
 

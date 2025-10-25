@@ -102,8 +102,13 @@ jobs:
           BUILD_TYPE=${{ matrix.build_type }} \
           pixi run test-all
 
-      - name: Install (Release only)
-        if: matrix.build_type == 'Release'
+      - name: Build dartpy2
+        run: |
+          DART_VERBOSE=ON \
+          BUILD_TYPE=${{ matrix.build_type }} \
+          pixi run build-py2
+
+      - name: Install
         run: |
           DART_VERBOSE=ON \
           BUILD_TYPE=${{ matrix.build_type }} \
