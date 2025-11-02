@@ -828,14 +828,34 @@ config-gz = { cmd = """
         -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_PREFIX_PATH=$CONDA_PREFIX \
-        -DBUILD_TESTING=OFF
+        -DBUILD_TESTING=ON
 """, depends-on = ["patch-gz", "install"] }
 
 build-gz = { cmd = "cmake --build .deps/gz-physics/build -j --target all", depends-on = [
     "config-gz",
 ] }
 
-test-gz = { cmd = "bash -c 'cd .deps/gz-physics/build/lib && (otool -L libgz-physics8-dartsim-plugin*.dylib 2>/dev/null || ldd libgz-physics8-dartsim-plugin.so 2>/dev/null) | grep dart && echo \"✓ DART plugin built successfully with DART integration!\"'", depends-on = [
+test-gz = { cmd = """
+    bash -c '
+        echo "=== Checking DART plugin linking ==="
+        cd .deps/gz-physics/build/lib && \
+        (otool -L libgz-physics8-dartsim-plugin*.dylib 2>/dev/null || ldd libgz-physics8-dartsim-plugin.so 2>/dev/null) | grep dart && \
+        echo "✓ DART plugin built successfully with DART integration!" && \
+        cd .. && \
+        echo "" && \
+        echo "=== Running dartsim unit tests ===" && \
+        for test in bin/UNIT_AddedMassFeatures_TEST bin/UNIT_Base_TEST bin/UNIT_EntityManagement_TEST bin/UNIT_SDFFeatures_TEST bin/UNIT_WorldFeatures_TEST; do
+            if [ -f "$test" ]; then
+                echo "Running $(basename $test)..." && \
+                $test || exit 1
+            else
+                echo "Warning: $test not found, skipping"
+            fi
+        done && \
+        echo "" && \
+        echo "✓ All dartsim tests passed!"
+    '
+""", depends-on = [
     "build-gz",
 ], env = { LD_LIBRARY_PATH = "$CONDA_PREFIX/lib:$LD_LIBRARY_PATH" } }
 
